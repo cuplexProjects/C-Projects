@@ -32,6 +32,7 @@ Ankh.NoLoad
 .vs
 .svn
 RelocateRepo.bat
+Desktop.ini
 
 # Base path not included directories
 /AllProjectImagesAndIcons
