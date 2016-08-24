@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Random Lotto generator</string>    
+    <string name="app_settings_global_key">generate_lotto_app_settings_global_key</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_about">About</string>
+    <string name="menu_joker">Generate Joker number</string>
+    <string name="main_about_header_text">About Random Lotto generator</string>    
+    <string name="main_about_text">This application lets you generate lotto numbers based on your own created random seed which is based on how you swipe the screen. Up to 4000 control points can be used and the data from them is digested using SHA512 to create a random seed value for the Blum Blum Shub random number algorithm that is used. However the n value is created by multiplying 2 equally sized prime numbers generated from the bn_rand function found in OpenSSL as a source of cryptographically strong pseudo-random numbers.
+http://en.wikipedia.org/wiki/Blum_Blum_Shub\nYou can also use Random.org as a source for random data but please note that they use a quota system which means that the number of values generated is limited. Although it resets every day.</string>
+    <string name="dialog_joker_header_text">Create Joker</string>
+    <string name="button_new">New</string>    
+    <string name="dialog_joker_init_text">1234567</string>    
+    <string name="dialog_clear_alert_title">Are you sure you want to clear?</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="title_activity_main">Generate Lotto numbers</string>
+    <string name="title_activity_gen_rnd">Generate random seed</string>    
+    <string name="title_activity_settings">Settings</string>    
+    <string name="rnd_seed_description">Swipe the screen to create a random initialization value for the random number generator</string>    
+    <string name="rnd_seed_initvalue">0000000000000000000000000000000000000000000000000000000000000000</string>
+    <string name="status_init_text">Uninitialized</string>
+    <string name="button_generate">Generate</string>
+    <string name="button_clear">Clear</string>
+    <string name="button_gen_rnd">Gen rnd</string>    
+    <string name="button_rate">Rate</string>
+    <string name="button_close">Close</string>
+    <string name="uninitialized_warning">Please generate a random seed first by pressing the Gen rnd button</string>    
+    <string name="main_version_text">Version: </string>    
+    <string name="setting_number_count">Number of balls/values</string>
+    <string name="setting_grid_max_value">Max value</string>    
+    <string name="setting_title_general_lotto_gen">Number generation settings</string>    
+    <string name="setting_number_count_default">7</string>
+    <string name="setting_grid_max_value_default">35</string>    
+    <string name="setting_rnd_algorithm_title">Random number generation method</string>
+    <string name="setting_rnd_algorithm_default_text">Default Pseudo Random (Blum Blum Shub)</string>
+    <string name="setting_rnd_algorithm_default_value">1</string>
+    <string name="reInitializeDialogMessage">Do you want to try to fetch new random data?</string>
+</resources>

@@ -1,0 +1,1024 @@
+﻿html
+{
+	width:100%;
+	height:100%;
+	overflow:auto;
+}
+
+body 
+{	
+	margin:0;
+	padding:0;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	font-size:10px;
+	background-image:url('../images/bodyBg.png');	
+}
+#menuPanel
+{
+	height:22px;
+	width:980px;
+	background: -moz-linear-gradient(top, #626f7e, #000000);
+	background: -webkit-gradient(linear, left top, left bottom, from(#626f7e), to(#000000));	
+	filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#626f7e', EndColorStr='#000000', GradientType=0); 
+	border-top: solid 1px #535353;
+	border-bottom: solid 1px #535353;
+}
+.menuItem
+{
+	float:left;
+	color:White;
+	background-color:#585858;
+	display:block;
+	height:15px;
+	margin-top:2px;
+	margin-right:5px;
+	padding:2px 5px 0 5px;
+	cursor:pointer;	
+	
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+
+}
+.menuItem:hover
+{
+	background-color:Gray;
+}
+#HeaderPanel
+{
+	overflow:hidden;
+	width:100%;
+	height:0px;
+	background-color:Black;
+}
+#mainContent
+{
+	margin:0 auto;
+	width:1000px;
+	background-image:url('../images/shadow.png');
+}
+#mainContentSub
+{
+	margin:0 auto;
+	padding:0;
+	width:980px;
+	border-bottom:solid 1px  gray;
+	background-color:White;	
+}
+#mainContentFooter
+{
+	margin:0 auto;
+	height:10px;
+	width:1000px;
+	background-image:url('../images/shadow2.png');
+}
+#topLogo
+{
+	margin:auto;
+	height:160px;
+	width:980px;
+	background-image:url('../images/TopHeader2.png');
+	background-repeat:no-repeat;
+}
+#contentWrapper
+{
+	background-image:url('../images/contentBg.png');
+	background-repeat:repeat;
+	margin 0 auto;
+	width:980px;
+	padding:0;
+	border-top:solid 1px gray;
+}
+
+.leftContent
+{	
+	margin-left:15px;
+	margin-top:5px;
+	float:left;
+	display:block;
+	width:665px;
+	padding:5px 0px 5px 5px;
+}
+
+.rightContent
+{
+	margin-top:5px;
+	margin-right:15px;
+	
+	float:right;
+	display:block;
+	width:240px;
+	padding: 5px 10px 10px 5px;	
+}
+.label
+{
+	font-weight:bold;
+}
+.contentBlock
+{
+	border:solid 1px gray;
+	width:100%;
+	height:350px;	
+}
+
+.loginControl
+{
+	height:80px;
+	border:solid 1px gray;
+	padding:5px;
+	background-color:#80aac2;
+}
+.loginControlSub
+{
+	margin-top:10px;
+	height:90px;
+	border:solid 1px gray;
+	padding:5px;
+	background-color:#95c8dd;
+}
+.createAccountLink
+{
+	font-weight:bold;
+	display:block;
+	margin-top:18px;
+}
+.createAccountLink a:link, .createAccountLink a:visited
+{
+	color:#0066cc;
+}
+.loginText
+{
+	font-weight:bold;	
+	margin-bottom:2px;
+}
+.loginButton
+{
+	height:18px;
+	width:70px;
+	float:right;
+	margin-right:5px;
+	margin-top:3px;
+	border:none;
+	font-size:11px;
+	background-color:#eaeaea;
+}
+.loginTextField
+{
+	width:200px;
+	height:auto;
+	font-size:11px;
+	line-height:12px;
+	margin-bottom:2px;
+}
+.loginFailedBox
+{
+	display:block;
+	height:20px;
+}
+.loginFailedBox span
+{
+	display:block;
+	padding-top:6px;
+	color:Red;
+	font-weight:bold;
+}
+.contentList
+{
+	width:100%;	
+	border:solid 1px #c0c0c0;
+	border-right:solid 1px #8f8f8f;
+}
+.contentWrapper
+{
+	margin-bottom:15px;	
+}
+.contentList td
+{
+	padding-left:3px;
+}
+.contentList th
+{
+	background-image:url('../images/gradientHeader.png');
+	background-repeat:repeat-x;
+	border-bottom:solid 1px #c0c0c0;
+	height:23px;
+	text-align:left;
+	padding-left:5px;
+}
+.contentList table
+{
+	margin-top:2px;
+	margin-bottom:2px;
+}
+.rightColumn
+{
+	text-align:right;
+	padding-right:5px;
+}
+.innerTableCell
+{
+	padding-right:15px;	
+	color:#5b5b5b;
+	padding-left:0px!important;
+}
+.listRow
+{
+	background-color:#dddddd;	
+	border-bottom:solid 1px #acacac;
+}
+.listRowAlt
+{
+	background-color:#f2f2f2;
+	border-bottom:solid 1px #acacac;
+}
+
+.link
+{
+	font-weight:bold;
+}
+
+.link a:visited 
+{
+	color:#333333;
+	text-decoration:none;
+}
+.link a:active 
+{
+	color:#333333;
+	text-decoration:none;
+}
+.link a:link 
+{
+	color:#333333;
+	text-decoration:none;
+}
+.link a:hover 
+{
+	color:#333333;
+	text-decoration:underline;
+}
+
+
+.userLoggedInControl
+{
+	height:120px;
+	border:solid 1px gray;
+	padding:5px;
+	background-color:#6bb8dd;
+}
+
+.createUserMainPanel
+{
+	padding:5px;	
+	border:solid 1px #c0c0c0;
+	float:left;
+	width:99%;
+}
+
+.createUserMainPanel div
+{
+	float:left;
+	display:block;
+	clear:left;
+	width:300px;
+	padding-bottom:1em;
+}
+.createUserMainPanel label
+{
+	display:block;
+	font-weight:bold;
+	color:#3c3c3c;
+}
+.manageUserTextBox
+{
+	height:auto;
+	width:250px;	
+	clear:left;
+}
+.createUserButton
+{
+	height:20px!important;
+	width:auto!important;
+	border:none;
+	font-size:10px;
+	background-color:#eaeaea;
+	border-top:solid 1px #343434;
+	border-left:solid 1px #343434;
+	border-right:solid 1px grey;
+	border-bottom:solid 1px grey;
+	margin-top:10px;
+	padding-bottom:1px;
+}
+.createUserErrorPanel
+{
+	position:absolute;
+	padding:10px;
+	top:135px;
+	left:300px;
+	width:275px;
+	height:75px;
+	border:solid 1px gray;
+}
+.createUserErrorPanel span
+{
+	color:Red;
+	font-weight:bold;
+}
+.fieldValidator
+{
+	font-weight:bold;
+	font-size:14px;
+	clear:right;
+}
+.loggedInUserLabel
+{
+	display:block;
+	font-size:16px;
+	font-family:Hobo Std,Showcard Gothic,Calibri,Verdana;
+	font-weight:normal;
+}
+.loggedInUserLabel span
+{
+	display:block;
+}
+.createUserHeader
+{
+	font-weight:bold;
+	font-size:16px;
+	color:#2e3b82;	
+}
+.loginErrorMessagePanel
+{
+	color:Red;
+	font-size:12px;
+	font-weight:bold;
+}
+.resetPasswordPanel
+{
+	clear:none!important;
+	width:280px!important;
+	border:solid 1px #c0c0c0;
+	vertical-align:top;
+	float:right;
+	padding:5px;
+}
+.loggedInLinks
+{
+	padding: 5px 0 0 15px;
+}
+.loggedInLinks a
+{
+	color:Black;
+	text-decoration:none;
+	text-shadow: rgba(0,0,0,.2) 2px 2px 1px;
+}
+.loggedInLinks a:hover
+{
+	text-decoration:underline;
+}
+
+.modalBackground
+{	
+	background-color: #111;	
+	filter:alpha(opacity=50); 
+	opacity: .5;
+	width:100%;
+	height:100%;
+	position:fixed;
+}	
+#modalWindowWrapper
+{
+	position:absolute;	
+	border:solid 2px gray;	
+}
+#modalWindowUpperPanel
+{
+	background-image:url('../images/CommentTopBack.png');
+	filter:alpha(opacity=75); 
+	opacity: .75;
+	height:25px;
+	width:100%;	
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+#popupContentClose
+{
+	position:absolute;
+	display:block;	
+	right:-12px;
+	top:-12px;	
+	cursor:pointer;
+	background-image:url('../images/x.png');
+	height:25px;
+	width:25px;
+	z-index:250;
+}
+#modalWindowContentPanel
+{
+	display:block;	
+}
+.StandardPopup
+{
+	z-index: 10001;
+    background-color:#f0f0f0;
+    border: 2px solid black;
+    padding:0px;    
+    top:40%;
+    left:50%;    
+    position:absolute;
+}
+.PopupMessage
+{
+	width:250px;
+	height:100px;
+	padding:10px;
+	margin-top:-50px;
+	margin-left:-125px;
+}
+.PopupMessage input
+{
+	position:absolute;
+	width:75px;	
+	bottom:10px;
+	right:10px;	
+	height:22px;
+	border:solid 1px #444444;
+	font-size:12px;
+	background-color:#EAEAEA;
+	cursor:pointer;
+}
+.PopupMessage input:hover
+{
+	border-top:solid 1px black;
+	border-left:solid 1px black;
+	border-right:solid 1px gray;
+	border-bottom:solid 1px gray;
+}
+.checkbox
+{
+	display:inline;
+}
+.checkbox label, .checkbox span
+{
+	display:inline;
+}
+
+.commentLink:link,.commentLink:visited
+{
+	color:Black;
+	text-decoration:none;	
+}
+.commentLink:hover
+{
+	color:Black;
+	text-decoration:underline;	
+}
+.commentPanel
+{
+	background-color:White;
+	margin:5px;
+	width:490px;
+	height:250px;	
+	padding:10px 15px 15px 10px;
+    overflow-x: hidden; /* IE only */
+    overflow-y: auto !important; /* IE and Mozilla */
+    border:solid 1px #abacb1;
+
+}
+.CommentTableWrapper
+{
+	border:solid 1px #cdcfcf; 
+	
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+.CommentTable
+{
+	width:100%;
+}
+.CommentTable td
+{
+	padding:5px;
+}
+.divider
+{
+	width:450;
+	height:1px;
+	text-align:center;
+	border-top:solid 1px #999999;
+	padding:3px 0px 3px 0px!important;
+}
+.commentDate
+{
+	color:#a4a4a4;
+	float:right;
+}
+.commentUser
+{
+	font-weight:bold;
+}
+.postCommentPanel
+{
+	position:absolute;
+	margin:5px;
+	padding:5px;
+	width:505px;
+	border:solid 1px #abacb1;
+}
+
+.votingTd div
+{
+	float:right;	
+}
+.commentTd
+{
+	width:80px;
+}
+
+.nextLink a
+{
+	float:right;
+	font-weight:normal;
+	padding-right:2px;
+}
+.prevLink a
+{
+	float:left;
+	font-weight:normal;
+	padding-left:2px;
+}
+.dropShadowSoft
+{
+	-webkit-box-shadow:  #8a8a8a 1px 2px 12px;
+	-moz-box-shadow: #8a8a8a 2px 2px 12px;
+}
+.dropShadow
+{
+	-webkit-box-shadow:  #252322 1px 1px 5px;
+	-moz-box-shadow: #252322 1px 1px 5px;
+	
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.resetPasswordMainPanel
+{
+	padding:5px;	
+	border:solid 1px #c0c0c0;
+	float:left;
+	width:99%;
+	height:400px;
+}
+.resetPasswordMainPanel a
+{
+	color:Black;
+}
+
+.searchControl
+{
+	border:solid 1px gray;
+	margin-top:10px;
+	padding:5px;
+	background-color:#1b7a9b; 
+	background: -moz-linear-gradient(top, #25c7ff, #000000);
+	background: -webkit-gradient(linear, left top, left bottom, from(#25c7ff), to(#000000));	
+	filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#25c7ff', EndColorStr='#000000', GradientType=0); 
+}
+.searchControl select
+{
+	margin-bottom:5px;
+}
+.searchButton
+{
+	height:18px;
+	width:35px;
+	float:right;
+	margin-right:5px;
+	margin-top:3px;	
+	font-size:11px;
+	background-color:#eaeaea;
+	border-top:solid 1px #9f9f9f;
+	border-left:solid 1px #9f9f9f;
+	border-right:solid 1px gray;
+	border-bottom:solid 1px gray;
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+.searchButton:hover
+{
+	border-top:solid 1px gray;
+	border-left:solid 1px gray;
+	border-right:solid 1px #5e5858;
+	border-bottom:solid 1px #5e5858;
+	background-color:#e0e0e0;
+	cursor:pointer;
+}
+.SearchTextBox
+{
+	width:155px;
+	height:15px;
+}
+.PostCommentButton
+{
+	height:22px;
+	width:95px;
+	
+	position:absolute;
+	bottom:8px;
+	right:6px;
+	
+	margin-right:5px;	
+	font-size:11px;
+	background-color:#eaeaea;
+	border-top:solid 1px #9f9f9f;
+	border-left:solid 1px #9f9f9f;
+	border-right:solid 1px gray;
+	border-bottom:solid 1px gray;
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+.PostCommentButton:hover
+{
+	border-top:solid 1px gray;
+	border-left:solid 1px gray;
+	border-right:solid 1px #5e5858;
+	border-bottom:solid 1px #5e5858;
+	background-color:#e0e0e0;
+	cursor:pointer;
+}
+.CommentTextBoxIdle
+{
+	padding:2px;
+	border: 2px solid #cccccc;
+	background-color:White;	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+	-webkit-box-shadow:  #565656 2px 2px 5px;
+	-moz-box-shadow: #565656 2px 2px 5px;
+}
+.CommentTextBox
+{
+	padding:2px;
+	border: 2px solid gray;
+	background-color:#fafafa;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+	-webkit-box-shadow:  #8a8a8a 1px 2px 2px;
+	-moz-box-shadow: #8a8a8a 1px 2px 2px;
+}
+.backWhite
+{
+	background-color:White;
+	background-image:none;
+}
+.pollTable
+{
+	margin-top:5px;
+	margin-bottom:8px;
+	width:100%;
+}
+.pollTable td
+{
+	padding:1px;
+}
+.pollPanel
+{
+	float:left;	
+	padding:5px;
+	border:solid 1px gray;
+	margin-top:10px;
+	min-width:228px;
+	
+	background-color:#1b7a9b; 
+	background: -moz-linear-gradient(top, #ffffff, #cad7dc);
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#cad7dc));	
+	filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#ffffff', EndColorStr='#cad7dc', GradientType=0);
+}
+.pollButton
+{
+	float:right;	
+	display:block;	
+	height:20px;	
+	margin-right:5px;
+	margin-top:3px;	
+	font-size:11px;
+	background-color:#eaeaea;
+	border-top:solid 1px #9f9f9f;
+	border-left:solid 1px #9f9f9f;
+	border-right:solid 1px gray;
+	border-bottom:solid 1px gray;	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+.pollButton:hover
+{
+	border-top:solid 1px gray;
+	border-left:solid 1px gray;
+	border-right:solid 1px #5e5858;
+	border-bottom:solid 1px #5e5858;
+	background-color:#e0e0e0;
+	cursor:pointer;
+}
+
+.pollResultButton
+{	
+}
+.pollVoteButton
+{
+}
+#pollCaption
+{
+	color:White;
+	font-size:14px;
+}
+#pollResultPanel
+{
+	position:absolute;
+	border:solid 1px gray;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	width:380px;
+}
+#pollBackgroundPanel
+{
+	position:absolute;
+	background-color:Black;
+	filter:alpha(opacity=70); 
+	opacity: .7;
+	width:100%;
+	height:100%;
+	z-index:100;	
+	
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+#pollResultContentPanel
+{
+	position:absolute;
+	background-color:White;	
+	z-index:100;
+	top:30px;
+	left:10px;
+	width:360px;
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+}
+#pollCloseButton
+{
+	position:absolute;
+	display:block;	
+	float:right;	
+	background-image:url('../images/x.png');
+	width:25px;
+	height:29px;	
+	right:8px;
+	top:2px;	
+	cursor:pointer;
+}
+#pollHeader
+{
+	width:100%;
+	height:35px;
+	z-index:200;
+	position:absolute;
+}
+#pollHeader span
+{
+	position:relative;
+	left:10px;
+	top:5px;
+	
+}
+#pollHeader a
+{
+	display:inline;
+	border:none;
+}
+.pollPbar
+{
+	display:inline-block;
+	clear:none;
+	
+	background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAMAAABA3o1rAAAAXVBMVEVwznG/2L9vzXExyTNPyVEDtAQVyhZQyVEDvQMxyjKY1JhQylGX05gVzBbA2cAVyxYAcwAAkQADtQQDvgMxyjNQylIxyTIAcgCX05cAkACX0pe/2cBwzXGY05iX0piUKHW5AAAAbUlEQVR4XoXQRw4DMQBCUdw9vdeU+x8zyg6jSHlrFl9gLBzHKDCzEMIsMLAY4yCwMufcKrCxlNImUHhaC1Wz13nWAj15GGN68X/Qsvd9twIF+yOyYd77RqBi+75XAh35XtsJLCznvAhMheuaxAeowRno3UyTZgAAAABJRU5ErkJggg==') /*../images/pbar.png*/;
+	background-repeat:repeat-x;
+	height:16px;
+	
+	border:solid 1px gray;
+	
+	-webkit-box-shadow:  #8a8a8a 1px 2px 2px;
+	-moz-box-shadow: #8a8a8a 2px 2px 2px;
+}
+#pollContentWrapper
+{
+	font-size:1.2em;
+	padding:5px;
+}
+.pollResultTable
+{
+	width:100%;	
+}
+.pollResultTable td
+{
+	padding:2px;
+}
+
+.pollResultTable strong
+{
+	padding-left:5px;
+}
+.pollDescription
+{
+	font-weight:bold;
+	font-size:1.5em;
+	margin-top:2px;
+}
+.pbarWrapper
+{
+	margin-bottom:10px;
+}
+#RandomImageWrapper
+{
+	display:block;
+	float:left;
+	height:700px;
+	width:100%;
+}
+#ImageContainer
+{
+	position:relative;
+	width:650px;
+	cursor:pointer;
+}
+.imgSwap
+{
+	border:solid 2px gray;
+	background-color:White;	
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:650px;		
+	background-repeat:no-repeat;
+	background-position:center;
+}
+#ImgInfoPanelWrapper
+{
+	display:block;
+	float:left;
+	width:100%;
+}
+#ImgInfoPanel
+{
+	display:block;
+	margin:0 auto;
+	border:solid 1px gray;
+	height:60px;
+	width:650px;
+	margin-top:15px;
+	padding:5px;
+}
+.ImageUrlTextBox
+{
+	width:500px;
+	background-color:#CCCCCC;
+	margin-top:4px;
+	margin-left:2px;
+}
+.utilsPanel
+{
+	padding:5px;
+	margin-bottom:15px;
+}
+.lightPadding
+{
+	padding:5px;
+}
+.randImgButton
+{
+	float:left;
+	background-color:#ded8d9;
+	border-color:Gray;
+	margin-right:5px;
+	margin-top:5px;
+	border-top:solid 1px #9f9f9f;
+	border-left:solid 1px #9f9f9f;
+	border-right:solid 1px gray;
+	border-bottom:solid 1px gray;	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	cursor:pointer;
+}
+.aboutPanel
+{
+	padding:5px;
+	height:600px;
+}
+.headerLabel
+{
+	font-weight:bold;
+	font-size:16px;
+	float:left;
+}
+.aboutPageText
+{
+	font-size:12px;
+	clear:both;
+	float:left;
+	margin-top:5px;
+}
+
+/* SiteLinks  */
+
+.siteLinksLabel
+{
+	font-size:18px;
+	font-weight:bold;
+	color:#1D2642;	
+}
+.siteLinksPanel
+{
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.siteLinkTable
+{
+}
+.siteLinkTable td
+{
+	padding:2px 10px 2px 0px;
+	font-size:12px;
+}
+.siteLinkTable td a
+{
+	color:#3C4975;
+	font-weight:bold;
+	font-size:14px;
+	text-decoration:none;	
+}
+.siteLinkTable td a:hover
+{
+	text-decoration:underline;
+}
+.siteLinksDescription
+{
+	
+}
+
+/*  MainBanner  */
+.bannerPanel
+{
+	border:1px solid gray;
+	width:250px;
+	height:250px;
+	float:left;
+	display:block;
+	margin-top:12px;
+}
+
+.settingsTable
+{
+	background-color:White;
+	border:1px solid #898989;
+	width:100%;
+}
+.settingsTable td
+{
+	border-right:1px solid #B4B4B4;
+	border-bottom:1px solid #B4B4B4;
+}
+.settingsTable th
+{
+	font-size:12px;
+	border-bottom:1px solid gray;
+	background-color:#0B0E63;
+	color:White;
+	padding-top:4px;
+	padding-bottom:4px;
+}
+.settTblCellFixedData
+{
+	padding-left:4px;
+	padding-right:6px;
+}
+.settTblChkBox
+{
+	margin-left:3px;
+}

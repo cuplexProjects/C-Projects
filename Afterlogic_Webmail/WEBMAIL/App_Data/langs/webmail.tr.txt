@@ -1,0 +1,1262 @@
+PROC_ERROR_ACCT_CREATE = Hesap oluşturulurken bir hata meydana geldi
+PROC_WRONG_ACCT_PWD = Hatalı şifre
+PROC_CANT_LOG_NONDEF = Tanımlı olmayan hesaba giriş yapılamıyor
+PROC_CANT_INS_NEW_FILTER = Yeni filtre eklenemedi
+PROC_FOLDER_EXIST = Klasör adı zaten mevcut
+PROC_CANT_CREATE_FLD = Klasör oluşturulamadı
+PROC_CANT_INS_NEW_GROUP = Yeni grup oluşturulamadı
+PROC_CANT_INS_NEW_CONT = Yeni kişi oluşturulamadı
+PROC_CANT_INS_NEW_CONTS = Yeni kişi(ler) oluşturulamadı
+PROC_CANT_ADD_NEW_CONT_TO_GRP = Kişi(ler) gruba eklenemedi
+PROC_ERROR_ACCT_UPDATE = Hesap güncellenirken hata oluştu
+PROC_CANT_UPDATE_CONT_SETTINGS = Kişi ayarları güncellenirken hata oluştu
+PROC_CANT_GET_SETTINGS = Ayarlara ulaşılamıyor
+PROC_CANT_UPDATE_ACCT = Hesap güncellenemedi
+PROC_ERROR_DEL_FLD = Klasör(ler) silinirken hata oluştu
+PROC_CANT_UPDATE_CONT = Kişi güncellenemedi
+PROC_CANT_GET_FLDS = Klasör listesi getirilemedi
+PROC_CANT_GET_MSG_LIST = Mesaj listesi getirilemedi
+PROC_MSG_HAS_DELETED = Bu mesaj, posta sunucusu üzerinden daha önce silinmiş
+PROC_CANT_LOAD_CONT_SETTINGS = Kişi ayarları yüklenemedi
+PROC_CANT_LOAD_SIGNATURE = Hesap imza bilgisi yüklenemedi
+PROC_CANT_GET_CONT_FROM_DB = Kişi, veritabanından alınamadı
+PROC_CANT_GET_CONTS_FROM_DB = Kişi(ler), veritabanından alınamadı
+PROC_CANT_DEL_ACCT_BY_ID = id bilgisine göre hesap silinemedi
+PROC_CANT_DEL_FILTER_BY_ID = id bilgisine göre filtre silinemedi
+PROC_CANT_DEL_CONT_GROUPS = Kişi(ler) ve/veya gruplar silinemedi
+PROC_WRONG_ACCT_ACCESS = Diğer kullanıcı hesabına izinsiz giriş denemesi belirlendi.
+PROC_SESSION_ERROR = Önceki oturum, süre aşımı nedeniyle sona erdirilmiştir.
+
+MailBoxIsFull = Mesaj kutunuz dolu
+WebMailException = WebMail istisna durum oluştu
+InvalidUid = Hatalı Mesaj UID
+CantCreateContactGroup = Kişi grubu oluşturulamadı
+CantCreateUser = Kullanıcı oluşturulamadı
+CantCreateAccount = Hesap oluşturulamadı
+SessionIsEmpty = Oturum bilgisi boş
+FileIsTooBig = Dosya çok büyük
+
+PROC_CANT_MARK_ALL_MSG_READ = Tüm mesajlar okunmuş olarak işaretlenemedi
+PROC_CANT_MARK_ALL_MSG_UNREAD = Tüm mesajlar okunmamış olarak işaretlenemedi
+PROC_CANT_PURGE_MSGS = Mesaj(lar) boşaltılamadı
+PROC_CANT_DEL_MSGS = Mesaj(lar) silinemedi
+PROC_CANT_UNDEL_MSGS = Silinmiş mesaj(lar) geri alınamadı
+PROC_CANT_MARK_MSGS_READ = Mesaj(lar) okunmuş olarak işaretlenemedi
+PROC_CANT_MARK_MSGS_UNREAD = Mesaj(lar) okunmamış olarak işaretlenemedi
+PROC_CANT_SET_MSG_FLAGS = Mesaj(lar) işaretlenemedi
+PROC_CANT_REMOVE_MSG_FLAGS = Mesaj işaret(ler)i silinemedi
+PROC_CANT_CHANGE_MSG_FLD = Mesaj(lar)ın klaörü değiştirilemedi
+PROC_CANT_SEND_MSG = Mesaj gönderilemedi: 
+PROC_CANT_SAVE_MSG = Mesaj kaydedilemedi
+PROC_CANT_GET_ACCT_LIST = Hesap listesine erişilemedi
+PROC_CANT_GET_FILTER_LIST = Filtre listesine erişilemedi
+
+PROC_CANT_LEAVE_BLANK = * işaretli alanları boş bırakamazsınız
+
+PROC_CANT_UPD_FLD = Klasör güncellenemedi
+PROC_CANT_UPD_FILTER = Filtre güncellenemedi
+
+ACCT_CANT_ADD_DEF_ACCT = Diğer kullanıcı tarafından öntanımlı hesap olarak kullanılan bu hesap eklenemedi.
+ACCT_CANT_UPD_TO_DEF_ACCT = Bu hesabın durumu, öntanımlı olarak değiştirilemedi.
+ACCT_CANT_CREATE_IMAP_ACCT = Yeni hesap oluşturulamadı (IMAP bağlantı hatası)
+ACCT_CANT_DEL_LAST_DEF_ACCT = Son öntanımlı hesap silinemedi
+
+LANG_LoginInfo = Giriş Bilgileri
+LANG_Email = E-posta
+LANG_Login = Kullanıcı Adı
+LANG_Password = Şifre
+LANG_IncServer = Gelen&nbsp;Posta&nbsp;Sunucusu
+LANG_PopProtocol = POP3
+LANG_ImapProtocol = IMAP4
+LANG_IncPort = Port
+LANG_OutServer = SMTP&nbsp;Sunucu
+LANG_OutPort = Port
+LANG_UseSmtpAuth = SMTP&nbsp;kimlik&nbsp;doğrulamayı&nbsp;kullan
+LANG_SignMe = Otomatik girişime izin ver
+LANG_Enter = Giriş
+
+; interface strings
+
+TitleLogin = Giriş
+TitleMessagesListView = Mesaj Listesi
+TitleMessagesList = Mesaj Listesi
+TitleViewMessage = Mesaj Oku
+TitleNewMessage = Yeni Mesaj
+TitleSettings = Ayarlar
+TitleContacts = Kişiler
+
+StandardLogin = Standart&nbsp;Giriş
+AdvancedLogin = Gelişmiş&nbsp;Giriş
+
+InfoWebMailLoading = WebMail yüklenirken bekleyiniz &hellip;
+Loading = Yükleniyor &hellip;
+InfoMessagesLoad = WebMail mesaj listesini yüklerken bekleyiniz.
+InfoEmptyFolder = Bu klasör boş
+InfoPageLoading = Sayfa hala yüklenmekte &hellip;
+InfoSendMessage = Mesaj gönderildi
+InfoSaveMessage = Mesaj kaydedildi
+InfoHaveImported = Aktarılan
+InfoNewContacts = yeni  kişi, adres defterinize eklenmiştir.
+InfoToDelete = Bu, 
+InfoDeleteContent = isimli klasörü silmek için, öncelikle klasör içindekileri silmeniz gerekmektedir.
+InfoDeleteNotEmptyFolders = Boş olmayan klasörü silemezsiniz. Klasörleri silmek için, önce içindekileri silmeniz gerekmektedir.
+InfoRequiredFields = * zorunlu alanlar
+
+ConfirmAreYouSure = Emin misiniz?
+ConfirmDirectModeAreYouSure = Seçili mesaj(lar) KALICI OLARAK silinecektir! Emin misiniz
+ConfirmSaveSettings = Ayarlar kaydedilmedi. Kaydetmek için OK butuna basınız.
+ConfirmSaveContactsSettings = Kişi ayarları kaydedilmedi. Kaydetmek için OK butuna basınız.
+ConfirmSaveAcctProp = Hesap özellikleri kaydedilmedi. Kaydetmek için OK butuna basınız.
+ConfirmSaveFilter = Filtre özellikleri kaydedilmedi. Kaydetmek için OK butuna basınız.
+ConfirmSaveSignature = İmza kaydedilmedi. Kaydetmek için OK butuna basınız.
+ConfirmSavefolders = Klasörler kaydedilmedi. Kaydetmek için OK butuna basınız.
+ConfirmHtmlToPlain = Uyarı : Mesaj biçimini HTML'den düz yazıya değiştirmeniz durumunda, geçerli mesaja ait biçimlendirmeleri kaybedeceksiniz. Devam etmek için OK butonuna basınız.
+ConfirmAddFolder = Klasör eklemeden önce değişiklikleri uygulamanız gereklidir. Kaydetmek için OK butuna basınız.
+ConfirmEmptySubject = Mesaj konu başlığı boş. Devam etmek ister misiniz?
+
+WarningEmailBlank = E-posta:<br /> boş bırakılamaz
+WarningLoginBlank = Kullanıcı Adı: <br /> boş bırakılamaz
+WarningToBlank = Kime: alanı boş bırakılamaz
+WarningServerPortBlank = POP3 ve SMTP sunucu/port alanları<br /> boş bırakılamaz
+WarningEmptySearchLine = Arama alanı boş. Lütfen bulmak istediğiniz kelimeyi giriniz.
+WarningMarkListItem = Listede yeralan mesajlardan en az birini seçiniz.
+WarningFolderMove = Klasör, farklı bir seviyeye taşınamadı.
+WarningContactNotComplete = Lütfen e-posta veya ad giriniz
+WarningGroupNotComplete = Lütfen grup adı giriniz
+
+WarningEmailFieldBlank = E-posta alanı boş bırakılamaz
+WarningIncServerBlank = POP3(IMAP4) Sunucu alanı boş bırakılamaz
+WarningIncPortBlank = POP3(IMAP4) Sunucu port boş bırakılamaz
+WarningIncLoginBlank = POP3(IMAP4) Kullanıcı Adı boş bırakılamaz
+WarningIncPortNumber = POP3(IMAP4) Port alanı pozitif bir sayı olmalıdır.
+DefaultIncPortNumber = Öntanımlı POP3(IMAP4) port numarası, sırasıyla 110(143) şeklindedir.
+WarningIncPassBlank = POP3(IMAP4) Şifre alanı boş bırakılamaz
+WarningOutPortBlank = SMTP Sunucu Port alanı boş bırakılamaz
+WarningOutPortNumber = SMTP Port alanı  pozitif bir sayı olmalıdır.
+WarningCorrectEmail = Lütfen geçerli bir e-posta adresi giriniz.
+DefaultOutPortNumber = Öntanımlı SMTP portu 25'dir
+
+WarningCsvExtention = Dosya uzantısı .csv olmalıdır.
+WarningImportFileType = Kişileri kopyalamak istediğiniz uygulamayı seçiniz:
+WarningEmptyImportFile = Lütfen, Gözat (Browse) butonuna tıklayarak dosyayı seçiniz
+
+WarningContactsPerPage = Sayfa başına kişi sayısı pozitif bir sayı olmalıdır
+WarningMessagesPerPage = Sayfa başına mesaj sayısı pozitif bir sayı olmalıdır
+WarningMailsOnServerDays = Mesajın sunucuda saklanma süresi gün bazında, pozitif bir sayı olmalıdır.
+WarningEmptyFilter = Lütfen kelime giriniz
+WarningEmptyFolderName = Lütfen klasör ismi giriniz
+
+ErrorConnectionFailed = Bağlantı başarısız
+ErrorRequestFailed = Veri transferi hala tamamlanmadı
+ErrorAbsentXMLHttpRequest = XMLHttpRequest objesi eksik
+ErrorWithoutDesc = Tanımsız bir hata oluştu
+ErrorParsing = XML parsing hatası.
+ResponseText = Yanıt metni:
+ErrorEmptyXmlPacket = Boş XML paketi
+ErrorImportContacts = Kişiler aktarılırken hata oluştu
+ErrorNoContacts = Aktarılacak kişi bulunamadı
+ErrorCheckMail = Hataya bağlı olarak mesaj alımı sona erdirildi. Muhtemelen mesajların tamamı alınmamış olabilir.
+
+LoggingToServer = Sunucuya giriş yapılıyor &hellip;
+GettingMsgsNum = Mesaj sayısı alınıyor
+RetrievingMessage = Mesajlar alınıyor
+DeletingMessage = Mesaj siliniyor
+DeletingMessages = Mesaj(lar) siliniyor
+Of = /
+Connection = Bağlantı
+Charset = Karakter seti
+AutoSelect = Otomatik seçim
+
+Contacts = Kişiler
+ClassicVersion = Klasik Sürüm
+Logout = Çıkış
+Settings = Ayarlar
+
+LookFor = Ara: 
+SearchIn = Klasör: 
+QuickSearch = Sadece Kimde, Kime ve Konu alanlarında ara (daha hızlı sonuç).
+SlowSearch = Mesaj içinde ara
+AllMailFolders = Tüm Mesaj Klasörleri
+AllGroups = Tüm Gruplar
+
+NewMessage = Yeni Mesaj
+CheckMail = E-posta Kontrol Et
+ReloadFolders = Klasörleri Tekrar Yükle
+EmptyTrash = Silinmiş Öğeleri Boşalt
+MarkAsRead = Okundu
+MarkAsUnread = Okunmadı
+MarkFlag = İşaretle
+MarkUnflag = İşareti Kaldır
+MarkAllRead = Tümü Okundu
+MarkAllUnread = Tümü Okunmadı
+Reply = Yanıtla
+ReplyAll = Tümünü Yanıtla
+Delete = Sil
+Undelete = Silinenleri gerial
+PurgeDeleted = Silinmişleri temizle
+MoveToFolder = Taşı
+Forward = İlet
+
+HideFolders = Klasörleri Gizle
+ShowFolders = Klasörleri Göster
+ManageFolders = Klasör Yönetimi
+SyncFolder = Eşleştirilmiş klasör
+NewMessages = Yeni Mesajlar
+Messages = Mesaj(lar)
+
+From = Kimden
+To = Kime
+Date = Tarih
+Size = Boyut
+Subject = Konu
+
+FirstPage = İlk Sayfa
+PreviousPage = Önceki Sayfa
+NextPage = Sonraki Sayfa
+LastPage = Son Sayfa
+
+SwitchToPlain = Düz Yazı Görünüme Geç
+SwitchToHTML = HTML Görünüme Geç
+AddToAddressBokk = Adres Defterine Ekle
+ClickToDownload = Yüklemek için tıklayınız 
+View = Göster
+ShowFullHeaders = Detaylı Başlık Bilgisi Göster
+HideFullHeaders = Detaylı Başlık Bilgisini Gizle
+
+MessagesInFolder = adet mesaj bulundu
+YouUsing = Posta kutunuzda kullanılan alan
+OfYour = , toplam alan 
+Mb = MB
+Kb = KB
+B = B
+
+SendMessage = Gönder
+SaveMessage = Kaydet
+Print = Yazdır
+PreviousMsg = Önceki Mesaj
+NextMsg = Sonraki Mesaj
+AddressBook = Adres Defteri
+ShowBCC = BCC Göster
+HideBCC = BCC Gizle
+CC = CC
+BCC = BCC
+ReplyTo = Yanıtla
+AttachFile = Dosya Ekle
+Attach = Ekle
+Re = Re
+OriginalMessage = Orijinal Mesaj
+Sent = Gönderildi
+Fwd = Fwd
+Low = Düşük
+Normal = Normal
+High = Yüksek
+Importance = Önem
+Close = Kapat
+
+Common = Genel
+EmailAccounts = E-posta Hesapları
+
+MsgsPerPage = Sayfa başına mesaj
+DisableRTE = Metin editörü pasif
+Skin = Şablon
+DefCharset = Öntanımlı karatker seti
+DefCharsetInc = Öntanımlı gelen karakter seti
+DefCharsetOut = Öntanımlı giden karakter seti
+DefTimeOffset = Öntanımlı zaman dilimi
+DefLanguage = Öntanımlı dil
+DefDateFormat = Öntanımlı tarih biçimi
+ShowViewPane = Mesaj öngörünümü liste ile birlikte göster
+Save = Kaydet
+Cancel = İptal
+OK = Tamam
+
+Remove = Kaldır
+AddNewAccount = Yeni Hesap Ekle
+Signature = İmza
+Filters = Filtre
+Properties = Özellikler
+UseForLogin = Giriş için bu hesap özelliklerini (kullanıcı adı ve şifre) kullan
+MailFriendlyName = Adınız
+MailEmail = E-posta
+MailIncHost = Gelen Posta
+Imap4 = IMAP4
+Pop3 = POP3
+MailIncPort = Port
+MailIncLogin = Kullanıcı Adı
+MailIncPass = Şifre
+MailOutHost = SMTP Sunucu
+MailOutPort = Port
+MailOutLogin = SMTP Kullanıcı Adı
+MailOutPass = SMTP Şifre
+MailOutAuth1 = SMTP kimlik doğrulamayı kullan
+MailOutAuth2 = (Eğer POP3/IMAP kullanıcı adı/şifre ile aynı ise bu alanı boş bırakabilirsiniz)
+UseFriendlyNm1 = "Kimden:" alanında tam adımı kullan
+UseFriendlyNm2 = (Ceren Berra &lt;ceren@postaci.org&gt;)
+GetmailAtLogin = Girişte yeni mesajları al
+MailMode0 = Alınan mesajları sunucudan sil
+MailMode1 = Mesajları sunucu üzerinde sakla 
+MailMode2 = Mesajları sunucuda
+MailsOnServerDays = gün sakla
+MailMode3 = Silinmiş Öğeler kutusundaki mesajlar silindiğinde sunucudaki mesajları da sil 
+InboxSyncType = Inbox Eşleştirme Tipi
+
+SyncTypeNo = Eşleştirme
+SyncTypeNewHeaders = Yeni Başlıklar
+SyncTypeAllHeaders = Tüm Başlıklar
+SyncTypeNewMessages = Yeni Mesajlar
+SyncTypeAllMessages = Tüm Mesajlar
+SyncTypeDirectMode = Direkt Yöntem (mesaj sunucusu üzerinden direkt erişim) 
+
+Pop3SyncTypeEntireHeaders = Tüm Başlıklar
+Pop3SyncTypeEntireMessages = Tüm Mesajlar
+Pop3SyncTypeDirectMode = Direkt Yöntem (mesaj sunucusu üzerinden direkt erişim) 
+
+DeleteFromDb = Mesaj sunucusu üzerinde yeralmayan mesajları veritabanından sil 
+
+EditFilter = Filtre&nbsp;Düzenle
+NewFilter = Yeni Filtre Ekle
+Field = Alan
+Condition = Şart
+ContainSubstring = İçinde geçen
+ContainExactPhrase = Aynı yazıldığı gibi
+NotContainSubstring = İçinde geçmeyen
+FilterDesc_At = 
+FilterDesc_Field = alanında
+Action = Etki
+DoNothing = Gözardı et
+DeleteFromServer = Hemen sunucudan sil
+MarkGrey = Gri işaretle
+Add = Ekle
+OtherFilterSettings = Diğer Filtreleme Ayarları
+ConsiderXSpam = X-Spam başlıklarını dikkate al
+Apply = Uygula
+
+InsertLink = Link Ekle
+RemoveLink = Linki Sil
+Numbering = Numaralı Listele
+Bullets = Listele
+HorizontalLine = Yatay Çizği
+Bold = Kalın
+Italic = İtalik
+Underline = Altı-çizili
+AlignLeft = Sola Hizala
+Center = Ortala
+AlignRight = Sağa Hizala
+Justify = Düzeltilmiş
+FontColor = Yazı Rengi
+Background = Arkaplan
+SwitchToPlainMode = Düz Yazı Görünüme Geç 
+SwitchToHTMLMode = HTML Görünüme Geç 
+AddSignatures = Tüm giden mesajlara imzamı ekle
+DontAddToReplies = Yanıtlanmış veya İletilmiş mesajlara imzamı ekleme
+
+Folder = Klasör
+Msgs = Mesaj,
+Synchronize = Eşleştir
+ShowThisFolder = Bu Klasörü Göster
+Total = Toplam
+DeleteSelected = Seçileni Sil
+AddNewFolder = Yeni Klasör Ekle
+NewFolder = Yeni Klasör
+ParentFolder = Ana Klasör
+NoParent = Bağımsız
+OnMailServer = Bu klasörü WebMail ve posta sunucusu üzerinde oluştur
+InWebMail = Bu klasörü yalnızca WebMail üzerinde oluştur
+FolderName = Klasör Adı
+
+ContactsPerPage = Sayfa başına kişi
+WhiteList = Adres Defterindeki kişiler beyaz listededir
+
+CharsetDefault = Default
+CharsetArabicAlphabetISO = Arapça (ISO)
+CharsetArabicAlphabet = Arapça (Windows)
+CharsetBalticAlphabetISO = Baltık (ISO)
+CharsetBalticAlphabet = Baltık (Windows)
+CharsetCentralEuropeanAlphabetISO = Orta Avrupa (ISO)
+CharsetCentralEuropeanAlphabet = Orta Avrupa (Windows)
+CharsetChineseSimplifiedEUC = Chinese Simplified (EUC)
+CharsetChineseSimplifiedGB = Chinese Simplified (GB2312)
+CharsetChineseTraditional = Geleneksel Çince (Big5)
+CharsetCyrillicAlphabetISO = Kril (ISO)
+CharsetCyrillicAlphabetKOI8R = Kril (KOI8-R)
+CharsetCyrillicAlphabet = Kril (Windows)
+CharsetGreekAlphabetISO = Yunan (ISO)
+CharsetGreekAlphabet = Yunan (Windows)
+CharsetHebrewAlphabetISO = İbrani (ISO)
+CharsetHebrewAlphabet = İbrani (Windows)
+CharsetJapanese = Japon
+CharsetJapaneseShiftJIS = Japon (Shift-JIS)
+CharsetKoreanEUC = Kore (EUC)
+CharsetKoreanISO = Kore (ISO)
+CharsetLatin3AlphabetISO = Latin 3 (ISO)
+CharsetTurkishAlphabet = Türkçe
+CharsetUniversalAlphabetUTF7 = Üniversal (UTF-7)
+CharsetUniversalAlphabetUTF8 = Üniversal (UTF-8)
+CharsetVietnameseAlphabet = Vietnam(Windows)
+CharsetWesternAlphabetISO = Batı(ISO)
+CharsetWesternAlphabet = Batı(Windows)
+
+TimeDefault = Default
+TimeEniwetok = Eniwetok, Kwajalein, Dateline Time
+TimeMidwayIsland = Midway Island, Samoa
+TimeHawaii = Hawaii
+TimeAlaska = Alaska
+TimePacific = Pacific Time (US & Canada); Tijuana
+TimeArizona = Arizona
+TimeMountain = Mountain Time (US & Canada)
+TimeCentralAmerica = Central America
+TimeCentral = Central Time (US & Canada)
+TimeMexicoCity = Mexico City, Tegucigalpa
+TimeSaskatchewan = Saskatchewan
+TimeIndiana = Indiana (East)
+TimeEastern = Eastern Time (US & Canada)
+TimeBogota = Bogota, Lima, Quito
+TimeSantiago = Santiago
+TimeCaracas = Caracas, La Paz
+TimeAtlanticCanada = Atlantic Time (Canada)
+TimeNewfoundland = Newfoundland
+TimeGreenland = Greenland
+TimeBuenosAires = Buenos Aires, Georgetown
+TimeBrasilia = Brasilia
+TimeMidAtlantic = Mid-Atlantic
+TimeCapeVerde = Cape Verde Is.
+TimeAzores = Azores
+TimeMonrovia = Casablanca, Monrovia
+TimeGMT = Dublin, Edinburgh, Lisbon, London
+TimeBerlin = Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+TimePrague = Belgrade, Bratislava, Budapest, Ljubljana, Prague
+TimeParis = Brussels, Copenhagen, Madrid, Paris
+TimeSarajevo = Sarajevo, Skopje, Sofija, Vilnius, Warsaw, Zagreb
+TimeWestCentralAfrica = West Central Africa
+TimeAthens = Athens, Istanbul, Minsk
+TimeEasternEurope = Bucharest
+TimeCairo = Cairo
+TimeHarare = Harare, Pretoria
+TimeHelsinki = Helsinki, Riga, Tallinn
+TimeIsrael = Israel, Jerusalem Standard Time
+TimeBaghdad = Baghdad
+TimeArab = Arab, Kuwait, Riyadh
+TimeMoscow = Moscow, St. Petersburg, Volgograd
+TimeEastAfrica = East Africa, Nairobi
+TimeTehran = Tehran
+TimeAbuDhabi = Abu Dhabi, Muscat
+TimeCaucasus = Baku, Tbilisi, Yerevan
+TimeKabul = Kabul
+TimeEkaterinburg = Ekaterinburg
+TimeIslamabad = Islamabad, Karachi, Sverdlovsk, Tashkent
+TimeBombay = Calcutta, Chennai, Mumbai, New Delhi, India Standard Time
+TimeNepal = Kathmandu, Nepal
+TimeAlmaty = Almaty, Novosibirsk, North Central Asia
+TimeDhaka = Astana, Dhaka
+TimeSriLanka = Sri Jayawardenepura, Sri Lanka
+TimeRangoon = Rangoon
+TimeBangkok = Bangkok, Hanoi, Jakarta
+TimeKrasnoyarsk = Krasnoyarsk
+TimeBeijing = Beijing, Chongqing, Hong Kong SAR, Urumqi
+TimeIrkutsk = Irkutsk, Ulaan Bataar
+TimeSingapore = Kuala Lumpur, Singapore
+TimePerth = Perth, Western Australia
+TimeTaipei = Taipei
+TimeTokyo = Osaka, Sapporo, Tokyo
+TimeSeoul = Seoul, Korea Standard time
+TimeYakutsk = Yakutsk
+TimeAdelaide = Adelaide, Central Australia
+TimeDarwin = Darwin
+TimeBrisbane = Brisbane, East Australia
+TimeSydney = Canberra, Melbourne, Sydney, Hobart
+TimeGuam = Guam, Port Moresby
+TimeHobart = Hobart, Tasmania
+TimeVladivostock = Vladivostok
+TimeMagadan = Magadan, Solomon Is., New Caledonia
+TimeWellington = Auckland, Wellington
+TimeFiji = Fiji Islands, Kamchatka, Marshall Is.
+TimeTonga = Nuku'alofa, Tonga
+
+DateDefault = Öntanımlı
+DateDDMMYY = DD/MM/YY
+DateMMDDYY = MM/DD/YY
+DateDDMonth = DD Month (01 Oca)
+DateAdvanced = Gelişmiş
+
+NewContact = Yeni Kişi
+NewGroup = Yeni Grup
+AddContactsTo = Kişi Ekle
+ImportContacts = Kişi Aktar
+
+Name = Adı
+Email = E-posta
+DefaultEmail = Öntanımlı e-posta
+NotSpecifiedYet = Henüz tanımlanmadı
+ContactName = Adı
+Birthday = Doğumgünü
+Month = Ay
+January = Ocak
+February = Şubat
+March = Mart
+April = Nisan
+May = Mayıs
+June = Haziran
+July = Temmuz
+August = Ağustos
+September = Eylül
+October = Ekim
+November = Kasım
+December = Aralık
+Day = Gün
+Year = Yıl
+UseFriendlyName1 = Tam adı kullan
+UseFriendlyName2 = (örneğin, Ceren Berra  &lt;gonderen@postaci.org&gt;)
+Personal = Kişisel
+PersonalEmail = Kişisel E-posta
+StreetAddress = Cadde
+City = Şehir
+Fax = Faks
+StateProvince = Semt/İlçe
+Phone = Telefon
+ZipCode = Posta Kodu
+Mobile = Mobil
+CountryRegion = Ülke/Bölge
+WebPage = Web Adresi
+Go = Git
+Home = Ev
+Business = İş
+BusinessEmail = İş E-posta
+Company = Şirket
+JobTitle = Ünvan
+Department = Bölüm
+Office = Ofis
+Pager = Çağrı Cihazı
+Other = Diğer
+OtherEmail = Diğer E-posta
+Notes = Notlar
+Groups = Gruplar
+ShowAddFields = Ek alanları göster
+HideAddFields = Ek alanları gizle
+EditContact = Kişi bilgilerini güncelle
+GroupName = Grup Adı
+AddContacts = Kişi Ekle
+CommentAddContacts = (Birden fazla adres için lütfen virgül ile ayırınız)
+CreateGroup = Yeni Grup 
+Rename = yeniden adlandır
+MailGroup = Mesaj Grubu
+RemoveFromGroup = Gruptan Sil
+UseImportTo = Kişi listelerinizi Microsoft Outlook Express ve Microsoft Outlook'tan, WebMail kişi listenize aktarabilirsiniz.
+Outlook1 = Microsoft Outlook 2000/XP/2003
+Outlook2 = Microsoft Outlook Express 6
+SelectImportFile = Aktarmak istediğiniz dosyayı (.CSV biçiminde) seçiniz
+Import = Aktar
+ContactsMessage = Kişi sayfası!!!
+ContactsCount = Kişi(ler)
+GroupsCount = grup(lar)
+
+; webmail 4.1 constants
+PicturesBlocked = Bu mesajdaki resimler, güvenliğiniz için bloklanmıştır.
+ShowPictures = Resimleri göster
+ShowPicturesFromSender = Bu göndericiden gelen mesajlardaki resimleri her zaman göster
+AlwaysShowPictures = Mesajlardaki resimleri her zaman göster
+
+TreatAsOrganization = Organizasyon olarak davran
+
+WarningGroupAlreadyExist = Benzer isimli grup mevcut. Lütfen bir başka grup adı belirtiniz.
+WarningCorrectFolderName = Hatasız klasör ismi belirtmelisiniz.
+WarningLoginFieldBlank = Giriş alanını boş bırakamazsınız.
+WarningCorrectLogin = Hatasız giriş bilgisi belirtmelisiniz.
+WarningPassBlank = Şifre alanını boş bırakamazsınız.
+WarningCorrectIncServer = Doğru POP3 (IMAP) sunucu adresi girmelisiniz.
+WarningCorrectSMTPServer = Doğru SMTP sunucu adresi girmelisiniz.
+WarningFromBlank = Kimden alanını boş bırakamazsınız.
+WarningAdvancedDateFormat = Lütfen tarih-zaman formatı tanımlayınız.
+
+AdvancedDateHelpTitle = Gelişmiş Tarih
+AdvancedDateHelpIntro = &quot;Gelişmiş&quot; alanı seçilince, WebMail'de görünecek kendi tarih formatınızı oluşturabilirsiniz. Ayraç olarak kullanılan seçenekler ':' veya '/' :
+AdvancedDateHelpConclusion = Örneğin, &quot;Gelişmiş&quot; alanında &quot;mm/dd/yyyy&quot; olarak tanımlamışsanız, tarih bilgisi ay/gün/yıl (11/23/2005 gibi) olarak gözükecektir.
+AdvancedDateHelpDayOfMonth = Ayın günleri (1 - 31)
+AdvancedDateHelpNumericMonth = Ay (1 - 12)
+AdvancedDateHelpTextualMonth = Ay (Oca - Ara)
+AdvancedDateHelpYear2 = Yıl, 2 haneli
+AdvancedDateHelpYear4 = Yıl, 4 haneli
+AdvancedDateHelpDayOfYear = Yılın Gün (1 - 366)
+AdvancedDateHelpQuarter = Çeyrek
+AdvancedDateHelpDayOfWeek = Haftanın günleri (Pzt - Paz)
+AdvancedDateHelpWeekOfYear = Hafta (1 - 53)
+
+InfoNoMessagesFound = Mesaj bulunamadı
+ErrorSMTPConnect = SMTP sunucusuna bağlanılamadı. SMTP sunucu ayarlarını kontrol ediniz.
+ErrorSMTPAuth = Hatalı kullanıcı adı ve/veya şifre. Doğrulama başarısız.
+ReportMessageSent = Mesajınız gönderilmiştir.
+ReportMessageSaved = Mesajınız kaydedilmiştir.
+ErrorPOP3Connect = POP3 sunucusuna bağlanılamadı. POP3 sunucu ayarlarını kontrol ediniz.
+ErrorIMAP4Connect = IMAP sunucusuna bağlanılamadı. IMAP sunucu ayarlarını kontrol ediniz.
+ErrorPOP3IMAP4Auth = Hatalı eposta/giriş ve/veya şifre. Doğrulama başarısız.
+ErrorGetMailLimit = Üzgünüm, posta kutunuzun limiti doldu. 
+
+ReportSettingsUpdatedSuccessfuly = Ayarlar başarıyla güncellendi.
+ReportAccountCreatedSuccessfuly = Hesap başarıyla oluşturuldu.
+ReportAccountUpdatedSuccessfuly = Hesap başarıyla güncellendi.
+ConfirmDeleteAccount = Hesabı silmek istediğinize emin misiniz?
+ReportFiltersUpdatedSuccessfuly = Filtreler başarıyla güncellendi.
+ReportSignatureUpdatedSuccessfuly = İmza başarıyla güncellendi.
+ReportFoldersUpdatedSuccessfuly = Klasörler başarıyla güncellendi.
+ReportContactsSettingsUpdatedSuccessfuly = Kişi ayarları başarıyla güncellendi.
+
+ErrorInvalidCSV = Seçilen CSV dosyası geçersiz formattadır.
+;"guies" isimli grup başarıyla eklendi.
+ReportGroupSuccessfulyAdded1 = 
+ReportGroupSuccessfulyAdded2 = isimli grup başarıyla eklendi.
+ReportGroupUpdatedSuccessfuly = Grup başarıyla güncellendi.
+ReportContactSuccessfulyAdded = Kişi başarıyla eklendi.
+ReportContactUpdatedSuccessfuly = Kişi başarıyla güncellendi.
+;Contact(s) was added to group "friends".
+ReportContactAddedToGroup = Kişi(ler) takip eden gruba eklendi 
+AlertNoContactsGroupsSelected = Kişi veya grup seçilmedi
+
+InfoListNotContainAddress = Aradığınız adresi listede bulamıyorsanız, adresin ilk karakterini yazınız.
+
+DirectAccess = D
+DirectAccessTitle = Direkt yöntem. WebMail, mesajlara sunucu üzerinden direkt erişir.
+
+FolderInbox = Gelen kutusu
+FolderSentItems = Gönderilmiş Öğeler
+FolderDrafts = Taslaklar
+FolderTrash = Çöp
+
+FileLargerAttachment = Dosya boyutu, ek dosya boyutu sınırlarını aşmıştır. 
+FilePartiallyUploaded = Bilinmeyen bir hata nedeniyle, dosyanın sadece bazı parçaları yüklendi.
+NoFileUploaded = Dosya yüklenemedi.
+MissingTempFolder = Geçici klasör kayıp.
+MissingTempFile = Geçici dosya kayıp.
+UnknownUploadError = Bilinmeyen bir yükleme hatası oluştu.
+FileLargerThan = Dosya yükleme hatası. Yüksek olasılıkla; dosya, izin verilenden büyük 
+PROC_CANT_LOAD_DB = Veritabanına bağlanamadı.
+PROC_CANT_LOAD_LANG = Gerekli dil dosyası bulunamadı.
+PROC_CANT_LOAD_ACCT = Hesap bulunamadı, muhtemelen daha önce silinmiştir.
+
+DomainDosntExist = Böyle bir domain posta sunucusu üzerinde bulunamadı.
+ServerIsDisable = Posta sunucusu kullanımı, yönetici tarafından engellenmiştir.
+
+PROC_ACCOUNT_EXISTS = Hesap oluşturulamadı, çünkü zaten mevcut.
+PROC_CANT_GET_MESSAGES_COUNT = Klasördeki mesaj sayısı alınamadı.
+PROC_CANT_MAIL_SIZE = Posta saklama boyut bilgisi alınamadı.
+
+Organization = Organizasyon
+WarningOutServerBlank = SMTP sunucu alanı boş bırakılamaz.
+
+;
+Refresh = Yenile
+MessagesInInbox = Gelen kutusundaki mesajlar
+InfoEmptyInbox = Gelen kutusu boş
+
+; webmail 4.2 constants
+BackToList = Listeye Dön
+InfoNoContactsGroups = Kişi veya Grup Yok.
+InfoNewContactsGroups = MS Outlook biçimine uygun yeni kişiler/gruplar oluşturabilir veya .CSV dosyasını içeri aktarabilirsiniz.
+DefTimeFormat = Öntanımlı zaman biçimi
+SpellNoSuggestions = Öneri yok
+SpellWait = Lütfen bekleyiniz&hellip;
+
+InfoNoMessageSelected = Mesaj seçilmedi.
+InfoSingleDoubleClick = Herhangi bir mesajın üzerine tek tıklarsanız öngörünüm biçiminde, çift tıklarsanız tam boyutta açabilirsiniz.
+
+; calendar
+TitleDay = Günlük
+TitleWeek = Haftalık
+TitleMonth = Aylık
+
+ErrorNotSupportBrowser = AfterLogic Calendar, kullanmakta olduğunuz internet gezginini (browser) desteklemiyor. Lütfen, FireFox 2.0 veya daha üstü, Opera 9.0 veya daha üstü, Internet Explorer 6.0 veya daha üstü, Safari 3.0.2 veya daha üstü sürümleri kullanınız..
+ErrorTurnedOffActiveX = ActiveX desteği kapalı. <br/>Bu uygulamayı kullanabilmeniz için ActiveX desteğini açmanız gerekir.
+
+Calendar = Takvim
+
+TabDay = Gün
+TabWeek = Hafta
+TabMonth = Ay
+
+ToolNewEvent = Yeni&nbsp;Olay
+ToolBack = Geri
+ToolToday = Bugün
+AltNewEvent = Yeni Olay
+AltBack = Geri
+AltToday = Bugün
+CalendarHeader = Takvim
+CalendarsManager = Takvim Yöneticisi
+
+CalendarActionNew = Yeni takvim
+EventHeaderNew = Yeni Olay
+CalendarHeaderNew = Yeni Takvim
+
+EventSubject = Konu
+EventCalendar = Takvim
+EventFrom = Zaman aralığı
+EventTill = -
+CalendarDescription = Açıklama
+CalendarColor = Renk
+CalendarName = Takvim Adı
+CalendarDefaultName = Benim Takvimim
+
+ButtonSave = Kaydet
+ButtonCancel = İptal
+ButtonDelete = Sil
+
+AltPrevMonth = Önceki Ay
+AltNextMonth = Sonraki Ay
+
+CalendarHeaderEdit = Takvim Düzenle
+CalendarActionEdit = Takvim Düzenle
+ConfirmDeleteCalendar = Takvimi silmek istediğinize emin misiniz
+InfoDeleting = Siliniyor&hellip;
+WarningCalendarNameBlank = Takvim adını boş bırakamazsınız.
+ErrorCalendarNotCreated = Takvim oluşturulmadı.
+WarningSubjectBlank = Konu alanını boş bırakamazsınız.
+WarningIncorrectTime = Tanımlı zaman bilgisi geçersiz karakterler içermektedir.
+WarningIncorrectFromTime = Zaman aralığı bilgisi hatalı.
+WarningIncorrectTillTime = Zaman aralığı bilgisi hatalı.
+WarningStartEndDate = Bitiş tarihi, başlangıç tarihine eşit ya da büyük olmalıdır.
+WarningStartEndTime = Bitiş saati, başlangıç saatinden büyük olmalıdır.
+WarningIncorrectDate = Geçerli bir tarih giriniz.
+InfoLoading = Yükleniyor&hellip;
+EventCreate = Olay oluştur
+CalendarHideOther = Diğer takvimleri gizle
+CalendarShowOther = Diğer takvimleri göster
+CalendarRemove = Takvim Sil
+EventHeaderEdit = Olay Düzenle
+
+InfoSaving = Kadediliyor&hellip;
+SettingsDisplayName = Display Name
+SettingsTimeFormat = Saat biçimi
+SettingsDateFormat = Tarih biçimi
+SettingsShowWeekends = Haftasonlarını göster
+SettingsWorkdayStarts = İş başlangıcı
+SettingsWorkdayEnds = bitişi
+SettingsShowWorkday = İşgünü göster
+SettingsWeekStartsOn = Hafta başlangıcı
+SettingsDefaultTab = Öntanımlı seçim
+SettingsCountry = Ülke
+SettingsTimeZone = Zaman Dilimi
+SettingsAllTimeZones = Tüm zaman dilimleri
+
+WarningWorkdayStartsEnds = İş bitiş saati, başlangıç saatinden büyük olmalıdır.
+ReportSettingsUpdated = Ayarlar başarılı bir şekilde güncellenmiştir.
+
+SettingsTabCalendar = Takvim
+
+FullMonthJanuary = Ocak
+FullMonthFebruary = Şubat
+FullMonthMarch = Mart
+FullMonthApril = Nisan
+FullMonthMay = Mayıs
+FullMonthJune = Haziran
+FullMonthJuly = Temmuz
+FullMonthAugust = Ağustos
+FullMonthSeptember = Eylül
+FullMonthOctober = Ekim
+FullMonthNovember = Kasım
+FullMonthDecember = Aralık
+
+ShortMonthJanuary = Oca
+ShortMonthFebruary = Şub
+ShortMonthMarch = Mar
+ShortMonthApril = Nis
+ShortMonthMay = May
+ShortMonthJune = Haz
+ShortMonthJuly = Tem
+ShortMonthAugust = Ağu
+ShortMonthSeptember = Eyl
+ShortMonthOctober = Eki
+ShortMonthNovember = Kas
+ShortMonthDecember = Ara
+
+FullDayMonday = Pazartesi
+FullDayTuesday = Salı
+FullDayWednesday = Çarşamba
+FullDayThursday = Perşembe
+FullDayFriday = Cuma
+FullDaySaturday = Cumartesi
+FullDaySunday = Pazar
+
+DayToolMonday = Pzt
+DayToolTuesday = Sal
+DayToolWednesday = Çar
+DayToolThursday = Per
+DayToolFriday = Cum
+DayToolSaturday = Cts
+DayToolSunday = Paz
+
+CalendarTableDayMonday = Pt
+CalendarTableDayTuesday = S
+CalendarTableDayWednesday = Ç
+CalendarTableDayThursday = P
+CalendarTableDayFriday = C
+CalendarTableDaySaturday = Ct
+CalendarTableDaySunday = P
+
+ErrorParseJSON = JSON, sunucu tarafından işlenemediğine dair cevap döndü.
+
+ErrorLoadCalendar = Takvimler yüklenemiyor
+ErrorLoadEvents = Olaylar yüklenemiyor
+ErrorUpdateEvent = Olay kaydedilemedi
+ErrorDeleteEvent = Olay silinemedi
+ErrorUpdateCalendar = Takvim kaydedilemiyor
+ErrorDeleteCalendar = Takvim silinemiyor
+ErrorGeneral = Sunucuda bir hata oluştur. Lütfen daha sonra tekrar deneyiniz.
+
+; webmail 4.3 constants
+SharedTitleEmail = E-posta
+ShareHeaderEdit = Takvim yayınla ve paylaş
+ShareActionEdit = Takvim yayınla ve paylaş
+CalendarPublicate = Bu takvime genel ağ erişimi sağla
+CalendarPublicationLink = Bağlantı
+ShareCalendar = Bu takvimi paylaş
+SharePermission1 = Değişiklik yapma ve paylaşım yönetimi
+SharePermission2 = Etkinlik değitirebilme
+SharePermission3 = Bütün etkinlik bilgilerini görebilir
+SharePermission4 = Sadece uygun/meşgul durumunu görebilir (bilgileri gizle)
+ButtonClose = Kapat
+WarningEmailFieldFilling = Öncelikle e-posta kısmına giriş yapmalısınız
+EventHeaderView = Etkinlik göster
+ErrorUpdateSharing = Paylaşım ve yayınlama verileri kaydedilemedi
+ErrorUpdateSharing1 = %s kullanıcısı mevcut olmadığından paylaşım sağlanamaz
+ErrorUpdateSharing2 = Bu takvimi %s kullanıcısı ile paylaşmak imkansız
+ErrorUpdateSharing3 = Bu takvim zaten %s kullanıcısı ile paylaşım halinde
+Title_MyCalendars = Takvimlerim
+Title_SharedCalendars = Paylaşılan takvimler
+ErrorGetPublicationHash = Yayınlama linki yaratılamıyor
+ErrorGetSharing = Paylaşım eklenemiyor
+CalendarPublishedTitle = Bu takvim yayınlanmıştır
+RefreshSharedCalendars = Paylaşılan Takvimleri Yenile
+Title_CheckSharedCalendars = Paylaşılan Takvimleri Yenile
+
+GroupMembers = Üyeler
+
+ReportMessagePartDisplayed = Bu mesajın yalnızca bir kısmı görüntülenmektedir.
+ReportViewEntireMessage = Mesajın bütününü görüntülemek için, 
+ReportClickHere = click here
+ErrorContactExists = Bu isim ve e-posta adresi ile kayıtlı bir kişi zaten mevcuttur.
+
+Attachments = Eklentiler
+
+InfoGroupsOfContact = Bu kişinin üye olduğu gruplara işaret konulmustur.
+AlertNoContactsSelected = Kişi seçilemedi.
+MailSelected = Seçili adreslere ileti
+CaptionSubscribed = Kayıt olundu.
+
+OperationSpam = Spam
+OperationNotSpam = Not Spam
+FolderSpam = Spam
+
+; webmail 4.4 contacts
+ContactMail = Mail contact
+ContactViewAllMails = View all mails with this contact
+ContactsMailThem = Mail them
+DateToday = Today
+DateYesterday = Yesterday
+MessageShowDetails = Show details
+MessageHideDetails = Hide details
+MessageNoSubject = No subject
+; john@gmail.com to nadine@gmail.com
+MessageForAddr = to
+SearchClear = Clear search
+; Search results for "search string" in Inbox folder:
+; Search results for "search string" in all mail folders:
+SearchResultsInFolder = Search results for "#s" in #f folder:
+SearchResultsInAllFolders = Search results for "#s" in all mail folders:
+AutoresponderTitle = Autoresponder
+AutoresponderEnable = Enable autoresponder
+AutoresponderSubject = Subject
+AutoresponderMessage = Message
+ReportAutoresponderUpdatedSuccessfuly = Autoresponder has been updated successfully.
+FolderQuarantine = Quarantine
+
+;calendar
+EventRepeats = Repeats
+NoRepeats = Does not repeat
+DailyRepeats = Daily
+WorkdayRepeats = Every weekday (Mon. - Fri.)
+OddDayRepeats = Every Mon., Wed. and Fri.
+EvenDayRepeats = Every Tues. and Thurs.
+WeeklyRepeats = Weekly
+MonthlyRepeats = Monthly
+YearlyRepeats = Yearly
+RepeatsEvery = Repeats every
+ThisInstance = Only this instance
+AllEvents = All events in the series
+AllFollowing = All following
+ConfirmEditRepeatEvent = Would you like to change only this event, all events, or this and all future events in the series?
+RepeatEventHeaderEdit = Edit Recurring Event
+First = First
+Second = Second
+Third = Third
+Fourth = Fourth
+Last = Last
+Every = Every
+SetRepeatEventEnd = Set end date
+NoEndRepeatEvent = No end date
+EndRepeatEventAfter = End after
+Occurrences = occurrences
+EndRepeatEventBy = End by
+EventCommonDataTab = Main details
+EventRepeatDataTab = Recurrence details
+RepeatEventNotPartOfASeries = This event has been changed and is no longer part of a series.
+UndoRepeatExclusion = Undo changes to include in the series.
+
+MonthMoreLink = %d more...
+NoNewSharedCalendars = No new calendars
+NNewSharedCalendars = %d new calendars found
+OneNewSharedCalendars = 1 new calendar found
+ConfirmUndoOneRepeat = Would you like to restore this event in the series?
+
+RepeatEveryDayInfin = Every day
+RepeatEveryDayTimes = Every day, %TIMES% times
+RepeatEveryDayUntil = Every day, until %UNTIL%
+RepeatDaysInfin = Every %PERIOD% days
+RepeatDaysTimes = Every %PERIOD% days, %TIMES% times
+RepeatDaysUntil = Every %PERIOD% days, until %UNTIL%
+
+RepeatEveryWeekWeekdaysInfin = Every week on weekdays
+RepeatEveryWeekWeekdaysTimes = Every week on weekdays, %TIMES% times
+RepeatEveryWeekWeekdaysUntil = Every week on weekdays, until %UNTIL%
+RepeatWeeksWeekdaysInfin = Every %PERIOD% weeks on weekdays
+RepeatWeeksWeekdaysTimes = Every %PERIOD% weeks on weekdays, %TIMES% times
+RepeatWeeksWeekdaysUntil = Every %PERIOD% weeks on weekdays, until %UNTIL%
+
+RepeatEveryWeekInfin = Every week on %DAYS%
+RepeatEveryWeekTimes = Every week on %DAYS%, %TIMES% times
+RepeatEveryWeekUntil = Every week on %DAYS%, until %UNTIL%
+RepeatWeeksInfin = Every %PERIOD% weeks on %DAYS%
+RepeatWeeksTimes = Every %PERIOD% weeks on %DAYS%, %TIMES% times
+RepeatWeeksUntil = Every %PERIOD% weeks on %DAYS%, until %UNTIL%
+
+RepeatEveryMonthDateInfin = Every month on day %DATE%
+RepeatEveryMonthDateTimes = Every month on day %DATE%, %TIMES% times
+RepeatEveryMonthDateUntil = Every month on day %DATE%, until %UNTIL%
+RepeatMonthsDateInfin = Every %PERIOD% months on day %DATE%
+RepeatMonthsDateTimes = Every %PERIOD% months on day %DATE%, %TIMES% times
+RepeatMonthsDateUntil = Every %PERIOD% months on day %DATE%, until %UNTIL%
+
+RepeatEveryMonthWDInfin = Every month on %NUMBER% %DAY%
+RepeatEveryMonthWDTimes = Every month on %NUMBER% %DAY%, %TIMES% times
+RepeatEveryMonthWDUntil = Every month on %NUMBER% %DAY%, until %UNTIL%
+RepeatMonthsWDInfin = Every %PERIOD% months on %NUMBER% %DAY%
+RepeatMonthsWDTimes = Every %PERIOD% months on %NUMBER% %DAY%, %TIMES% times
+RepeatMonthsWDUntil = Every %PERIOD% months on %NUMBER% %DAY%, until %UNTIL%
+
+RepeatEveryYearDateInfin = Every year on day %DATE%
+RepeatEveryYearDateTimes = Every year on day %DATE%, %TIMES% times
+RepeatEveryYearDateUntil = Every year on day %DATE%, until %UNTIL%
+RepeatYearsDateInfin = Every %PERIOD% years on day %DATE%
+RepeatYearsDateTimes = Every %PERIOD% years on day %DATE%, %TIMES% times
+RepeatYearsDateUntil = Every %PERIOD% years on day %DATE%, until %UNTIL%
+
+RepeatEveryYearWDInfin = Every year on %NUMBER% %DAY%
+RepeatEveryYearWDTimes = Every year on %NUMBER% %DAY%, %TIMES% times
+RepeatEveryYearWDUntil = Every year on %NUMBER% %DAY%, until %UNTIL%
+RepeatYearsWDInfin = Every %PERIOD% years on %NUMBER% %DAY%
+RepeatYearsWDTimes = Every %PERIOD% years on %NUMBER% %DAY%, %TIMES% times
+RepeatYearsWDUntil = Every %PERIOD% years on %NUMBER% %DAY%, until %UNTIL%
+
+RepeatDescDay = day
+RepeatDescWeek = week
+RepeatDescMonth = month
+RepeatDescYear = year
+
+; webmail 4.5 contacts
+WarningUntilDateBlank = Please specify end recurrence date
+WarningWrongUntilDate = End recurrence date must be later than the start recurrence date
+
+OnDays = On days
+CancelRecurrence = Cancel recurrence
+RepeatEvent = Repeat this event
+
+Spellcheck = Check Spelling
+LoginLanguage = Language
+LanguageDefault = Öntanımlı
+
+; webmail 4.5.x new
+EmptySpam = Empty Spam
+Saving = Saving&hellip;
+Sending = Sending&hellip;
+LoggingOffFromServer = Logging off from server&hellip;
+
+;webmail 4.6
+PROC_CANT_SET_MSG_AS_SPAM = Can't mark message(s) as spam
+PROC_CANT_SET_MSG_AS_NOTSPAM = Can't mark message(s) as non-spam
+ExportToICalendar = Export to iCalendar
+ErrorMaximumUsersLicenseIsExceeded = Your account is disabled because maximum number of users allowed by license is exceeded. Please contact your system administrator.
+RepliedMessageTitle = Replied Message
+ForwardedMessageTitle = Forwarded Message
+RepliedForwardedMessageTitle = Replied and Forwarded Message
+ErrorDomainExist = The user cannot be created because corresponding domain doesn't exist. You should create the domain first.
+
+; webmail 4.6.x or 4.7
+RequestReadConfirmation = Request Return Confirmation
+FolderTypeDefault = Default
+ShowFoldersMapping = Let me use another folder as a system folder (e.g. use MyFolder as Sent Items)
+ShowFoldersMappingNote = For instance, to change Sent Items location from Sent Items to MyFolder, specify "Sent Items" in "Use for" dropdown of "MyFolder".
+FolderTypeMapTo = Use for
+
+ReminderEmailExplanation = This message has come to your account %EMAIL% because you ordered event notification in your calendar %CALENDAR_NAME%
+ReminderOpenCalendar = Open calendar
+
+AddReminder = Remind me about this event
+AddReminderBefore = Remind me % before this event
+AddReminderAnd = and % before
+AddReminderAlso = and also % before
+AddMoreReminder = More reminders
+RemoveAllReminders = Remove all reminders
+ReminderNone = None
+ReminderMinutes = minutes
+ReminderHour = hour
+ReminderHours = hours
+ReminderDay = day
+ReminderDays = days
+ReminderWeek = week
+ReminderWeeks = weeks
+Allday = All day
+
+Folders = Folders
+NoSubject = No Subject
+SearchResultsFor = Search results for
+
+Back = Back
+Next = Next
+Prev = Prev
+
+MsgList = Messages
+Use24HTimeFormat = Use 24 hour time format
+UseCalendars = Use calendars
+Event = Event
+CalendarSettingsNullLine = No calendars
+CalendarEventNullLine = No events
+ChangeAccount = Change account
+
+TitleCalendar = Calendar
+TitleEvent = Event
+TitleFolders = Folders
+TitleConfirmation = Confirmation
+
+Yes = Yes
+No = No
+
+EditMessage = Edit Message
+
+AccountNewPassword = New password
+AccountConfirmNewPassword = Confirm new password
+AccountPasswordsDoNotMatch = Passwords do not match.
+
+ContactTitle = Title
+ContactFirstName = First name
+ContactSurName = Surname
+ContactNickName = Nickname
+
+CaptchaTitle = Captcha
+CaptchaReloadLink = reload
+CaptchaError = Captcha text is incorrect.
+
+WarningInputCorrectEmails = Please specify correct emails.
+WrongEmails = Incorrect emails:
+
+ConfirmBodySize1 = Sorry, but text messages are max.
+ConfirmBodySize2 = characters long. Everything beyond the limit will be truncated. Click "Cancel" if you want to edit the message.
+BodySizeCounter = Counter
+InsertImage = Insert Image
+ImagePath = Image Path
+ImageUpload = Insert
+WarningImageUpload = The file being attached is not an image. Please choose an image file.
+
+ConfirmExitFromNewMessage = Changes will be lost if you leave the page. Would you like to save draft before leaving the page?
+
+SensivityConfidential = Please treat this message as Confidential
+SensivityPrivate = Please treat this message as Private
+SensivityPersonal = Please treat this message as Personal
+
+ReturnReceiptTopText = The sender of this message has asked to be notified when you receive this message.
+ReturnReceiptTopLink = Click here to notify the sender.
+ReturnReceiptSubject = Return Receipt (displayed)
+ReturnReceiptMailText1 = This is a Return Receipt for the mail that you sent to
+ReturnReceiptMailText2 = Note: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.
+ReturnReceiptMailText3 = with subject
+
+SensivityMenu = Sensitivity
+SensivityNothingMenu = Nothing
+SensivityConfidentialMenu = Confidential
+SensivityPrivateMenu = Private
+SensivityPersonalMenu = Personal
+
+ErrorLDAPonnect = Can't connect to ldap server.
+
+MessageSizeExceedsAccountQuota = This message size exceeds your account quota.
+MessageCannotSent = The message cannot be sent.
+MessageCannotSaved = The message cannot be saved.
+
+ContactFieldTitle = Field
+ContactDropDownTO = TO
+ContactDropDownCC = CC
+ContactDropDownBCC = BCC
+
+; 4.9 
+NoMoveDelete = Message(s) can't be moved to Trash. Most likely your message box is full. Should this unmoved message(s) be deleted?
+
+WarningFieldBlank = This field cannot be empty.
+WarningPassNotMatch = Passwords do not match, please check.
+PasswordResetTitle = Password recovery - step %d
+NullUserNameonReset = user
+IndexResetLink = Forgot password?
+IndexRegLink = Account Registration
+
+RegDomainNotExist = Domain does not exist.
+RegAnswersIncorrect = Answers are incorrect.
+RegUnknownAdress = Unknown email address.
+RegUnrecoverableAccount = Password recovery cannot be applied for this email address.
+RegAccountExist = This address is already used.
+RegRegistrationTitle = Registration
+RegName = Name
+RegEmail = e-mail address
+RegEmailDesc = For example, myname@domain.com. This information will be used to enter the system.
+RegSignMe = Remember me
+RegSignMeDesc = Do not ask for login and password on next login to the system on this PC.
+RegPass1 = Password
+RegPass2 = Repeat password 
+RegQuestionDesc = Please, provide two secret questions and answers which know only you. In case of password lost you can use these questions in order to recover the password.
+RegQuestion1 = Secret question 1
+RegAnswer1 = Answer 1
+RegQuestion2 = Secret question 2
+RegAnswer2 = Answer 2
+RegTimeZone = Time zone
+RegLang = Interface language
+RegCaptcha = Captcha
+RegSubmitButtonValue = Register
+
+ResetEmail = Please provide your email
+ResetEmailDesc = Provide emails address used for registration.
+ResetCaptcha = CAPTCHA
+ResetSubmitStep1 = Send
+ResetQuestion1 = Secret question 1
+ResetAnswer1 = Answer
+ResetQuestion2 = Secret question 2
+ResetAnswer2 = Answer
+ResetSubmitStep2 = Send
+
+ResetTopDesc1Step2 = Providede email address
+ResetTopDesc2Step2 = Please confirm correctness.
+
+ResetTopDescStep3 = please specify below new password for your email.
+
+ResetPass1 = New password
+ResetPass2 = Repeat password
+ResetSubmitStep3 = Send
+ResetDescStep4 = Your password has been changed.
+ResetSubmitStep4 = Return
+
+RegReturnLink = Return to login screen
+ResetReturnLink = Return to login screen
+
+; Appointments 
+AppointmentAddGuests = Add guests
+AppointmentRemoveGuests = Cancel Meeting
+AppointmentListEmails = Enter email addresses separated by commas and press Save
+AppointmentParticipants = Participants
+AppointmentRefuse = Refuse
+AppointmentAwaitingResponse = Awaiting response
+AppointmentInvalidGuestEmail = The following guest email addresses are invalid:
+AppointmentOwner = Owner
+
+AppointmentMsgTitleInvite = Invite to event.
+AppointmentMsgTitleUpdate = Event was modified.
+AppointmentMsgTitleCancel = Event was cancelled.
+AppointmentMsgTitleRefuse = Guest %guest% is refuse invitation
+AppointmentMoreInfo = More info
+AppointmentOrganizer = Organizer
+AppointmentEventInformation = Event information
+AppointmentEventWhen = When
+AppointmentEventParticipants = Participants
+AppointmentEventDescription = Description
+AppointmentEventWillYou = Will you participate
+AppointmentAdditionalParameters = Additional parameters
+AppointmentHaventRespond = Not responded yet
+AppointmentRespondYes = I will participate
+AppointmentRespondMaybe = Not sure yet
+AppointmentRespondNo = Will not participate
+AppointmentGuestsChangeEvent = Guests can change event
+
+AppointmentSubjectAddStart = You've received invitation to event 
+AppointmentSubjectAddFrom =  from 
+AppointmentSubjectUpdateStart = Modification of event 
+AppointmentSubjectDeleteStart = Cancellation of event 
+ErrorAppointmentChangeRespond = Unable to change appointment respond
+SettingsAutoAddInvitation = Add invitations into calendar automatically
+ReportEventSaved = Your event has been saved
+ReportAppointmentSaved =  and notifications were send
+ErrorAppointmentSend = Can't send invitations.
+AppointmentEventName = Name:
+
+; End appointments
+
+ErrorCantUpdateFilters = Can't update filters
+
+FilterPhrase = If there's %field header %condition %string then %action
+FiltersAdd = Add Filter
+FiltersCondEqualTo = equal to
+FiltersCondContainSubstr = containing substring
+FiltersCondNotContainSubstr = not containing substring
+FiltersActionDelete = delete message
+FiltersActionMove = move
+FiltersActionToFolder = to %folder folder
+FiltersNo = No filters specified yet
+
+ReminderEmailFriendly = reminder
+ReminderEventBegin = starts at: 
+
+FiltersLoading = Loading Filters...
+ConfirmMessagesPermanentlyDeleted = All messages in this folder will be permanently deleted.
+
+InfoNoNewMessages = There are no new messages.
+TitleImportContacts = Import Contacts
+TitleSelectedContacts = Selected Contacts
+TitleNewContact = New Contact
+TitleViewContact = View Contact
+TitleEditContact = Edit Contact
+TitleNewGroup = New Group
+TitleViewGroup = View Group
+
+AttachmentPending = Pending...
+AttachmentUploading = Uploading...
+AttachmentComplete = Complete.
+AttachmentCancelled = Cancelled.
+AttachmentStopped = Stopped.
+AttachmentsUpload = Attach Files
+AttachmentsUploadPadding = 34
+
+TestButton = TEST
+AutoCheckMailIntervalLabel = Autocheck interval
+AutoCheckMailIntervalDisableName = Disable
+ReportCalendarSaved = Calendar has been saved.
+
+ContactSyncError = Sync failed
+ReportContactSyncDone = Sync complete
+
+MobileSyncUrlTitle = Mobile sync URL
+MobileSyncLoginTitle = Mobile sync login
+
+QuickReply = Quick Reply
+SwitchToFullForm = Switch To Full Form
+SortFieldDate = Date
+SortFieldFrom = From
+SortFieldSize = Size
+SortFieldSubject = Subject
+SortFieldFlag = Flag
+SortFieldAttachments = Attachments
+SortOrderAscending = Ascending
+SortOrderDescending = Descending
+ArrangedBy = Arranged by
+
+MessagePaneToRight = The message pane is to the right of the message list, rather than below
+
+SettingsTabMobileSync = Mobile Sync
+
+MobileSyncContactDataBaseTitle = Mobile sync contact database
+MobileSyncCalendarDataBaseTitle = Mobile sync calendar database
+MobileSyncTitleText = If you'd like to synchronize your SyncML-enabled handheld device with WebMail, you can use these parameters.<br />"Mobile Sync URL" specifies path to SyncML Data Synchronization server, "Mobile Sync Login" is your login on SyncML Data Synchronization Server and use your own password upon request. Also, some devices need to specify database name for contact and calendar data.<br />Use "Mobile sync contact database" and "Mobile sync calendar database" respectively.
+MobileSyncEnableLabel = Enable mobile sync
+
+SearchInputText = search
+
+AppointmentEmailExplanation = This message has come to your account %EMAIL% because you was invited to the event by %ORGANAZER%

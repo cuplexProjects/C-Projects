@@ -1,0 +1,1262 @@
+PROC_ERROR_ACCT_CREATE = 創建帳號失敗
+PROC_WRONG_ACCT_PWD = 帳號密碼錯誤
+PROC_CANT_LOG_NONDEF = 無法登陸到非默認帳號
+PROC_CANT_INS_NEW_FILTER = 無法添加新過濾
+PROC_FOLDER_EXIST = 文件夾已經存在
+PROC_CANT_CREATE_FLD = 無法創建新文件夾
+PROC_CANT_INS_NEW_GROUP = 無法創建新組
+PROC_CANT_INS_NEW_CONT = 無法添加新聯係人
+PROC_CANT_INS_NEW_CONTS = 無法添加新聯係人（批量）
+PROC_CANT_ADD_NEW_CONT_TO_GRP = 無法添加聯係人到組
+PROC_ERROR_ACCT_UPDATE = 修改帳號出現了一個錯誤
+PROC_CANT_UPDATE_CONT_SETTINGS = 無法更新聯係人的設置
+PROC_CANT_GET_SETTINGS = 無法進入設置
+PROC_CANT_UPDATE_ACCT = 更新帳號失敗
+PROC_ERROR_DEL_FLD = 刪除文件夾時出現了一個錯誤
+PROC_CANT_UPDATE_CONT = 無法更新聯係人
+PROC_CANT_GET_FLDS = 無法取得文件列表
+PROC_CANT_GET_MSG_LIST = 無法取得郵件列表
+PROC_MSG_HAS_DELETED = 此郵件從已經從郵件服務器刪除
+PROC_CANT_LOAD_CONT_SETTINGS = 無法加載聯係人設置
+PROC_CANT_LOAD_SIGNATURE = 無法加載帳號的簽名
+PROC_CANT_GET_CONT_FROM_DB = 無法從數據庫取得聯係人
+PROC_CANT_GET_CONTS_FROM_DB = 無法從數據庫取得聯係人列表
+PROC_CANT_DEL_ACCT_BY_ID = 刪除帳號失敗
+PROC_CANT_DEL_FILTER_BY_ID = 無法刪除過濾
+PROC_CANT_DEL_CONT_GROUPS = 刪除聯係人或組別失敗
+PROC_WRONG_ACCT_ACCESS = 越權訪問另一個帳號。
+PROC_SESSION_ERROR = 會話被終止，請檢查是否你的登陸已超時，可能服務器時間或客戶端時間不正確。
+
+MailBoxIsFull = 郵箱已滿
+WebMailException = 內部服務器錯誤，請聯係係統管理員。
+InvalidUid = 郵箱用戶名錯誤
+CantCreateContactGroup = 無法創建聯係人組別
+CantCreateUser = 創建用戶失敗
+CantCreateAccount = 創建帳號失敗
+SessionIsEmpty = 會話為空
+FileIsTooBig = 文件過大
+
+PROC_CANT_MARK_ALL_MSG_READ = 無法標記所有郵件為已讀
+PROC_CANT_MARK_ALL_MSG_UNREAD = 無法標記所有郵件為未讀
+PROC_CANT_PURGE_MSGS = 無法清除郵件
+PROC_CANT_DEL_MSGS = 無法刪除郵件
+PROC_CANT_UNDEL_MSGS = 無法恢複被刪除的郵件
+PROC_CANT_MARK_MSGS_READ = 無法標記郵件為已讀
+PROC_CANT_MARK_MSGS_UNREAD = 無法標記郵件為未讀
+PROC_CANT_SET_MSG_FLAGS = 無法設置郵件標記
+PROC_CANT_REMOVE_MSG_FLAGS = 無法移除郵件標記
+PROC_CANT_CHANGE_MSG_FLD = 無法更變郵件文件夾
+PROC_CANT_SEND_MSG = 郵件發送失敗。
+PROC_CANT_SAVE_MSG = 郵件保存失敗。
+PROC_CANT_GET_ACCT_LIST = 無法取得帳戶列表
+PROC_CANT_GET_FILTER_LIST = 無法取得過濾列表
+
+PROC_CANT_LEAVE_BLANK = 請不能留空白字段
+
+PROC_CANT_UPD_FLD = 無法更改文件夾
+PROC_CANT_UPD_FILTER = 無法更新過濾
+
+ACCT_CANT_ADD_DEF_ACCT = 不能添加此帳號，因為另一個用戶已經把它作為默認帳號。
+ACCT_CANT_UPD_TO_DEF_ACCT = 此帳號的狀態不能更改為默認。
+ACCT_CANT_CREATE_IMAP_ACCT = 無法創建新帳號 (IMAP4 連接錯誤)
+ACCT_CANT_DEL_LAST_DEF_ACCT = 不能刪除最後一個默認帳號
+
+LANG_LoginInfo = 登陸信息
+LANG_Email = Email
+LANG_Login = 登陸
+LANG_Password = 密碼
+LANG_IncServer = 來信
+LANG_PopProtocol = POP3
+LANG_ImapProtocol = IMAP4
+LANG_IncPort = Port
+LANG_OutServer = 發信
+LANG_OutPort = Port
+LANG_UseSmtpAuth = 使用SMTP認證
+LANG_SignMe = 下載自動登陸
+LANG_Enter = 進入郵箱
+
+; interface strings 
+
+TitleLogin = 登陸
+TitleMessagesListView = 郵件列表
+TitleMessagesList = 郵件列表
+TitleViewMessage = 查看郵件
+TitleNewMessage = 寫郵件
+TitleSettings = 設置
+TitleContacts = 聯係人
+
+StandardLogin = 標準登陸模式
+AdvancedLogin = 高級登陸模式
+
+InfoWebMailLoading = 正在加載Webmail...
+Loading = 正在加載...
+InfoMessagesLoad = WebMail 正在加載郵件列表...
+InfoEmptyFolder = 文件夾是空的
+InfoPageLoading = 此頁麵仍然正加載...
+InfoSendMessage = 郵件已發送
+InfoSaveMessage = 郵件已保存
+InfoHaveImported = 你已經導入
+InfoNewContacts = 新聯係進入你的聯係人列表。
+InfoToDelete = 刪除
+InfoDeleteContent = 請先刪除文件夾裏的內容。
+InfoDeleteNotEmptyFolders = 不允許刪除非空的文件夾，要刪除文件夾 (已經禁用複選框)，請先刪除裏麵的內容。
+InfoRequiredFields = * 必需字段
+
+ConfirmAreYouSure = 確認操作？
+ConfirmDirectModeAreYouSure = 已經選定的郵件將永久刪除! 你確定要這樣做嗎？
+ConfirmSaveSettings = 設置未保存，請點擊 確定 保存。
+ConfirmSaveContactsSettings = 聯係人設置未保存，請點擊 確定 保存。
+ConfirmSaveAcctProp = 帳號屬性未保存，請點擊 確定 保存。
+ConfirmSaveFilter = 過濾屬性未保存，請點擊 確定 保存。
+ConfirmSaveSignature = 簽名未保存，請點擊 確定 保存。
+ConfirmSavefolders = 文件夾未保存，請點擊 確定 保存。
+ConfirmHtmlToPlain = 注意: 把HTML格式的郵件改為純文本後, 您將丟失當前的格式，點擊 OK 繼續。
+ConfirmAddFolder = 要使 添加/移除 文件夾 生效，請點擊 確定 保存。
+ConfirmEmptySubject = 郵件主題是空的，要繼續嗎？
+
+WarningEmailBlank = Email不能為空
+WarningLoginBlank = Login不能為空
+WarningToBlank = 收件人地址不為能為空
+WarningServerPortBlank = POP3、SMTP、端口不能為空。
+WarningEmptySearchLine = 搜索關鍵字不能為空。
+WarningMarkListItem = 至少選擇一個項目。
+WarningFolderMove = 文件夾不能被移動，因為這是另一個級別。
+WarningContactNotComplete = 請輸入Email或名字。
+WarningGroupNotComplete = 請輸入組別名。
+
+WarningEmailFieldBlank = Email不能為空。
+WarningIncServerBlank = POP3(IMAP4) 服務器不能為空。
+WarningIncPortBlank = POP3(IMAP4)服務器端口不能為空。
+WarningIncLoginBlank = POP3(IMAP4)登陸名不能為空。
+WarningIncPortNumber = POP3(IMAP4)端口應該為正數數字。
+DefaultIncPortNumber = 默認POP3(IMAP4) 端口號是 110(143).
+WarningIncPassBlank = POP3(IMAP4)密碼不能為空
+WarningOutPortBlank = SMTP服務器端口不能為空。
+WarningOutPortNumber = SMTP端口應該為正數數字。
+WarningCorrectEmail = 請輸入正確的 e-mail.
+DefaultOutPortNumber = 默認 SMTP 端口是 25.
+
+WarningCsvExtention = 擴展名為 .csv
+WarningImportFileType = 複製聯係人，請選擇相應的程序。
+WarningEmptyImportFile = 請點“瀏覽...”選擇文件。
+
+WarningContactsPerPage = 聯係人每頁數字為正數
+WarningMessagesPerPage = 郵件列表每頁數字為正數
+WarningMailsOnServerDays = 在服務器days字段，請指定一個正數在郵件裏。
+WarningEmptyFilter = 請輸入字符
+WarningEmptyFolderName = 請輸入文件夾名
+
+ErrorConnectionFailed = 連接失敗
+ErrorRequestFailed = 數據傳送完成
+ErrorAbsentXMLHttpRequest = XMLHttp 缺少請求對象
+ErrorWithoutDesc = 錯誤沒有描述
+ErrorParsing = XML解析錯誤
+ResponseText = 響應文字:
+ErrorEmptyXmlPacket = XML 數據包為空
+ErrorImportContacts = 導入聯係人出錯
+ErrorNoContacts = 沒有導入聯係人
+ErrorCheckMail = 接收郵件被終止，發生了一個錯誤，部分郵件可能未接收完。
+
+LoggingToServer = 正在登陸服務器...
+GettingMsgsNum = 正在獲取郵件數...
+RetrievingMessage = 恢複郵件
+DeletingMessage = 正在刪除郵件
+DeletingMessages = 正在刪除郵件
+Of = of
+Connection = 連接
+Charset = 編碼
+AutoSelect = 自動選擇
+
+Contacts = 聯係人
+ClassicVersion = 傳統模式
+Logout = 退出
+Settings = 設置
+
+LookFor = 查找: 
+SearchIn = 搜索: 
+QuickSearch = 搜索 "發件人", "收件人" 和 "郵件主題" (更快).
+SlowSearch = 搜索全部郵件
+AllMailFolders = 所有郵件文件夾
+AllGroups = 所有組別
+
+NewMessage = 寫郵件
+CheckMail = 收郵件
+ReloadFolders = 刷新文件夾
+EmptyTrash = 清空垃圾箱
+MarkAsRead = 標記為已讀
+MarkAsUnread = 標記為未讀
+MarkFlag = 標記
+MarkUnflag = 取消標記
+MarkAllRead = 標記所有郵件為已讀
+MarkAllUnread = 標記所有郵件為未讀
+Reply = 回複
+ReplyAll = 回複所有
+Delete = 刪除
+Undelete = 恢複
+PurgeDeleted = 清空已刪除
+MoveToFolder = 移動到
+Forward = 轉發
+
+HideFolders = 隱藏文件夾
+ShowFolders = 顯示文件夾
+ManageFolders = 管理文件夾
+SyncFolder = 同步文件夾
+NewMessages = 寫郵件
+Messages = 郵件
+
+From = 發件人
+To = 收件人
+Date = 日期
+Size = 大小
+Subject = 主題
+
+FirstPage = 首頁
+PreviousPage = 上一頁
+NextPage = 下一頁
+LastPage = 尾頁
+
+SwitchToPlain = 轉到純文本查看
+SwitchToHTML = 轉到HTML查看
+AddToAddressBokk = 添加聯係人
+ClickToDownload = 點擊下載 
+View = View
+ShowFullHeaders = 顯示完整的郵件頭
+HideFullHeaders = 隱藏完整的郵件頭
+
+MessagesInFolder = 封郵件在此文件夾
+YouUsing = 您正在使用
+OfYour = 屬於您的
+Mb = MB
+Kb = KB
+B = B
+
+SendMessage = 發送
+SaveMessage = 保存
+Print = 打印
+PreviousMsg = 上一封
+NextMsg = 下一封
+AddressBook = 地址簿
+ShowBCC = 添加密送
+HideBCC = 刪除密送
+CC = 抄送
+BCC = 密送地址
+ReplyTo = 回複
+AttachFile = 附件
+Attach = 附件
+Re = Re
+OriginalMessage = 原始郵件
+Sent = 已發送
+Fwd = Fwd
+Low = 低
+Normal = 中
+High = 高
+Importance = 優先級
+Close = 關閉
+
+Common = 常規設置
+EmailAccounts = 郵件帳號
+
+MsgsPerPage = 封/每頁
+DisableRTE = 禁用富文本編輯器
+Skin = 皮膚
+DefCharset = 默認編碼
+DefCharsetInc = 默認接收編碼
+DefCharsetOut = 默認發送編碼
+DefTimeOffset = 默認時區
+DefLanguage = 默認語言
+DefDateFormat = 默認日期格式
+ShowViewPane = 郵件預覽
+Save = 保存
+Cancel = 取消
+OK = OK
+
+Remove = 移除
+AddNewAccount = 添加新帳號
+Signature = 簽名
+Filters = 過濾
+Properties = 屬性
+UseForLogin = 使用此帳號登陸
+MailFriendlyName = 您的名字
+MailEmail = Email
+MailIncHost = 接收郵件
+Imap4 = IMAP4
+Pop3 = POP3
+MailIncPort = 端口
+MailIncLogin = 登陸帳號
+MailIncPass = 密碼
+MailOutHost = 發送郵件
+MailOutPort = 端口
+MailOutLogin = SMTP 帳號
+MailOutPass = SMTP 密碼
+MailOutAuth1 = 使用 SMTP 認證
+MailOutAuth2 = (如果 SMTP 用戶名及密碼和 POP3/IMAP4 一樣，SMTP參數可以留空)
+UseFriendlyNm1 = 在“發件人”一欄，請使用友好的名字
+UseFriendlyNm2 = (您的名字 <sender@mail.com>)
+GetmailAtLogin = 獲取/同步郵件
+MailMode0 = 從服務器刪除
+MailMode1 = 從服務器保留
+MailMode2 = 從服務器保留
+MailsOnServerDays = 天
+MailMode3 = 刪除垃圾郵件時從服務器也刪除
+InboxSyncType = 同步收件箱類型
+
+SyncTypeNo = 不同步
+SyncTypeNewHeaders = 新郵件頭
+SyncTypeAllHeaders = 所有郵件頭
+SyncTypeNewMessages = 新郵件
+SyncTypeAllMessages = 所有郵件
+SyncTypeDirectMode = 直接模式
+
+Pop3SyncTypeEntireHeaders = 僅郵件頭
+Pop3SyncTypeEntireMessages = 完整郵件
+Pop3SyncTypeDirectMode = 直接模式
+
+DeleteFromDb = 從數據庫刪除服務器不存在的郵件
+
+EditFilter = 編輯過濾
+NewFilter = 添加過濾
+Field = 字段
+Condition = 條件
+ContainSubstring = 包含字符
+ContainExactPhrase = 包含短語
+NotContainSubstring = 不含有字符
+FilterDesc_At = 在
+FilterDesc_Field = 字段
+Action = 操作
+DoNothing = 什麼也不做
+DeleteFromServer = 直接從服務器刪除
+MarkGrey = 標記為灰色
+Add = 添加
+OtherFilterSettings = 其他過濾設置
+ConsiderXSpam = 考慮 X-Spam 郵件頭
+Apply = 應用
+
+InsertLink = 插入鏈接
+RemoveLink = 移除鏈接
+Numbering = 編號
+Bullets = 小圓球
+HorizontalLine = 水平線
+Bold = 粗體
+Italic = 斜體
+Underline = 下劃線
+AlignLeft = 左對齊
+Center = 居中
+AlignRight = 右對齊
+Justify = 對齊
+FontColor = 字體顏色
+Background = 背景
+SwitchToPlainMode = 轉到文本模式
+SwitchToHTMLMode = 轉到HTML模式
+AddSignatures = 發郵件時添加簽名
+
+DontAddToReplies = 回複、轉發時不添加簽名
+Folder = 文件夾
+Msgs = 郵件數
+Synchronize = 同步
+ShowThisFolder = 顯示
+Total = 總計
+DeleteSelected = 刪除已選
+AddNewFolder = 新建文件夾
+NewFolder = 新文件夾
+ParentFolder = 父文件夾
+NoParent = 沒有父文件夾
+OnMailServer = 在WebMail和服務器創建此文件夾
+InWebMail = 僅在WebMail創建此文件夾
+FolderName = 文件夾名
+
+ContactsPerPage = 每頁顯示聯係人
+WhiteList = 白名單地址
+
+CharsetDefault = 默認
+CharsetArabicAlphabetISO = 阿拉伯文 (ISO)
+CharsetArabicAlphabet = 阿拉伯文 (Windows)
+CharsetBalticAlphabetISO = 波羅的海文 (ISO)
+CharsetBalticAlphabet = 波羅的海文 (Windows)
+CharsetCentralEuropeanAlphabetISO = 中歐 (ISO)
+CharsetCentralEuropeanAlphabet = 中歐 (Windows)
+CharsetChineseSimplifiedEUC = 簡體中文 (EUC)
+CharsetChineseSimplifiedGB = 簡體中文 (GB2312)
+CharsetChineseTraditional = 繁體中文 (Big5)
+CharsetCyrillicAlphabetISO = 西裏爾文 (ISO)
+CharsetCyrillicAlphabetKOI8R = 西裏爾文 (KOI8-R)
+CharsetCyrillicAlphabet = 西裏爾文 (Windows)
+CharsetGreekAlphabetISO = 希臘文 (ISO)
+CharsetGreekAlphabet = 希臘文 (Windows)
+CharsetHebrewAlphabetISO = 希伯來文 (ISO)
+CharsetHebrewAlphabet = 希伯來文 (Windows)
+CharsetJapanese = 日本
+CharsetJapaneseShiftJIS = 日本 (Shift-JIS)
+CharsetKoreanEUC = 韓文 (EUC)
+CharsetKoreanISO = 韓文 (ISO)
+CharsetLatin3AlphabetISO = 拉丁文 (ISO)
+CharsetTurkishAlphabet = 土耳其文
+CharsetUniversalAlphabetUTF7 = Unicode (UTF-7)
+CharsetUniversalAlphabetUTF8 = Unicode (UTF-8)
+CharsetVietnameseAlphabet = 越南文 (Windows)
+CharsetWesternAlphabetISO = 西歐 (ISO)
+CharsetWesternAlphabet = 西歐 (Windows)
+
+TimeDefault = 默認
+TimeEniwetok = Eniwetok, Kwajalein, Dateline Time
+TimeMidwayIsland = Midway Island, Samoa
+TimeHawaii = Hawaii
+TimeAlaska = Alaska
+TimePacific = Pacific Time (US & Canada); Tijuana
+TimeArizona = Arizona
+TimeMountain = Mountain Time (US & Canada)
+TimeCentralAmerica = Central America
+TimeCentral = Central Time (US & Canada)
+TimeMexicoCity = Mexico City, Tegucigalpa
+TimeSaskatchewan = Saskatchewan
+TimeIndiana = Indiana (East)
+TimeEastern = Eastern Time (US & Canada)
+TimeBogota = Bogota, Lima, Quito
+TimeSantiago = Santiago
+TimeCaracas = Caracas, La Paz
+TimeAtlanticCanada = Atlantic Time (Canada)
+TimeNewfoundland = Newfoundland
+TimeGreenland = Greenland
+TimeBuenosAires = Buenos Aires, Georgetown
+TimeBrasilia = Brasilia
+TimeMidAtlantic = Mid-Atlantic
+TimeCapeVerde = Cape Verde Is.
+TimeAzores = Azores
+TimeMonrovia = Casablanca, Monrovia
+TimeGMT = Dublin, Edinburgh, Lisbon, London
+TimeBerlin = Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+TimePrague = Belgrade, Bratislava, Budapest, Ljubljana, Prague
+TimeParis = Brussels, Copenhagen, Madrid, Paris
+TimeSarajevo = Sarajevo, Skopje, Sofija, Vilnius, Warsaw, Zagreb
+TimeWestCentralAfrica = West Central Africa
+TimeAthens = Athens, Istanbul, Minsk
+TimeEasternEurope = Bucharest
+TimeCairo = Cairo
+TimeHarare = Harare, Pretoria
+TimeHelsinki = Helsinki, Riga, Tallinn
+TimeIsrael = Israel, Jerusalem Standard Time
+TimeBaghdad = Baghdad
+TimeArab = Arab, Kuwait, Riyadh
+TimeMoscow = Moscow, St. Petersburg, Volgograd
+TimeEastAfrica = East Africa, Nairobi
+TimeTehran = Tehran
+TimeAbuDhabi = Abu Dhabi, Muscat
+TimeCaucasus = Baku, Tbilisi, Yerevan
+TimeKabul = Kabul
+TimeEkaterinburg = Ekaterinburg
+TimeIslamabad = Islamabad, Karachi, Sverdlovsk, Tashkent
+TimeBombay = Calcutta, Chennai, Mumbai, New Delhi, India Standard Time
+TimeNepal = Kathmandu, Nepal
+TimeAlmaty = Almaty, Novosibirsk, North Central Asia
+TimeDhaka = Astana, Dhaka
+TimeSriLanka = Sri Jayawardenepura, Sri Lanka
+TimeRangoon = Rangoon
+TimeBangkok = Bangkok, Hanoi, Jakarta
+TimeKrasnoyarsk = Krasnoyarsk
+TimeBeijing = 北京, Chongqing, Hong Kong SAR, Urumqi
+TimeIrkutsk = Irkutsk, Ulaan Bataar
+TimeSingapore = Kuala Lumpur, Singapore
+TimePerth = Perth, Western Australia
+TimeTaipei = Taipei
+TimeTokyo = Osaka, Sapporo, Tokyo
+TimeSeoul = Seoul, Korea Standard time
+TimeYakutsk = Yakutsk
+TimeAdelaide = Adelaide, Central Australia
+TimeDarwin = Darwin
+TimeBrisbane = Brisbane, East Australia
+TimeSydney = Canberra, Melbourne, Sydney, Hobart
+TimeGuam = Guam, Port Moresby
+TimeHobart = Hobart, Tasmania
+TimeVladivostock = Vladivostok
+TimeMagadan = Magadan, Solomon Is., New Caledonia
+TimeWellington = Auckland, Wellington
+TimeFiji = Fiji Islands, Kamchatka, Marshall Is.
+TimeTonga = Nuku'alofa, Tonga
+
+DateDefault = Default
+DateDDMMYY = DD/MM/YY
+DateMMDDYY = MM/DD/YY
+DateDDMonth = DD Month (01 Jan)
+DateAdvanced = 高級選項
+
+NewContact = 新建聯係人
+NewGroup = 新建組
+AddContactsTo = 新建聯係人在
+ImportContacts = 導入聯係人
+
+Name = 名字
+Email = Email
+DefaultEmail = 默認 Email
+NotSpecifiedYet = 未指定
+ContactName = 名字
+Birthday = 生日
+Month = 月
+January = January
+February = February
+March = March
+April = April
+May = May
+June = June
+July = July
+August = August
+September = September
+October = October
+November = November
+December = December
+Day = 日
+Year = 年
+UseFriendlyName1 = 使用友好名字
+UseFriendlyName2 = (如, 阿呆 <johndoe@mail.com>)
+Personal = 個人
+PersonalEmail = 個人 E-mail
+StreetAddress = 街道
+City = 城市
+Fax = 傳真
+StateProvince = 省/自治區
+Phone = 電話
+ZipCode = 郵編
+Mobile = 手機
+CountryRegion = 國家/地區
+WebPage = 網址
+Go = Go
+Home = 個人信息
+Business = 業務聯係
+BusinessEmail = 業務 E-mail
+Company = 公司
+JobTitle = 職位
+Department = 部門
+Office = 辦公室
+Pager = 呼機
+Other = 其他
+OtherEmail = 其他郵件
+Notes = 備注
+Groups = 組別
+ShowAddFields = 顯示附加信息
+HideAddFields = 隱藏附加信息
+EditContact = 編輯聯係信息
+GroupName = 組名
+AddContacts = 添加聯係人
+CommentAddContacts = (多個地址用逗號,分開)
+CreateGroup = 創建分組
+Rename = 重新命名
+MailGroup = 郵件組
+RemoveFromGroup = 從分組中移除
+UseImportTo = 從Outlook導入聯係人。
+Outlook1 = Microsoft Outlook 2000/XP/2003
+Outlook2 = Microsoft Outlook Express 6
+SelectImportFile = 選擇文件 (.CSV 格式)
+Import = 導入
+ContactsMessage = 這是聯係人頁麵!!!
+ContactsCount = 聯係人
+GroupsCount = 組別
+
+; webmail 4.1 constants 
+PicturesBlocked = 為了安全，此郵件裏的圖片已經被阻止
+ShowPictures = 顯示圖片
+ShowPicturesFromSender = 總是顯示該發件人的郵件中的圖片
+AlwaysShowPictures = 總是顯示郵件中的圖片
+
+TreatAsOrganization = 作為一個團體
+
+WarningGroupAlreadyExist = 這個組名已經存在，請指定另一個名字。
+WarningCorrectFolderName = 請指定一個正確的文件夾名字。
+WarningLoginFieldBlank = 登陸名不能為空。
+WarningCorrectLogin = 請指定一個正確的登陸名
+WarningPassBlank = 密碼不能為空。
+WarningCorrectIncServer = 請指定一個 POP3(IMAP) 帳號。
+WarningCorrectSMTPServer = 請指定一個正確的發郵件帳號。
+WarningFromBlank = 發件人不能為空。
+WarningAdvancedDateFormat = 請指定一個日期/時間格式
+AdvancedDateHelpTitle = 日期（高級）
+
+AdvancedDateHelpIntro = 選擇“高級選項”時, 您可以使用文本框設置您的日期格式, 建議不要在此使用. 格式 ':' or '/' 定界符 char:
+AdvancedDateHelpConclusion = 例如, 如果為 "mm/dd/yyyy"（高級選項）, 顯示為： month/day/year (i.e. 11/23/2005)
+AdvancedDateHelpDayOfMonth = 月中此曰 (1 - 31)
+AdvancedDateHelpNumericMonth = 月 (1 - 12)
+AdvancedDateHelpTextualMonth = 月 (Jan - Dec)
+AdvancedDateHelpYear2 = 年, 2 兩位
+AdvancedDateHelpYear4 = 年, 4 四位
+AdvancedDateHelpDayOfYear = 年中此日 (1 - 366)
+AdvancedDateHelpQuarter = 季度
+AdvancedDateHelpDayOfWeek = 一周內每天 (Mon - Sun)
+AdvancedDateHelpWeekOfYear = 全年的第幾周 (1 - 53)
+
+InfoNoMessagesFound = 沒有找到郵件。
+ErrorSMTPConnect = 無法連接到SMTP服務器，請檢查SMTP設置。
+ErrorSMTPAuth = 驗證失敗，用戶名或密碼錯誤。
+ReportMessageSent = 郵件已經發送。
+ReportMessageSaved = 郵件已經保存。
+ErrorPOP3Connect = 無法連接POP3服務器，請檢查POP3設置。
+ErrorIMAP4Connect = 無法連接 IMAP4 服務器, 請檢查 IMAP4 設置。
+ErrorPOP3IMAP4Auth = 驗證失敗，錯誤的登陸名或密碼。
+ErrorGetMailLimit = 對不起，您的郵箱大小超出限製。
+
+ReportSettingsUpdatedSuccessfuly = 設置更新成功。
+ReportAccountCreatedSuccessfuly = 帳號創建成功。
+ReportAccountUpdatedSuccessfuly = 帳號更新成功。
+ConfirmDeleteAccount = 確認要刪除此帳號嗎？
+ReportFiltersUpdatedSuccessfuly = 過濾器更新成功。
+ReportSignatureUpdatedSuccessfuly = 簽名更新成功。
+ReportFoldersUpdatedSuccessfuly = 過濾器更新成功
+ReportContactsSettingsUpdatedSuccessfuly = 聯係人設置成功。
+
+ErrorInvalidCSV = 您選擇的CSV格式文件無效。
+;The group "guies" was successfully added. 
+ReportGroupSuccessfulyAdded1 = 組別
+ReportGroupSuccessfulyAdded2 = 添加成功。
+ReportGroupUpdatedSuccessfuly = 級別更新成功。
+ReportContactSuccessfulyAdded = 聯係人添加成功。
+ReportContactUpdatedSuccessfuly = 聯係人更新成功。
+;Contact(s) was added to group "friends". 
+ReportContactAddedToGroup = 聯係人已經添加到組。
+AlertNoContactsGroupsSelected = 沒有選擇聯係人或組。
+
+InfoListNotContainAddress = 如果在列表中找不到包含的地址，請嚐試輸入第一個字符。
+
+DirectAccess = D
+DirectAccessTitle = 直接模式， WebMail 直接訪問郵件服務器。
+
+FolderInbox = 收件箱
+FolderSentItems = 已發送
+FolderDrafts = 草稿箱
+FolderTrash = 已刪除
+
+FileLargerAttachment = 文件大小已超過附件大小限製。
+FilePartiallyUploaded = 由於一個未知錯誤，文件隻上傳了一部分。
+NoFileUploaded = 文件沒有上傳。
+MissingTempFolder = 缺少臨時文件夾。
+MissingTempFile = 缺少臨時文件夾。
+UnknownUploadError = 發生未知文件上傳錯誤。
+FileLargerThan = 文件上傳時發生錯誤，可能是您上傳的文件過大。
+PROC_CANT_LOAD_DB = 無法連接到數據庫。
+PROC_CANT_LOAD_LANG = 沒有找到必需的語言配置文件。
+PROC_CANT_LOAD_ACCT = 此帳號不存在，可能是被刪除了。
+
+DomainDosntExist = 服務器上不存在此域名。
+ServerIsDisable = 被管理員禁止使用域名服務器。
+
+PROC_ACCOUNT_EXISTS = 帳號創建失敗，此帳號已有人使用。
+PROC_CANT_GET_MESSAGES_COUNT = 無法獲取郵件數量。
+PROC_CANT_MAIL_SIZE = 無法獲取郵件大小。
+
+Organization = 團體機構
+WarningOutServerBlank = 發郵件字段不能為空
+
+Refresh = 刷新
+MessagesInInbox = 郵件收件箱
+InfoEmptyInbox = 收件箱為空
+
+; webmail 4.2 constants 
+BackToList = 返回
+InfoNoContactsGroups = 沒有聯係人或組。
+InfoNewContactsGroups = 您可在新建聯係人/組或者從Outlook導入.CSV 格式文件
+DefTimeFormat = 默認時間格式
+SpellNoSuggestions = 沒有建議
+SpellWait = 請稍等...
+
+InfoNoMessageSelected = 沒有選擇郵件。
+InfoSingleDoubleClick = 你可以在列表中單擊郵件進行預覽，或者雙擊查看完整的內容。
+; calendar 
+TitleDay = 查看一天
+TitleWeek = 查看一周
+TitleMonth = 查看一個月
+
+ErrorNotSupportBrowser = Webmail日期不支持您的瀏覽器，請使用FireFox 2.0 或更高版本, Opera 9.0 或更高版本, Internet Explorer 6.0 或更高版本, Safari 3.0.2 或更高版本。
+ErrorTurnedOffActiveX = ActiveX 被關閉 . <br />請轉到相應的程序。
+
+Calendar = 日程
+
+TabDay = 日
+TabWeek = 周
+TabMonth = 月
+
+ToolNewEvent = 新事件
+ToolBack = 返回
+ToolToday = 今日
+AltNewEvent = 新事件
+AltBack = 返回
+AltToday = 今日
+CalendarHeader = 日程
+CalendarsManager = 日程管理
+
+CalendarActionNew = 新日程
+EventHeaderNew = 新事件
+CalendarHeaderNew = 新日程
+
+EventSubject = 主題
+EventCalendar = 日程
+EventFrom = 發件人
+EventTill = 抽屜
+CalendarDescription = 描述
+CalendarColor = 顏色
+CalendarName = 日程名稱
+CalendarDefaultName = 我的日程
+
+ButtonSave = 保存
+ButtonCancel = 取消
+ButtonDelete = 刪除
+
+AltPrevMonth = 上一月
+AltNextMonth = 下一月
+
+CalendarHeaderEdit = 編輯日程
+CalendarActionEdit = 編輯日程
+ConfirmDeleteCalendar = 確定要刪除此日程嗎？
+InfoDeleting = 正在刪除...
+WarningCalendarNameBlank = 日程名稱不能為空
+ErrorCalendarNotCreated = 日程沒有創建
+WarningSubjectBlank = 主題不能為空。
+WarningIncorrectTime = 時間不能包含非法字符。
+WarningIncorrectFromTime = 錯誤的發件人時間
+WarningIncorrectTillTime = 抽屜時間錯誤
+WarningStartEndDate = 結束時間必須大於開始時間。
+WarningStartEndTime = 結束時間必須大於開始時間。
+WarningIncorrectDate = 請填寫正確的日期。
+InfoLoading = 正在加載...
+EventCreate = 新建事件
+CalendarHideOther = 隱藏其他日程
+CalendarShowOther = 顯示其他日程
+CalendarRemove = 移除日程
+EventHeaderEdit = 編輯事件
+
+InfoSaving = 正在保存...
+SettingsDisplayName = 顯示名稱
+SettingsTimeFormat = 時間格式
+SettingsDateFormat = 日期格式
+SettingsShowWeekends = 顯示周末
+SettingsWorkdayStarts = 工作日開始
+SettingsWorkdayEnds = 結束
+SettingsShowWorkday = 顯示工作日
+SettingsWeekStartsOn = 每星期啟動
+SettingsDefaultTab = 默認標簽
+SettingsCountry = 國家
+SettingsTimeZone = 時區
+SettingsAllTimeZones = 所有時區
+
+WarningWorkdayStartsEnds =  '工作日結束' 必須大於 '節假日開始' 時間
+ReportSettingsUpdated = 設置更新成功。
+
+SettingsTabCalendar = 日程
+
+FullMonthJanuary = January
+FullMonthFebruary = February
+FullMonthMarch = March
+FullMonthApril = April
+FullMonthMay = May
+FullMonthJune = June
+FullMonthJuly = July
+FullMonthAugust = August
+FullMonthSeptember = September
+FullMonthOctober = October
+FullMonthNovember = November
+FullMonthDecember = December
+
+ShortMonthJanuary = Jan
+ShortMonthFebruary = Feb
+ShortMonthMarch = Mar
+ShortMonthApril = Apr
+ShortMonthMay = May
+ShortMonthJune = Jun
+ShortMonthJuly = Jul
+ShortMonthAugust = Aug
+ShortMonthSeptember = Sep
+ShortMonthOctober = Oct
+ShortMonthNovember = Nov
+ShortMonthDecember = Dec
+
+FullDayMonday = 星期一
+FullDayTuesday = 星期二
+FullDayWednesday = 星期三
+FullDayThursday = 星期四
+FullDayFriday = 星期五
+FullDaySaturday = 星期六
+FullDaySunday = 星期日
+
+DayToolMonday = Mon
+DayToolTuesday = Tue
+DayToolWednesday = Wed
+DayToolThursday = Thu
+DayToolFriday = Fri
+DayToolSaturday = Sat
+DayToolSunday = Sun
+
+CalendarTableDayMonday = M
+CalendarTableDayTuesday = T
+CalendarTableDayWednesday = W
+CalendarTableDayThursday = T
+CalendarTableDayFriday = F
+CalendarTableDaySaturday = S
+CalendarTableDaySunday = S
+
+ErrorParseJSON = 服務器無法解析JSON響應。
+
+ErrorLoadCalendar = 無法加載日程表
+ErrorLoadEvents = 無法加載事件表
+ErrorUpdateEvent = 無法保存事件
+ErrorDeleteEvent = 無法刪除事件
+ErrorUpdateCalendar = 無法保存日程
+ErrorDeleteCalendar = 無法刪除日程
+ErrorGeneral = 服務器發生錯誤，請一會再試。
+
+; webmail 4.3 constants 
+SharedTitleEmail = E-mail
+ShareHeaderEdit = 分享日程表
+ShareActionEdit = 分享日程表
+CalendarPublicate = 所有人可以看到此日程表
+CalendarPublicationLink = 連接
+ShareCalendar = 分享此日程表
+SharePermission1 = 可以更改和管理分享
+SharePermission2 = 可以更改事件
+SharePermission3 = 能看所有詳細事件
+SharePermission4 = 隻可以看 free/busy (隱藏詳細)
+ButtonClose = 關閉
+WarningEmailFieldFilling = 請先輸入 e-mail 
+EventHeaderView = 查看事件
+ErrorUpdateSharing = 無法保存分享和發表數據
+ErrorUpdateSharing1 = 不能分享給 %s 用戶，那是無效的。
+ErrorUpdateSharing2 = 不可能分享此日程表給用戶 %s
+ErrorUpdateSharing3 = 此日程表已經分享給用戶 %s
+Title_MyCalendars = 我的日程表
+Title_SharedCalendars = 分享日程表
+ErrorGetPublicationHash = 無法建立發布連接
+ErrorGetSharing = 無法添加分享
+CalendarPublishedTitle = 此日程表已經發布
+RefreshSharedCalendars = 刷新分享日程表
+Title_CheckSharedCalendars = 檢查分享日程表
+
+GroupMembers = 成員
+
+ReportMessagePartDisplayed = 注意：這隻是顯示郵件的一部分。
+ReportViewEntireMessage = 查看完整的郵件
+ReportClickHere = 點擊這裏
+ErrorContactExists = 此聯係人的 e-mail 已經存在。
+
+Attachments = 附件
+
+InfoGroupsOfContact = 選中標記的聯係人已經被標記為這個組的成員。
+AlertNoContactsSelected = 沒有選擇聯係人。
+MailSelected = 郵箱已選擇地址
+CaptionSubscribed = 訂閱
+
+OperationSpam = 垃圾郵件
+OperationNotSpam = 不是垃圾郵件
+FolderSpam = 垃圾郵件
+
+; webmail 4.4 contacts 
+ContactMail = 郵件聯係人
+ContactViewAllMails = 查看此聯係人的所有郵件
+ContactsMailThem = 給他們發郵件
+DateToday = 今天
+DateYesterday = 昨天
+MessageShowDetails = 查看詳細
+MessageHideDetails = 隱藏詳細
+MessageNoSubject = 沒有主題
+; john@gmail.com to nadine@gmail.com 
+MessageForAddr = 發給
+SearchClear = 清空搜索
+; Search results for "search string" in Inbox folder: 
+; Search results for "search string" in all mail folders: 
+SearchResultsInFolder =  "#s" 在文件夾 #f 的搜索結果:
+SearchResultsInAllFolders =  "#s" 在所有郵箱文件夾的搜索結果:
+AutoresponderTitle = 自動回複
+AutoresponderEnable = 啟用自動回複
+AutoresponderSubject = 主題
+AutoresponderMessage = 郵件
+ReportAutoresponderUpdatedSuccessfuly = 自動回複設置更新成功
+FolderQuarantine = 隔離
+
+;calendar 
+EventRepeats = 重複
+NoRepeats = 不重複
+DailyRepeats = 每天
+WorkdayRepeats = 每個工作日 (Mon. - Fri.)
+OddDayRepeats = 每個 Mon., Wed. and Fri.
+EvenDayRepeats = 每個 Tues. and Thurs.
+WeeklyRepeats = 每周
+MonthlyRepeats = 每月
+YearlyRepeats = 每年
+RepeatsEvery = 重複每個
+ThisInstance = 僅一次
+AllEvents = 所有事件係列
+AllFollowing = 所有下列的
+ConfirmEditRepeatEvent = 你想更改這一係列事件嗎？
+RepeatEventHeaderEdit = 編輯循環事件
+First = 第一個
+Second = 第二個
+Third = 第三個
+Fourth = 第四個
+Last = 最後一個
+Every = 每個
+SetRepeatEventEnd = 設置終止日期
+NoEndRepeatEvent = 沒有終止日期
+EndRepeatEventAfter = 終結
+Occurrences = 事件
+EndRepeatEventBy = 結束
+EventCommonDataTab = 主參數
+EventRepeatDataTab = 循環參數
+RepeatEventNotPartOfASeries = 此事件已經改變且不再是係列中的一部分
+UndoRepeatExclusion = 取消改變為包含在此係列
+
+MonthMoreLink = %d 更多...
+NoNewSharedCalendars = 沒有新日程
+NNewSharedCalendars = 找到 %d 個新日程
+OneNewSharedCalendars = 找到 1 個新日程
+ConfirmUndoOneRepeat = 你想恢複這個事件嗎？
+
+RepeatEveryDayInfin = 每天
+RepeatEveryDayTimes = 每天, %TIMES% 次
+RepeatEveryDayUntil = 每天, 直到 %UNTIL%
+RepeatDaysInfin = 每 %PERIOD% 天
+RepeatDaysTimes = 每 %PERIOD% 天, %TIMES% 次
+RepeatDaysUntil = 每 %PERIOD% 天, 直到 %UNTIL%
+
+RepeatEveryWeekWeekdaysInfin = 每周工作日
+RepeatEveryWeekWeekdaysTimes = 每周工作日, %TIMES% 次
+RepeatEveryWeekWeekdaysUntil = 每周工作日, 直到 %UNTIL%
+RepeatWeeksWeekdaysInfin = 每 %PERIOD% 周，在工作日
+RepeatWeeksWeekdaysTimes = 每 %PERIOD% 周，在工作日, %TIMES% 次
+RepeatWeeksWeekdaysUntil = 每 %PERIOD% 周，在工作日, 直到 %UNTIL%
+
+RepeatEveryWeekInfin = 每周 %DAYS%
+RepeatEveryWeekTimes = 每周 %DAYS%, %TIMES% 次
+RepeatEveryWeekUntil = 每周 %DAYS%, 直到 %UNTIL%
+RepeatWeeksInfin = 每 %PERIOD% 周 %DAYS%
+RepeatWeeksTimes = 每 %PERIOD% 周 %DAYS%, %TIMES% 次
+RepeatWeeksUntil = 每 %PERIOD% 周 %DAYS%, 直到 %UNTIL%
+
+RepeatEveryMonthDateInfin = 每月 %DATE% 日
+RepeatEveryMonthDateTimes = 每月 %DATE% 日, %TIMES% 次
+RepeatEveryMonthDateUntil = 每月 %DATE% 日, 直到 %UNTIL%
+RepeatMonthsDateInfin = 每 %PERIOD% months on day %DATE%
+RepeatMonthsDateTimes = 每 %PERIOD% months on day %DATE%, %TIMES% times
+RepeatMonthsDateUntil = 每 %PERIOD% months on day %DATE%, 直到 %UNTIL%
+
+RepeatEveryMonthWDInfin = 每月 %NUMBER% %DAY%
+RepeatEveryMonthWDTimes = 每月 %NUMBER% %DAY%, %TIMES% 次
+RepeatEveryMonthWDUntil = 每月 %NUMBER% %DAY%, 直到 %UNTIL%
+RepeatMonthsWDInfin = 每 %PERIOD% 月 %NUMBER% %DAY%
+RepeatMonthsWDTimes = 每 %PERIOD% 月 %NUMBER% %DAY%, %TIMES% 次
+RepeatMonthsWDUntil = 每 %PERIOD% 月 %NUMBER% %DAY%, 直到 %UNTIL%
+
+RepeatEveryYearDateInfin = 每年 %DATE%
+RepeatEveryYearDateTimes = 每年 %DATE%, %TIMES% 次
+RepeatEveryYearDateUntil = 每年 %DATE%, 直到 %UNTIL%
+RepeatYearsDateInfin = 每 %PERIOD% 年 %DATE%
+RepeatYearsDateTimes = 每 %PERIOD% 年 %DATE%, %TIMES% 次
+RepeatYearsDateUntil = 每 %PERIOD% 年 %DATE%, 直到 %UNTIL%
+
+RepeatEveryYearWDInfin = 每年 %NUMBER% %DAY%
+RepeatEveryYearWDTimes = 每年 %NUMBER% %DAY%, %TIMES% 次
+RepeatEveryYearWDUntil = 每年 %NUMBER% %DAY%, 直到 %UNTIL%
+RepeatYearsWDInfin = 每 %PERIOD% 年%NUMBER% %DAY%
+RepeatYearsWDTimes = 每 %PERIOD% 年 %NUMBER% %DAY%, %TIMES% 次
+RepeatYearsWDUntil = 每 %PERIOD% 年 %NUMBER% %DAY%, 直到 %UNTIL%
+
+RepeatDescDay = 天
+RepeatDescWeek = 周
+RepeatDescMonth = 月
+RepeatDescYear = 年
+
+; webmail 4.5 contacts 
+WarningUntilDateBlank = 請指定結束循環日期
+WarningWrongUntilDate = 結束循環日期必須大於開始循環日期
+
+OnDays = 那一天
+CancelRecurrence = 取消循環
+RepeatEvent = 重複此事件
+
+Spellcheck = 檢查拚寫
+LoginLanguage = 語言
+LanguageDefault = 默認
+
+; webmail 4.5.x new 
+EmptySpam = 清空垃圾郵件
+Saving = 正在保存...
+Sending = 正在發送...
+LoggingOffFromServer = 正從服務器退出...
+
+; webmail 4.6 
+PROC_CANT_SET_MSG_AS_SPAM = 不能標記為垃圾郵件
+PROC_CANT_SET_MSG_AS_NOTSPAM = 不能標記為非垃圾郵件
+ExportToICalendar = 導出日程
+ErrorMaximumUsersLicenseIsExceeded = 您的用戶數已超出限定範圍。
+RepliedMessageTitle = 已回複
+ForwardedMessageTitle = 已轉發
+RepliedForwardedMessageTitle = 已回複和轉發
+ErrorDomainExist = 創建失敗，用戶相應的域名還沒有添加，請先添加域名。
+
+; webmail 4.7 
+RequestReadConfirmation = 已讀回執
+FolderTypeDefault = 默認
+ShowFoldersMapping = 使用另一個和係統文件夾一樣的文件夾 (e.g. use MyFolder as Sent Items)
+ShowFoldersMappingNote = 例如, 更新“已發送”為我的“新文件夾”, "已發送"指定到“我的文件夾”裏麵。
+FolderTypeMapTo = 用於
+
+ReminderEmailExplanation = 此郵件涉及到您的帳號 %EMAIL% ,因您已經安排好事件通知在你的日程： %CALENDAR_NAME%
+ReminderOpenCalendar = 打開日程表
+
+AddReminder = 提供
+AddReminderBefore = 在此事件之前提醒我 % 
+AddReminderAnd = 且 % 之前
+AddReminderAlso = 且在 % 之前
+AddMoreReminder = 更多提醒
+RemoveAllReminders = 移除所有提醒
+ReminderNone = 無
+ReminderMinutes = 分
+ReminderHour = 時
+ReminderHours = 時
+ReminderDay = 天
+ReminderDays = 天
+ReminderWeek = 周
+ReminderWeeks = 周
+Allday = 全天
+
+Folders = 文件夾
+NoSubject = 沒有主題
+SearchResultsFor = 搜索結果
+
+Back = 返回
+Next = 下一個
+Prev = 前一個
+
+MsgList = 郵件
+Use24HTimeFormat = 使用24小時格式
+UseCalendars = 使用日程表
+Event = 事件
+CalendarSettingsNullLine = 沒有日程
+CalendarEventNullLine = 沒有事件
+ChangeAccount = 更改帳號
+
+TitleCalendar = 日程表
+TitleEvent = 事件
+TitleFolders = 文件夾
+TitleConfirmation = 確認
+
+Yes = 是
+No = 否
+
+EditMessage = 新郵件
+
+AccountNewPassword = 新密碼
+AccountConfirmNewPassword = 確認新密碼
+AccountPasswordsDoNotMatch = 兩次密碼不匹配。
+
+ContactTitle = 標題
+ContactFirstName = 名
+ContactSurName = 姓
+
+ContactNickName = 昵稱
+
+CaptchaTitle = 驗證碼
+CaptchaReloadLink = 刷新
+CaptchaError = 驗證碼不正確。
+
+WarningInputCorrectEmails = 請指定正確的郵件地址。
+WrongEmails = 錯誤的郵件地址:
+
+ConfirmBodySize1 = 輸入框已經達到最大
+ConfirmBodySize2 = 您輸入的字符已超過限定長度，要重新編輯請點擊“取消”
+BodySizeCounter = 計算器
+InsertImage = 插入圖片
+ImagePath = 圖片路徑
+ImageUpload = 插入
+WarningImageUpload = 附上的不是圖片文件，請另選擇一個圖片文件。
+
+ConfirmExitFromNewMessage = 更改沒有保存，確定要離開此頁麵嗎？點“取消”留在本頁麵。
+
+SensivityConfidential = 請把郵件視為機密。
+SensivityPrivate = 請把郵件視為不公開的
+SensivityPersonal = 請把郵件視為親啟
+
+ReturnReceiptTopText = 當您收到此郵件的時候，發件人也收到了通知。
+ReturnReceiptTopLink = 單擊這裏通知發件人
+ReturnReceiptSubject = 回執 (已顯示)
+ReturnReceiptMailText1 = 這是一個您已發出郵件的回執
+ReturnReceiptMailText2 = 注意: 此回執僅承認郵件已經在接收者的電腦上顯示，但不保證接收者已經閱讀或者理解郵件內容。
+ReturnReceiptMailText3 = 包含主題
+
+SensivityMenu = 敏感
+SensivityNothingMenu = 無
+SensivityConfidentialMenu = 機密
+SensivityPrivateMenu = 隱私
+SensivityPersonalMenu = 個人
+
+ErrorLDAPonnect = 無法連接到LDAP服務器。
+
+MessageSizeExceedsAccountQuota = 此郵件大小已超過您的郵箱配額
+MessageCannotSent = 無法發送此郵件。
+MessageCannotSaved = 無法保存此郵件。
+
+ContactFieldTitle = 字段
+ContactDropDownTO = 收件人
+ContactDropDownCC = 抄送
+ContactDropDownBCC = 密送
+
+; 4.9 
+NoMoveDelete = 郵件無法移動到垃圾箱，可能郵件已經滿，要將此郵件刪除嗎？
+
+WarningFieldBlank = 此字段不能為空。
+WarningPassNotMatch = 密碼不匹配，請查檢。
+PasswordResetTitle = 取回密碼 - step %d
+NullUserNameonReset = 用戶
+IndexResetLink = 忘記密碼？
+IndexRegLink = 注冊新帳號
+
+RegDomainNotExist = 密碼不存在。
+RegAnswersIncorrect = 答案錯誤。
+RegUnknownAdress = 未知郵件地址。
+RegUnrecoverableAccount = 此郵件無法申請取回密碼。
+RegAccountExist = 此郵件地址已經被使用。
+RegRegistrationTitle = 注冊新帳號
+RegName = 名字
+RegEmail = e-mail 地址
+RegEmailDesc = 例如, myname@domain.com. 此帳號用於登陸係統。
+RegSignMe = 記住用戶名
+RegSignMeDesc = 下次自動在此電腦登陸。
+RegPass1 = 密碼
+RegPass2 = 重複密碼 
+RegQuestionDesc = 請提供兩個機密的問題和答案，萬一忘記密碼，你可以使用此答案找回密碼。
+RegQuestion1 = 機密問題 1
+RegAnswer1 = 答案 1
+RegQuestion2 = 機密問題 2
+RegAnswer2 = 答案 2
+RegTimeZone = 時區
+RegLang = 界麵語言
+RegCaptcha = 驗證碼
+RegSubmitButtonValue = 注冊
+
+ResetEmail = 請提供您的E-mail
+ResetEmailDesc = 此E-mail已經注冊過了。
+ResetCaptcha = 驗證碼
+ResetSubmitStep1 = 提交
+ResetQuestion1 = 機密問題 1
+ResetAnswer1 = 答案
+ResetQuestion2 = 機密問題 2
+ResetAnswer2 = 答案
+ResetSubmitStep2 = 提交
+
+ResetTopDesc1Step2 = 郵件地址
+ResetTopDesc2Step2 = 確認地址
+
+ResetTopDescStep3 = 請輸入新密碼。
+
+ResetPass1 = 新密碼
+ResetPass2 = 重複密碼
+ResetSubmitStep3 = 提交
+ResetDescStep4 = 您的密碼已經成功更改。
+ResetSubmitStep4 = 返回
+
+RegReturnLink = 返回登陸窗口
+ResetReturnLink = 返回登陸窗口
+
+; Appointments 
+AppointmentAddGuests = 添加來賓
+AppointmentRemoveGuests = 取消會議
+AppointmentListEmails = 輸入郵件地址用逗號隔開然後點保存。
+AppointmentParticipants = 參與者
+AppointmentRefused = 被拒絕
+AppointmentAwaitingResponse = 等等回應
+AppointmentInvalidGuestEmail = 以下來賓地址無效:
+AppointmentOwner = 所有者
+
+AppointmentMsgTitleInvite = 邀請參加活動
+AppointmentMsgTitleUpdate = 活動已修改
+AppointmentMsgTitleCancel = 活動被取消。
+AppointmentMsgTitleRefuse = 來賓 %guest% 拒絕邀請。
+AppointmentMoreInfo = 更多信息
+AppointmentOrganizer = 組織者
+AppointmentEventInformation = 活動信息
+AppointmentEventWhen = 當
+AppointmentEventParticipants = 參與者
+AppointmentEventDescription = 描述
+AppointmentEventWillYou = 您參與嗎？
+AppointmentAdditionalParameters = 附加參數
+AppointmentHaventRespond = 無響應
+AppointmentRespondYes = 我將參與
+AppointmentRespondMaybe = 不確認
+AppointmentRespondNo = 不參與
+AppointmentGuestsChangeEvent = 來賓可以修改活動
+
+AppointmentSubjectAddStart = 您收到活動邀請 
+AppointmentSubjectAddFrom =  發件人 
+AppointmentSubjectUpdateStart = 修改活動
+AppointmentSubjectDeleteStart = 取消活動 
+ErrorAppointmentChangeRespond = 無法修改約會響應
+SettingsAutoAddInvitation = 自動添加邀請進日程表
+ReportEventSaved = 您的活動已保存
+ReportAppointmentSaved =  and notifications were send
+ErrorAppointmentSend = 無法發送邀請。
+AppointmentEventName = 名稱:
+
+; End appointments 
+
+ErrorCantUpdateFilters = 無法更新過濾器
+
+FilterPhrase = 如果 %field 郵件頭 %condition %string 就 %action
+FiltersAdd = 添加過濾
+FiltersCondEqualTo = 等於
+FiltersCondContainSubstr = 包含
+FiltersCondNotContainSubstr = 不包含
+FiltersActionDelete = 刪除郵件
+FiltersActionMove = 移動
+FiltersActionToFolder = 到 %folder 
+FiltersNo = 沒有指定過濾
+
+ReminderEmailFriendly = 提醒
+ReminderEventBegin = 開始於: 
+
+FiltersLoading = 加載過濾...
+ConfirmMessagesPermanentlyDeleted = 此文件夾所有郵件將被刪除
+
+InfoNoNewMessages = There are no new messages.
+TitleImportContacts = Import Contacts
+TitleSelectedContacts = Selected Contacts
+TitleNewContact = New Contact
+TitleViewContact = View Contact
+TitleEditContact = Edit Contact
+TitleNewGroup = New Group
+TitleViewGroup = View Group
+
+AttachmentPending = Pending...
+AttachmentUploading = Uploading...
+AttachmentComplete = Complete.
+AttachmentCancelled = Cancelled.
+AttachmentStopped = Stopped.
+AttachmentsUpload = Attach Files
+AttachmentsUploadPadding = 34
+
+TestButton = TEST
+AutoCheckMailIntervalLabel = Autocheck interval
+AutoCheckMailIntervalDisableName = Disable
+
+ReportCalendarSaved = 日程已保存
+
+ContactSyncError = Sync failed
+ReportContactSyncDone = Sync complete
+
+MobileSyncUrlTitle = Mobile sync URL
+MobileSyncLoginTitle = Mobile sync login
+
+QuickReply = Quick Reply
+SwitchToFullForm = Switch To Full Form
+SortFieldDate = Date
+SortFieldFrom = From
+SortFieldSize = Size
+SortFieldSubject = Subject
+SortFieldFlag = Flag
+SortFieldAttachments = Attachments
+SortOrderAscending = Ascending
+SortOrderDescending = Descending
+ArrangedBy = Arranged by
+
+MessagePaneToRight = The message pane is to the right of the message list, rather than below
+
+SettingsTabMobileSync = Mobile Sync
+
+MobileSyncContactDataBaseTitle = Mobile sync contact database
+MobileSyncCalendarDataBaseTitle = Mobile sync calendar database
+MobileSyncTitleText = If you'd like to synchronize your SyncML-enabled handheld device with WebMail, you can use these parameters.<br />"Mobile Sync URL" specifies path to SyncML Data Synchronization server, "Mobile Sync Login" is your login on SyncML Data Synchronization Server and use your own password upon request. Also, some devices need to specify database name for contact and calendar data.<br />Use "Mobile sync contact database" and "Mobile sync calendar database" respectively.
+MobileSyncEnableLabel = Enable mobile sync
+
+SearchInputText = search
+
+AppointmentEmailExplanation = This message has come to your account %EMAIL% because you was invited to the event by %ORGANAZER%

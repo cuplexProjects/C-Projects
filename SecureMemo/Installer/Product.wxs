@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Secure Memo" Language="1033" Version="1.0.0.0" Manufacturer="Martin Dahl" UpgradeCode="62a68dc6-7d16-406e-b0a7-074da5b8d6e0">
+    <Package InstallerVersion="300" Compressed="yes" Platform="x64"/>
+    <Media Id='1' Cabinet='SecureMemo.cab' EmbedCab='yes' DiskPrompt="CD-ROM #1" />
+    <Property Id='DiskPrompt' Value="SecureMemo Installation [1]" />
+
+    <!-- Step 1: Define the directory structure -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="APPLICATIONROOTDIRECTORY" Name="SecureMemo"/>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="SecureMemo">
+          <Component Id="ProgramMenuDir" Guid="197245B9-C243-4F28-990D-400B51F0B988">
+            <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
+            <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" />
+    </Directory>
+
+    <!-- Step 2: Add files to your installer package -->
+    <DirectoryRef Id="APPLICATIONROOTDIRECTORY" FileSource="$(var.SecureMemo.TargetDir)" DiskId="1">
+      <Component Id="SecureMemo.exe" Guid="9B841E0A-F79F-44D3-AC46-F141668FAD9F">
+        <File Id="SecureMemo.exe" Source="$(var.SecureMemo.TargetDir)SecureMemo.exe" KeyPath="yes" Checksum="yes"/>
+      </Component>
+
+      <Component Id="GeneralToolkit" Guid="0191E365-E1DB-40F7-918C-C2221B960662">
+        <File Id="GeneralToolkitLib.dll" Source="$(var.SecureMemo.TargetDir)GeneralToolkitLib.dll" Name="GeneralToolkitLib.dll" KeyPath="yes"/>
+      </Component>
+
+      <Component Id="protobuf" Guid="D9F21CBA-0EAA-49DC-B689-38B0E1E5BF0F">
+        <File Id="protobuf" Source="$(var.SecureMemo.TargetDir)" Name="protobuf-net.dll" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <!-- Desktop Shortcut -->
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationDesktopShortcut" Guid="C0148FC5-4032-42E8-9302-2706E92F51AE">
+        <Shortcut Id="desktopSC" Target="[#SecureMemo.exe]" Icon="ApplicationIcon"
+                  Directory="DesktopFolder" Name="Secure Memo" IconIndex="0" WorkingDirectory="APPLICATIONFOLDER" Advertise="no" />
+        <RemoveFolder Id="ApplicationDesktopFolder" Directory="DesktopFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="SOFTWARE\CUPLEX" Name="DesktopSC" Value="1" Type="integer" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <!-- Step 3: Tell WiX to install the files -->
+    <Feature Id="MainApplication" Title="Main Application" Level="1">
+      <ComponentRef Id="SecureMemo.exe" />
+      <ComponentRef Id="GeneralToolkit" />
+      <ComponentRef Id="protobuf" />
+      <ComponentRef Id='ProgramMenuDir' />
+      <ComponentRef Id="ApplicationDesktopShortcut" />
+    </Feature>
+
+    <UIRef Id="WixUI_Mondo" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+    <Icon Id="ApplicationIcon" SourceFile="$(var.SecureMemo.ProjectDir)\Icons\AppIcon.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="ApplicationIcon" />
+  </Product>
+</Wix>

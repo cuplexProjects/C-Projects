@@ -1,0 +1,2 @@
+sqlmetal /server:localhost /database:CuplexApi /user:CuplexApiUser /password:nodvE379ohORU9ycJeiQfHYfWjyvfqWK /dbml:DBDataClasses.dbml /namespace:DatabaseLib.Linq /context:DBDataClassesDataContext /pluralize /functions
+sqlmetal /code:DBDataClasses.designer.cs DBDataClasses.dbml

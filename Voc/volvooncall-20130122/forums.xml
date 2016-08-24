@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forums report_date="20130122">
+<forum>
+  <category-id type="integer">20074573</category-id>
+  <description>Prerequisites and limitations for Volvo On Call</description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">4</entries-count>
+  <id type="integer">21604893</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>About the service</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">3</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2012-12-20T15:08:11+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">6</entries-count>
+  <id type="integer">21604903</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Download and start using the app</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">0</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2012-12-20T15:16:28+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">2</entries-count>
+  <id type="integer">21604913</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Car locator</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">1</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2013-01-21T14:04:59+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">3</entries-count>
+  <id type="integer">21608022</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Dashboard and vehicle information</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">5</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2013-01-21T15:13:37+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20074573</category-id>
+  <description>User instructions for Volvo On Call</description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">6</entries-count>
+  <id type="integer">21614081</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>How to</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">1</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2012-12-20T15:08:11+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20074573</category-id>
+  <description>Product updates and news for Volvo On Call</description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">0</entries-count>
+  <id type="integer">21614091</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Announcements</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">4</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2012-12-20T15:08:11+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">7</entries-count>
+  <id type="integer">21614101</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Technical requirements and availability</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">9</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2012-12-20T15:16:29+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">5</entries-count>
+  <id type="integer">21614111</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Assistance and support</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">8</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2012-12-20T15:16:29+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">3</entries-count>
+  <id type="integer">21614121</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Lock and unlock </name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">3</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2013-01-21T14:52:00+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">6</entries-count>
+  <id type="integer">21617907</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Managing your account</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">6</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2013-01-21T07:43:34+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">7</entries-count>
+  <id type="integer">21617917</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Journal log</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">2</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2013-01-21T15:45:07+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">7</entries-count>
+  <id type="integer">21621556</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>PIN-code and login</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">7</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2013-01-21T12:30:02+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20074573</category-id>
+  <description>Overview, easy to grasp information</description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">4</entries-count>
+  <id type="integer">21626668</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Introduction</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">0</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2012-12-20T15:08:11+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20074573</category-id>
+  <description>Explaining the functionality of the different Volvo On Call mobile app features</description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">7</entries-count>
+  <id type="integer">21626688</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>App features</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">2</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2012-12-20T15:08:11+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">3</entries-count>
+  <id type="integer">21626758</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Remote heater start</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">4</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2013-01-21T15:25:26+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">8</entries-count>
+  <id type="integer">21626768</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>Subscription and owner change</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">10</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2012-12-20T15:16:29+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+<forum>
+  <category-id type="integer">20085466</category-id>
+  <description></description>
+  <display-type-id type="integer">1</display-type-id>
+  <entries-count type="integer">0</entries-count>
+  <id type="integer">21626778</id>
+  <is-locked type="boolean">true</is-locked>
+  <name>General about the service</name>
+  <organization-id type="integer" nil="true"></organization-id>
+  <position type="integer">11</position>
+  <translation-locale-id type="integer" nil="true"></translation-locale-id>
+  <updated-at type="datetime">2012-12-20T15:16:29+01:00</updated-at>
+  <use-for-suggestions type="boolean">true</use-for-suggestions>
+  <visibility-restriction-id type="integer">1</visibility-restriction-id>
+  <is-public type="boolean">true</is-public>
+</forum>
+</forums>

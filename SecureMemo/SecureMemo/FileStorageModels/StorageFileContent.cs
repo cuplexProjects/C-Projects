@@ -1,0 +1,33 @@
+﻿using System.Collections.Generic;
+
+namespace SecureMemo.FileStorageModels
+{
+    public class StorageFileAllocationTable
+    {
+        private static readonly byte[] headerStartBytes =
+        {
+            0x5A, 0xEE, 0xC4, 0x10, 0xA0, 0x0A, 0x1D, 0x20, 0x85, 0x06, 0x6A, 0x16, 0x45, 0xE2, 0xED, 0x90, 0xC3, 0xAE, 0x60, 0x92, 0xF8, 0x82, 0x2F,
+            0x65, 0x92, 0x10, 0x9C, 0x44, 0x20, 0x65, 0x84, 0xF3
+        };
+
+        private static readonly byte[] headerEndBytes =
+        {
+            0xA6, 0x29, 0x9C, 0xFC, 0x88, 0x7D, 0x3D, 0xCE, 0x02, 0xF8, 0xA3, 0x54, 0x6D, 0x57, 0x1E, 0x4B, 0xFE, 0x53, 0x16, 0x6C, 0xBD, 0x8D, 0x13, 0x6A,
+            0xF6, 0x9C, 0x4E, 0x67, 0x93, 0x8D, 0xDB, 0x57
+        };
+
+        public long AllocationTableStartPos { get; set; }
+        public long AllocationTableEndPos { get; set; }
+        public int AllocationTableSize { get; set; }
+    }
+
+    public class StorageFileContent
+    {
+        public HashSet<StorageDirectory> Directories { get; set; }
+        public HashSet<StorageFile> Files { get; set; }
+        public HashSet<int> DirectoryIdSet { get; set; }
+        public HashSet<int> FileIdSet { get; set; }
+        public int NextDirectoryId { get; set; }
+        public int NextFileId { get; set; }
+    }
+}

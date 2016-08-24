@@ -1,0 +1,1261 @@
+PROC_ERROR_ACCT_CREATE = アカウント作成中にエラーが発生しました
+PROC_WRONG_ACCT_PWD = アカウントパスワードが間違っています
+PROC_CANT_LOG_NONDEF = 既定のアカウントでないアカウントへのログインはできません
+PROC_CANT_INS_NEW_FILTER = 新しいフィルタの作成に失敗しました
+PROC_FOLDER_EXIST = 指定されたフォルダ名称は既に存在しています
+PROC_CANT_CREATE_FLD = フォルダの作成に失敗しました
+PROC_CANT_INS_NEW_GROUP = 新しいグループの作成に失敗しました
+PROC_CANT_INS_NEW_CONT = 新しい連絡先の作成に失敗しました
+PROC_CANT_INS_NEW_CONTS = 新しい連絡先の作成に失敗しました
+PROC_CANT_ADD_NEW_CONT_TO_GRP = グループへの新しい連絡先の追加に失敗しました
+PROC_ERROR_ACCT_UPDATE = アカウントの更新時にエラーが発生しました
+PROC_CANT_UPDATE_CONT_SETTINGS = アカウント設定の更新時にエラーが発生しました
+PROC_CANT_GET_SETTINGS = アカウント設定の取得に失敗しました
+PROC_CANT_UPDATE_ACCT = アカウント設定の更新に失敗しました
+PROC_ERROR_DEL_FLD = フォルダの削除時にエラーが発生しました
+PROC_CANT_UPDATE_CONT = 連絡先の更新に失敗しました
+PROC_CANT_GET_FLDS = フォルダ階層の取得に失敗しました
+PROC_CANT_GET_MSG_LIST = メッセージ一覧の取得に失敗しました
+PROC_MSG_HAS_DELETED = 選択されたメールは既にサーバから削除されています
+PROC_CANT_LOAD_CONT_SETTINGS = 連絡先設定の読込に失敗しました
+PROC_CANT_LOAD_SIGNATURE = アカウント署名の読込に失敗しました
+PROC_CANT_GET_CONT_FROM_DB = 連絡先のDB読込に失敗しました
+PROC_CANT_GET_CONTS_FROM_DB = 連絡先のDB読込に失敗しました
+PROC_CANT_DEL_ACCT_BY_ID = アカウントの削除に失敗しました
+PROC_CANT_DEL_FILTER_BY_ID = フィルタの削除に失敗しました
+PROC_CANT_DEL_CONT_GROUPS = 連絡先またはグループの作成に失敗しました
+PROC_WRONG_ACCT_ACCESS = 第三者によるアクセスを検知しました
+PROC_SESSION_ERROR = タイムアウトによりセッションが切断されました
+
+MailBoxIsFull = 受信トレイが一杯です
+WebMailException = サーバの内部エラーが発生しました。システム管理者に連絡して下さい。
+InvalidUid = メッセージUIDが不正です
+CantCreateContactGroup = 連絡先グループの作成に失敗しました
+CantCreateUser = ユーザの作成に失敗しました
+CantCreateAccount = アカウントの作成にしました
+SessionIsEmpty = セッションが無効です
+FileIsTooBig = ファイルが大きすぎます
+
+PROC_CANT_MARK_ALL_MSG_READ = 全てのメッセージを既読にする事に失敗しました
+PROC_CANT_MARK_ALL_MSG_UNREAD = 全てのメッセージを未読にする事に失敗しました
+PROC_CANT_PURGE_MSGS = メッセージの消去に失敗しました
+PROC_CANT_DEL_MSGS = メッセージの削除に失敗しました
+PROC_CANT_UNDEL_MSGS = メッセージの削除取消に失敗しました
+PROC_CANT_MARK_MSGS_READ = メッセージを既読にする事に失敗しました
+PROC_CANT_MARK_MSGS_UNREAD = メッセージを既読にする事に失敗しました
+PROC_CANT_SET_MSG_FLAGS = メッセージにフラグを付ける事に失敗しました
+PROC_CANT_REMOVE_MSG_FLAGS = メッセージのフラグ解除に失敗しました
+PROC_CANT_CHANGE_MSG_FLD = メッセージの移動に失敗しました
+PROC_CANT_SEND_MSG = メッセージの送信に失敗しました
+PROC_CANT_SAVE_MSG = メッセージの保存に失敗しました
+PROC_CANT_GET_ACCT_LIST = アカウント一覧の取得に失敗しました
+PROC_CANT_GET_FILTER_LIST = フィルタ一覧の取得に失敗しました
+
+PROC_CANT_LEAVE_BLANK = 必須項目がブランクです
+
+PROC_CANT_UPD_FLD = フォルダの更新に失敗しました
+PROC_CANT_UPD_FILTER = フィルタの更新に失敗しました
+
+ACCT_CANT_ADD_DEF_ACCT = このアカウントは他ユーザの規定のアカウントに設定されている為、アカウントの追加に失敗しました
+ACCT_CANT_UPD_TO_DEF_ACCT = このアカウント設定は初期値への変更ができません
+ACCT_CANT_CREATE_IMAP_ACCT = 新しいアカウントの作成に失敗しました (IMAP4 接続エラー)
+ACCT_CANT_DEL_LAST_DEF_ACCT = 既定のアカウントは最低でも１つ必要です
+
+LANG_LoginInfo = ログイン情報
+LANG_Email = メール
+LANG_Login = ログイン
+LANG_Password = パスワード
+LANG_IncServer = 受信サーバ
+LANG_PopProtocol = POP3
+LANG_ImapProtocol = IMAP4
+LANG_IncPort = ポート
+LANG_OutServer = 送信サーバ
+LANG_OutPort = ポート
+LANG_UseSmtpAuth = SMTP-authを使用する
+LANG_SignMe = 次回から自動的にログインする
+LANG_Enter = ログイン
+
+; interface strings
+
+TitleLogin = ログイン
+TitleMessagesListView = メッセージ一覧
+TitleMessagesList = メッセージ一覧
+TitleViewMessage = メッセージを見る
+TitleNewMessage = メール作成
+TitleSettings = 設定
+TitleContacts = アドレス帳
+
+StandardLogin = 通常ログイン
+AdvancedLogin = オプションログイン
+
+InfoWebMailLoading = WebMail の ロード中
+Loading = ロード中
+InfoMessagesLoad = メッセージ一覧のロード中
+InfoEmptyFolder = フォルダが空です
+InfoPageLoading = ページの読み込み中&hellip;
+InfoSendMessage = メッセージ送信完了
+InfoSaveMessage = メッセージ保存完了
+InfoHaveImported = インポート完了
+InfoNewContacts = 連絡先リストへ連絡先を追加しました
+InfoToDelete = 削除 
+InfoDeleteContent = フォルダを削除するにはフォルダを空にして下さい
+InfoDeleteNotEmptyFolders = 空でないフォルダは削除できません。フォルダを空にしてから削除して下さい。
+InfoRequiredFields = * 必須項目
+
+ConfirmAreYouSure = よろしいですか？
+ConfirmDirectModeAreYouSure = 選択されたメッセージは完全に消去されます。よろしいですか？
+ConfirmSaveSettings = 設定は保存されていません。保存するには「OK」を押して下さい。
+ConfirmSaveContactsSettings = 連絡先設定の変更は保存されていません。保存するには「OK」を押して下さい。
+ConfirmSaveAcctProp = アカウントの変更は保存されていません。保存するには「OK」を押して下さい。
+ConfirmSaveFilter = フィルタの変更は保存されていません。保存するには「OK」を押して下さい。
+ConfirmSaveSignature = 署名の変更は保存されていません。保存するには「OK」を押して下さい。
+ConfirmSavefolders = フォルダの変更は保存されていません。保存するには「OK」を押して下さい。
+ConfirmHtmlToPlain = 警告：設定をHTMLからテキストに変更した場合、現在の書式は全て失われます。続ける場合「OK」を押して下さい。
+ConfirmAddFolder = フォルダを追加/削除する場合、変更の保存が必要です。保存するには「OK」を押して下さい。
+ConfirmEmptySubject = 題名が未設定です。よろしいですか？
+
+WarningEmailBlank = 「メールアドレス」が<br />未入力です
+WarningLoginBlank = 「ログインID」が<br />未入力です
+WarningToBlank = 「宛先」が未入力です
+WarningServerPortBlank = 「POP3」と<br />「SMTP」サーバ名/ポートが未入力です
+WarningEmptySearchLine = 検索ボックスが未入力です。検索したい項目を入力して下さい。
+WarningMarkListItem = 最低でも1つのメッセージを選択して下さい
+WarningFolderMove = 階層が異なる為、フォルダの移動に失敗しました
+WarningContactNotComplete = メールアドレスまたは名前を入力して下さい
+WarningGroupNotComplete = グループ名称を入力して下さい
+
+WarningEmailFieldBlank = 「メールアドレス」が未入力です
+WarningIncServerBlank = 「POP3/IMAP4 サーバ」が未入力です
+WarningIncPortBlank = 「POP3/IMAP4 ポート」が未入力です
+WarningIncLoginBlank = 「POP3/IMAP4 ログインID」が未入力です
+WarningIncPortNumber = 「POP3/IMAP4 ポート」には数字を指定して下さい
+DefaultIncPortNumber = 既定のPOP3(IMAP4)ポート番号は 110(143) です
+WarningIncPassBlank = 「POP3/IMAP4/ パスワード」が未入力です
+WarningOutPortBlank = 「送信サーバ ポート」が未入力です
+WarningOutPortNumber = 「SMTP ポート」は数字を指定して下さい
+WarningCorrectEmail = 正しいメールアドレスを指定して下さい
+DefaultOutPortNumber = 既定のSMTPポート番号は 25 です
+
+WarningCsvExtention = 拡張子は.csvを指定して下さい
+WarningImportFileType = 連絡先をコピーしたいアプリケーションを選択して下さい
+WarningEmptyImportFile = 「参照」ボタンを押してファイルを選択して下さい
+
+WarningContactsPerPage = 1ページに表示する連絡先は正の数を指定して下さい
+WarningMessagesPerPage = 1ページに表示するメッセージは正の数を指定して下さい
+WarningMailsOnServerDays = サーバに残す日数は正の数を指定して下さい
+WarningEmptyFilter = 文字列を指定して下さい
+WarningEmptyFolderName = フォルダ名称を指定して下さい
+
+ErrorConnectionFailed = 接続の確立に失敗しました
+ErrorRequestFailed = データの転送は正しく完了しませんでした
+ErrorAbsentXMLHttpRequest = XMLHttpRequestがありません
+ErrorWithoutDesc = without descriptionエラーが発生しました
+ErrorParsing = XML解析中にエラーが発生しました
+ResponseText = 応答テキスト:
+ErrorEmptyXmlPacket = XMLパケットが空です
+ErrorImportContacts = 連絡先のインポート中にエラーが発生しました
+ErrorNoContacts = インポート可能な連絡先がみつかりませんでした
+ErrorCheckMail = メッセージ受信中にエラーが発生しました。全てのメッセージの受信が完了していない可能性があります。
+
+LoggingToServer = サーバへ接続中&hellip;
+GettingMsgsNum = メッセージ取得中
+RetrievingMessage = メッセージ検索中
+DeletingMessage = メッセージ削除中
+DeletingMessages = メッセージ検索中
+Of = of
+Connection = コネクション
+Charset = 文字セット
+AutoSelect = 自動認識
+
+Contacts = アドレス帳
+ClassicVersion = クラシックバージョン
+Logout = ログアウト
+Settings = 設定
+
+LookFor = 検索キーワード: 
+SearchIn = 検索対象: 
+QuickSearch = 「差出人」「宛先」「件名」のみ検索対象とする(速度重視)
+SlowSearch = メッセージ全体を対象とする
+AllMailFolders = 全てのメールフォルダ
+AllGroups = 全てのグループ
+
+NewMessage = メール作成
+CheckMail = メール受信
+ReloadFolders = フォルダ構造を再読込
+EmptyTrash = ゴミ箱を空にする
+MarkAsRead = 既読にする
+MarkAsUnread = 未読にする
+MarkFlag = フラッグを付ける
+MarkUnflag = フラッグを解除
+MarkAllRead = 全てを既読にする
+MarkAllUnread = 全てを未読にする
+Reply = 返信
+ReplyAll = 全員に返信
+Delete = 削除
+Undelete = 削除取消
+PurgeDeleted = 削除済みの消去
+MoveToFolder = フォルダへ移動
+Forward = 転送
+
+HideFolders = フォルダを隠す
+ShowFolders = フォルダを表示
+ManageFolders = フォルダ管理
+SyncFolder = フォルダを同期
+NewMessages = 新着メッセージ
+Messages = メッセージ
+
+From = 差出人
+To = 宛先
+Date = 日付
+Size = サイズ
+Subject = 件名
+
+FirstPage = 最初のページ
+PreviousPage = 前のページ
+NextPage = 次のページ
+LastPage = 最後のページ
+
+SwitchToPlain = テキストモードへ変更
+SwitchToHTML = HTMLモードへ変更
+AddToAddressBokk = 連絡先に追加
+ClickToDownload = DOWNLOAD
+View = ビュー
+ShowFullHeaders = 全てのヘッダを表示
+HideFullHeaders = ヘッダを隠す
+
+MessagesInFolder = 通のメッセージ
+YouUsing = 使用中
+OfYour =  / 
+Mb = MB
+Kb = KB
+B = B
+
+SendMessage = 送信
+SaveMessage = 保存
+Print = 印刷
+PreviousMsg = 前のメッセージ
+NextMsg = 次のメッセージ
+AddressBook = アドレス帳
+ShowBCC = BCCを表示
+HideBCC = BCCを非表示
+CC = CC
+BCC = BCC
+ReplyTo = Reply&nbsp;To
+AttachFile = 添付ファイル
+Attach = 添付
+Re = Re
+OriginalMessage = Original Message
+Sent = 送信済み
+Fwd = Fwd
+Low = 低
+Normal = 標準
+High = 高
+Importance = 重要度
+Close = 閉じる
+
+Common = 共通
+EmailAccounts = メールアカウント
+
+MsgsPerPage = 1ページの表示メッセージ数
+DisableRTE = rich-textエディタを使用不可にする
+Skin = スキン
+DefCharset = 文字セット
+DefCharsetInc = 受信文字セット
+DefCharsetOut = 送信文字セット
+DefTimeOffset = タイムゾーン
+DefLanguage = 言語
+DefDateFormat = 日付形式
+ShowViewPane = プレビューの表示
+Save = 保存
+Cancel = キャンセル
+OK = OK
+
+Remove = 削除
+AddNewAccount = 新規アカウントの追加
+Signature = 署名
+Filters = フィルタ
+Properties = プロパティ
+UseForLogin = このアカウントをログイン時のアカウント（ログインID/パスワード）に指定する
+MailFriendlyName = 名前
+MailEmail = メールアドレス
+MailIncHost = 受信サーバ
+Imap4 = IMAP4
+Pop3 = POP3
+MailIncPort = ポート
+MailIncLogin = ログインID
+MailIncPass = パスワード
+MailOutHost = 送信サーバ
+MailOutPort = ポート
+MailOutLogin = SMTP ログインID
+MailOutPass = SMTP パスワード
+MailOutAuth1 = SMTP-authを使用する
+MailOutAuth2 = POP3/IMAP4のログインID/パスワードと同一の場合、省略可)
+UseFriendlyNm1 = 宛先に名称を利用する
+UseFriendlyNm2 = (名称 &lt;sender@mail.com&gt;)
+GetmailAtLogin = ログイン時にメールの同期を行う
+MailMode0 = 受信したメッセージをサーバから削除する
+MailMode1 = サーバにメッセージを保存
+MailMode2 = サーバに
+MailsOnServerDays = 日間メールを保存する
+MailMode3 = ゴミ箱から削除したらサーバからも削除する
+InboxSyncType = 受信トレイの同期方法
+
+SyncTypeNo = 同期しない
+SyncTypeNewHeaders = 新しいヘッダのみ
+SyncTypeAllHeaders = 全てのヘッダ
+SyncTypeNewMessages = 新しいメッセージのみ
+SyncTypeAllMessages = 全てのメッセージ
+SyncTypeDirectMode = ダイレクトモード
+
+Pop3SyncTypeEntireHeaders = ヘッダのみ取得
+Pop3SyncTypeEntireMessages = メッセージ全体を取得
+Pop3SyncTypeDirectMode = ダイレクトモード
+
+DeleteFromDb = メールサーバに存在しない場合、DBからもメッセージを消去する
+
+EditFilter = フィルタの編集
+NewFilter = 新規フィルタの追加
+Field = 項目
+Condition = 状態
+ContainSubstring = 次の文字列を含む
+ContainExactPhrase = 次の完全な文字列を含む
+NotContainSubstring = 次の文字列を含まない
+FilterDesc_At = at
+FilterDesc_Field = 項目
+Action = アクション
+DoNothing = 何もしない
+DeleteFromServer = すぐにサーバから消去
+MarkGrey = 網掛け表示する
+Add = 追加
+OtherFilterSettings = 他のフィルタ設定
+ConsiderXSpam = X-Spamヘッダを考慮する
+Apply = 適用
+
+InsertLink = リンクを挿入
+RemoveLink = リンクを削除
+Numbering = 段落番号
+Bullets = 箇条書き
+HorizontalLine = 水平線
+Bold = 太字
+Italic = イタリック
+Underline = 下線
+AlignLeft = 左寄せ
+Center = 中央寄せ
+AlignRight = 右寄せ
+Justify = 均等割り
+FontColor = 文字色
+Background = 背景色
+SwitchToPlainMode = テキストモードへ変更
+SwitchToHTMLMode = HTMLモードへ変更
+AddSignatures = 全ての送信メッセージに署名を含める
+DontAddToReplies = 返信と転送には署名を含めない
+
+Folder = フォルダ
+Msgs = メッセージ数
+Synchronize = 同期
+ShowThisFolder = このフォルダを表示
+Total = 計
+DeleteSelected = 選択フォルダを削除
+AddNewFolder = 新規フォルダを追加
+NewFolder = 新規フォルダ
+ParentFolder = 上位のフォルダ
+NoParent = -- 最上位に追加 --
+OnMailServer = サーバ上にもこのフォルダを追加
+InWebMail = WebMailにのみこのフォルダを追加
+FolderName = フォルダ名
+
+ContactsPerPage = 1ページの表示連絡先数
+WhiteList = ホワイトリスト
+
+CharsetDefault = Default
+CharsetArabicAlphabetISO = Arabic Alphabet (ISO)
+CharsetArabicAlphabet = Arabic Alphabet (Windows)
+CharsetBalticAlphabetISO = Baltic Alphabet (ISO)
+CharsetBalticAlphabet = Baltic Alphabet (Windows)
+CharsetCentralEuropeanAlphabetISO = Central European Alphabet (ISO)
+CharsetCentralEuropeanAlphabet = Central European Alphabet (Windows)
+CharsetChineseSimplifiedEUC = Chinese Simplified (EUC)
+CharsetChineseSimplifiedGB = Chinese Simplified (GB2312)
+CharsetChineseTraditional = Chinese Traditional (Big5)
+CharsetCyrillicAlphabetISO = Cyrillic Alphabet (ISO)
+CharsetCyrillicAlphabetKOI8R = Cyrillic Alphabet (KOI8-R)
+CharsetCyrillicAlphabet = Cyrillic Alphabet (Windows)
+CharsetGreekAlphabetISO = Greek Alphabet (ISO)
+CharsetGreekAlphabet = Greek Alphabet (Windows)
+CharsetHebrewAlphabetISO = Hebrew Alphabet (ISO)
+CharsetHebrewAlphabet = Hebrew Alphabet (Windows)
+CharsetJapanese = Japanese
+CharsetJapaneseShiftJIS = Japanese (Shift-JIS)
+CharsetKoreanEUC = Korean (EUC)
+CharsetKoreanISO = Korean (ISO)
+CharsetLatin3AlphabetISO = Latin 3 Alphabet (ISO)
+CharsetTurkishAlphabet = Turkish Alphabet
+CharsetUniversalAlphabetUTF7 = Universal Alphabet (UTF-7)
+CharsetUniversalAlphabetUTF8 = Universal Alphabet (UTF-8)
+CharsetVietnameseAlphabet = Vietnamese Alphabet (Windows)
+CharsetWesternAlphabetISO = Western Alphabet (ISO)
+CharsetWesternAlphabet = Western Alphabet (Windows)
+
+TimeDefault = Default
+TimeEniwetok = Eniwetok, Kwajalein, Dateline Time
+TimeMidwayIsland = Midway Island, Samoa
+TimeHawaii = Hawaii
+TimeAlaska = Alaska
+TimePacific = Pacific Time (US & Canada); Tijuana
+TimeArizona = Arizona
+TimeMountain = Mountain Time (US & Canada)
+TimeCentralAmerica = Central America
+TimeCentral = Central Time (US & Canada)
+TimeMexicoCity = Mexico City, Tegucigalpa
+TimeSaskatchewan = Saskatchewan
+TimeIndiana = Indiana (East)
+TimeEastern = Eastern Time (US & Canada)
+TimeBogota = Bogota, Lima, Quito
+TimeSantiago = Santiago
+TimeCaracas = Caracas, La Paz
+TimeAtlanticCanada = Atlantic Time (Canada)
+TimeNewfoundland = Newfoundland
+TimeGreenland = Greenland
+TimeBuenosAires = Buenos Aires, Georgetown
+TimeBrasilia = Brasilia
+TimeMidAtlantic = Mid-Atlantic
+TimeCapeVerde = Cape Verde Is.
+TimeAzores = Azores
+TimeMonrovia = Casablanca, Monrovia
+TimeGMT = Dublin, Edinburgh, Lisbon, London
+TimeBerlin = Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+TimePrague = Belgrade, Bratislava, Budapest, Ljubljana, Prague
+TimeParis = Brussels, Copenhagen, Madrid, Paris
+TimeSarajevo = Sarajevo, Skopje, Sofija, Vilnius, Warsaw, Zagreb
+TimeWestCentralAfrica = West Central Africa
+TimeAthens = Athens, Istanbul, Minsk
+TimeEasternEurope = Bucharest
+TimeCairo = Cairo
+TimeHarare = Harare, Pretoria
+TimeHelsinki = Helsinki, Riga, Tallinn
+TimeIsrael = Israel, Jerusalem Standard Time
+TimeBaghdad = Baghdad
+TimeArab = Arab, Kuwait, Riyadh
+TimeMoscow = Moscow, St. Petersburg, Volgograd
+TimeEastAfrica = East Africa, Nairobi
+TimeTehran = Tehran
+TimeAbuDhabi = Abu Dhabi, Muscat
+TimeCaucasus = Baku, Tbilisi, Yerevan
+TimeKabul = Kabul
+TimeEkaterinburg = Ekaterinburg
+TimeIslamabad = Islamabad, Karachi, Sverdlovsk, Tashkent
+TimeBombay = Calcutta, Chennai, Mumbai, New Delhi, India Standard Time
+TimeNepal = Kathmandu, Nepal
+TimeAlmaty = Almaty, Novosibirsk, North Central Asia
+TimeDhaka = Astana, Dhaka
+TimeSriLanka = Sri Jayawardenepura, Sri Lanka
+TimeRangoon = Rangoon
+TimeBangkok = Bangkok, Hanoi, Jakarta
+TimeKrasnoyarsk = Krasnoyarsk
+TimeBeijing = Beijing, Chongqing, Hong Kong SAR, Urumqi
+TimeIrkutsk = Irkutsk, Ulaan Bataar
+TimeSingapore = Kuala Lumpur, Singapore
+TimePerth = Perth, Western Australia
+TimeTaipei = Taipei
+TimeTokyo = Osaka, Sapporo, Tokyo
+TimeSeoul = Seoul, Korea Standard time
+TimeYakutsk = Yakutsk
+TimeAdelaide = Adelaide, Central Australia
+TimeDarwin = Darwin
+TimeBrisbane = Brisbane, East Australia
+TimeSydney = Canberra, Melbourne, Sydney, Hobart
+TimeGuam = Guam, Port Moresby
+TimeHobart = Hobart, Tasmania
+TimeVladivostock = Vladivostok
+TimeMagadan = Magadan, Solomon Is., New Caledonia
+TimeWellington = Auckland, Wellington
+TimeFiji = Fiji Islands, Kamchatka, Marshall Is.
+TimeTonga = Nuku'alofa, Tonga
+
+DateDefault = Default
+DateDDMMYY = DD/MM/YY
+DateMMDDYY = MM/DD/YY
+DateDDMonth = DD Month (01 Jan)
+DateAdvanced = Advanced
+
+NewContact = 連絡先の追加
+NewGroup = グループの追加
+AddContactsTo = 以下へ連絡先を追加
+ImportContacts = 連絡先のインポート
+
+Name = 名前
+Email = メールアドレス
+DefaultEmail = メールアドレス
+NotSpecifiedYet = 未分類
+ContactName = 名前
+Birthday = 誕生日
+Month = 月
+January = 1月
+February = 2月
+March = 3月
+April = 4月
+May = 5月
+June = 6月
+July = 7月
+August = 8月
+September = 9月
+October = 10月
+November = 11月
+December = 12月
+Day = 日
+Year = 年
+UseFriendlyName1 = 宛先に名称を利用する
+UseFriendlyName2 = (ex, 山田太郎 &lt;yamada@mail.com&gt;)
+Personal = Personal
+PersonalEmail = 個人メールアドレス
+StreetAddress = 番地
+City = 市区町村
+Fax = Fax
+StateProvince = 都道府県
+Phone = TEL
+ZipCode = 郵便番号
+Mobile = 携帯番号
+CountryRegion = 国/地域
+WebPage = ホームページ
+Go = Go
+Home = 個人
+Business = 会社
+BusinessEmail = 会社メールアドレス
+Company = 会社名
+JobTitle = 役職
+Department = 部署
+Office = オフィス
+Pager = Pager
+Other = その他
+OtherEmail = その他のメールアドレス
+Notes = メモ
+Groups = グループ
+ShowAddFields = オプション項目を表示する
+HideAddFields = オプション項目を隠す
+EditContact = 連絡先情報を編集
+GroupName = グループ名
+AddContacts = 連絡先を追加
+CommentAddContacts = (複数のメールアドレスを指定する場合、カンマで区切って入力して下さい)
+CreateGroup = グループの追加
+Rename = 名前の変更
+MailGroup = メールグループ
+RemoveFromGroup = このグループから削除
+UseImportTo = Microsoft Outlook, Microsoft Outlook Express のアドレス帳を WebMailの連絡先として インポート
+Outlook1 = Microsoft Outlook 2000/XP/2003
+Outlook2 = Microsoft Outlook Express 6
+SelectImportFile = インポートしたいファイル (.CSV 形式) を選択して下さい
+Import = インポート
+ContactsMessage = 連絡先のページです!!!
+ContactsCount = 連絡先
+GroupsCount = グループ
+
+; webmail 4.1 constants
+PicturesBlocked = 安全性確保の為、このメッセージに含まれている画像は無効にされました
+ShowPictures = 画像を表示する
+ShowPicturesFromSender = この差出人からのメッセージは常に画像を表示する
+AlwaysShowPictures = 常に画像を表示する
+
+TreatAsOrganization = 会社として扱う
+
+WarningGroupAlreadyExist = 同名のグループが既に存在します。他の名称を指定して下さい。
+WarningCorrectFolderName = 正しいフォルダ名称を指定して下さい
+WarningLoginFieldBlank = 「ログインID」が未入力です
+WarningCorrectLogin = 正しいログインIDを指定して下さい
+WarningPassBlank = 「パスワード」が未入力です
+WarningCorrectIncServer = 正しい POP3(IMAP) サーバ名を指定して下さい
+WarningCorrectSMTPServer = 正しい送信メールアドレスを指定して下さい
+WarningFromBlank = 「差出人」が未入力です
+WarningAdvancedDateFormat = 正しい日付形式を指定して下さい
+
+AdvancedDateHelpTitle = カスタム日付
+AdvancedDateHelpIntro = 「カスタム日付」が選択された場合、日付形式をテキストボックスに指定して下さい。日付形式には ':' か '/' が利用可能です。
+AdvancedDateHelpConclusion = 例えば、テキストボックスに &quot;mm/dd/yyyy&quot; を指定した場合、日付は month/day/year の形式 (i.e. 11/23/2005) で表示されます。
+AdvancedDateHelpDayOfMonth = 日 (1 から 31)
+AdvancedDateHelpNumericMonth = 月 (1 から 12)
+AdvancedDateHelpTextualMonth = 月 (Jan から Dec)
+AdvancedDateHelpYear2 = 年 2桁表示
+AdvancedDateHelpYear4 = 年 4桁表示
+AdvancedDateHelpDayOfYear = 1年の中の日 (1 から 366)
+AdvancedDateHelpQuarter = 四半期
+AdvancedDateHelpDayOfWeek = 曜日 (月 から 日n)
+AdvancedDateHelpWeekOfYear = 1年の中の週 (1 から 53)
+
+InfoNoMessagesFound = メッセージが見つかりません
+ErrorSMTPConnect = SMTPサーバへ接続できません。SMTPサーバ設定をご確認下さい。
+ErrorSMTPAuth = ユーザID か パスワード が間違っています。認証に失敗しました。
+ReportMessageSent = メッセージが送信されました
+ReportMessageSaved = メッセージが保存されました
+ErrorPOP3Connect = POP3サーバへ接続できません。POP3サーバ設定をご確認下さい。
+ErrorIMAP4Connect = IMAP4サーバへ接続できません。IMAP4サーバ設定をご確認下さい。
+ErrorPOP3IMAP4Auth = メールアドレス か ユーザID か パスワード が間違っています。認証に失敗しました。
+ErrorGetMailLimit = メールボックスの容量制限を超過しました
+
+ReportSettingsUpdatedSuccessfuly = 設定が更新されました
+ReportAccountCreatedSuccessfuly = アカウントが作成されました
+ReportAccountUpdatedSuccessfuly = アカウントが更新されました
+ConfirmDeleteAccount = このアカウントを削除してよろしいですか？
+ReportFiltersUpdatedSuccessfuly = フィルタが更新されました
+ReportSignatureUpdatedSuccessfuly = 署名が更新されました
+ReportFoldersUpdatedSuccessfuly = フォルダが更新されました
+ReportContactsSettingsUpdatedSuccessfuly = 連絡先設定が更新されました
+
+ErrorInvalidCSV = 指定されたCSVファイルのファイル形式が不正です
+;The group "guies" was successfully added.
+ReportGroupSuccessfulyAdded1 = グループ
+ReportGroupSuccessfulyAdded2 = が追加されました
+ReportGroupUpdatedSuccessfuly = グループが更新されました
+ReportContactSuccessfulyAdded = 連絡先が追加されました
+ReportContactUpdatedSuccessfuly = 連絡先が更新されました
+;Contact(s) was added to group "friends".
+ReportContactAddedToGroup = 連絡先がグループに登録されました
+AlertNoContactsGroupsSelected = 連絡先またはグループが選択されていません
+
+InfoListNotContainAddress = お探しのメールアドレスが見つからない場合、1文字目からメールアドレスを打ち込んで下さい。
+
+DirectAccess = D
+DirectAccessTitle = ダイレクトモード WebMail はサーバのメールボックスに直接アクセスします
+
+FolderInbox = 受信トレイ
+FolderSentItems = 送信済み
+FolderDrafts = 下書き
+FolderTrash = ゴミ箱
+
+FileLargerAttachment = 添付ファイルの容量が制限を越えました
+FilePartiallyUploaded = 不明なエラーの為、一部のファイルのみアップロードされました
+NoFileUploaded = ファイルのアップロードに失敗しました
+MissingTempFolder = 一時フォルダが不明です
+MissingTempFile = 一時ファイルが不明です
+UnknownUploadError = ファイルアップロード時に不明なエラーが発生しました
+FileLargerThan = ファイルのアップロードに失敗しました。ファイル容量が以下のサイズを越えている可能性があります : 
+PROC_CANT_LOAD_DB = DBへの接続に失敗しました
+PROC_CANT_LOAD_LANG = 言語設定ファイルが見つかりません
+PROC_CANT_LOAD_ACCT = アカウントが見つかりません。アカウントが削除された可能性があります。
+
+DomainDosntExist = メールサーバに該当のドメインがみつかりません
+ServerIsDisable = メールサーバへの接続が管理者により制限されています
+
+PROC_ACCOUNT_EXISTS = 既に該当のアカウントが存在している為、アカウントの作成に失敗しました
+PROC_CANT_GET_MESSAGES_COUNT = フォルダ内のメッセージ数の取得に失敗しました
+PROC_CANT_MAIL_SIZE = メール保存容量の取得に失敗しました
+
+Organization = 会社情報
+WarningOutServerBlank = 「送信メールサーバ」は入力必須です
+
+Refresh = 更新
+MessagesInInbox = 通 の新着メッセージ
+InfoEmptyInbox = 受信トレイにメッセージがありません
+
+; webmail 4.2 constants
+BackToList = 一覧に戻る
+InfoNoContactsGroups = 連絡先、またはグループがありません
+InfoNewContactsGroups = 新規連絡先 / グループの追加　や　MS Outlook形式の連絡先のインポート が可能です
+DefTimeFormat = 既定の時間表示形式
+SpellNoSuggestions = No suggestions
+SpellWait = しばらくお待ち下さい&hellip;
+
+InfoNoMessageSelected = メッセージが選択されていません
+InfoSingleDoubleClick = メッセージを シングルクリックでプレビューを表示　ダブルクリックで全体表示します
+
+; calendar
+TitleDay = 日
+TitleWeek = 週
+TitleMonth = 月
+
+ErrorNotSupportBrowser = カレンダーはご使用のブラウザをサポートしていません。 以下のブラウザをご使用下さい  : FireFox 2.0以上, Opera 9.0以上, Internet Explorer 6.0以上, Safari 3.0.2以上
+ErrorTurnedOffActiveX = ActiveXコントロールが無効になっています. <br/>ActiceXコントロールを有効にして下さい。
+
+Calendar = カレンダー
+
+TabDay = 日
+TabWeek = 週
+TabMonth = 月
+
+ToolNewEvent = イベントの追加
+ToolBack = 戻る
+ToolToday = 今日
+AltNewEvent = イベントの追加
+AltBack = 戻る
+AltToday = 今日
+CalendarHeader = カレンダー
+CalendarsManager = カレンダーの管理
+
+CalendarActionNew = 新規カレンダーの追加
+EventHeaderNew = 新規イベントの追加
+CalendarHeaderNew = 新規カレンダーの追加
+
+EventSubject = 件名
+EventCalendar = カレンダー
+EventFrom = 開始日時
+EventTill = 終了日時
+CalendarDescription = 詳細
+CalendarColor = 背景色
+CalendarName = カレンダー名
+CalendarDefaultName = My カレンダー
+
+ButtonSave = 保存
+ButtonCancel = キャンセル
+ButtonDelete = 削除
+
+AltPrevMonth = 前月
+AltNextMonth = 翌月
+
+CalendarHeaderEdit = カレンダーの編集
+CalendarActionEdit = カレンダーの編集
+ConfirmDeleteCalendar = カレンダーを削除してよろしいですか？
+InfoDeleting = 削除中&hellip;
+WarningCalendarNameBlank = 「カレンダー名は」必ず指定して下さい。
+ErrorCalendarNotCreated = カレンダーは作成されませんでした
+WarningSubjectBlank = 「件名」は必ず指定して下さい
+WarningIncorrectTime = 時間の指定に不正な文字が入力されました
+WarningIncorrectFromTime = 「開始日時」が不正です
+WarningIncorrectTillTime = 「終了日時」が不正です
+WarningStartEndDate = 終了日時は開始日時と同じかそれ以降に設定して下さい
+WarningStartEndTime = 終了時間は開始時間以降に設定して下さい
+WarningIncorrectDate = 日付が不正です
+InfoLoading = ロード中&hellip;
+EventCreate = 新規イベントの作成
+CalendarHideOther = 他のカレンダーを隠す
+CalendarShowOther = 他のカレンダーを表示
+CalendarRemove = カレンダーの削除
+EventHeaderEdit = イベントの編集
+
+InfoSaving = 保存中&hellip;
+SettingsDisplayName = 表示名称
+SettingsTimeFormat = 時間表示形式
+SettingsDateFormat = 日付表示形式
+SettingsShowWeekends = 土日も表示する
+SettingsWorkdayStarts = 勤務日の 開始時刻
+SettingsWorkdayEnds = 終了時刻
+SettingsShowWorkday = 勤務日を表示する
+SettingsWeekStartsOn = 週の開始曜日
+SettingsDefaultTab = 初期表示タブ
+SettingsCountry = 国
+SettingsTimeZone = タイムゾーン
+SettingsAllTimeZones = 全てのタイムゾーン
+
+WarningWorkdayStartsEnds = 勤務日の終了時刻は開始時刻以降に設定して下さい
+ReportSettingsUpdated = 設定の更新が終了しました
+
+SettingsTabCalendar = カレンダー
+
+FullMonthJanuary = 1月
+FullMonthFebruary = 2月
+FullMonthMarch = 3月
+FullMonthApril = 4月
+FullMonthMay = 5月
+FullMonthJune = 6月
+FullMonthJuly = 7月
+FullMonthAugust = 8月
+FullMonthSeptember = 9月
+FullMonthOctober = 10月
+FullMonthNovember = 11月
+FullMonthDecember = 12月
+
+ShortMonthJanuary = 1月
+ShortMonthFebruary = 2月
+ShortMonthMarch = 3月
+ShortMonthApril = 4月
+ShortMonthMay = 5月
+ShortMonthJune = 6月
+ShortMonthJuly = 7月
+ShortMonthAugust = 8月
+ShortMonthSeptember = 9月
+ShortMonthOctober = 10月
+ShortMonthNovember = 11月
+ShortMonthDecember = 12月
+
+FullDayMonday = 月曜日
+FullDayTuesday = 火曜日
+FullDayWednesday = 水曜日
+FullDayThursday = 木曜日
+FullDayFriday = 金曜日
+FullDaySaturday = 土曜日
+FullDaySunday = 日曜日
+
+DayToolMonday = 月曜
+DayToolTuesday = 火曜
+DayToolWednesday = 水曜
+DayToolThursday = 木曜
+DayToolFriday = 金曜
+DayToolSaturday = 土曜
+DayToolSunday = 日曜
+
+CalendarTableDayMonday = 月
+CalendarTableDayTuesday = 火
+CalendarTableDayWednesday = 水
+CalendarTableDayThursday = 木
+CalendarTableDayFriday = 金
+CalendarTableDaySaturday = 土
+CalendarTableDaySunday = 日
+
+ErrorParseJSON = The JSON response returned by the server cannot be parsed.
+
+ErrorLoadCalendar = カレンダーのロードに失敗しました
+ErrorLoadEvents = イベントのロードに失敗しました
+ErrorUpdateEvent = イベントの保存に失敗しました
+ErrorDeleteEvent = イベントの削除に失敗しました
+ErrorUpdateCalendar = カレンダーの保存に失敗しました
+ErrorDeleteCalendar = カレンダーの削除に失敗しました
+ErrorGeneral = サーバでエラーが発生しました。 しばらくたってから再度アクセスして下さい。
+
+; webmail 4.3 constants
+SharedTitleEmail = メールアドレス
+ShareHeaderEdit = 共有カレンダー
+ShareActionEdit = 共有カレンダー
+CalendarPublicate = このカレンダーにWebからアクセスする
+CalendarPublicationLink = リンクURL
+ShareCalendar = このカレンダーを共有する
+SharePermission1 = イベントの更新と共有の管理を許可
+SharePermission2 = イベントの更新を許可
+SharePermission3 = 全てのイベント詳細の参照を許可
+SharePermission4 = イベント有無のみ参照を許可（詳細非表示）
+ButtonClose = 閉じる
+WarningEmailFieldFilling = 「メールアドレス」を入力して下さい
+EventHeaderView = イベント詳細
+ErrorUpdateSharing = 共有データの保存に失敗しました
+ErrorUpdateSharing1 = %s が存在しない為、共有に失敗しました
+ErrorUpdateSharing2 = %s への共有に失敗しました
+ErrorUpdateSharing3 = このカレンダーは既に %s へ共有されています
+Title_MyCalendars = Myカレンダー
+Title_SharedCalendars = 共有カレンダー
+ErrorGetPublicationHash = 共有リンクの作成に失敗しました
+ErrorGetSharing = 共有の追加に失敗しました
+CalendarPublishedTitle = このカレンダーは共有されました
+RefreshSharedCalendars = 共有カレンダーの更新
+Title_CheckSharedCalendars = 共有カレンダーをチェック
+
+GroupMembers = メンバー
+
+ReportMessagePartDisplayed = メッセージの一部のみ表示しています
+ReportViewEntireMessage = メッセージ全体を表示するには,
+ReportClickHere = ここをクリック
+ErrorContactExists = この連絡先は既に登録されています
+
+Attachments = 添付
+
+InfoGroupsOfContact = 連絡先が所属するグループがチェックされました
+AlertNoContactsSelected = 連絡先が選択されていません
+MailSelected = 選択された連絡先へメール
+CaptionSubscribed = 確定
+
+OperationSpam = 迷惑メール
+OperationNotSpam = 非迷惑メール
+FolderSpam = 迷惑メール
+
+; webmail 4.4 contacts
+ContactMail = この連絡先へメール
+ContactViewAllMails = この連絡先とのメールを全て表示
+ContactsMailThem = メールする
+DateToday = 今日
+DateYesterday = 昨日
+MessageShowDetails = 詳細を表示
+MessageHideDetails = 詳細を隠す
+MessageNoSubject = No subject
+; john@gmail.com to nadine@gmail.com
+MessageForAddr = to
+SearchClear = 検索条件をクリア
+; Search results for "search string" in Inbox folder:
+; Search results for "search string" in all mail folders:
+SearchResultsInFolder = 条件: "#s" の フォルダ: #f の 検索結果:
+SearchResultsInAllFolders = 条件: "#s" の全てのフォルダ の 検索結果:
+AutoresponderTitle = 自動応答
+AutoresponderEnable = 自動応答を有効にする
+AutoresponderSubject = 件名
+AutoresponderMessage = 内容
+ReportAutoresponderUpdatedSuccessfuly = 自動応答が更新されました
+FolderQuarantine = 隔離
+
+;calendar
+EventRepeats = 繰返し
+NoRepeats = 単独の予定
+DailyRepeats = 毎日
+WorkdayRepeats = 毎平日 (月 - 火)
+OddDayRepeats = 毎週 月, 水, 金
+EvenDayRepeats = 毎週 火, 木
+WeeklyRepeats = 毎週
+MonthlyRepeats = 毎月
+YearlyRepeats = 毎年
+RepeatsEvery = 繰返し
+ThisInstance = このイベントのみ
+AllEvents = 全てのイベント
+AllFollowing = 以降全てのイベント
+ConfirmEditRepeatEvent = 繰返しのイベントを変更しています。関連するエントリを変更しますか?
+RepeatEventHeaderEdit = 繰返しの編集
+First = 第1
+Second = 第2
+Third = 第3
+Fourth = 第4
+Last = 最終
+Every = 毎
+SetRepeatEventEnd = 終了を設定
+NoEndRepeatEvent = 無限に繰返す
+EndRepeatEventAfter = この日以降
+Occurrences = 回繰返し
+EndRepeatEventBy = 指定した日まで
+EventCommonDataTab = 繰返しの詳細
+EventRepeatDataTab = 個別の詳細
+RepeatEventNotPartOfASeries = このイベントは変更され、繰返しのイベントではなくなりました
+UndoRepeatExclusion = 繰返しへの変更を取消
+
+MonthMoreLink = %d more...
+NoNewSharedCalendars = 新しいカレンダーはありません
+NNewSharedCalendars = %d 個の 新しいカレンダーを見つけました
+OneNewSharedCalendars = 1 個の 新しいカレンダーを見つけました
+ConfirmUndoOneRepeat = このエントリを繰返しの一部として復旧しますか?
+
+RepeatEveryDayInfin = 毎日
+RepeatEveryDayTimes = 毎日, %TIMES% 日間
+RepeatEveryDayUntil = 毎日, %UNTIL% まで
+RepeatDaysInfin = %PERIOD% 日毎
+RepeatDaysTimes = %PERIOD% 日毎, %TIMES% 回 繰返し
+RepeatDaysUntil = %PERIOD% 日毎, %UNTIL% まで
+
+RepeatEveryWeekWeekdaysInfin = 毎平日
+RepeatEveryWeekWeekdaysTimes = 毎平日, %TIMES% 回 繰返し
+RepeatEveryWeekWeekdaysUntil = 毎平日, %UNTIL% まで
+RepeatWeeksWeekdaysInfin = 毎平日, %PERIOD% 週間
+RepeatWeeksWeekdaysTimes = 毎平日, %PERIOD% 週間, %TIMES% 回 繰返し
+RepeatWeeksWeekdaysUntil = 毎平日, %PERIOD% 週間, %UNTIL% まで
+
+RepeatEveryWeekInfin = 毎週 %DAYS%
+RepeatEveryWeekTimes = 毎週 %DAYS%, %TIMES% 回 繰返し
+RepeatEveryWeekUntil = 毎週 %DAYS%, %UNTIL% まで
+RepeatWeeksInfin = %PERIOD% 週毎, %DAYS%
+RepeatWeeksTimes = %PERIOD% 週毎, %DAYS%, %TIMES% 回 繰返し
+RepeatWeeksUntil = %PERIOD% 週毎, %DAYS%, %UNTIL% まで
+
+RepeatEveryMonthDateInfin = 毎月 %DATE% 日
+RepeatEveryMonthDateTimes = 毎月 %DATE% 日, %TIMES% 回 繰返し
+RepeatEveryMonthDateUntil = 毎月 %DATE% 日, %UNTIL% まで
+RepeatMonthsDateInfin = %PERIOD% 月毎, %DATE% 日
+RepeatMonthsDateTimes = %PERIOD% 月毎, %DATE% 日, %TIMES% 回 繰返し
+RepeatMonthsDateUntil = %PERIOD% 月毎, %DATE% 日, %UNTIL% まで
+
+RepeatEveryMonthWDInfin = 毎月 %NUMBER% %DAY%
+RepeatEveryMonthWDTimes = 毎月 %NUMBER% %DAY%, %TIMES% 回 繰返し
+RepeatEveryMonthWDUntil = 毎月 %NUMBER% %DAY%, %UNTIL% まで
+RepeatMonthsWDInfin = %PERIOD% 月毎, %NUMBER% %DAY%
+RepeatMonthsWDTimes = %PERIOD% 月毎, %NUMBER% %DAY%, %TIMES% 回 繰返し
+RepeatMonthsWDUntil = %PERIOD% 月毎, %NUMBER% %DAY%, %UNTIL% まで
+
+RepeatEveryYearDateInfin = 毎年 %DATE%
+RepeatEveryYearDateTimes = 毎年 %DATE%, %TIMES% 回 繰返し
+RepeatEveryYearDateUntil = 毎年 %DATE%, %UNTIL% まで
+RepeatYearsDateInfin = %PERIOD% 年毎 %DATE%
+RepeatYearsDateTimes = %PERIOD% 年毎 %DATE%, %TIMES% 回 繰返し
+RepeatYearsDateUntil = %PERIOD% 年毎 %DATE%, %UNTIL% まで
+
+RepeatEveryYearWDInfin = 毎年 %NUMBER% %DAY%
+RepeatEveryYearWDTimes = 毎年 %NUMBER% %DAY%, %TIMES% 回 繰返し
+RepeatEveryYearWDUntil = 毎年 %NUMBER% %DAY%, %UNTIL% まで
+RepeatYearsWDInfin = %PERIOD% 年毎 %NUMBER% %DAY%
+RepeatYearsWDTimes = %PERIOD% 年毎 %NUMBER% %DAY%, %TIMES% 回 繰返し
+RepeatYearsWDUntil = %PERIOD% 年毎 %NUMBER% %DAY%, %UNTIL% まで
+
+RepeatDescDay = 日
+RepeatDescWeek = 週
+RepeatDescMonth = 月
+RepeatDescYear = 年
+
+; webmail 4.5 contacts
+WarningUntilDateBlank = 終了日を指定して下さい
+WarningWrongUntilDate = 終了日は開始日以降を指定して下さい
+
+OnDays = On days
+CancelRecurrence = 繰返しのキャンセル
+RepeatEvent = 繰返しの予定
+
+Spellcheck = スペルチェック
+LoginLanguage = 言語
+LanguageDefault = デフォルト
+
+; webmail 4.5.x new
+EmptySpam = 迷惑メールを空にする
+Saving = 保存中&hellip;
+Sending = 送信中&hellip;
+LoggingOffFromServer = サーバからログアウト中&hellip;
+
+; webmail 4.6
+PROC_CANT_SET_MSG_AS_SPAM = 迷惑メールとしてマークできません
+PROC_CANT_SET_MSG_AS_NOTSPAM = 非迷惑メールとしてマークできません
+ExportToICalendar = iCalendar へエキスポート
+ErrorMaximumUsersLicenseIsExceeded = ライセンス数の上限に達した為、新たなユーザの作成ができません
+RepliedMessageTitle = 返信メッセージ
+ForwardedMessageTitle = 転送メッセージ
+RepliedForwardedMessageTitle = 応答/返信メッセージ
+ErrorDomainExist = 対応するドメインが存在しない為、新たなユーザの作成に失敗しました。まずドメインを設定をして下さい
+
+; webmail 4.7
+RequestReadConfirmation = 開封確認を送る
+FolderTypeDefault = デフォルト
+ShowFoldersMapping = 任意のフォルダをシステムフォルダとして使用する (例： Myフォルダ を 送信済み として使用)
+ShowFoldersMappingNote = Myフォルダ を 送信済みフォルダ に設定する場合、, 「送信済み」を 「MyFolder」 として使用 と設定します
+FolderTypeMapTo = として
+
+ReminderEmailExplanation = カレンダー: %CALENDAR_NAME% でアラート設定されている為、このメッセージは %EMAIL% へ送信されました。
+ReminderOpenCalendar = カレンダーを開く
+
+AddReminder = リマインダーを送信する
+AddReminderBefore = このイベント実施前に % リマインダーを送信
+AddReminderAnd = % 実施前
+AddReminderAlso =  % 実施前
+AddMoreReminder = 詳細
+RemoveAllReminders = 全てのリマインダーを削除する
+ReminderNone = 無し
+ReminderMinutes = 分
+ReminderHour = 時
+ReminderHours = 時間
+ReminderDay = 日
+ReminderDays = 日間
+ReminderWeek = 週
+ReminderWeeks = 週間
+Allday = 終日
+
+Folders = フォルダ
+NoSubject = 件名なしt
+SearchResultsFor = 検索結果:
+
+Back = 戻る
+Next = 次
+Prev = 前
+
+MsgList = メッセージ
+Use24HTimeFormat = 24時間表示
+UseCalendars = カレンダーを利用する
+Event = イベント
+CalendarSettingsNullLine = カレンダーがありません
+CalendarEventNullLine = イベントがありません
+ChangeAccount = アカウントの変更
+
+TitleCalendar = カレンダー
+TitleEvent = イベント
+TitleFolders = フォルダ
+TitleConfirmation = 確認
+
+Yes = Yes
+No = No
+
+EditMessage = メッセージ編集
+
+AccountNewPassword = 新しいパスワード
+AccountConfirmNewPassword = 新しいパスワードの再入力
+AccountPasswordsDoNotMatch = パスワードが一致していません.
+
+ContactTitle = Title
+ContactFirstName = 名
+ContactSurName = 姓
+ContactNickName = ニックネーム
+
+CaptchaTitle = 文字認証
+CaptchaReloadLink = 再読込
+CaptchaError = テキストを正しく入力して下さい
+
+WarningInputCorrectEmails = 正しいメールアドレスを入力して下さい
+WrongEmails = メールアドレスエラー:
+
+ConfirmBodySize1 = テキストメッセージは上限に達しました
+ConfirmBodySize2 = 文字が長すぎます。上限を越える文字は削除されます。メッセージを編集し直す場合 「キャンセル」をクリックして下さい。
+BodySizeCounter = カウンタ
+InsertImage = 画像の挿入
+ImagePath = 場増の場所
+ImageUpload = 挿入
+WarningImageUpload = 選択されたファイルは画像ではありません。画像ファイルを選択して下さい。
+
+ConfirmExitFromNewMessage = ページを移動する場合、変更は失われます。このメッセージを下書きとして保存しますか？
+
+SensivityConfidential = このメッセージを「機密メッセージ」として扱ってください。
+SensivityPrivate = このメッセージを「プライベートメッセージ」として扱ってください。
+SensivityPersonal = このメッセージを「パーソナルメッセージ」として扱ってください。
+
+ReturnReceiptTopText = このメッセージの送信者が開封確認を求めています。
+ReturnReceiptTopLink = 開封確認を送付する
+ReturnReceiptSubject = 開封確認の送付 (表示)
+ReturnReceiptMailText1 = これはあなたの送付したメールへの開封確認です。
+ReturnReceiptMailText2 = 注意: この開封確認は、メッセージが受信者のPC上に表示された事を示すだけで、受信者がメッセージ内容を読んだことや理解したことを保証するものではありません。
+ReturnReceiptMailText3 = with subject
+
+SensivityMenu = 感受度
+SensivityNothingMenu = 標準
+SensivityConfidentialMenu = 機密
+SensivityPrivateMenu = プライベート
+SensivityPersonalMenu = パーソナル
+
+ErrorLDAPonnect = LDAPサーバに接続できません
+
+MessageSizeExceedsAccountQuota = このメッセージのサイズがあなたのアカウントの許容サイズを超えました
+MessageCannotSent = メッセージは送信できませんでした
+MessageCannotSaved = メッセージは保存できませんでした
+
+ContactFieldTitle = 項目
+ContactDropDownTO = TO
+ContactDropDownCC = CC
+ContactDropDownBCC = BCC
+
+; 4.9 
+NoMoveDelete = 選択されたメッセージはゴミ箱に移動できませんでした。受信トレイが一杯の可能性があります。選択されたメッセージを削除しますか？
+
+WarningFieldBlank = この項目は必須です
+WarningPassNotMatch = パスワードが一致しません。
+PasswordResetTitle = パスワードリセット - step %d
+NullUserNameonReset = ユーザ
+IndexResetLink = パスワードを忘れましたか？
+IndexRegLink = アカウント登録
+
+RegDomainNotExist = ドメインが存在しません
+RegAnswersIncorrect = 答えが間違っています
+RegUnknownAdress = メールアドレスが不正です
+RegUnrecoverableAccount = このメールアドレスに対するパスワードリセットは実行できません
+RegAccountExist = このメールアドレスは使用済みです
+RegRegistrationTitle = 登録
+RegName = 名称
+RegEmail = メールアドレス
+RegEmailDesc = 例） myname@domain.com この情報は、システムにログインするために使用されます
+RegSignMe = 記憶する
+RegSignMeDesc = 次回からID/パスワードの入力を省略
+RegPass1 = パスワード
+RegPass2 = パスワードの再入力 
+RegQuestionDesc = あなただけの知っている２つび秘密の質問と答えを設定して下さい。 これらの質問は、パスワードリセット時に使用されます。
+RegQuestion1 = 秘密の質問 1
+RegAnswer1 = 答え 1
+RegQuestion2 = 秘密の質問 2
+RegAnswer2 = 答え 2
+RegTimeZone = タイムゾーン
+RegLang = 使用言語
+RegCaptcha = 文字認証
+RegSubmitButtonValue = 登録
+
+ResetEmail = メールアドレスを入力して下さい。
+ResetEmailDesc = 登録時に設定したメールアドレスを入力して下さい。
+ResetCaptcha = 文字認証
+ResetSubmitStep1 = 送信
+ResetQuestion1 = 秘密の質問 1
+ResetAnswer1 = 答え
+ResetQuestion2 = 秘密の質問 2
+ResetAnswer2 = 答え
+ResetSubmitStep2 = 送信
+
+ResetTopDesc1Step2 = メールアドレスの入力
+ResetTopDesc2Step2 = 正当性の確認
+
+ResetTopDescStep3 = please specify below new password for your email.
+
+ResetPass1 = 新しいパスワード
+ResetPass2 = パスワードの再入力
+ResetSubmitStep3 = 送信
+ResetDescStep4 = パスワードが変更されました
+ResetSubmitStep4 = 戻る
+
+RegReturnLink = ログイン画面へ戻る
+ResetReturnLink = ログイン画面へ戻る
+
+; Appointments 
+AppointmentAddGuests = ゲストの追加
+AppointmentRemoveGuests = 会議の取消
+AppointmentListEmails = メールアドレスをカンマ区切りで入力し、保存ボタンをクリック
+AppointmentParticipants = 参加者
+AppointmentRefused = 拒否
+AppointmentAwaitingResponse = 返答待ち
+AppointmentInvalidGuestEmail = 次のゲストのメールアドレスが無効です
+AppointmentOwner = オーナー
+
+AppointmentMsgTitleInvite = イベント参加依頼
+AppointmentMsgTitleUpdate = イベントは修正されました
+AppointmentMsgTitleCancel = イベントはキャンセルされました
+AppointmentMsgTitleRefuse = ゲスト %guest% は参加を拒否しました
+AppointmentMoreInfo = 詳細
+AppointmentOrganizer = 主催者
+AppointmentEventInformation = イベント情報
+AppointmentEventWhen = 開催日
+AppointmentEventParticipants = 参加者
+AppointmentEventDescription = 内容
+AppointmentEventWillYou = このイベントに参加しますか
+AppointmentAdditionalParameters = 追加パラメータ
+AppointmentHaventRespond = まだ返答しない
+AppointmentRespondYes = 参加予定
+AppointmentRespondMaybe = 参加未定
+AppointmentRespondNo = 不参加
+AppointmentGuestsChangeEvent = ゲストによる内容変更を許可する
+
+AppointmentSubjectAddStart = イベントへの参加依頼: 
+AppointmentSubjectAddFrom =  送信者:  
+AppointmentSubjectUpdateStart = イベントの更新 
+AppointmentSubjectDeleteStart = イベントのキャンセル 
+ErrorAppointmentChangeRespond = 予定の変更はできません
+SettingsAutoAddInvitation = 招待された予定をカレンダーに自動で追加する
+ReportEventSaved = イベントが保存されました
+ReportAppointmentSaved =  招待メールが送信されました
+ErrorAppointmentSend = 招待メールが送信できません
+AppointmentEventName = 名前:
+
+; End appointments
+
+ErrorCantUpdateFilters = フィルタの更新ができません
+
+FilterPhrase = %field が %condition %string 場合、 %action
+FiltersAdd = フィルタの追加
+FiltersCondEqualTo = 次の文字に等しい
+FiltersCondContainSubstr = 次の文字を含む
+FiltersCondNotContainSubstr = 次の文字を含まない
+FiltersActionDelete = メッセージを削除する
+FiltersActionMove = 次のフォルダに移動する : 
+FiltersActionToFolder = %folder フォルダへ移動
+FiltersNo = フィルタが設定されていません
+
+ReminderEmailFriendly = リマインダ
+ReminderEventBegin = 開始: 
+
+FiltersLoading = フィルタの呼び出し中...
+ConfirmMessagesPermanentlyDeleted = このフォルダの全てのメッセージを完全に削除する。
+
+InfoNoNewMessages = 新しいメッセージはありません
+TitleImportContacts = 連絡先のインポート
+TitleSelectedContacts = 選択された連絡先
+TitleNewContact = 新規連絡先
+TitleViewContact = 連絡先の参照
+TitleEditContact = 連絡先の編集
+TitleNewGroup = 新規グループ
+TitleViewGroup = グループの参照
+
+AttachmentPending = 待機中...
+AttachmentUploading = アップロード中...
+AttachmentComplete = 完了
+AttachmentCancelled = キャンセル.
+AttachmentStopped = 中止.
+AttachmentsUpload = ファイルの添付
+AttachmentsUploadPadding = 34
+
+TestButton = TEST
+AutoCheckMailIntervalLabel = メール自動受信間隔
+AutoCheckMailIntervalDisableName = 使用しない
+ReportCalendarSaved = カレンダーは保存されました
+
+ContactSyncError = 同期失敗
+ReportContactSyncDone = 同期完了
+
+MobileSyncUrlTitle = Mobile sync URL
+MobileSyncLoginTitle = Mobile sync ログイン
+
+QuickReply = クイック返信
+SwitchToFullForm = 全画面表示
+SortFieldDate = 日付
+SortFieldFrom = 差出人
+SortFieldSize = サイズ
+SortFieldSubject = タイトル
+SortFieldFlag = フラグ
+SortFieldAttachments = 添付
+SortOrderAscending = 昇順
+SortOrderDescending = 降順
+ArrangedBy = 並び替え
+
+MessagePaneToRight = プレビューウィンドウをメッセージリストの右側に表示する
+
+SettingsTabMobileSync = モバイル同期
+
+MobileSyncContactDataBaseTitle = Mobile sync アドレス帳 データベース
+MobileSyncCalendarDataBaseTitle = Mobile sync カレンダー データベース
+MobileSyncTitleText = SyncMLが利用可能な携帯デバイスにWebMailを同期したい場合、これらのパラメータが利用できます。<br />"Mobile Sync URL" は、SyncMLデータ同期サーバへの接続パスを設定します。"Mobile Sync ログイン" は、SyncMLデータ同期サーバへのログインに使用されます。 デバイスにより、アドレス帳やカレンダーの同期の為にデータベースを指定する必要があります。<br />それぞれ "Mobile sync アドレス帳 データベース" と "Mobile sync カレンダー データベース" を使用して下さい。
+MobileSyncEnableLabel = モバイル同期を有効にする
+
+SearchInputText = 検索
+
+AppointmentEmailExplanation = This message has come to your account %EMAIL% because you was invited to the event by %ORGANAZER%

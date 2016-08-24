@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C4F02E9B-15E2-4EA3-A1B8-5B02D0ED5931}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SecureMemo</RootNamespace>
+    <AssemblyName>SecureMemo</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>false</MapFileExtensions>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>28069D4C254AA8E1B9CF0FE8413D3C538ADD30A4</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>Internet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>AppIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>SecureMemoSignKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SecureMemo.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestTimestampUrl>
+    </ManifestTimestampUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutAppBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutAppBox.Designer.cs">
+      <DependentUpon>AboutAppBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApplicationUpdate.Designer.cs">
+      <DependentUpon>ApplicationUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataModels\BackupFileInfo.cs" />
+    <Compile Include="DataModels\OTPSettings.cs" />
+    <Compile Include="DataModels\RestoreSyncDataResult.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Services\OTPConfigService.cs" />
+    <Compile Include="TextSearchModels\TabSearchEngine.cs" />
+    <Compile Include="TextSearchModels\TextSearchEventArgs.cs" />
+    <Compile Include="TextSearchModels\TextSearchEvents.cs" />
+    <Compile Include="DataModels\SecureMemoAppSettings.cs" />
+    <Compile Include="DataModels\SecureMemoFontSettings.cs" />
+    <Compile Include="DataModels\TabPageDataCollection.cs" />
+    <Compile Include="DataModels\TabPageData.cs" />
+    <Compile Include="TextSearchModels\TextSearchResult.cs" />
+    <Compile Include="TextSearchModels\TextSearchState.cs" />
+    <Compile Include="FileStorageEvents\StorageDirectorySystemEventArgs.cs" />
+    <Compile Include="FileStorageEvents\StorageFileSystemEventArgs.cs" />
+    <Compile Include="FileStorageEvents\StorageFileSystemEvents.cs" />
+    <Compile Include="FileStorageModels\StorageFile.cs" />
+    <Compile Include="FileStorageModels\StorageFileSystem.cs" />
+    <Compile Include="FileStorageModels\StorageDirectory.cs" />
+    <Compile Include="FileStorageModels\StorageFileContent.cs" />
+    <Compile Include="FileStorageModels\StorageItemBase.cs" />
+    <Compile Include="FormFileManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFileManager.Designer.cs">
+      <DependentUpon>FormFileManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAbout.Designer.cs">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCreateLicenceRequest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCreateLicenceRequest.Designer.cs">
+      <DependentUpon>FormCreateLicenceRequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormRestoreBackup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRestoreBackup.Designer.cs">
+      <DependentUpon>FormRestoreBackup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFind.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFind.Designer.cs">
+      <DependentUpon>FormFind.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSettings.Designer.cs">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormTabEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTabEdit.Designer.cs">
+      <DependentUpon>FormTabEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputForms\FormGetPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputForms\FormGetPassword.Designer.cs">
+      <DependentUpon>FormGetPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputForms\FormSetPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputForms\FormSetPassword.Designer.cs">
+      <DependentUpon>FormSetPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AppSettingsService.cs" />
+    <Compile Include="Services\FileStorageService.cs" />
+    <Compile Include="Storage\MemoStorageService.cs" />
+    <Compile Include="UserControls\MemoTabPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\MemoTabPageControl.Designer.cs">
+      <DependentUpon>MemoTabPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\ConfigHelper.cs" />
+    <Compile Include="Utility\ControlHelper.cs" />
+    <Compile Include="Utility\ConfigSpecificSettings.cs" />
+    <Compile Include="Utility\GraphicsExtension.cs" />
+    <EmbeddedResource Include="AboutAppBox.resx">
+      <DependentUpon>AboutAppBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ApplicationUpdate.resx">
+      <DependentUpon>ApplicationUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFileManager.resx">
+      <DependentUpon>FormFileManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAbout.resx">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCreateLicenceRequest.resx">
+      <DependentUpon>FormCreateLicenceRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRestoreBackup.resx">
+      <DependentUpon>FormRestoreBackup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFind.resx">
+      <DependentUpon>FormFind.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSettings.resx">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTabEdit.resx">
+      <DependentUpon>FormTabEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputForms\FormGetPassword.resx">
+      <DependentUpon>FormGetPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputForms\FormSetPassword.resx">
+      <DependentUpon>FormSetPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="UserControls\MemoTabPageControl.resx">
+      <DependentUpon>MemoTabPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="SecureMemoSignKey.pfx" />
+    <None Include="WorkTempSignKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeneralToolkitLib\GeneralToolkitLib\GeneralToolkitLib.csproj">
+      <Project>{18b7c1dc-cb9b-4b4f-b3bb-40e79b277dd9}</Project>
+      <Name>GeneralToolkitLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AppIcon.ico" />
+    <None Include="Resources\ApplicationUpdateLogo1.png" />
+    <None Include="Resources\ApplicationUpdateLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="SecureMemo.exe.manifest">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Auto</PublishState>
+      <IncludeHash>False</IncludeHash>
+      <FileType>ManifestEntryPoint</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

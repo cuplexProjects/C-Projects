@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<settings>
+  <plugins>
+    <plugin caption="WebMail" folderName="WebMailLite" />
+    <plugin caption="Domains" folderName="Domains" />
+    
+	
+    <plugin caption="Security" folderName="Security" />
+    
+    
+    <plugin caption="Upgrade to Pro" folderName="Upgrade" />
+  </plugins>
+  <login>
+    <user>mailadm</user>
+    <password>12345</password>
+    <host>localhost</host>
+    <port>6017</port>
+  </login>
+  <licensekey></licensekey>
+  <advancedoptions>0</advancedoptions>
+</settings>
