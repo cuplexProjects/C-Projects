@@ -9,16 +9,19 @@ namespace ImageView.Utility
 {
     public static class ImageTransform
     {
-        public static Bitmap BitwiseBlend(Bitmap sourceBitmap, Bitmap blendBitmap, BitwiseBlendType blendTypeBlue, BitwiseBlendType blendTypeGreen, BitwiseBlendType blendTypeRed)
+        public static Bitmap BitwiseBlend(Bitmap sourceBitmap, Bitmap blendBitmap, BitwiseBlendType blendTypeBlue,
+            BitwiseBlendType blendTypeGreen, BitwiseBlendType blendTypeRed)
         {
-            BitmapData sourceData = sourceBitmap.LockBits(new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            var sourceData = sourceBitmap.LockBits(new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height),
+                ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             var pixelBuffer = new byte[sourceData.Stride*sourceData.Height];
             Marshal.Copy(sourceData.Scan0, pixelBuffer, 0, pixelBuffer.Length);
             sourceBitmap.UnlockBits(sourceData);
 
 
-            BitmapData blendData = blendBitmap.LockBits(new Rectangle(0, 0, blendBitmap.Width, blendBitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            var blendData = blendBitmap.LockBits(new Rectangle(0, 0, blendBitmap.Width, blendBitmap.Height),
+                ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             var blendBuffer = new byte[blendData.Stride*blendData.Height];
             Marshal.Copy(blendData.Scan0, blendBuffer, 0, blendBuffer.Length);
@@ -27,7 +30,7 @@ namespace ImageView.Utility
             int blue = 0, green = 0, red = 0;
 
 
-            for (int k = 0;
+            for (var k = 0;
                 (k + 4 < pixelBuffer.Length) &&
                 (k + 4 < blendBuffer.Length);
                 k += 4)
@@ -83,7 +86,7 @@ namespace ImageView.Utility
             var resultBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height);
 
 
-            BitmapData resultData = resultBitmap.LockBits(new Rectangle(0, 0,
+            var resultData = resultBitmap.LockBits(new Rectangle(0, 0,
                 resultBitmap.Width, resultBitmap.Height),
                 ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
@@ -98,10 +101,10 @@ namespace ImageView.Utility
         public static void MatrixBlend(Bitmap sourceBitmap, Bitmap blendBitmap, byte alpha)
         {
             // for the matrix the range is 0.0 - 1.0
-            float alphaNorm = alpha/255.0F;
-            using (Bitmap image1 = sourceBitmap)
+            var alphaNorm = alpha/255.0F;
+            using (var image1 = sourceBitmap)
             {
-                using (Bitmap image2 = blendBitmap)
+                using (var image2 = blendBitmap)
                 {
                     // just change the alpha
                     var matrix = new ColorMatrix(new[]
@@ -116,7 +119,7 @@ namespace ImageView.Utility
                     var imageAttributes = new ImageAttributes();
                     imageAttributes.SetColorMatrix(matrix);
 
-                    using (Graphics g = Graphics.FromImage(image1))
+                    using (var g = Graphics.FromImage(image1))
                     {
                         g.CompositingMode = CompositingMode.SourceOver;
                         g.CompositingQuality = CompositingQuality.HighQuality;
@@ -134,43 +137,48 @@ namespace ImageView.Utility
             }
         }
 
-        public static Image OffsetImagesHorizontal(Image currentImage, Image nextImage, Size picBoxSize, float factor, bool leftToRight)
+        public static Image OffsetImagesHorizontal(Image currentImage, Image nextImage, Size picBoxSize, float factor,
+            bool leftToRight)
         {
-            var result = new Bitmap(Math.Max(currentImage.Width, nextImage.Width), Math.Max(currentImage.Height, nextImage.Height));
+            var result = new Bitmap(Math.Max(currentImage.Width, nextImage.Width),
+                Math.Max(currentImage.Height, nextImage.Height));
             //var result = new Bitmap(picBoxSize.Width, picBoxSize.Height);
-            int x1 = result.Width/2 - currentImage.Width/2;
-            int x2 = x1 + currentImage.Width;
-            int offset = (int) (result.Width*factor);
+            var x1 = result.Width/2 - currentImage.Width/2;
+            var x2 = x1 + currentImage.Width;
+            var offset = (int) (result.Width*factor);
 
             if (!leftToRight)
                 offset = offset*-1;
 
-            int y1 = 0;
-            int y2 = 0;
-            int x1Offset = Math.Min(0, x1 + offset);
+            var y1 = 0;
+            var y2 = 0;
+            var x1Offset = Math.Min(0, x1 + offset);
 
-            float ratio1 = currentImage.Width/(float) currentImage.Height;
-            float ratio2 = nextImage.Width/(float) nextImage.Height;
+            var ratio1 = currentImage.Width/(float) currentImage.Height;
+            var ratio2 = nextImage.Width/(float) nextImage.Height;
 
-            Graphics gfx = Graphics.FromImage(result);
-            gfx.DrawImage(currentImage, new Rectangle(Math.Max(0, x1 + offset), y1, currentImage.Width + x1Offset, result.Height));
+            var gfx = Graphics.FromImage(result);
+            gfx.DrawImage(currentImage,
+                new Rectangle(Math.Max(0, x1 + offset), y1, currentImage.Width + x1Offset, result.Height));
             gfx.DrawImage(nextImage, new Rectangle(Math.Max(0, x2 + offset), y2, nextImage.Width, result.Height));
             gfx.Dispose();
 
             return result;
         }
 
-        public static Image OffsetImagesVertical(Image currentImage, Image nextImage, Size imageSize, float factor, bool topToBottom)
+        public static Image OffsetImagesVertical(Image currentImage, Image nextImage, Size imageSize, float factor,
+            bool topToBottom)
         {
             var result = new Bitmap(nextImage, imageSize.Width, imageSize.Height);
 
-            int verticalOffset = (int) (imageSize.Height*factor);
-            int verticalOffset2 = (int) (nextImage.Height*(1 - factor));
+            var verticalOffset = (int) (imageSize.Height*factor);
+            var verticalOffset2 = (int) (nextImage.Height*(1 - factor));
 
-            using (Graphics gfx = Graphics.FromImage(result))
+            using (var gfx = Graphics.FromImage(result))
             {
                 gfx.DrawImage(currentImage, new Rectangle(0, 0, imageSize.Width, imageSize.Height - verticalOffset));
-                gfx.DrawImage(nextImage, new Rectangle(0, verticalOffset2, imageSize.Width, imageSize.Height + verticalOffset2));
+                gfx.DrawImage(nextImage,
+                    new Rectangle(0, verticalOffset2, imageSize.Width, imageSize.Height + verticalOffset2));
             }
             return result;
         }
@@ -183,7 +191,7 @@ namespace ImageView.Utility
                 var bmp = new Bitmap(image.Width, image.Height);
 
                 //create a graphics object from the image  
-                using (Graphics gfx = Graphics.FromImage(bmp))
+                using (var gfx = Graphics.FromImage(bmp))
                 {
                     //create a color matrix object  
                     var matrix = new ColorMatrix();
@@ -198,11 +206,13 @@ namespace ImageView.Utility
                     attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
                     //now draw the image  
-                    gfx.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
+                    gfx.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height,
+                        GraphicsUnit.Pixel, attributes);
 
 
                     matrix.Matrix33 = 1 - opacity;
-                    gfx.DrawImage(SecondImage, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
+                    gfx.DrawImage(SecondImage, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width,
+                        image.Height, GraphicsUnit.Pixel, attributes);
                 }
                 return bmp;
             }
@@ -221,7 +231,7 @@ namespace ImageView.Utility
                 var bmp = new Bitmap(image.Width, image.Height);
 
                 //create a graphics object from the image  
-                using (Graphics gfx = Graphics.FromImage(bmp))
+                using (var gfx = Graphics.FromImage(bmp))
                 {
                     //create a color matrix object  
                     var matrix = new ColorMatrix();
@@ -236,7 +246,8 @@ namespace ImageView.Utility
                     attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
                     //now draw the image  
-                    gfx.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
+                    gfx.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height,
+                        GraphicsUnit.Pixel, attributes);
                 }
                 return bmp;
             }

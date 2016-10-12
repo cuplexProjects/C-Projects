@@ -9,7 +9,7 @@ using GeneralToolkitLib.Converters;
 namespace ImageView.DataContracts
 {
     [Serializable]
-    [DataContract]
+    [DataContract(Name = "ImageViewApplicationSettings")]
     public class ImageViewApplicationSettings
     {
         public enum ChangeImageAnimation
@@ -112,10 +112,13 @@ namespace ImageView.DataContracts
         [DataMember(Name = "ImageCacheSize", Order = 22)]
         public int ImageCacheSize { get; set; }
 
+        [DataMember(Name = "ImageCacheSize", Order = 23)]
+        public string DefaultKey { get; set; }
+
         public void RemoveDuplicateEntriesWithIgnoreCase()
         {
             var deleteStack = new Stack<string>();
-            foreach (string searchPath in LastUsedSearchPaths)
+            foreach (var searchPath in LastUsedSearchPaths)
             {
                 if (LastUsedSearchPaths.Any(s => s.ToLower() == searchPath))
                     deleteStack.Push(searchPath);
@@ -137,13 +140,14 @@ namespace ImageView.DataContracts
             {
                 PasswordProtectBookmarks = true;
                 PasswordDerivedString = GeneralConverters.GeneratePasswordDerivedString(verifiedPassword);
+                DefaultKey = null;
             }
         }
 
         public void SetMainFormPosition(Rectangle mainFormBounds)
         {
-            Rectangle mainScreenBounds = Screen.PrimaryScreen.Bounds;
-            Rectangle intersection = Rectangle.Intersect(mainScreenBounds, mainFormBounds);
+            var mainScreenBounds = Screen.PrimaryScreen.Bounds;
+            var intersection = Rectangle.Intersect(mainScreenBounds, mainFormBounds);
 
             if (intersection != Rectangle.Empty)
             {

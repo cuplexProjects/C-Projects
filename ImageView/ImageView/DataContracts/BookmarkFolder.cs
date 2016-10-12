@@ -1,39 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using ImageView.Models.Interface;
-using ProtoBuf;
 
 namespace ImageView.DataContracts
 {
     [Serializable]
-    [DataContract(Name = "BookmarkFolder", Namespace = "ImageView.DataContracts")]
-    [ProtoContract(AsReferenceDefault = true, DataMemberOffset = 0, Name = "BookmarkFolder", UseProtoMembersOnly = true)]
-    public class BookmarkFolder : IBookmarkFolder
+    [DataContract(Name = "BookmarkFolder")]
+    public class BookmarkFolder
     {
-        [DataMember(Name = "BookmarkFolderId", Order = 1)]
-        [ProtoMember(1, AsReference = true, IsRequired = true, Name = "BookmarkFolderId")]
-        public string BookmarkFolderId { get; protected set; }
+        [DataMember(Name = "Id", Order = 1)]
+        public string Id { get; set; }
 
-        [DataMember(Name = "BookmarkFolders", Order = 2)]
-        [ProtoMember(2, AsReference = true, IsRequired = true, Name = "BookmarkFolders")]
-        public List<BookmarkFolder> BookmarkFolders { get; protected set; }
+        [DataMember(Name = "BookmarkFolders", Order = 2, IsRequired = true)]
+        public List<BookmarkFolder> BookmarkFolders { get; set; }
 
-        [DataMember(Name = "ParentFolder", Order = 3)]
-        [ProtoMember(3, AsReference = true, IsRequired = true, Name = "ParentFolder")]
-        public BookmarkFolder ParentFolder { get; set; }
+        [DataMember(Name = "ParentFolderId", Order = 3)]
+        public string ParentFolderId { get; set; }
 
         [DataMember(Name = "Name", Order = 4)]
-        [ProtoMember(4, AsReference = true, IsRequired = true, Name = "Name")]
         public string Name { get; set; }
 
         [DataMember(Name = "SortOrder", Order = 5)]
-        [ProtoMember(5, AsReference = true, IsRequired = true, Name = "SortOrder")]
         public int SortOrder { get; set; }
 
-        [DataMember(Name = "Bookmarks", Order = 6)]
-        [ProtoMember(6, AsReference = true, IsRequired = true, Name = "Bookmarks")]
-        public List<Bookmark> Bookmarks { get; protected set; }
+        [DataMember(Name = "Bookmarks", Order = 6, IsRequired = true)]
+        public List<Bookmark> Bookmarks { get; set; }
 
         public override string ToString()
         {

@@ -16,22 +16,28 @@ namespace ImageView.Services
         {
             try
             {
-                _registryService = new RegistryAccess(Application.CompanyName, Application.ProductName) {ShowError = true};
+                _registryService = new RegistryAccess(Application.CompanyName, Application.ProductName)
+                {
+                    ShowError = true
+                };
             }
             catch (Exception ex)
             {
-                if (ex.GetType() == typeof (AccessViolationException))
+                if (ex.GetType() == typeof(AccessViolationException))
                 {
                     throw;
                 }
 
                 LogWriter.LogError("Fatal error encountered when accessing the registry settings", ex);
-                MessageBox.Show(ex.Message, Resources.Fatal_error_encountered_when_accessing_the_registry_settings_please_restart_, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message,
+                    Resources.Fatal_error_encountered_when_accessing_the_registry_settings_please_restart_,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             Settings = new ImageViewApplicationSettings();
         }
 
-        public static ApplicationSettingsService Instance => _instance ?? (_instance = new ApplicationSettingsService());
+        public static ApplicationSettingsService Instance => _instance ?? (_instance = new ApplicationSettingsService())
+            ;
 
         public ImageViewApplicationSettings Settings { get; private set; }
 

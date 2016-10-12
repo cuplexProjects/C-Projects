@@ -42,7 +42,8 @@ namespace ImageView.InputForms
             else if (txtPassword1.Text.Length < 8)
                 errorMessage = "Password needs to bee atleast 8 characters long";
             else if (!passwordPattern.IsMatch(txtPassword1.Text))
-                errorMessage = "Password did not mach the required complexity or did contain illegal characters like whitespaces.";
+                errorMessage =
+                    "Password did not mach the required complexity or did contain illegal characters like whitespaces.";
 
             return errorMessage == null;
         }

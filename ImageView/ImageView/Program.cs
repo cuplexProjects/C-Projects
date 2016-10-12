@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using GeneralToolkitLib.ConfigHelper;
 using GeneralToolkitLib.Log;
-using ImageView.ObjectMapper;
 
 namespace ImageView
 {
@@ -31,9 +30,6 @@ namespace ImageView
 
             if (Environment.OSVersion.Version.Major >= 6)
                 SetProcessDPIAware();
-
-            AutoMapperConfig.RegisterMappings();
-            
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(true);

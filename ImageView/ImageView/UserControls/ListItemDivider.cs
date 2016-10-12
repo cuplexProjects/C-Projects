@@ -53,22 +53,28 @@ namespace ImageView.UserControls
 
             if (DividerPosition == DividerPositions.Top)
             {
-                Color back = e.State == DrawItemState.Focus ? e.ForeColor : e.BackColor;
+                var back = e.State == DrawItemState.Focus ? e.ForeColor : e.BackColor;
 
-                var backgrounRectangle = new Rectangle(0, e.Bounds.Top + DividerMargin*2 + (int) DividerPen.Width, e.Bounds.Width, e.Bounds.Height - DividerMargin*2);
+                var backgrounRectangle = new Rectangle(0, e.Bounds.Top + DividerMargin*2 + (int) DividerPen.Width,
+                    e.Bounds.Width, e.Bounds.Height - DividerMargin*2);
                 e.Graphics.FillRectangle(new SolidBrush(back), backgrounRectangle);
 
-                e.Graphics.DrawLine(DividerPen, new Point(e.Bounds.Left, e.Bounds.Top + DividerMargin), new Point(e.Bounds.Right, e.Bounds.Top + DividerMargin));
+                e.Graphics.DrawLine(DividerPen, new Point(e.Bounds.Left, e.Bounds.Top + DividerMargin),
+                    new Point(e.Bounds.Right, e.Bounds.Top + DividerMargin));
 
 
-                float fontTopPosition = (float) e.Bounds.Top + DividerMargin*2 + e.Bounds.Height/2f - userControl.Font.GetHeight()/2f;
+                var fontTopPosition = (float) e.Bounds.Top + DividerMargin*2 + e.Bounds.Height/2f -
+                                      userControl.Font.GetHeight()/2f;
                 var textRectangle = new Rectangle(0, (int) fontTopPosition, e.Bounds.Width, e.Bounds.Height);
-                TextRenderer.DrawText(e.Graphics, Text, userControl.Font, textRectangle, userControl.ForeColor, TextFormatFlags.Left);
+                TextRenderer.DrawText(e.Graphics, Text, userControl.Font, textRectangle, userControl.ForeColor,
+                    TextFormatFlags.Left);
             }
             else
             {
-                e.Graphics.DrawLine(DividerPen, new Point(e.Bounds.Left, e.Bounds.Bottom - DividerMargin), new Point(e.Bounds.Right, e.Bounds.Bottom - DividerMargin));
-                TextRenderer.DrawText(e.Graphics, Text, userControl.Font, e.Bounds, userControl.ForeColor, TextFormatFlags.Left);
+                e.Graphics.DrawLine(DividerPen, new Point(e.Bounds.Left, e.Bounds.Bottom - DividerMargin),
+                    new Point(e.Bounds.Right, e.Bounds.Bottom - DividerMargin));
+                TextRenderer.DrawText(e.Graphics, Text, userControl.Font, e.Bounds, userControl.ForeColor,
+                    TextFormatFlags.Left);
             }
         }
     }

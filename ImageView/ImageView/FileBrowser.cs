@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ImageView.Models;
-using ImageView.Models.Implementation;
 using ImageView.Properties;
 using ImageView.Services;
 using ImageView.Utility;
@@ -43,13 +42,13 @@ namespace ImageView
             dataGridViewLoadedImages.DataBindingComplete += dataGridViewLoadedImages_DataBindingComplete;
             var lastUsedSearchPathsList = new List<string>();
             var searchDirsFromSettings = ApplicationSettingsService.Instance.Settings.LastUsedSearchPaths;
-            bool validList = true;
+            var validList = true;
 
             // Validate every directory and check for duplicates. 
             // If any changes has been made then save settings.
-            foreach (string searchPath in searchDirsFromSettings)
+            foreach (var searchPath in searchDirsFromSettings)
             {
-                string pathToAdd = searchPath.Trim();
+                var pathToAdd = searchPath.Trim();
                 if (lastUsedSearchPathsList.Contains(pathToAdd))
                 {
                     validList = false;
@@ -172,9 +171,11 @@ namespace ImageView
         private void deleteSelectedFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (dataGridViewLoadedImages.SelectedRows.Count == 0) return;
-            if (MessageBox.Show(Resources.Are_you_sure_that_you_want_to_delete_the_selected_files_, Resources.Confirm_delete, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (
+                MessageBox.Show(Resources.Are_you_sure_that_you_want_to_delete_the_selected_files_,
+                    Resources.Confirm_delete, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                DataGridViewSelectedRowCollection selectedRows = dataGridViewLoadedImages.SelectedRows;
+                var selectedRows = dataGridViewLoadedImages.SelectedRows;
                 foreach (DataGridViewRow row in selectedRows)
                 {
                     var imgRefElement = row.DataBoundItem as ImageReferenceElement;

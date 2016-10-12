@@ -38,13 +38,15 @@ namespace ImageView
         private void Instance_OnImportComplete(object sender, ProgressEventArgs e)
         {
             if (IsHandleCreated)
-                Invoke(new UpdateProgressDelegate(UpdateProgressOnLokalThread), e.ProgressStatus.ToString(), e.ImagesLoaded, e.CompletionRate, true);
+                Invoke(new UpdateProgressDelegate(UpdateProgressOnLokalThread), e.ProgressStatus.ToString(),
+                    e.ImagesLoaded, e.CompletionRate, true);
         }
 
         private void Instance_OnProgressUpdate(object sender, ProgressEventArgs e)
         {
             if (IsHandleCreated)
-                Invoke(new UpdateProgressDelegate(UpdateProgressOnLokalThread), e.ProgressStatus.ToString(), e.ImagesLoaded, e.CompletionRate, false);
+                Invoke(new UpdateProgressDelegate(UpdateProgressOnLokalThread), e.ProgressStatus.ToString(),
+                    e.ImagesLoaded, e.CompletionRate, false);
         }
 
         private void UpdateProgressOnLokalThread(string status, int imagesLoaded, double completionRate, bool completed)
@@ -100,6 +102,7 @@ namespace ImageView
                 ImageLoaderService.Instance.StopImport();
         }
 
-        private delegate void UpdateProgressDelegate(string status, int imagesLoaded, double completionRate, bool completed);
+        private delegate void UpdateProgressDelegate(
+            string status, int imagesLoaded, double completionRate, bool completed);
     }
 }

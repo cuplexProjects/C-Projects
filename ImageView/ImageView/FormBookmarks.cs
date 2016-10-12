@@ -13,7 +13,7 @@ using ImageView.DataBinding;
 using ImageView.DataContracts;
 using ImageView.Events;
 using ImageView.InputForms;
-using ImageView.Models.Implementation;
+using ImageView.Managers;
 using ImageView.Properties;
 using ImageView.Services;
 
@@ -23,11 +23,11 @@ namespace ImageView
     {
         private const int CUSTOM_CONTENT_HEIGHT = 4;
         private readonly TreeViewDataContext _treeViewDataContext;
+        private readonly BookmarkManager bookmarkManager;
         private readonly Color gridViewGradientBackgroundColorStart = ColorTranslator.FromHtml("#b2e1ff");
         private readonly Color gridViewGradientBackgroundColorStop = ColorTranslator.FromHtml("#66b6fc");
         private readonly Color GridViewSelectionBorderColor = ColorTranslator.FromHtml("#7da2ce");
         private readonly StringBuilder logStringBuilder;
-        private readonly BookmarkFolderBase rootBookmarkFolder;
         private readonly List<string> volumeInfoArray;
         private int brokenLinks;
         private string defaultDrive = "c:\\";
@@ -38,14 +38,15 @@ namespace ImageView
             InitializeComponent();
             logStringBuilder = new StringBuilder();
             volumeInfoArray = new List<string>();
-            rootBookmarkFolder = BookmarkService.Instance.BookmarksContainer.RootFolderImplementation;
+            bookmarkManager = BookmarkService.Instance.BookmarkManager;
 
-            _treeViewDataContext = new TreeViewDataContext(bookmarksTree, BookmarkService.Instance.BookmarksContainer.RootFolder);
+            _treeViewDataContext = new TreeViewDataContext(bookmarksTree,
+                BookmarkService.Instance.BookmarkManager.RootFolder);
 
             try
             {
                 var driveInfoArray = DriveInfo.GetDrives();
-                foreach (DriveInfo driveInfo in driveInfoArray.Where(driveInfo => driveInfo.IsReady))
+                foreach (var driveInfo in driveInfoArray.Where(driveInfo => driveInfo.IsReady))
                 {
                     volumeInfoArray.Add(driveInfo.Name);
                 }
@@ -66,8 +67,13 @@ namespace ImageView
             BookmarkService.Instance.OnBookmarksUpdate += Instance_OnBookmarksUpdate;
             InitBookmarksDataGridViev();
 
-            if (BookmarkService.Instance.BookmarksContainer == null && ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
-                using (var formgetPassword = new FormGetPassword {PasswordDerivedString = ApplicationSettingsService.Instance.Settings.PasswordDerivedString})
+            if (BookmarkService.Instance.BookmarkManager == null &&
+                ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
+                using (
+                    var formgetPassword = new FormGetPassword
+                    {
+                        PasswordDerivedString = ApplicationSettingsService.Instance.Settings.PasswordDerivedString
+                    })
                 {
                     if (formgetPassword.ShowDialog() == DialogResult.OK)
                     {
@@ -78,7 +84,7 @@ namespace ImageView
                             return;
                         }
 
-                        if (BookmarkService.Instance.OpenBookmarkFile(formgetPassword.PasswordString))
+                        if (BookmarkService.Instance.OpenBookmarks(formgetPassword.PasswordString))
                             initBookmarksDataSource();
                         else
                         {
@@ -100,7 +106,7 @@ namespace ImageView
 
         private void ReLoadBookmarks()
         {
-            bookmarksDataGridView.DataSource = rootBookmarkFolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
+            bookmarksDataGridView.DataSource = bookmarkManager.RootFolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
             bookmarksDataGridView.Refresh();
         }
 
@@ -169,11 +175,14 @@ namespace ImageView
                 {
                     // Calculate the bounds of the row.
                     var rowBounds = new Rectangle(0, e.RowBounds.Top,
-                        bookmarksDataGridView.Columns.GetColumnsWidth(DataGridViewElementStates.Visible) - bookmarksDataGridView.HorizontalScrollingOffset + 1,
+                        bookmarksDataGridView.Columns.GetColumnsWidth(DataGridViewElementStates.Visible) -
+                        bookmarksDataGridView.HorizontalScrollingOffset + 1,
                         e.RowBounds.Height);
 
                     // Paint the custom selection background.
-                    using (Brush backbrush = new LinearGradientBrush(rowBounds, gridViewGradientBackgroundColorStart, gridViewGradientBackgroundColorStop, LinearGradientMode.Vertical))
+                    using (
+                        Brush backbrush = new LinearGradientBrush(rowBounds, gridViewGradientBackgroundColorStart,
+                            gridViewGradientBackgroundColorStop, LinearGradientMode.Vertical))
                     {
                         e.Graphics.FillRectangle(backbrush, rowBounds);
                         var p = new Pen(backbrush, 1) {Color = GridViewSelectionBorderColor};
@@ -190,20 +199,23 @@ namespace ImageView
         private void bookmarksDataGridView_KeyDown(object sender, KeyEventArgs e)
         {
             if (bookmarksDataGridView.SelectedRows.Count != 1) return;
-            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
+            var selectedRow = bookmarksDataGridView.CurrentRow;
 
             if (e.KeyData == Keys.Enter)
             {
                 e.Handled = true;
                 LoadImageFromSelectedRow();
             }
-            if (e.KeyData == Keys.Delete && selectedRow != null && MessageBox.Show(this, "Are you sure you want to delete this bookmark?", "Delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (e.KeyData == Keys.Delete && selectedRow != null &&
+                MessageBox.Show(this, Resources.Are_you_sure_you_want_to_delete_this_bookmark_, Resources.Delete,
+                    MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 var bookmark = selectedRow.DataBoundItem as Bookmark;
 
                 if (bookmark == null) return;
-                rootBookmarkFolder.DeleteBookmark(bookmark);
-                bookmarksDataGridView.DataSource = rootBookmarkFolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
+                bookmarkManager.DeleteBookmark(bookmark);
+                bookmarksDataGridView.DataSource =
+                    bookmarkManager.RootFolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
             }
         }
 
@@ -211,7 +223,7 @@ namespace ImageView
         {
             if (bookmarksDataGridView.SelectedRows.Count != 1) return;
 
-            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
+            var selectedRow = bookmarksDataGridView.CurrentRow;
             var bookmark = selectedRow?.DataBoundItem as Bookmark;
 
             if (bookmark == null) return;
@@ -229,7 +241,7 @@ namespace ImageView
         {
             if (bookmarksDataGridView.SelectedRows.Count != 1) return;
 
-            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
+            var selectedRow = bookmarksDataGridView.CurrentRow;
             var bookmark = selectedRow?.DataBoundItem as Bookmark;
 
             if (bookmark != null)
@@ -258,18 +270,23 @@ namespace ImageView
             if (bookmarksTree.SelectedNode == null)
                 return;
 
-            var inputFormData = new FormInputRow.InputFormData {GroupBoxText = "Bookmark folder name", LabelText = "Name:", WindowText = "Add new bookmark folder"};
+            var inputFormData = new FormInputRow.InputFormData
+            {
+                GroupBoxText = "Bookmark folder name",
+                LabelText = "Name:",
+                WindowText = "Add new bookmark folder"
+            };
             var formInputRow = new FormInputRow(inputFormData);
 
             if (formInputRow.ShowDialog(this) == DialogResult.OK)
             {
-                string folderName = formInputRow.UserInputText;
-                TreeNode selectedNode = bookmarksTree.SelectedNode;
-                var selectedBookmarkfolder = selectedNode.Tag as BookmarkFolderImplementation;
+                var folderName = formInputRow.UserInputText;
+                var selectedNode = bookmarksTree.SelectedNode;
+                var selectedBookmarkfolder = selectedNode.Tag as BookmarkFolder;
 
                 if (selectedBookmarkfolder != null)
                 {
-                    BookmarkFolderImplementation newFolder = selectedBookmarkfolder.AddBookmarkFolder(folderName);
+                    var newFolder = bookmarkManager.AddBookmarkFolder(selectedBookmarkfolder.Id, folderName);
                     AlterTreeViewState(TreeViewFolderStateChange.FolderAdded, newFolder);
                 }
             }
@@ -282,10 +299,11 @@ namespace ImageView
             if (treeNode == null)
                 return;
 
-            if (MessageBox.Show(this, "Are you sure you want to delete this folder?", "Remove folder?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (
+                MessageBox.Show(this, Resources.Are_you_sure_you_want_to_delete_this_folder_, Resources.Remove_folder_,
+                    MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                var parentFolder = treeNode.ParentFolder as BookmarkFolderBase;
-                parentFolder?.DeleteBookmarkFolder(treeNode);
+                bookmarkManager.DeleteBookmarkFolder(treeNode);
                 AlterTreeViewState(TreeViewFolderStateChange.FolderRemoved, treeNode);
             }
         }
@@ -313,7 +331,7 @@ namespace ImageView
 
         private void tryToFixBrokenLinksToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (BookmarkService.Instance.BookmarksContainer == null)
+            if (BookmarkService.Instance.BookmarkManager == null)
                 return;
 
             showLogToolStripMenuItem.Enabled = true;
@@ -321,19 +339,19 @@ namespace ImageView
             brokenLinks = 0;
             fixedLinks = 0;
 
-            BookmarkFolder bookmarkFolder = BookmarkService.Instance.BookmarksContainer.RootFolder;
+            var bookmarkFolder = BookmarkService.Instance.BookmarkManager.RootFolder;
             UpdateBrokenLinksOnBookmarks(bookmarkFolder.Bookmarks);
             UpdateBrokenLinksOnThreeNodes(bookmarkFolder.BookmarkFolders);
 
             logStringBuilder.AppendLine($"Found {brokenLinks} broken linkes and fixed {fixedLinks} links.");
 
             if (fixedLinks > 0)
-                BookmarkService.Instance.SaveBookmarkFile();
+                BookmarkService.Instance.SaveBookmarks();
         }
 
         private void UpdateBrokenLinksOnThreeNodes(List<BookmarkFolder> bookmarkTreeNodes)
         {
-            foreach (BookmarkFolder bookmarkTreeNode in bookmarkTreeNodes)
+            foreach (var bookmarkTreeNode in bookmarkTreeNodes)
             {
                 UpdateBrokenLinksOnBookmarks(bookmarkTreeNode.Bookmarks);
                 UpdateBrokenLinksOnThreeNodes(bookmarkTreeNode.BookmarkFolders);
@@ -345,10 +363,10 @@ namespace ImageView
             if (bookmarks == null)
                 return;
 
-            foreach (Bookmark bookmark in bookmarks)
+            foreach (var bookmark in bookmarks)
             {
-                string volumeLabel = GeneralConverters.GetVolumeLabelFromPath(bookmark.Directory);
-                string originalPath = bookmark.CompletePath;
+                var volumeLabel = GeneralConverters.GetVolumeLabelFromPath(bookmark.Directory);
+                var originalPath = bookmark.CompletePath;
                 if (!VolumeExists(volumeLabel)) continue;
                 if (!File.Exists(bookmark.CompletePath))
                 {
@@ -373,7 +391,8 @@ namespace ImageView
                 LogWriter.LogError("Exception in FindFilePath() rootDirectory=" + rootDirectory, exception);
             }
 
-            FileInfo fileInfo = fileInfoArray?.FirstOrDefault(fi => fi.Name == bookmark.FileName && fi.Length == bookmark.Size);
+            var fileInfo =
+                fileInfoArray?.FirstOrDefault(fi => fi.Name == bookmark.FileName && fi.Length == bookmark.Size);
             if (fileInfo == null) return false;
             bookmark.Directory = fileInfo.DirectoryName;
             bookmark.CompletePath = fileInfo.DirectoryName + "\\" + bookmark.FileName;

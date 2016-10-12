@@ -9,7 +9,7 @@ namespace GeneralToolkitLib.ConfigHelper
     /// </summary>
     public static class GlobalSettings
     {
-        public static bool IsInitialized
+        public static bool Initialized
         {
             get { return _isInitialized; }
         }
@@ -18,6 +18,20 @@ namespace GeneralToolkitLib.ConfigHelper
         private static string _logFileName;
         private static string _userDataPath;
         private static bool _isInitialized;
+
+        public static void UnitTestInitialize(string testDataPath)
+        {
+            if (_isInitialized)
+                return;
+
+            _isInitialized = true;
+
+            _logFileName = "UnitTest.log";
+            _userDataPath = testDataPath;
+
+            if (!Directory.Exists(_userDataPath))
+                Directory.CreateDirectory(_userDataPath);
+        }
 
         public static void Initialize(string executableAssemblyName, bool useApplicationDataFolder)
         {
@@ -65,6 +79,9 @@ namespace GeneralToolkitLib.ConfigHelper
 
         public static string GetUserDataDirectoryPath()
         {
+            if (!Initialized)
+                throw new InvalidOperationException("Default Config is not initialized!");
+
             return _userDataPath;
         }
     }

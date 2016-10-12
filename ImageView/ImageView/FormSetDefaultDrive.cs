@@ -25,7 +25,7 @@ namespace ImageView
             try
             {
                 var driveInfos = DriveInfo.GetDrives();
-                foreach (DriveInfo driveInfo in driveInfos.Where(driveInfo => driveInfo.IsReady))
+                foreach (var driveInfo in driveInfos.Where(driveInfo => driveInfo.IsReady))
                 {
                     availableDriveInfos.Add(driveInfo);
                 }
@@ -35,7 +35,7 @@ namespace ImageView
                 LogWriter.LogError("Error in FormSetDefaultDrive_Load()", ex);
             }
 
-            foreach (DriveInfo availableDriveInfo in availableDriveInfos)
+            foreach (var availableDriveInfo in availableDriveInfos)
             {
                 cbDriveList.Items.Add(GetDriveInfoListItemText(availableDriveInfo));
             }
@@ -59,13 +59,14 @@ namespace ImageView
 
         private string GetDriveInfoListItemText(DriveInfo driveInfo)
         {
-            string driveInfoText = driveInfo.VolumeLabel ?? "";
+            var driveInfoText = driveInfo.VolumeLabel ?? "";
             if (!string.IsNullOrEmpty(driveInfo.Name))
                 driveInfoText += string.Format(" ({0}) ", driveInfo.Name.Replace("\\", ""));
             else
                 driveInfoText += " [" + driveInfo.VolumeLabel + "]";
 
-            driveInfoText += string.Format("{0} free of {1} [{2}, {3}]", GeneralConverters.FormatFileSizeToString(driveInfo.TotalFreeSpace),
+            driveInfoText += string.Format("{0} free of {1} [{2}, {3}]",
+                GeneralConverters.FormatFileSizeToString(driveInfo.TotalFreeSpace),
                 GeneralConverters.FormatFileSizeToString(driveInfo.TotalSize),
                 driveInfo.DriveType, driveInfo.DriveFormat);
 

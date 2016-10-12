@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace ImageView.UserControls
 {
     [Designer("System.Windows.Forms.Design.DocumentDesigner, System.Windows.Forms.Design",
-        typeof (IRootDesigner)),
+        typeof(IRootDesigner)),
      DesignerCategory("Form")]
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
@@ -25,7 +25,9 @@ namespace ImageView.UserControls
         {
             _defaultSize = new Size(250, 250);
             Size = _defaultSize;
-            SetStyle(ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(
+                ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.DoubleBuffer |
+                ControlStyles.AllPaintingInWmPaint, true);
             UpdateStyles();
             _pen = new Pen(InnerBorderColor) {Width = BorderWidthInner};
 
@@ -34,34 +36,34 @@ namespace ImageView.UserControls
 
         [DispId(1)]
         [Browsable(true)]
-        [DefaultValue(typeof (Color), "0x333333")]
-        [AttributeProvider(typeof (Color))]
+        [DefaultValue(typeof(Color), "0x333333")]
+        [AttributeProvider(typeof(Color))]
         [Description("The outmost border color"), Category("Appearance")]
         public Color OuterBorderColor { get; set; }
 
         [Description("The inset border color"), Category("Appearance")]
         [DispId(2)]
         [Browsable(true)]
-        [AttributeProvider(typeof (Color))]
-        [DefaultValue(typeof (Color), "0xCCCCCC")]
+        [AttributeProvider(typeof(Color))]
+        [DefaultValue(typeof(Color), "0xCCCCCC")]
         public Color InnerBorderColor { get; set; }
 
         [Description("The outer most border with inside the control"), Category("Appearance")]
         [DispId(3)]
         [Browsable(true)]
-        [AttributeProvider(typeof (int))]
-        [DefaultValue(typeof (int), "0x1")]
+        [AttributeProvider(typeof(int))]
+        [DefaultValue(typeof(int), "0x1")]
         public int BorderWidthOuter { get; set; }
 
         [Description("The Inner border with after the outer border is painted"), Category("Appearance")]
         [DispId(4)]
-        [DefaultValue(typeof (int), "1")]
+        [DefaultValue(typeof(int), "1")]
         [Browsable(true)]
         public int BorderWidthInner { get; set; }
 
         [Description("The Inner border with after the outer border is painted"), Category("Design")]
         [DispId(5)]
-        [DefaultValue(typeof (int), "0x1")]
+        [DefaultValue(typeof(int), "0x1")]
         [Browsable(true)]
         protected new BorderStyle BorderStyle { get; set; }
 
@@ -86,8 +88,8 @@ namespace ImageView.UserControls
 
 
             var bufferedGraphicsContext = new BufferedGraphicsContext();
-            BufferedGraphics bufferedGraphics = bufferedGraphicsContext.Allocate(e.Graphics, e.ClipRectangle);
-            using (Graphics g = bufferedGraphics.Graphics)
+            var bufferedGraphics = bufferedGraphicsContext.Allocate(e.Graphics, e.ClipRectangle);
+            using (var g = bufferedGraphics.Graphics)
             {
                 g.CompositingQuality = CompositingQuality.HighQuality;
                 g.InterpolationMode = InterpolationMode.HighQualityBilinear;
@@ -106,15 +108,16 @@ namespace ImageView.UserControls
 
                         break;
                     case ImageLayout.Stretch:
-                        float scaleX = BackgroundImage.Width/(float) Width;
-                        float scaleY = BackgroundImage.Height/(float) Height;
+                        var scaleX = BackgroundImage.Width/(float) Width;
+                        var scaleY = BackgroundImage.Height/(float) Height;
 
 
                         //if (y > 0)
                         //{
                         //    y = y * (BackgroundImage.Width / e.ClipRectangle.Width);
                         //}
-                        var srcRect = new Rectangle(Convert.ToInt32(scaleX*e.ClipRectangle.X), Convert.ToInt32(scaleY*e.ClipRectangle.Y), Convert.ToInt32(e.ClipRectangle.Width*scaleX),
+                        var srcRect = new Rectangle(Convert.ToInt32(scaleX*e.ClipRectangle.X),
+                            Convert.ToInt32(scaleY*e.ClipRectangle.Y), Convert.ToInt32(e.ClipRectangle.Width*scaleX),
                             Convert.ToInt32(e.ClipRectangle.Height*scaleY));
                         g.DrawImage(BackgroundImage, e.ClipRectangle, srcRect, GraphicsUnit.Pixel);
 
@@ -123,7 +126,8 @@ namespace ImageView.UserControls
                         var renderImage = (Image) BackgroundImage.Clone();
                         g.Clear(Color.White);
                         g.DrawImageUnscaled(renderImage, 0, 0, renderImage.Width, renderImage.Height);
-                        g.ScaleTransform(BackgroundImage.Width/(float) Width, renderImage.Height/(float) Height, MatrixOrder.Prepend);
+                        g.ScaleTransform(BackgroundImage.Width/(float) Width, renderImage.Height/(float) Height,
+                            MatrixOrder.Prepend);
 
 
                         //hdcIntPtr = e.Graphics.GetHdc();
@@ -153,20 +157,20 @@ namespace ImageView.UserControls
             UpdateStyles();
         }
 
-        //protected override void OnPaint(PaintEventArgs e)
-        //{            
-        //    Rectangle drawRectangle = Rectangle.Inflate(e.ClipRectangle, -1, -1);
-
-        //    _pen.DashStyle = DashStyle.Solid;
-        //    _pen.DashCap = DashCap.Round;
-        //    _pen.DashOffset = 25;
+        //        g.DrawRectangle(_pen, drawRectangle);
+        //        _pen.Width = BorderWidthOuter;
+        //        _pen.Color = OuterBorderColor;
+        //    {
 
         //    using (Graphics g = e.Graphics)
-        //    {
-        //        _pen.Color = OuterBorderColor;
-        //        _pen.Width = BorderWidthOuter;
+        //    _pen.DashOffset = 25;
+        //    _pen.DashCap = DashCap.Round;
 
-        //        g.DrawRectangle(_pen, drawRectangle);
+        //    _pen.DashStyle = DashStyle.Solid;
+        //    Rectangle drawRectangle = Rectangle.Inflate(e.ClipRectangle, -1, -1);
+        //{            
+
+        //protected override void OnPaint(PaintEventArgs e)
 
         //        drawRectangle.Inflate(-1 * BorderWidthOuter, -1 * BorderWidthOuter);
         //        _pen.Color = OuterBorderColor;

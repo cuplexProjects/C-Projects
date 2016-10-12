@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Windows.Forms;
-using ImageView.Models.Implementation;
+using ImageView.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ImageView.UnitTest

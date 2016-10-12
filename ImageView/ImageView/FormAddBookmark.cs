@@ -2,7 +2,8 @@
 using System.Drawing;
 using System.Windows.Forms;
 using ImageView.DataContracts;
-using ImageView.Models.Implementation;
+using ImageView.Managers;
+using ImageView.Models;
 using ImageView.Services;
 using ImageView.Utility;
 
@@ -10,15 +11,15 @@ namespace ImageView
 {
     public partial class FormAddBookmark : Form
     {
+        private readonly BookmarkManager _bookmarkManager;
         private readonly ImageReferenceElement _imageReference;
-        private readonly BookmarkFolderImplementation _rootFolder;
 
         public FormAddBookmark(Point startupPosition, ImageReferenceElement imageReference)
         {
             InitializeComponent();
             SetDesktopLocation(startupPosition.X, startupPosition.Y);
             _imageReference = imageReference;
-            _rootFolder = BookmarkService.Instance.BookmarksContainer.RootFolderImplementation;
+            _bookmarkManager = BookmarkService.Instance.BookmarkManager;
         }
 
         protected override CreateParams CreateParams
@@ -26,7 +27,7 @@ namespace ImageView
             get
             {
                 const int CS_DROPSHADOW = 0x20000;
-                CreateParams cp = base.CreateParams;
+                var cp = base.CreateParams;
                 cp.ClassStyle |= CS_DROPSHADOW;
                 return cp;
             }
@@ -42,32 +43,21 @@ namespace ImageView
 
         private void InitFolderDropdownList()
         {
-            BookmarkFolder rootNode = _rootFolder;
+            var rootNode = _bookmarkManager.RootFolder;
             comboBoxBookmarkFolders.Items.Clear();
 
-            comboBoxBookmarkFolders.Items.Add(rootNode);
-
-            foreach (BookmarkFolder folder in rootNode.BookmarkFolders)
+            foreach (var folder in rootNode.BookmarkFolders)
                 comboBoxBookmarkFolders.Items.Add(folder);
 
-            comboBoxBookmarkFolders.SelectedIndex = 0;
+            if (comboBoxBookmarkFolders.Items.Count > 0)
+                comboBoxBookmarkFolders.SelectedIndex = 0;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            var bookmarkTreeNode = comboBoxBookmarkFolders.SelectedItem as BookmarkFolder;
+            var bookmarkFolder = comboBoxBookmarkFolders.SelectedItem as BookmarkFolder ?? _bookmarkManager.RootFolder;
+            _bookmarkManager.AddBookmark(bookmarkFolder.ParentFolderId, txtBookmarkName.Text, _imageReference);
 
-            if (bookmarkTreeNode != null)
-            {
-                var parentFolder = bookmarkTreeNode.ParentFolder as BookmarkFolderBase;
-
-                if (parentFolder == null)
-                    _rootFolder.AddBookmark(txtBookmarkName.Text, _imageReference);
-                else
-                {
-                    parentFolder.AddBookmark(txtBookmarkName.Text, _imageReference);
-                }
-            }
             Close();
         }
 
@@ -96,7 +86,7 @@ namespace ImageView
         {
             if (e.KeyCode == Keys.Enter)
             {
-                _rootFolder.AddBookmark(txtBookmarkName.Text, _imageReference);
+                _bookmarkManager.AddBookmark(_bookmarkManager.RootFolder.Id, txtBookmarkName.Text, _imageReference);
                 e.Handled = true;
                 Close();
             }

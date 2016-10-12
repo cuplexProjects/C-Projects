@@ -8,7 +8,7 @@ using GeneralToolkitLib.Events;
 using GeneralToolkitLib.Log;
 using GeneralToolkitLib.WindowsApi;
 using ImageView.Events;
-using ImageView.Models.Implementation;
+using ImageView.Models;
 using ImageView.Models.Interface;
 using ImageView.Properties;
 using ImageView.Services;
@@ -51,14 +51,16 @@ namespace ImageView
             _switchImgButtonsEnabled = ApplicationSettingsService.Instance.Settings.ShowSwitchImageButtons;
             if (_switchImgButtonsEnabled)
             {
-                _showSwitchImgOnMouseOverWindow = ApplicationSettingsService.Instance.Settings.ShowNextPrevControlsOnEnterWindow;
+                _showSwitchImgOnMouseOverWindow =
+                    ApplicationSettingsService.Instance.Settings.ShowNextPrevControlsOnEnterWindow;
                 _mouseHoverInfo = new MouseHoverInfo();
             }
         }
 
         private int FormId { get; }
 
-        private bool ImageSourceDataAvailable => _dataReady && _imageLoaderService.ImageReferenceList != null && !_imageLoaderService.IsRunningImport;
+        private bool ImageSourceDataAvailable
+            => _dataReady && _imageLoaderService.ImageReferenceList != null && !_imageLoaderService.IsRunningImport;
 
         public void ResetZoomAndRepaint()
         {
@@ -72,7 +74,8 @@ namespace ImageView
         public void ReloadSettings()
         {
             _switchImgButtonsEnabled = ApplicationSettingsService.Instance.Settings.ShowSwitchImageButtons;
-            _showSwitchImgOnMouseOverWindow = ApplicationSettingsService.Instance.Settings.ShowNextPrevControlsOnEnterWindow;
+            _showSwitchImgOnMouseOverWindow =
+                ApplicationSettingsService.Instance.Settings.ShowNextPrevControlsOnEnterWindow;
             _mouseHoverInfo = _switchImgButtonsEnabled ? new MouseHoverInfo() : null;
         }
 
@@ -100,10 +103,11 @@ namespace ImageView
 
         private void SetImageReferenceCollection()
         {
-            bool randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
+            var randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
             if (!_imageLoaderService.IsRunningImport && _imageLoaderService.ImageReferenceList != null)
             {
-                _imageReferenceCollection = _imageLoaderService.GenerateImageReferenceCollection(randomizeImageCollection);
+                _imageReferenceCollection =
+                    _imageLoaderService.GenerateImageReferenceCollection(randomizeImageCollection);
                 _dataReady = true;
             }
         }
@@ -152,7 +156,7 @@ namespace ImageView
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            MouseEventArgs mouse = e;
+            var mouse = e;
             if (mouse.Button == MouseButtons.Left)
             {
                 if (_switchImgButtonsEnabled)
@@ -169,16 +173,18 @@ namespace ImageView
 
         private void pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            MouseEventArgs mouse = e;
+            var mouse = e;
 
             if (mouse.Button == MouseButtons.Left)
             {
-                Point mousePosNow = mouse.Location;
+                var mousePosNow = mouse.Location;
 
-                int deltaX = mousePosNow.X - _mouseDown.X; // the distance the mouse has been moved since mouse was pressed
-                int deltaY = mousePosNow.Y - _mouseDown.Y;
+                var deltaX = mousePosNow.X - _mouseDown.X;
+                    // the distance the mouse has been moved since mouse was pressed
+                var deltaY = mousePosNow.Y - _mouseDown.Y;
 
-                _imgx = (int) (_startx + deltaX/_zoom); // calculate new offset of image based on the current zoom factor
+                _imgx = (int) (_startx + deltaX/_zoom);
+                    // calculate new offset of image based on the current zoom factor
                 _imgy = (int) (_starty + deltaY/_zoom);
 
                 pictureBox.Refresh();
@@ -186,7 +192,7 @@ namespace ImageView
 
             if (_mouseHoverInfo == null) return;
 
-            int buttonWidth = (int) (ClientSize.Width*SwitchImageButtonsPercentOfScreen);
+            var buttonWidth = (int) (ClientSize.Width*SwitchImageButtonsPercentOfScreen);
             var leftButton = new Rectangle(0, 0, buttonWidth, Height);
             var rightButton = new Rectangle(Width - buttonWidth, 0, buttonWidth, Height);
 
@@ -222,7 +228,8 @@ namespace ImageView
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if ((msg.Msg != WindowEvents.WM_KEYDOWN) && (msg.Msg != WindowEvents.WM_SYSKEYDOWN)) return base.ProcessCmdKey(ref msg, keyData);
+            if ((msg.Msg != WindowEvents.WM_KEYDOWN) && (msg.Msg != WindowEvents.WM_SYSKEYDOWN))
+                return base.ProcessCmdKey(ref msg, keyData);
 
             switch (keyData)
             {
@@ -298,7 +305,7 @@ namespace ImageView
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            float oldzoom = _zoom;
+            var oldzoom = _zoom;
 
             if (e.Delta > 0)
                 _zoom += 0.1F + _zoom*.05f;
@@ -306,17 +313,17 @@ namespace ImageView
             else if (e.Delta < 0)
                 _zoom = Math.Max(_zoom - 0.1F - _zoom*.05f, ZOOM_MIN);
 
-            MouseEventArgs mouse = e;
-            Point mousePosNow = mouse.Location;
+            var mouse = e;
+            var mousePosNow = mouse.Location;
 
-            int x = mousePosNow.X - pictureBox.Location.X; // Where location of the mouse in the pictureframe
-            int y = mousePosNow.Y - pictureBox.Location.Y;
+            var x = mousePosNow.X - pictureBox.Location.X; // Where location of the mouse in the pictureframe
+            var y = mousePosNow.Y - pictureBox.Location.Y;
 
-            int oldimagex = (int) (x/oldzoom); // Where in the IMAGE is it now
-            int oldimagey = (int) (y/oldzoom);
+            var oldimagex = (int) (x/oldzoom); // Where in the IMAGE is it now
+            var oldimagey = (int) (y/oldzoom);
 
-            int newimagex = (int) (x/_zoom); // Where in the IMAGE will it be when the new zoom i made
-            int newimagey = (int) (y/_zoom);
+            var newimagex = (int) (x/_zoom); // Where in the IMAGE will it be when the new zoom i made
+            var newimagey = (int) (y/_zoom);
 
             _imgx = newimagex - oldimagex + _imgx; // Where to move image to keep focus on one point
             _imgy = newimagey - oldimagey + _imgy;
@@ -336,7 +343,7 @@ namespace ImageView
                 _imgy = 0;
 
             if (_currentImage == null) return;
-            Graphics g = CreateGraphics();
+            var g = CreateGraphics();
             if (fitEntireImage)
                 _zoom = Math.Min(
                     (float) pictureBox.Height/_currentImage.Height*(_currentImage.VerticalResolution/g.DpiY),
@@ -352,7 +359,7 @@ namespace ImageView
 
             try
             {
-                Graphics g = e.Graphics;
+                var g = e.Graphics;
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.ScaleTransform(_zoom, _zoom);
                 g.DrawImage(_currentImage, _imgx, _imgy);
@@ -364,25 +371,28 @@ namespace ImageView
 
                     g.ResetTransform();
                     Brush b = new SolidBrush(Color.FromArgb(128, Color.Black));
-                    int buttonWidth = (int) (ClientSize.Width*SwitchImageButtonsPercentOfScreen);
+                    var buttonWidth = (int) (ClientSize.Width*SwitchImageButtonsPercentOfScreen);
 
                     g.FillRectangle(b, new Rectangle(0, 0, buttonWidth, ClientSize.Height));
                     g.FillRectangle(b, new Rectangle(ClientSize.Width - buttonWidth, 0, buttonWidth, ClientSize.Height));
 
-                    float imgScale = buttonWidth/(float) Resources.Arrow_Next_icon.Size.Width;
+                    var imgScale = buttonWidth/(float) Resources.Arrow_Next_icon.Size.Width;
 
                     imgScale = imgScale*0.75f;
 
-                    float imgScaleInv = 1/imgScale;
+                    var imgScaleInv = 1/imgScale;
                     g.ScaleTransform(imgScale, imgScale);
-                    g.DrawImage(Resources.Arrow_Next_icon, (ClientSize.Width - buttonWidth)*imgScaleInv, (ClientSize.Height/2f - 32*imgScale)*imgScaleInv);
+                    g.DrawImage(Resources.Arrow_Next_icon, (ClientSize.Width - buttonWidth)*imgScaleInv,
+                        (ClientSize.Height/2f - 32*imgScale)*imgScaleInv);
                     g.DrawImage(Resources.Arrow_Back_icon, 0, (ClientSize.Height/2f - 32*imgScale)*imgScaleInv);
                     g.ResetTransform();
 
 
                     if (_mouseHoverInfo.OverAnyButton)
                     {
-                        Rectangle rect = _mouseHoverInfo.OverLeftButton ? new Rectangle(0, 0, buttonWidth, Height) : new Rectangle(ClientSize.Width - buttonWidth - 1, 0, buttonWidth, Height);
+                        var rect = _mouseHoverInfo.OverLeftButton
+                            ? new Rectangle(0, 0, buttonWidth, Height)
+                            : new Rectangle(ClientSize.Width - buttonWidth - 1, 0, buttonWidth, Height);
                         Brush selectionBrush = new HatchBrush(HatchStyle.Percent50, Color.DimGray);
 
                         var p = new Pen(selectionBrush);

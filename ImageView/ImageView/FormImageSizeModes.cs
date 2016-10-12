@@ -16,8 +16,8 @@ namespace ImageView
 
         private void FormImageSizeModes_Load(object sender, EventArgs e)
         {
-            comboBoxImageSizeModes.DataSource = Enum.GetValues(typeof (PictureBoxSizeMode));
-            int sizeMode = ApplicationSettingsService.Instance.Settings.PrimaryImageSizeMode;
+            comboBoxImageSizeModes.DataSource = Enum.GetValues(typeof(PictureBoxSizeMode));
+            var sizeMode = ApplicationSettingsService.Instance.Settings.PrimaryImageSizeMode;
 
             try
             {
@@ -32,7 +32,9 @@ namespace ImageView
 
         private void comboBoxImageSizeModes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ImageSizeMode = (PictureBoxSizeMode) Enum.Parse(typeof (PictureBoxSizeMode), comboBoxImageSizeModes.SelectedIndex.ToString());
+            ImageSizeMode =
+                (PictureBoxSizeMode)
+                    Enum.Parse(typeof(PictureBoxSizeMode), comboBoxImageSizeModes.SelectedIndex.ToString());
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

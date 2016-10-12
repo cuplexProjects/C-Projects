@@ -8,7 +8,7 @@ using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading;
 using GeneralToolkitLib.Log;
-using ImageView.Models.Implementation;
+using ImageView.Models;
 
 namespace ImageView.Services
 {
@@ -94,7 +94,9 @@ namespace ImageView.Services
                     IsRunningImport = false;
                 }
                 if (OnImportComplete != null)
-                    OnImportComplete.Invoke(this, new ProgressEventArgs(ProgressStatusEnum.Complete, _imageReferenceList.Count, _totalNumberOfFiles));
+                    OnImportComplete.Invoke(this,
+                        new ProgressEventArgs(ProgressStatusEnum.Complete, _imageReferenceList.Count,
+                            _totalNumberOfFiles));
             }
             catch (Exception ex)
             {
@@ -105,7 +107,7 @@ namespace ImageView.Services
 
         private int GetNumberOfFilesMatchingRegexp(string basePath)
         {
-            int noFiles = 0;
+            var noFiles = 0;
             try
             {
                 if (!_runWorkerThread)
@@ -114,12 +116,15 @@ namespace ImageView.Services
                 if (UserHasReadAccessToDirectory(currentDirectory))
                 {
                     noFiles += currentDirectory.GetFiles().Count(f => _fileNameRegExp.IsMatch(f.Name));
-                    noFiles += currentDirectory.GetDirectories().Sum(directory => GetNumberOfFilesMatchingRegexp(directory.FullName));
+                    noFiles +=
+                        currentDirectory.GetDirectories()
+                            .Sum(directory => GetNumberOfFilesMatchingRegexp(directory.FullName));
                 }
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("class ImageLoaderService.GetNumberOfFilesMatchingRegexp(string basePath)\n" + ex.Message, ex);
+                LogWriter.LogError(
+                    "class ImageLoaderService.GetNumberOfFilesMatchingRegexp(string basePath)\n" + ex.Message, ex);
             }
 
             return noFiles;
@@ -127,12 +132,13 @@ namespace ImageView.Services
 
         private bool UserHasReadAccessToDirectory(DirectoryInfo directoryInfo)
         {
-            DirectorySecurity dSecurity = directoryInfo.GetAccessControl();
-            AuthorizationRuleCollection authorizarionRuleCollecion = dSecurity.GetAccessRules(true, true, typeof (SecurityIdentifier));
+            var dSecurity = directoryInfo.GetAccessControl();
+            var authorizarionRuleCollecion = dSecurity.GetAccessRules(true, true, typeof(SecurityIdentifier));
 
             foreach (FileSystemAccessRule fsAccessRules  in authorizarionRuleCollecion)
             {
-                if (_winId.UserClaims.Any(c => c.Value == fsAccessRules.IdentityReference.Value) && fsAccessRules.FileSystemRights.HasFlag(FileSystemRights.ListDirectory) &&
+                if (_winId.UserClaims.Any(c => c.Value == fsAccessRules.IdentityReference.Value) &&
+                    fsAccessRules.FileSystemRights.HasFlag(FileSystemRights.ListDirectory) &&
                     fsAccessRules.AccessControlType == AccessControlType.Allow)
                     return true;
             }
@@ -152,7 +158,7 @@ namespace ImageView.Services
                 return imageReferenceList;
 
             var fileInfoArray = currentDirectory.GetFiles();
-            foreach (FileInfo fileInfo in fileInfoArray)
+            foreach (var fileInfo in fileInfoArray)
             {
                 if (_fileNameRegExp.IsMatch(fileInfo.Name))
                     imageReferenceList.Add(new ImageReferenceElement
@@ -171,10 +177,11 @@ namespace ImageView.Services
             if (OnProgressUpdate != null && Environment.TickCount > _tickCount + _progressInterval)
             {
                 _tickCount = Environment.TickCount;
-                OnProgressUpdate.Invoke(this, new ProgressEventArgs(ProgressStatusEnum.Running, _filesLoaded, _totalNumberOfFiles));
+                OnProgressUpdate.Invoke(this,
+                    new ProgressEventArgs(ProgressStatusEnum.Running, _filesLoaded, _totalNumberOfFiles));
             }
 
-            foreach (DirectoryInfo directory in currentDirectory.GetDirectories())
+            foreach (var directory in currentDirectory.GetDirectories())
                 imageReferenceList.AddRange(GetAllImagesRecursive(directory.FullName));
 
             return imageReferenceList;
@@ -202,7 +209,7 @@ namespace ImageView.Services
 
         internal bool PermanentlyRemoveFile(ImageReferenceElement imgRefElement)
         {
-            int removedItems = 0;
+            var removedItems = 0;
             try
             {
                 File.Delete(imgRefElement.CompletePath);
@@ -221,15 +228,15 @@ namespace ImageView.Services
             var randomImagePosList = new List<int>();
             var randomData = new byte[ImageReferenceList.Count*4];
             _randomNumberGenerator.GetBytes(randomData);
-            int randomDataPointer = 0;
+            var randomDataPointer = 0;
             var candidates = new List<int>();
 
-            for (int i = 0; i < ImageReferenceList.Count; i++)
+            for (var i = 0; i < ImageReferenceList.Count; i++)
                 candidates.Add(i);
 
             while (candidates.Count > 0)
             {
-                int index = Math.Abs(BitConverter.ToInt32(randomData, randomDataPointer))%candidates.Count;
+                var index = Math.Abs(BitConverter.ToInt32(randomData, randomDataPointer))%candidates.Count;
                 randomDataPointer += 4;
 
                 randomImagePosList.Add(candidates[index]);
@@ -247,7 +254,7 @@ namespace ImageView.Services
             else
             {
                 randomImagePosList = new List<int>();
-                for (int i = 0; i < ImageReferenceList.Count; i++)
+                for (var i = 0; i < ImageReferenceList.Count; i++)
                     randomImagePosList.Add(i);
             }
 

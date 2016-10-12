@@ -12,7 +12,7 @@ using GeneralToolkitLib.Log;
 using GeneralToolkitLib.WindowsApi;
 using ImageView.DataContracts;
 using ImageView.Events;
-using ImageView.Models.Implementation;
+using ImageView.Models;
 using ImageView.Properties;
 using ImageView.Services;
 using ImageView.Utility;
@@ -59,7 +59,8 @@ namespace ImageView
 
             if (!ApplicationSettingsService.Instance.LoadSettings())
             {
-                MessageBox.Show(Resources.Unable_To_Access_application_settings_in_registry, Resources.Faild_to_load_settings, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.Unable_To_Access_application_settings_in_registry,
+                    Resources.Faild_to_load_settings, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _formRestartWithAdminPrivileges = new FormRestartWithAdminPrivileges();
                 if (_formRestartWithAdminPrivileges.ShowDialog(this) == DialogResult.OK)
                     return;
@@ -69,13 +70,16 @@ namespace ImageView
 
             if (ApplicationSettingsService.Instance.Settings.UseSavedMainFormPosition)
             {
-                if (ApplicationSettingsService.Instance.Settings.MainFormSize.Width > 0 && ApplicationSettingsService.Instance.Settings.MainFormSize.Height > 0)
+                if (ApplicationSettingsService.Instance.Settings.MainFormSize.Width > 0 &&
+                    ApplicationSettingsService.Instance.Settings.MainFormSize.Height > 0)
                 {
                     Width = ApplicationSettingsService.Instance.Settings.MainFormSize.Width;
                     Height = ApplicationSettingsService.Instance.Settings.MainFormSize.Height;
                 }
 
-                if (ApplicationSettingsService.Instance.Settings.MainFormPosition.X >= 0 && ApplicationSettingsService.Instance.Settings.MainFormPosition.Y < Screen.PrimaryScreen.WorkingArea.Bottom)
+                if (ApplicationSettingsService.Instance.Settings.MainFormPosition.X >= 0 &&
+                    ApplicationSettingsService.Instance.Settings.MainFormPosition.Y <
+                    Screen.PrimaryScreen.WorkingArea.Bottom)
                 {
                     Left = ApplicationSettingsService.Instance.Settings.MainFormPosition.X;
                     Top = ApplicationSettingsService.Instance.Settings.MainFormPosition.Y;
@@ -100,12 +104,12 @@ namespace ImageView
             if (_imageTransitionRunning)
                 return;
 
-            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
+            var settings = ApplicationSettingsService.Instance.Settings;
             var currentImage = pictureBox1.Image.Clone() as Image;
             var nextImage = _pictureBoxAnimation.Image.Clone() as Image;
             _pictureBoxAnimation.Image = null;
 
-            int animationTime = settings.ImageTransitionTime;
+            var animationTime = settings.ImageTransitionTime;
             await PerformImageTransition(currentImage, nextImage, settings.NextImageAnimation, animationTime);
 
             currentImage?.Dispose();
@@ -128,7 +132,7 @@ namespace ImageView
                 ScreenSaver.Enable();
 
             timerSlideShow.Enabled = false;
-            BookmarkService.Instance.SaveBookmarkFile();
+            BookmarkService.Instance.SaveBookmarks();
             ApplicationSettingsService.Instance.Settings.SetMainFormPosition(Bounds);
             ApplicationSettingsService.Instance.SaveSettings();
             BookmarkService.Instance.Dispose();
@@ -235,7 +239,7 @@ namespace ImageView
 
         private void SyncUserControlStateWithAppSettings()
         {
-            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
+            var settings = ApplicationSettingsService.Instance.Settings;
 
             if (TopMost != settings.AlwaysOntop)
                 TopMost = settings.AlwaysOntop;
@@ -243,19 +247,22 @@ namespace ImageView
             topMostToolStripMenuItem.Checked = settings.AlwaysOntop;
 
             _changeImageAnimation = settings.NextImageAnimation;
-            autoLoadPreviousFolderToolStripMenuItem.Enabled = settings.EnableAutoLoadFunctionFromMenu && !string.IsNullOrWhiteSpace(settings.LastFolderLocation);
+            autoLoadPreviousFolderToolStripMenuItem.Enabled = settings.EnableAutoLoadFunctionFromMenu &&
+                                                              !string.IsNullOrWhiteSpace(settings.LastFolderLocation);
         }
 
         private void LoadNewImageFile(string imagePath)
         {
             try
             {
-                if (ApplicationSettingsService.Instance.Settings.NextImageAnimation == ImageViewApplicationSettings.ChangeImageAnimation.None)
+                if (ApplicationSettingsService.Instance.Settings.NextImageAnimation ==
+                    ImageViewApplicationSettings.ChangeImageAnimation.None)
                     _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.None;
 
                 _pictureBoxAnimation.ImageLocation = null;
 
-                if (pictureBox1.Image != null && (_changeImageAnimation != ImageViewApplicationSettings.ChangeImageAnimation.None))
+                if (pictureBox1.Image != null &&
+                    (_changeImageAnimation != ImageViewApplicationSettings.ChangeImageAnimation.None))
                 {
                     //_pictureBoxAnimation.ImageLocation = imagePath;
                     //_pictureBoxAnimation.LoadAsync();
@@ -274,22 +281,26 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                LogWriter.LogError($"FormMain.LoadNewImageFile(string imagePath) Error when trying to load file: {imagePath} : {ex.Message}", ex);
+                LogWriter.LogError(
+                    $"FormMain.LoadNewImageFile(string imagePath) Error when trying to load file: {imagePath} : {ex.Message}",
+                    ex);
             }
         }
 
         private void SetImageReferenceCollection()
         {
-            bool randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
+            var randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
             if (!ImageLoaderService.Instance.IsRunningImport && ImageLoaderService.Instance.ImageReferenceList != null)
             {
-                _imageReferenceCollection = ImageLoaderService.Instance.GenerateImageReferenceCollection(randomizeImageCollection);
+                _imageReferenceCollection =
+                    ImageLoaderService.Instance.GenerateImageReferenceCollection(randomizeImageCollection);
                 if (ImageLoaderService.Instance.ImageReferenceList.Count > 0)
                     _dataReady = true;
             }
         }
 
-        private async Task PerformImageTransition(Image currentImage, Image nextImage, ImageViewApplicationSettings.ChangeImageAnimation animation, int animationTime)
+        private async Task PerformImageTransition(Image currentImage, Image nextImage,
+            ImageViewApplicationSettings.ChangeImageAnimation animation, int animationTime)
         {
             const int sleepTime = 1;
             _imageTransitionRunning = true;
@@ -299,27 +310,31 @@ namespace ImageView
                 stopwatch.Start();
                 while (stopwatch.ElapsedMilliseconds <= animationTime)
                 {
-                    long elapsedTime = stopwatch.ElapsedMilliseconds;
+                    var elapsedTime = stopwatch.ElapsedMilliseconds;
 
-                    float factor = stopwatch.ElapsedMilliseconds/(float) animationTime;
+                    var factor = stopwatch.ElapsedMilliseconds/(float) animationTime;
                     Image transitionImage;
                     switch (animation)
                     {
                         case ImageViewApplicationSettings.ChangeImageAnimation.SlideLeft:
-                            transitionImage = ImageTransform.OffsetImagesHorizontal(currentImage, nextImage, new Size(pictureBox1.Width, pictureBox1.Height), factor, false);
+                            transitionImage = ImageTransform.OffsetImagesHorizontal(currentImage, nextImage,
+                                new Size(pictureBox1.Width, pictureBox1.Height), factor, false);
                             break;
                         case ImageViewApplicationSettings.ChangeImageAnimation.SlideRight:
-                            transitionImage = ImageTransform.OffsetImagesHorizontal(nextImage, currentImage, new Size(pictureBox1.Width, pictureBox1.Height), factor, true);
+                            transitionImage = ImageTransform.OffsetImagesHorizontal(nextImage, currentImage,
+                                new Size(pictureBox1.Width, pictureBox1.Height), factor, true);
                             break;
                         case ImageViewApplicationSettings.ChangeImageAnimation.SlideDown:
-                            transitionImage = ImageTransform.OffsetImagesVertical(nextImage, currentImage, new Size(nextImage.Width, nextImage.Height), factor, true);
+                            transitionImage = ImageTransform.OffsetImagesVertical(nextImage, currentImage,
+                                new Size(nextImage.Width, nextImage.Height), factor, true);
                             break;
                         case ImageViewApplicationSettings.ChangeImageAnimation.SlideUp:
-                            transitionImage = ImageTransform.OffsetImagesVertical(currentImage, nextImage, new Size(Math.Max(nextImage.Width, currentImage.Width), nextImage.Height), factor, false);
+                            transitionImage = ImageTransform.OffsetImagesVertical(currentImage, nextImage,
+                                new Size(Math.Max(nextImage.Width, currentImage.Width), nextImage.Height), factor, false);
                             break;
                         case ImageViewApplicationSettings.ChangeImageAnimation.FadeIn:
-                            int width = nextImage.Width;
-                            int height = nextImage.Height;
+                            var width = nextImage.Width;
+                            var height = nextImage.Height;
                             var nextImageBitmap = new Bitmap(nextImage, new Size(width, height));
                             transitionImage = ImageTransform.SetImageOpacity(nextImageBitmap, factor);
                             break;
@@ -336,7 +351,8 @@ namespace ImageView
                     catch (Exception ex)
                     {
                         LogWriter.LogError(Resources.Failed_to_set_transition_image_over_current_image_, ex);
-                        MessageBox.Show(Resources.Failed_to_set_transition_image_over_current_image_, Resources.Error_loading_new_image, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(Resources.Failed_to_set_transition_image_over_current_image_,
+                            Resources.Error_loading_new_image, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                         _imageTransitionRunning = false;
                         return;
@@ -352,7 +368,8 @@ namespace ImageView
                         Thread.Sleep(Convert.ToInt32(sleepTime - elapsedTime));
                 }
                 stopwatch.Stop();
-                LogWriter.LogMessage("Image transition finished after " + stopwatch.ElapsedMilliseconds + " ms", LogWriter.LogLevel.Trace);
+                LogWriter.LogMessage("Image transition finished after " + stopwatch.ElapsedMilliseconds + " ms",
+                    LogWriter.LogLevel.Trace);
                 Invoke(new EventHandler(OnImageLoadComplete), this, new EventArgs());
             });
 
@@ -400,7 +417,8 @@ namespace ImageView
 
         private void topMostToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ApplicationSettingsService.Instance.Settings.AlwaysOntop = !ApplicationSettingsService.Instance.Settings.AlwaysOntop;
+            ApplicationSettingsService.Instance.Settings.AlwaysOntop =
+                !ApplicationSettingsService.Instance.Settings.AlwaysOntop;
             ApplicationSettingsService.Instance.SaveSettings();
             SyncUserControlStateWithAppSettings();
         }
@@ -467,7 +485,7 @@ namespace ImageView
             var formSettings = new FormSettings();
             formSettings.ShowDialog(this);
 
-            foreach (FormImageView imageView in _imageViewFormList)
+            foreach (var imageView in _imageViewFormList)
             {
                 imageView.ReloadSettings();
             }
@@ -500,7 +518,7 @@ namespace ImageView
 
         private void addBookmarkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (BookmarkService.Instance.BookmarksContainer == null)
+            if (BookmarkService.Instance.BookmarkManager == null)
             {
                 MessageBox.Show(Resources.Please_unlock_bookmarks_first);
                 return;
@@ -558,32 +576,34 @@ namespace ImageView
 
         private void autoArrangeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int index = 0;
-            int windowsPerScreen = 2;
+            var index = 0;
+            var windowsPerScreen = 2;
 
-            int widthOffset = ApplicationSettingsService.Instance.Settings.ScreenWidthOffset;
-            int minXOffset = ApplicationSettingsService.Instance.Settings.ScreenMinXOffset;
+            var widthOffset = ApplicationSettingsService.Instance.Settings.ScreenWidthOffset;
+            var minXOffset = ApplicationSettingsService.Instance.Settings.ScreenMinXOffset;
 
-            foreach (Screen screen in Screen.AllScreens.OrderBy(s => s.Bounds.X))
+            foreach (var screen in Screen.AllScreens.OrderBy(s => s.Bounds.X))
             {
                 if (screen.Primary) continue;
-                for (int i = 0; i < windowsPerScreen; i++)
+                for (var i = 0; i < windowsPerScreen; i++)
                 {
                     if (index >= _imageViewFormList.Count)
                         break;
 
-                    FormImageView imageWindow = _imageViewFormList[index++];
+                    var imageWindow = _imageViewFormList[index++];
                     if (imageWindow == null || imageWindow.IsDisposed) continue;
                     imageWindow.Margin = new Padding(0);
 
-                    int screenWidth = screen.Bounds.Width + widthOffset;
-                    int screenMinx = screen.WorkingArea.X - minXOffset;
+                    var screenWidth = screen.Bounds.Width + widthOffset;
+                    var screenMinx = screen.WorkingArea.X - minXOffset;
 
 
                     if (i == 0)
-                        imageWindow.SetDesktopBounds(screenMinx, screen.WorkingArea.Y, screenWidth/2, screen.WorkingArea.Height);
+                        imageWindow.SetDesktopBounds(screenMinx, screen.WorkingArea.Y, screenWidth/2,
+                            screen.WorkingArea.Height);
                     else
-                        imageWindow.SetDesktopBounds(screenMinx + screen.WorkingArea.Width/2, screen.WorkingArea.Y, screenWidth/2, screen.WorkingArea.Height);
+                        imageWindow.SetDesktopBounds(screenMinx + screen.WorkingArea.Width/2, screen.WorkingArea.Y,
+                            screenWidth/2, screen.WorkingArea.Height);
 
 
                     imageWindow.WindowState = FormWindowState.Normal;
@@ -599,7 +619,7 @@ namespace ImageView
 
         private void showAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (FormImageView imageWindow in _imageViewFormList)
+            foreach (var imageWindow in _imageViewFormList)
             {
                 if (imageWindow == null || imageWindow.IsDisposed) continue;
                 imageWindow.Show();
@@ -612,7 +632,7 @@ namespace ImageView
 
         private void hideAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (FormImageView imageWindow in _imageViewFormList)
+            foreach (var imageWindow in _imageViewFormList)
             {
                 if (imageWindow != null && !imageWindow.IsDisposed)
                     imageWindow.Hide();
@@ -622,12 +642,15 @@ namespace ImageView
         private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (_imageViewFormList.Count == 0) return;
-            if (MessageBox.Show(this, Resources.Are_you_sure_you_want_to_close_all_windows_, Resources.Close_all_windows_, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (
+                MessageBox.Show(this, Resources.Are_you_sure_you_want_to_close_all_windows_,
+                    Resources.Close_all_windows_, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) ==
+                DialogResult.OK)
             {
                 var imageWindowQueue = new Queue<FormImageView>(_imageViewFormList);
                 while (imageWindowQueue.Count > 0)
                 {
-                    FormImageView imageWindow = imageWindowQueue.Dequeue();
+                    var imageWindow = imageWindowQueue.Dequeue();
                     imageWindow.Close();
                 }
             }

@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using ProtoBuf;
 
 namespace ImageView.DataContracts
 {
     [Serializable]
     [DataContract(Name = "BookmarkContainer", Namespace = "ImageView.DataContracts")]
-    [ProtoContract(AsReferenceDefault = true, DataMemberOffset = 0, Name = "BookmarkContainer", UseProtoMembersOnly = true)]
     public class BookmarkContainer
     {
-        protected BookmarkContainer()
+        public BookmarkContainer()
         {
-            
         }
 
         public BookmarkContainer(BookmarkFolder rootFolder, string containerId, DateTime lastUpdate)
@@ -22,15 +19,12 @@ namespace ImageView.DataContracts
         }
 
         [DataMember(Name = "RootFolder", Order = 1)]
-        [ProtoMember(1,AsReference = true,IsRequired = true,Name = "RootFolder")]
-        public BookmarkFolder RootFolder { get; protected set; }
+        public BookmarkFolder RootFolder { get; set; }
 
         [DataMember(Name = "ContainerId", Order = 2)]
-        [ProtoMember(2, AsReference = true, IsRequired = true, Name = "ContainerId")]
-        public string ContainerId { get; protected set; }
+        public string ContainerId { get; set; }
 
         [DataMember(Name = "LastUpdate", Order = 3)]
-        [ProtoMember(3, AsReference = true, IsRequired = true, Name = "LastUpdate")]
-        public DateTime LastUpdate { get; protected set; }
+        public DateTime LastUpdate { get; set; }
     }
 }

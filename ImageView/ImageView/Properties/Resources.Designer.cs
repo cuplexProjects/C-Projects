@@ -89,6 +89,24 @@ namespace ImageView.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this bookmark?.
+        /// </summary>
+        internal static string Are_you_sure_you_want_to_delete_this_bookmark_ {
+            get {
+                return ResourceManager.GetString("Are_you_sure_you_want_to_delete_this_bookmark_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this folder?.
+        /// </summary>
+        internal static string Are_you_sure_you_want_to_delete_this_folder_ {
+            get {
+                return ResourceManager.GetString("Are_you_sure_you_want_to_delete_this_folder_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Arrow_Back_icon {
@@ -123,6 +141,15 @@ namespace ImageView.Properties {
         internal static string Confirm_delete {
             get {
                 return ResourceManager.GetString("Confirm_delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
@@ -204,6 +231,15 @@ namespace ImageView.Properties {
         internal static string Please_unlock_bookmarks_first {
             get {
                 return ResourceManager.GetString("Please_unlock_bookmarks_first", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove folder?.
+        /// </summary>
+        internal static string Remove_folder_ {
+            get {
+                return ResourceManager.GetString("Remove_folder_", resourceCulture);
             }
         }
         

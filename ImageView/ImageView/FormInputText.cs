@@ -10,7 +10,8 @@ namespace ImageView
             InitializeComponent();
         }
 
-        public void InitFormData(string name, string question, string textBoxText, string groupBoxText, Func<string> validationFunc)
+        public void InitFormData(string name, string question, string textBoxText, string groupBoxText,
+            Func<string> validationFunc)
         {
         }
 

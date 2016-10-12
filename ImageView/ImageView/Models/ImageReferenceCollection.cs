@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ImageView.Services;
 
-namespace ImageView.Models.Implementation
+namespace ImageView.Models
 {
     public class ImageReferenceCollection
     {

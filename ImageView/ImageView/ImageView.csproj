@@ -72,7 +72,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>10833B52441ABA875BC3D6B29CB06B37DBA63105</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>28069D4C254AA8E1B9CF0FE8413D3C538ADD30A4</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>
@@ -104,10 +104,6 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -116,7 +112,6 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
@@ -143,13 +138,9 @@
     <Compile Include="DataContracts\BookmarkContainer.cs" />
     <Compile Include="DataContracts\BookmarkFolder.cs" />
     <Compile Include="Models\CachedImage.cs" />
-    <Compile Include="Models\Implementation\BookmarkContainerImplementation.cs" />
-    <Compile Include="Models\Implementation\BookmarkFolderBase.cs" />
-    <Compile Include="Models\Implementation\BookmarkFolderImplementation.cs" />
-    <Compile Include="Models\Interface\IBookmarkFolder.cs" />
-    <Compile Include="Models\Interface\IBookmarkFolderBase.cs" />
+    <Compile Include="Managers\BookmarkManager.cs" />
     <Compile Include="DataContracts\ImageReference.cs" />
-    <Compile Include="Models\Implementation\ImageReferenceCollection.cs" />
+    <Compile Include="Models\ImageReferenceCollection.cs" />
     <Compile Include="Models\Interface\ImageViewFormWindow.cs" />
     <Compile Include="Events\ImageViewFormImageInfo.cs" />
     <Compile Include="Events\Delegates.cs" />
@@ -227,8 +218,6 @@
     <Compile Include="FormWindows.Designer.cs">
       <DependentUpon>FormWindows.cs</DependentUpon>
     </Compile>
-    <Compile Include="ObjectMapper\AutoMapperConfig.cs" />
-    <Compile Include="ObjectMapper\OrganizationProfile.cs" />
     <Compile Include="Services\ApplicationSettingsService.cs" />
     <Compile Include="FileBrowser.cs">
       <SubType>Form</SubType>
@@ -272,11 +261,10 @@
     <Compile Include="FormSettings.Designer.cs">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Implementation\BookmarkContainerBase.cs" />
     <Compile Include="Services\BookmarkService.cs" />
     <Compile Include="Services\ImageCacheService.cs" />
     <Compile Include="Services\ImageLoaderService.cs" />
-    <Compile Include="Models\Implementation\ImageReferenceElement.cs" />
+    <Compile Include="Models\ImageReferenceElement.cs" />
     <Compile Include="DataContracts\ImageViewApplicationSettings.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
     <Compile Include="UserControls\ListItemDivider.cs" />
@@ -366,7 +354,6 @@
       <DependentUpon>CustomPanel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ImageViewCertificateSignFile.pfx" />
-    <None Include="packages.config" />
     <None Include="Properties\DataSources\ImageReferenceElement.datasource" />
     <None Include="Properties\DataSources\ImageView.DataModels.Bookmark.datasource" />
     <None Include="Properties\DataSources\ImageView.DataModels.BookmarkFolder.datasource" />

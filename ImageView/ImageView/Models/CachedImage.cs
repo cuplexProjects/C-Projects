@@ -3,7 +3,7 @@ using System.Drawing;
 using System.IO;
 using GeneralToolkitLib.Log;
 
-namespace ImageView.DataModels
+namespace ImageView.Models
 {
     public class CachedImage
     {
@@ -13,15 +13,21 @@ namespace ImageView.DataModels
             Filename = filename;
         }
 
+        public string Filename { get; }
+        public DateTime CreatedDate { get; private set; }
+        public DateTime ModifiedDate { get; private set; }
+        public DateTime ImageCreateDate { get; private set; }
+        public long Size { get; private set; }
+        public Image ImageObject { get; private set; }
+
         public bool LoadImage()
         {
-            
             try
             {
                 ImageObject = Image.FromFile(Filename);
                 ModifiedDate = DateTime.Now;
-                
-                FileInfo fileInfo = new FileInfo(Filename);
+
+                var fileInfo = new FileInfo(Filename);
                 Size = fileInfo.Length;
                 ImageCreateDate = fileInfo.CreationTime;
             }
@@ -31,12 +37,5 @@ namespace ImageView.DataModels
             }
             return ImageObject != null;
         }
-
-        public string Filename { get; }
-        public DateTime CreatedDate { get; private set; }
-        public DateTime ModifiedDate { get; private set; }
-        public DateTime ImageCreateDate { get; private set; }
-        public long Size { get; private set; }
-        public Image ImageObject { get; private set; }
     }
 }

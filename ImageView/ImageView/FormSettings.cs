@@ -16,7 +16,7 @@ namespace ImageView
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
+            var settings = ApplicationSettingsService.Instance.Settings;
             chkAutoRandomize.Checked = settings.AutoRandomizeCollection;
             chkPasswordProtectBookmarks.Checked = settings.PasswordProtectBookmarks;
             chkShowSwitchImgButtons.Checked = settings.ShowSwitchImageButtons;
@@ -75,7 +75,7 @@ namespace ImageView
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
+            var settings = ApplicationSettingsService.Instance.Settings;
             settings.AutoRandomizeCollection = chkAutoRandomize.Checked;
 
             if (rbImgTransformNone.Checked)
@@ -133,16 +133,21 @@ namespace ImageView
                             return;
                         }
 
-                        ApplicationSettingsService.Instance.Settings.EnablePasswordProtectBookmarks(formSetPassword.VerifiedPassword);
+                        ApplicationSettingsService.Instance.Settings.EnablePasswordProtectBookmarks(
+                            formSetPassword.VerifiedPassword);
                         ApplicationSettingsService.Instance.SaveSettings();
-                        BookmarkService.Instance.SaveBookmarkFile();
+                        BookmarkService.Instance.SaveBookmarks();
                     }
                     else
                         chkPasswordProtectBookmarks.Checked = false;
                 }
             else
             {
-                using (var formgetPassword = new FormGetPassword {PasswordDerivedString = ApplicationSettingsService.Instance.Settings.PasswordDerivedString})
+                using (
+                    var formgetPassword = new FormGetPassword
+                    {
+                        PasswordDerivedString = ApplicationSettingsService.Instance.Settings.PasswordDerivedString
+                    })
                 {
                     if (formgetPassword.ShowDialog() == DialogResult.OK && formgetPassword.PasswordVerified)
                     {
@@ -150,7 +155,7 @@ namespace ImageView
                         ApplicationSettingsService.Instance.SaveSettings();
 
                         // Check bookmark status
-                        if (BookmarkService.Instance.BookmarksContainer == null)
+                        if (BookmarkService.Instance.BookmarkManager == null)
                             BookmarkService.Instance.Dispose();
                     }
                     else
@@ -161,15 +166,15 @@ namespace ImageView
 
         private void UpdateCacheStats()
         {
-            int cacheSize = ImageCacheService.Instance.CacheSize/1048576;
-            long cacheUsage = ImageCacheService.Instance.GetCacheUsage() / 1048576;
+            var cacheSize = ImageCacheService.Instance.CacheSize/1048576;
+            var cacheUsage = ImageCacheService.Instance.GetCacheUsage()/1048576;
             const int maxSize = ImageCacheService.MaxCacheSize/1048576;
             const int minSize = ImageCacheService.MinCacheSize/1048576;
 
             lblCacheItems.Text = ImageCacheService.Instance.CachedItems.ToString();
             lblUsedSpace.Text = cacheUsage + Resources.FormSettings_UpdateCacheSizeLabel__MB;
             lblFreeSpace.Text = cacheSize - cacheUsage + Resources.FormSettings_UpdateCacheSizeLabel__MB;
-            pbarPercentUsed.Value = Convert.ToInt32(cacheUsage / maxSize)*100;
+            pbarPercentUsed.Value = Convert.ToInt32(cacheUsage/maxSize)*100;
 
             trackBarCacheSize.Minimum = minSize;
             trackBarCacheSize.Maximum = maxSize;

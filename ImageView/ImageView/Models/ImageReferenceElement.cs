@@ -1,9 +1,10 @@
 ﻿using System;
 using ImageView.DataContracts;
 
-namespace ImageView.Models.Implementation
+namespace ImageView.Models
 {
-    public class ImageReferenceElement : ImageReference, IComparable<ImageReferenceElement>, IEquatable<ImageReferenceElement>
+    public class ImageReferenceElement : ImageReference, IComparable<ImageReferenceElement>,
+        IEquatable<ImageReferenceElement>
     {
         public string SizeInKb => Math.Round(Size/1024d, 1) + " kB";
 
@@ -16,7 +17,8 @@ namespace ImageView.Models.Implementation
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return string.Equals(Directory, other.Directory) && string.Equals(FileName, other.FileName) && string.Equals(CompletePath, other.CompletePath) && Size == other.Size &&
+            return string.Equals(Directory, other.Directory) && string.Equals(FileName, other.FileName) &&
+                   string.Equals(CompletePath, other.CompletePath) && Size == other.Size &&
                    CreationTime.Equals(other.CreationTime) &&
                    LastWriteTime.Equals(other.LastWriteTime) && LastAccessTime.Equals(other.LastAccessTime);
         }
@@ -25,9 +27,9 @@ namespace ImageView.Models.Implementation
         {
             unchecked
             {
-                int hashCode = Directory != null ? Directory.GetHashCode() : 0;
-                hashCode = (hashCode*397) ^ (FileName != null ? FileName.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (CompletePath != null ? CompletePath.GetHashCode() : 0);
+                var hashCode = Directory?.GetHashCode() ?? 0;
+                hashCode = (hashCode*397) ^ (FileName?.GetHashCode() ?? 0);
+                hashCode = (hashCode*397) ^ (CompletePath?.GetHashCode() ?? 0);
                 hashCode = (hashCode*397) ^ Size.GetHashCode();
                 hashCode = (hashCode*397) ^ CreationTime.GetHashCode();
                 hashCode = (hashCode*397) ^ LastWriteTime.GetHashCode();

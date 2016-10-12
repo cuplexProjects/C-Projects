@@ -1,5 +1,4 @@
 ﻿using ImageView.Models;
-using ImageView.Models.Implementation;
 
 namespace ImageView
 {

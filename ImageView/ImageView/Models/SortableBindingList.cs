@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace ImageView.Models
 {
@@ -67,11 +66,11 @@ namespace ImageView.Models
 
             sortProperty = prop;
 
-            string orderByMethodName = sortDirection ==
-                                       ListSortDirection.Ascending
+            var orderByMethodName = sortDirection ==
+                                    ListSortDirection.Ascending
                 ? "OrderBy"
                 : "OrderByDescending";
-            string cacheKey = typeof (T).GUID + prop.Name + orderByMethodName;
+            var cacheKey = typeof(T).GUID + prop.Name + orderByMethodName;
 
             if (!cachedOrderByExpressions.ContainsKey(cacheKey))
                 CreateOrderByMethod(prop, orderByMethodName, cacheKey);
@@ -90,17 +89,17 @@ namespace ImageView.Models
              Cache it.
             */
 
-            ParameterExpression sourceParameter = Expression.Parameter(typeof (List<T>), "source");
-            ParameterExpression lambdaParameter = Expression.Parameter(typeof (T), "lambdaParameter");
-            PropertyInfo accesedMember = typeof (T).GetProperty(prop.Name);
-            LambdaExpression propertySelectorLambda =
+            var sourceParameter = Expression.Parameter(typeof(List<T>), "source");
+            var lambdaParameter = Expression.Parameter(typeof(T), "lambdaParameter");
+            var accesedMember = typeof(T).GetProperty(prop.Name);
+            var propertySelectorLambda =
                 Expression.Lambda(Expression.MakeMemberAccess(lambdaParameter,
                     accesedMember), lambdaParameter);
-            MethodInfo orderByMethod = typeof (Enumerable).GetMethods()
+            var orderByMethod = typeof(Enumerable).GetMethods()
                 .Where(a => a.Name == orderByMethodName &&
                             a.GetParameters().Length == 2)
                 .Single()
-                .MakeGenericMethod(typeof (T), prop.PropertyType);
+                .MakeGenericMethod(typeof(T), prop.PropertyType);
 
             var orderByExpression = Expression.Lambda<Func<List<T>, IEnumerable<T>>>(
                 Expression.Call(orderByMethod,
@@ -123,7 +122,7 @@ namespace ImageView.Models
         {
             ClearItems();
 
-            for (int i = 0; i < items.Count; i++)
+            for (var i = 0; i < items.Count; i++)
             {
                 InsertItem(i, items[i]);
             }

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Cuplex")]
 [assembly: AssemblyProduct("ImageViewer")]
-[assembly: AssemblyCopyright("Copyright ©  2015 Martin Dahl")]
+[assembly: AssemblyCopyright("Copyright ©  2016 Martin Dahl")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.5.0.0")]
-[assembly: AssemblyFileVersion("1.5.0.0")]
+[assembly: AssemblyVersion("1.5.1.0")]
+[assembly: AssemblyFileVersion("1.5.1.0")]

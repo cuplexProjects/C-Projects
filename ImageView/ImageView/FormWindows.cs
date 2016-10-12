@@ -29,7 +29,12 @@ namespace ImageView
             {
                 var frmImageInfo = value as ImageViewFormImageInfo;
                 if (!_imageWindowListItems.ContainsKey(frmImageInfo.FormReference))
-                    _imageWindowListItems.Add(frmImageInfo.FormReference, new ImageWindowListItem {Name = frmImageInfo.CurrentImageFileName, Value = frmImageInfo.ImagesViewed.ToString()});
+                    _imageWindowListItems.Add(frmImageInfo.FormReference,
+                        new ImageWindowListItem
+                        {
+                            Name = frmImageInfo.CurrentImageFileName,
+                            Value = frmImageInfo.ImagesViewed.ToString()
+                        });
 
                 if (frmImageInfo.FormIsClosing)
                 {
@@ -39,7 +44,7 @@ namespace ImageView
                     return;
                 }
 
-                ImageWindowListItem imageWindowListItem = _imageWindowListItems[frmImageInfo.FormReference];
+                var imageWindowListItem = _imageWindowListItems[frmImageInfo.FormReference];
                 imageWindowListItem.Name = frmImageInfo.CurrentImageFileName ?? "Empty Window";
                 imageWindowListItem.Value = _winCnt++.ToString();
                 imageWindowListItem.WindowRef = frmImageInfo.FormReference;
@@ -75,7 +80,7 @@ namespace ImageView
 
         public void SubscribeToList(List<FormImageView> providers)
         {
-            foreach (FormImageView provider in providers)
+            foreach (var provider in providers)
                 _formDisposables.Add(provider.Subscribe(this));
         }
 
@@ -86,13 +91,13 @@ namespace ImageView
 
         private void Unsubscribe()
         {
-            foreach (IDisposable observableForm in _formDisposables)
+            foreach (var observableForm in _formDisposables)
                 observableForm.Dispose();
         }
 
         private void btnActivate_Click(object sender, EventArgs e)
         {
-            foreach (object form in listBoxActiveWindows.SelectedItems)
+            foreach (var form in listBoxActiveWindows.SelectedItems)
             {
                 ((ImageWindowListItem) form).WindowRef.Show();
                 ((ImageWindowListItem) form).WindowRef.Focus();
@@ -102,7 +107,7 @@ namespace ImageView
         private void btnClose_Click(object sender, EventArgs e)
         {
             var closeQueue = new Queue<ImageWindowListItem>();
-            foreach (object form in listBoxActiveWindows.SelectedItems)
+            foreach (var form in listBoxActiveWindows.SelectedItems)
             {
                 var imageWindowListItem = form as ImageWindowListItem;
                 closeQueue.Enqueue(imageWindowListItem);
@@ -115,7 +120,7 @@ namespace ImageView
         private void RenderWindowList()
         {
             listBoxActiveWindows.Items.Clear();
-            foreach (ImageWindowListItem listItem in _imageWindowListItems.Values)
+            foreach (var listItem in _imageWindowListItems.Values)
                 listBoxActiveWindows.Items.Add(listItem);
         }
 
@@ -126,9 +131,9 @@ namespace ImageView
 
         private void btnCascade_Click(object sender, EventArgs e)
         {
-            int x = 10;
-            int y = 8;
-            foreach (object form in listBoxActiveWindows.SelectedItems)
+            var x = 10;
+            var y = 8;
+            foreach (var form in listBoxActiveWindows.SelectedItems)
             {
                 var imageWindowListItem = form as ImageWindowListItem;
                 if (imageWindowListItem != null)
@@ -148,20 +153,21 @@ namespace ImageView
         private void btnSideBySide_Click(object sender, EventArgs e)
         {
             var screenList = new List<Screen>(Screen.AllScreens).OrderBy(left => left.Bounds.Left).ToList();
-            Screen myScreen = screenList.First();
+            var myScreen = screenList.First();
 
             const int maxWindowsHorizontal = 3;
             const int maxWindowsVertical = 2;
-            int screenWidthOffset = ApplicationSettingsService.Instance.Settings.ScreenWidthOffset;
+            var screenWidthOffset = ApplicationSettingsService.Instance.Settings.ScreenWidthOffset;
             var windowPosision = new Point(myScreen.WorkingArea.Left - 5, myScreen.WorkingArea.Top);
 
-            foreach (object form in listBoxActiveWindows.SelectedItems)
+            foreach (var form in listBoxActiveWindows.SelectedItems)
             {
                 var imageWindowListItem = form as ImageWindowListItem;
 
                 if (imageWindowListItem != null)
                 {
-                    imageWindowListItem.WindowRef.DesktopBounds = GetWindowSizeFromScreen(myScreen, maxWindowsHorizontal, maxWindowsVertical, screenWidthOffset, windowPosision);
+                    imageWindowListItem.WindowRef.DesktopBounds = GetWindowSizeFromScreen(myScreen, maxWindowsHorizontal,
+                        maxWindowsVertical, screenWidthOffset, windowPosision);
                     imageWindowListItem.WindowRef.StartPosition = FormStartPosition.Manual;
 
                     var imageViewWindow = imageWindowListItem.WindowRef as ImageViewFormWindow;
@@ -170,7 +176,8 @@ namespace ImageView
 
 
                     windowPosision.X += imageWindowListItem.WindowRef.DesktopBounds.Width - 10;
-                    if (windowPosision.X + imageWindowListItem.WindowRef.DesktopBounds.Width - 2 > myScreen.WorkingArea.Right)
+                    if (windowPosision.X + imageWindowListItem.WindowRef.DesktopBounds.Width - 2 >
+                        myScreen.WorkingArea.Right)
                     {
                         windowPosision.X = myScreen.WorkingArea.Left - 5;
                         windowPosision.Y += imageWindowListItem.WindowRef.DesktopBounds.Height - 5;
@@ -190,14 +197,17 @@ namespace ImageView
             Focus();
         }
 
-        private Rectangle GetWindowSizeFromScreen(Screen screen, int maxWindowsHorizontal, int maxWindowsVertical, int screenWidthOffset, Point windowPosision)
+        private Rectangle GetWindowSizeFromScreen(Screen screen, int maxWindowsHorizontal, int maxWindowsVertical,
+            int screenWidthOffset, Point windowPosision)
         {
-            return new Rectangle(windowPosision, new Size((screen.WorkingArea.Width + screenWidthOffset)/maxWindowsHorizontal, screen.WorkingArea.Height/maxWindowsVertical + 5));
+            return new Rectangle(windowPosision,
+                new Size((screen.WorkingArea.Width + screenWidthOffset)/maxWindowsHorizontal,
+                    screen.WorkingArea.Height/maxWindowsVertical + 5));
         }
 
         private void btnHide_Click(object sender, EventArgs e)
         {
-            foreach (object form in listBoxActiveWindows.SelectedItems)
+            foreach (var form in listBoxActiveWindows.SelectedItems)
             {
                 var imageWindowListItem = form as ImageWindowListItem;
                 imageWindowListItem?.WindowRef.Hide();
@@ -206,7 +216,7 @@ namespace ImageView
 
         private void btnShow_Click(object sender, EventArgs e)
         {
-            foreach (object form in listBoxActiveWindows.SelectedItems)
+            foreach (var form in listBoxActiveWindows.SelectedItems)
             {
                 var imageWindowListItem = form as ImageWindowListItem;
                 imageWindowListItem?.WindowRef.Show();
@@ -215,9 +225,9 @@ namespace ImageView
 
         private void chkShowInTaskBar_CheckedChanged(object sender, EventArgs e)
         {
-            bool showInTaskbar = chkShowInTaskBar.Checked;
+            var showInTaskbar = chkShowInTaskBar.Checked;
             ApplicationSettingsService.Instance.Settings.ShowImageViewFormsInTaskBar = showInTaskbar;
-            foreach (object form in listBoxActiveWindows.Items)
+            foreach (var form in listBoxActiveWindows.Items)
             {
                 var imageWindowListItem = form as ImageWindowListItem;
                 if (imageWindowListItem != null)

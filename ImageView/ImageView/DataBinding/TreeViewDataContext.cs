@@ -93,7 +93,7 @@ namespace ImageView.DataBinding
         {
             var treeNodeList = new List<TreeNode>();
 
-            foreach (BookmarkFolder folder in rootFolder.BookmarkFolders.OrderBy(x => x.SortOrder))
+            foreach (var folder in rootFolder.BookmarkFolders.OrderBy(x => x.SortOrder))
             {
                 var treeView = new TreeNode(folder.Name) {Tag = folder};
                 treeNodeList.Add(treeView);

@@ -123,18 +123,5 @@ namespace ImageView.UnitTest
             Assert.IsTrue(a1 == a2, "Passwords derived was not correct");
 
         }
-
-        //[TestMethod]
-        //public void TestSimpleUnsecrureEncryption()
-        //{
-        //    const string testdata = "Detta är en teststräng och vi får se om den transformeras tillbaka i samma format";
-        //    const string password = "secret";
-
-        //    byte[] encodedBytes = EncryptionManager.EncodeString(testdata, password); ;
-           
-
-        //    Assert.IsTrue(EncryptionManager.DecodeString(ref encodedBytes, password) == testdata, "Decoded string was not equeal to the original string!");
-        //}
-
     }
 }

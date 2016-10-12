@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using ImageView.DataContracts;
-using ImageView.Models.Implementation;
+using ImageView.Models;
 using ImageView.Services;
 using ImageView.Utility;
 
@@ -15,7 +15,7 @@ namespace ImageView
         public FormAddBookmarkWithNewFolder(ImageReferenceElement imageReference)
         {
             _imageReference = imageReference;
-            rootBookmarkFolder = BookmarkService.Instance.BookmarksContainer.RootFolder;
+            rootBookmarkFolder = BookmarkService.Instance.BookmarkManager.RootFolder;
             InitializeComponent();
         }
 
@@ -24,7 +24,7 @@ namespace ImageView
             get
             {
                 const int CS_DROPSHADOW = 0x20000;
-                CreateParams cp = base.CreateParams;
+                var cp = base.CreateParams;
                 cp.ClassStyle |= CS_DROPSHADOW;
                 return cp;
             }
@@ -35,7 +35,7 @@ namespace ImageView
             var rootBookmarksFolders = rootBookmarkFolder.BookmarkFolders;
             var rootNode = new TreeNode("Bookmarks");
             bookmarksTree.Nodes.Add(rootNode);
-            foreach (BookmarkFolder bookmarkFolder in rootBookmarksFolders)
+            foreach (var bookmarkFolder in rootBookmarksFolders)
             {
                 rootNode.Nodes.Add(new TreeNode(bookmarkFolder.Name));
             }
