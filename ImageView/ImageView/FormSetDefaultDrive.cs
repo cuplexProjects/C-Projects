@@ -25,7 +25,7 @@ namespace ImageView
             try
             {
                 var driveInfos = DriveInfo.GetDrives();
-                foreach (var driveInfo in driveInfos.Where(driveInfo => driveInfo.IsReady))
+                foreach (DriveInfo driveInfo in driveInfos.Where(driveInfo => driveInfo.IsReady))
                 {
                     availableDriveInfos.Add(driveInfo);
                 }
@@ -35,7 +35,7 @@ namespace ImageView
                 LogWriter.LogError("Error in FormSetDefaultDrive_Load()", ex);
             }
 
-            foreach (var availableDriveInfo in availableDriveInfos)
+            foreach (DriveInfo availableDriveInfo in availableDriveInfos)
             {
                 cbDriveList.Items.Add(GetDriveInfoListItemText(availableDriveInfo));
             }
@@ -59,7 +59,7 @@ namespace ImageView
 
         private string GetDriveInfoListItemText(DriveInfo driveInfo)
         {
-            var driveInfoText = driveInfo.VolumeLabel ?? "";
+            string driveInfoText = driveInfo.VolumeLabel ?? "";
             if (!string.IsNullOrEmpty(driveInfo.Name))
                 driveInfoText += string.Format(" ({0}) ", driveInfo.Name.Replace("\\", ""));
             else

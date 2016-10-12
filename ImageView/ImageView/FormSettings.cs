@@ -16,7 +16,7 @@ namespace ImageView
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            var settings = ApplicationSettingsService.Instance.Settings;
+            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
             chkAutoRandomize.Checked = settings.AutoRandomizeCollection;
             chkPasswordProtectBookmarks.Checked = settings.PasswordProtectBookmarks;
             chkShowSwitchImgButtons.Checked = settings.ShowSwitchImageButtons;
@@ -75,7 +75,7 @@ namespace ImageView
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            var settings = ApplicationSettingsService.Instance.Settings;
+            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
             settings.AutoRandomizeCollection = chkAutoRandomize.Checked;
 
             if (rbImgTransformNone.Checked)
@@ -166,8 +166,8 @@ namespace ImageView
 
         private void UpdateCacheStats()
         {
-            var cacheSize = ImageCacheService.Instance.CacheSize/1048576;
-            var cacheUsage = ImageCacheService.Instance.GetCacheUsage()/1048576;
+            int cacheSize = ImageCacheService.Instance.CacheSize/1048576;
+            long cacheUsage = ImageCacheService.Instance.GetCacheUsage()/1048576;
             const int maxSize = ImageCacheService.MaxCacheSize/1048576;
             const int minSize = ImageCacheService.MinCacheSize/1048576;
 

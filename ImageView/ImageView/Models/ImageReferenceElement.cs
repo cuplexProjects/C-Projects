@@ -27,7 +27,7 @@ namespace ImageView.Models
         {
             unchecked
             {
-                var hashCode = Directory?.GetHashCode() ?? 0;
+                int hashCode = Directory?.GetHashCode() ?? 0;
                 hashCode = (hashCode*397) ^ (FileName?.GetHashCode() ?? 0);
                 hashCode = (hashCode*397) ^ (CompletePath?.GetHashCode() ?? 0);
                 hashCode = (hashCode*397) ^ Size.GetHashCode();

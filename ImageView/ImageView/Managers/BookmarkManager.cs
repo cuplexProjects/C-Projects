@@ -58,7 +58,7 @@ namespace ImageView.Managers
             {
                 var settings = new StorageManagerSettings(false, Environment.ProcessorCount, true, password);
                 var storageManager = new StorageManager(settings);
-                var successful = storageManager.SerializeObjectToFile(_bookmarkContainer, filename, null);
+                bool successful = storageManager.SerializeObjectToFile(_bookmarkContainer, filename, null);
 
                 if (successful)
                 {
@@ -103,7 +103,7 @@ namespace ImageView.Managers
             if (bookmarkContainer?.RootFolder == null || bookmarkContainer.ContainerId == null)
                 return false;
 
-            var rootFolder = bookmarkContainer.RootFolder;
+            BookmarkFolder rootFolder = bookmarkContainer.RootFolder;
             CreateEmptyLists(rootFolder);
 
             return true;
@@ -118,7 +118,7 @@ namespace ImageView.Managers
                 rootFolder.BookmarkFolders = new List<BookmarkFolder>();
             else
             {
-                foreach (var folder in rootFolder.BookmarkFolders)
+                foreach (BookmarkFolder folder in rootFolder.BookmarkFolders)
                 {
                     CreateEmptyLists(folder);
                 }
@@ -130,7 +130,7 @@ namespace ImageView.Managers
             if (ReIndexFolders)
             {
                 var folderList = _bookmarkContainer.RootFolder.BookmarkFolders.OrderBy(f => f.SortOrder).ToList();
-                for (var i = 0; i < folderList.Count; i++)
+                for (int i = 0; i < folderList.Count; i++)
                 {
                     folderList[i].SortOrder = i + 1;
                 }
@@ -141,7 +141,7 @@ namespace ImageView.Managers
             if (ReIndexBookmarks)
             {
                 var bookmarkList = _bookmarkContainer.RootFolder.Bookmarks.OrderBy(f => f.SortOrder).ToList();
-                for (var i = 0; i < bookmarkList.Count; i++)
+                for (int i = 0; i < bookmarkList.Count; i++)
                 {
                     bookmarkList[i].SortOrder = i + 1;
                 }
@@ -152,7 +152,7 @@ namespace ImageView.Managers
 
         public BookmarkFolder AddBookmarkFolder(string parentId, string folderName)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentId);
             if (parentFolder == null)
                 return null;
 
@@ -170,7 +170,7 @@ namespace ImageView.Managers
 
         public BookmarkFolder InsertBookmarkFolder(string parentId, string folderName, int index)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentId);
             if (parentFolder == null)
                 return null;
 
@@ -186,7 +186,7 @@ namespace ImageView.Managers
 
             var postItems =
                 parentFolder.BookmarkFolders.Where(b => b.SortOrder >= index).OrderBy(b => b.SortOrder).ToList();
-            foreach (var item in postItems)
+            foreach (BookmarkFolder item in postItems)
             {
                 item.SortOrder = item.SortOrder + 1;
             }
@@ -198,7 +198,7 @@ namespace ImageView.Managers
 
         public bool AddBookmark(string parentFolderId, string boookmarkName, ImageReferenceElement imgRef)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
             if (parentFolder == null)
                 return false;
 
@@ -223,7 +223,7 @@ namespace ImageView.Managers
 
         public bool InsertBookmark(string parentFolderId, string boookmarkName, ImageReferenceElement imgRef, int index)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
             if (parentFolder == null)
                 return false;
 
@@ -242,7 +242,7 @@ namespace ImageView.Managers
             };
 
             var postItems = parentFolder.Bookmarks.Where(b => b.SortOrder >= index).OrderBy(b => b.SortOrder).ToList();
-            foreach (var item in postItems)
+            foreach (Bookmark item in postItems)
             {
                 item.SortOrder = item.SortOrder + 1;
             }
@@ -254,12 +254,12 @@ namespace ImageView.Managers
 
         public bool DeleteBookmark(Bookmark bookmark)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmark.ParentFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmark.ParentFolderId);
 
             if (parentFolder == null)
                 return false;
 
-            var success = parentFolder.Bookmarks.Remove(bookmark);
+            bool success = parentFolder.Bookmarks.Remove(bookmark);
             if (success)
             {
                 ReindexSortOrder(false, true);
@@ -269,12 +269,12 @@ namespace ImageView.Managers
 
         public bool DeleteBookmarkByFilename(string parentFolderId, string fileName)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
             if (parentFolder == null)
                 return false;
 
             Bookmark bookmarkToDelete = null;
-            foreach (var bookmark in parentFolder.Bookmarks)
+            foreach (Bookmark bookmark in parentFolder.Bookmarks)
             {
                 if (bookmark.FileName == fileName)
                 {
@@ -296,11 +296,11 @@ namespace ImageView.Managers
 
         public bool DeleteBookmarkFolder(BookmarkFolder folder)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, folder.ParentFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, folder.ParentFolderId);
             if (parentFolder == null)
                 return false;
 
-            var success = parentFolder.BookmarkFolders.Remove(folder);
+            bool success = parentFolder.BookmarkFolders.Remove(folder);
             if (success)
             {
                 ReindexSortOrder(false, true);
@@ -310,13 +310,13 @@ namespace ImageView.Managers
 
         public bool DeleteBookmarkFolderById(string folderId)
         {
-            var bookmarkFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, folderId);
+            BookmarkFolder bookmarkFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, folderId);
 
             if (bookmarkFolder?.ParentFolderId == null)
                 return false;
 
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmarkFolder.ParentFolderId);
-            var result = parentFolder.BookmarkFolders.Remove(bookmarkFolder);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmarkFolder.ParentFolderId);
+            bool result = parentFolder.BookmarkFolders.Remove(bookmarkFolder);
             ReindexSortOrder(true, false);
             return result;
         }
@@ -326,7 +326,7 @@ namespace ImageView.Managers
             if (rootFolder.Id == id)
                 return rootFolder;
 
-            foreach (var bookmarkFolder in rootFolder.BookmarkFolders)
+            foreach (BookmarkFolder bookmarkFolder in rootFolder.BookmarkFolders)
             {
                 if (bookmarkFolder.Id == id)
                 {

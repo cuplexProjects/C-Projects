@@ -107,7 +107,7 @@ namespace ImageView.Services
 
         private int GetNumberOfFilesMatchingRegexp(string basePath)
         {
-            var noFiles = 0;
+            int noFiles = 0;
             try
             {
                 if (!_runWorkerThread)
@@ -132,8 +132,8 @@ namespace ImageView.Services
 
         private bool UserHasReadAccessToDirectory(DirectoryInfo directoryInfo)
         {
-            var dSecurity = directoryInfo.GetAccessControl();
-            var authorizarionRuleCollecion = dSecurity.GetAccessRules(true, true, typeof(SecurityIdentifier));
+            DirectorySecurity dSecurity = directoryInfo.GetAccessControl();
+            AuthorizationRuleCollection authorizarionRuleCollecion = dSecurity.GetAccessRules(true, true, typeof(SecurityIdentifier));
 
             foreach (FileSystemAccessRule fsAccessRules  in authorizarionRuleCollecion)
             {
@@ -158,7 +158,7 @@ namespace ImageView.Services
                 return imageReferenceList;
 
             var fileInfoArray = currentDirectory.GetFiles();
-            foreach (var fileInfo in fileInfoArray)
+            foreach (FileInfo fileInfo in fileInfoArray)
             {
                 if (_fileNameRegExp.IsMatch(fileInfo.Name))
                     imageReferenceList.Add(new ImageReferenceElement
@@ -181,7 +181,7 @@ namespace ImageView.Services
                     new ProgressEventArgs(ProgressStatusEnum.Running, _filesLoaded, _totalNumberOfFiles));
             }
 
-            foreach (var directory in currentDirectory.GetDirectories())
+            foreach (DirectoryInfo directory in currentDirectory.GetDirectories())
                 imageReferenceList.AddRange(GetAllImagesRecursive(directory.FullName));
 
             return imageReferenceList;
@@ -209,7 +209,7 @@ namespace ImageView.Services
 
         internal bool PermanentlyRemoveFile(ImageReferenceElement imgRefElement)
         {
-            var removedItems = 0;
+            int removedItems = 0;
             try
             {
                 File.Delete(imgRefElement.CompletePath);
@@ -228,15 +228,15 @@ namespace ImageView.Services
             var randomImagePosList = new List<int>();
             var randomData = new byte[ImageReferenceList.Count*4];
             _randomNumberGenerator.GetBytes(randomData);
-            var randomDataPointer = 0;
+            int randomDataPointer = 0;
             var candidates = new List<int>();
 
-            for (var i = 0; i < ImageReferenceList.Count; i++)
+            for (int i = 0; i < ImageReferenceList.Count; i++)
                 candidates.Add(i);
 
             while (candidates.Count > 0)
             {
-                var index = Math.Abs(BitConverter.ToInt32(randomData, randomDataPointer))%candidates.Count;
+                int index = Math.Abs(BitConverter.ToInt32(randomData, randomDataPointer))%candidates.Count;
                 randomDataPointer += 4;
 
                 randomImagePosList.Add(candidates[index]);
@@ -254,7 +254,7 @@ namespace ImageView.Services
             else
             {
                 randomImagePosList = new List<int>();
-                for (var i = 0; i < ImageReferenceList.Count; i++)
+                for (int i = 0; i < ImageReferenceList.Count; i++)
                     randomImagePosList.Add(i);
             }
 

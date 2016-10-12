@@ -46,7 +46,7 @@ namespace ImageView
             try
             {
                 var driveInfoArray = DriveInfo.GetDrives();
-                foreach (var driveInfo in driveInfoArray.Where(driveInfo => driveInfo.IsReady))
+                foreach (DriveInfo driveInfo in driveInfoArray.Where(driveInfo => driveInfo.IsReady))
                 {
                     volumeInfoArray.Add(driveInfo.Name);
                 }
@@ -199,7 +199,7 @@ namespace ImageView
         private void bookmarksDataGridView_KeyDown(object sender, KeyEventArgs e)
         {
             if (bookmarksDataGridView.SelectedRows.Count != 1) return;
-            var selectedRow = bookmarksDataGridView.CurrentRow;
+            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
 
             if (e.KeyData == Keys.Enter)
             {
@@ -223,7 +223,7 @@ namespace ImageView
         {
             if (bookmarksDataGridView.SelectedRows.Count != 1) return;
 
-            var selectedRow = bookmarksDataGridView.CurrentRow;
+            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
             var bookmark = selectedRow?.DataBoundItem as Bookmark;
 
             if (bookmark == null) return;
@@ -241,7 +241,7 @@ namespace ImageView
         {
             if (bookmarksDataGridView.SelectedRows.Count != 1) return;
 
-            var selectedRow = bookmarksDataGridView.CurrentRow;
+            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
             var bookmark = selectedRow?.DataBoundItem as Bookmark;
 
             if (bookmark != null)
@@ -280,13 +280,13 @@ namespace ImageView
 
             if (formInputRow.ShowDialog(this) == DialogResult.OK)
             {
-                var folderName = formInputRow.UserInputText;
-                var selectedNode = bookmarksTree.SelectedNode;
+                string folderName = formInputRow.UserInputText;
+                TreeNode selectedNode = bookmarksTree.SelectedNode;
                 var selectedBookmarkfolder = selectedNode.Tag as BookmarkFolder;
 
                 if (selectedBookmarkfolder != null)
                 {
-                    var newFolder = bookmarkManager.AddBookmarkFolder(selectedBookmarkfolder.Id, folderName);
+                    BookmarkFolder newFolder = bookmarkManager.AddBookmarkFolder(selectedBookmarkfolder.Id, folderName);
                     AlterTreeViewState(TreeViewFolderStateChange.FolderAdded, newFolder);
                 }
             }
@@ -339,7 +339,7 @@ namespace ImageView
             brokenLinks = 0;
             fixedLinks = 0;
 
-            var bookmarkFolder = BookmarkService.Instance.BookmarkManager.RootFolder;
+            BookmarkFolder bookmarkFolder = BookmarkService.Instance.BookmarkManager.RootFolder;
             UpdateBrokenLinksOnBookmarks(bookmarkFolder.Bookmarks);
             UpdateBrokenLinksOnThreeNodes(bookmarkFolder.BookmarkFolders);
 
@@ -351,7 +351,7 @@ namespace ImageView
 
         private void UpdateBrokenLinksOnThreeNodes(List<BookmarkFolder> bookmarkTreeNodes)
         {
-            foreach (var bookmarkTreeNode in bookmarkTreeNodes)
+            foreach (BookmarkFolder bookmarkTreeNode in bookmarkTreeNodes)
             {
                 UpdateBrokenLinksOnBookmarks(bookmarkTreeNode.Bookmarks);
                 UpdateBrokenLinksOnThreeNodes(bookmarkTreeNode.BookmarkFolders);
@@ -363,10 +363,10 @@ namespace ImageView
             if (bookmarks == null)
                 return;
 
-            foreach (var bookmark in bookmarks)
+            foreach (Bookmark bookmark in bookmarks)
             {
-                var volumeLabel = GeneralConverters.GetVolumeLabelFromPath(bookmark.Directory);
-                var originalPath = bookmark.CompletePath;
+                string volumeLabel = GeneralConverters.GetVolumeLabelFromPath(bookmark.Directory);
+                string originalPath = bookmark.CompletePath;
                 if (!VolumeExists(volumeLabel)) continue;
                 if (!File.Exists(bookmark.CompletePath))
                 {
@@ -391,7 +391,7 @@ namespace ImageView
                 LogWriter.LogError("Exception in FindFilePath() rootDirectory=" + rootDirectory, exception);
             }
 
-            var fileInfo =
+            FileInfo fileInfo =
                 fileInfoArray?.FirstOrDefault(fi => fi.Name == bookmark.FileName && fi.Length == bookmark.Size);
             if (fileInfo == null) return false;
             bookmark.Directory = fileInfo.DirectoryName;

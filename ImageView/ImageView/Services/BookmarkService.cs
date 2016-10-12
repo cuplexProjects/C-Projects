@@ -52,11 +52,11 @@ namespace ImageView.Services
 
         public bool OpenBookmarks(string password)
         {
-            var filename = _directory + BookmarkFileName;
+            string filename = _directory + BookmarkFileName;
             if (!File.Exists(filename))
                 return false;
 
-            var loadSuccessful = BookmarkManager.LoadFromFile(filename, password);
+            bool loadSuccessful = BookmarkManager.LoadFromFile(filename, password);
             if (loadSuccessful)
             {
                 _passwordStorage.Set(_protectedMemoryStorageKey, password);
@@ -67,13 +67,13 @@ namespace ImageView.Services
 
         public bool SaveBookmarks()
         {
-            var password = _passwordStorage.Get(_protectedMemoryStorageKey);
+            string password = _passwordStorage.Get(_protectedMemoryStorageKey);
             return BookmarkManager.SaveToFile(_directory + BookmarkFileName, password);
         }
 
         private string GetDefaultPassword()
         {
-            var defaultKey = ApplicationSettingsService.Instance.Settings.DefaultKey;
+            string defaultKey = ApplicationSettingsService.Instance.Settings.DefaultKey;
 
             if (defaultKey != null && defaultKey.Length == 256) return defaultKey;
             defaultKey = new SecureRandomGenerator().GetAlphaNumericString(256);

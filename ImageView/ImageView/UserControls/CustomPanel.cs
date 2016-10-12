@@ -88,8 +88,8 @@ namespace ImageView.UserControls
 
 
             var bufferedGraphicsContext = new BufferedGraphicsContext();
-            var bufferedGraphics = bufferedGraphicsContext.Allocate(e.Graphics, e.ClipRectangle);
-            using (var g = bufferedGraphics.Graphics)
+            BufferedGraphics bufferedGraphics = bufferedGraphicsContext.Allocate(e.Graphics, e.ClipRectangle);
+            using (Graphics g = bufferedGraphics.Graphics)
             {
                 g.CompositingQuality = CompositingQuality.HighQuality;
                 g.InterpolationMode = InterpolationMode.HighQualityBilinear;
@@ -108,8 +108,8 @@ namespace ImageView.UserControls
 
                         break;
                     case ImageLayout.Stretch:
-                        var scaleX = BackgroundImage.Width/(float) Width;
-                        var scaleY = BackgroundImage.Height/(float) Height;
+                        float scaleX = BackgroundImage.Width/(float) Width;
+                        float scaleY = BackgroundImage.Height/(float) Height;
 
 
                         //if (y > 0)
@@ -157,20 +157,20 @@ namespace ImageView.UserControls
             UpdateStyles();
         }
 
-        //        g.DrawRectangle(_pen, drawRectangle);
-        //        _pen.Width = BorderWidthOuter;
-        //        _pen.Color = OuterBorderColor;
-        //    {
-
-        //    using (Graphics g = e.Graphics)
-        //    _pen.DashOffset = 25;
-        //    _pen.DashCap = DashCap.Round;
+        //protected override void OnPaint(PaintEventArgs e)
+        //{            
+        //    Rectangle drawRectangle = Rectangle.Inflate(e.ClipRectangle, -1, -1);
 
         //    _pen.DashStyle = DashStyle.Solid;
-        //    Rectangle drawRectangle = Rectangle.Inflate(e.ClipRectangle, -1, -1);
-        //{            
+        //    _pen.DashCap = DashCap.Round;
+        //    _pen.DashOffset = 25;
 
-        //protected override void OnPaint(PaintEventArgs e)
+        //    using (Graphics g = e.Graphics)
+        //    {
+        //        _pen.Color = OuterBorderColor;
+        //        _pen.Width = BorderWidthOuter;
+
+        //        g.DrawRectangle(_pen, drawRectangle);
 
         //        drawRectangle.Inflate(-1 * BorderWidthOuter, -1 * BorderWidthOuter);
         //        _pen.Color = OuterBorderColor;

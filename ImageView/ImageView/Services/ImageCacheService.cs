@@ -17,7 +17,7 @@ namespace ImageView.Services
 
         private ImageCacheService()
         {
-            var cacheSizeFromSetings = ApplicationSettingsService.Instance.Settings.ImageCacheSize;
+            int cacheSizeFromSetings = ApplicationSettingsService.Instance.Settings.ImageCacheSize;
             _cacheSize = DefaultCacheSize;
             _cachedImages = new Dictionary<string, CachedImage>();
 
@@ -61,7 +61,7 @@ namespace ImageView.Services
         {
             while (_cachedImages.Count > 0 && _cachedImages.Sum(img => img.Value.Size) > _cacheSize)
             {
-                var oldestImageFilename =
+                string oldestImageFilename =
                     _cachedImages.OrderBy(img => img.Value.CreatedDate).Select(img => img.Value.Filename).First();
 
                 _cachedImages.Remove(oldestImageFilename);
@@ -80,7 +80,7 @@ namespace ImageView.Services
             cachedImage.LoadImage();
             _cachedImages.Add(fileName, cachedImage);
 
-            var image = _cachedImages[fileName].ImageObject;
+            Image image = _cachedImages[fileName].ImageObject;
             TruncateCache();
             return image;
         }

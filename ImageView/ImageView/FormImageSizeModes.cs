@@ -17,7 +17,7 @@ namespace ImageView
         private void FormImageSizeModes_Load(object sender, EventArgs e)
         {
             comboBoxImageSizeModes.DataSource = Enum.GetValues(typeof(PictureBoxSizeMode));
-            var sizeMode = ApplicationSettingsService.Instance.Settings.PrimaryImageSizeMode;
+            int sizeMode = ApplicationSettingsService.Instance.Settings.PrimaryImageSizeMode;
 
             try
             {

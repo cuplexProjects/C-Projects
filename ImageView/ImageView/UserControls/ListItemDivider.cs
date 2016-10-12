@@ -53,7 +53,7 @@ namespace ImageView.UserControls
 
             if (DividerPosition == DividerPositions.Top)
             {
-                var back = e.State == DrawItemState.Focus ? e.ForeColor : e.BackColor;
+                Color back = e.State == DrawItemState.Focus ? e.ForeColor : e.BackColor;
 
                 var backgrounRectangle = new Rectangle(0, e.Bounds.Top + DividerMargin*2 + (int) DividerPen.Width,
                     e.Bounds.Width, e.Bounds.Height - DividerMargin*2);
@@ -63,8 +63,8 @@ namespace ImageView.UserControls
                     new Point(e.Bounds.Right, e.Bounds.Top + DividerMargin));
 
 
-                var fontTopPosition = (float) e.Bounds.Top + DividerMargin*2 + e.Bounds.Height/2f -
-                                      userControl.Font.GetHeight()/2f;
+                float fontTopPosition = (float) e.Bounds.Top + DividerMargin*2 + e.Bounds.Height/2f -
+                                        userControl.Font.GetHeight()/2f;
                 var textRectangle = new Rectangle(0, (int) fontTopPosition, e.Bounds.Width, e.Bounds.Height);
                 TextRenderer.DrawText(e.Graphics, Text, userControl.Font, textRectangle, userControl.ForeColor,
                     TextFormatFlags.Left);

@@ -118,7 +118,7 @@ namespace ImageView.DataContracts
         public void RemoveDuplicateEntriesWithIgnoreCase()
         {
             var deleteStack = new Stack<string>();
-            foreach (var searchPath in LastUsedSearchPaths)
+            foreach (string searchPath in LastUsedSearchPaths)
             {
                 if (LastUsedSearchPaths.Any(s => s.ToLower() == searchPath))
                     deleteStack.Push(searchPath);
@@ -146,8 +146,8 @@ namespace ImageView.DataContracts
 
         public void SetMainFormPosition(Rectangle mainFormBounds)
         {
-            var mainScreenBounds = Screen.PrimaryScreen.Bounds;
-            var intersection = Rectangle.Intersect(mainScreenBounds, mainFormBounds);
+            Rectangle mainScreenBounds = Screen.PrimaryScreen.Bounds;
+            Rectangle intersection = Rectangle.Intersect(mainScreenBounds, mainFormBounds);
 
             if (intersection != Rectangle.Empty)
             {

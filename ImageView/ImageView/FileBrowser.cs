@@ -42,13 +42,13 @@ namespace ImageView
             dataGridViewLoadedImages.DataBindingComplete += dataGridViewLoadedImages_DataBindingComplete;
             var lastUsedSearchPathsList = new List<string>();
             var searchDirsFromSettings = ApplicationSettingsService.Instance.Settings.LastUsedSearchPaths;
-            var validList = true;
+            bool validList = true;
 
             // Validate every directory and check for duplicates. 
             // If any changes has been made then save settings.
-            foreach (var searchPath in searchDirsFromSettings)
+            foreach (string searchPath in searchDirsFromSettings)
             {
-                var pathToAdd = searchPath.Trim();
+                string pathToAdd = searchPath.Trim();
                 if (lastUsedSearchPathsList.Contains(pathToAdd))
                 {
                     validList = false;
@@ -175,7 +175,7 @@ namespace ImageView
                 MessageBox.Show(Resources.Are_you_sure_that_you_want_to_delete_the_selected_files_,
                     Resources.Confirm_delete, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                var selectedRows = dataGridViewLoadedImages.SelectedRows;
+                DataGridViewSelectedRowCollection selectedRows = dataGridViewLoadedImages.SelectedRows;
                 foreach (DataGridViewRow row in selectedRows)
                 {
                     var imgRefElement = row.DataBoundItem as ImageReferenceElement;

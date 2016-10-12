@@ -24,7 +24,7 @@ namespace ImageView
             get
             {
                 const int CS_DROPSHADOW = 0x20000;
-                var cp = base.CreateParams;
+                CreateParams cp = base.CreateParams;
                 cp.ClassStyle |= CS_DROPSHADOW;
                 return cp;
             }
@@ -35,7 +35,7 @@ namespace ImageView
             var rootBookmarksFolders = rootBookmarkFolder.BookmarkFolders;
             var rootNode = new TreeNode("Bookmarks");
             bookmarksTree.Nodes.Add(rootNode);
-            foreach (var bookmarkFolder in rootBookmarksFolders)
+            foreach (BookmarkFolder bookmarkFolder in rootBookmarksFolders)
             {
                 rootNode.Nodes.Add(new TreeNode(bookmarkFolder.Name));
             }

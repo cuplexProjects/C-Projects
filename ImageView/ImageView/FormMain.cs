@@ -104,12 +104,12 @@ namespace ImageView
             if (_imageTransitionRunning)
                 return;
 
-            var settings = ApplicationSettingsService.Instance.Settings;
+            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
             var currentImage = pictureBox1.Image.Clone() as Image;
             var nextImage = _pictureBoxAnimation.Image.Clone() as Image;
             _pictureBoxAnimation.Image = null;
 
-            var animationTime = settings.ImageTransitionTime;
+            int animationTime = settings.ImageTransitionTime;
             await PerformImageTransition(currentImage, nextImage, settings.NextImageAnimation, animationTime);
 
             currentImage?.Dispose();
@@ -239,7 +239,7 @@ namespace ImageView
 
         private void SyncUserControlStateWithAppSettings()
         {
-            var settings = ApplicationSettingsService.Instance.Settings;
+            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
 
             if (TopMost != settings.AlwaysOntop)
                 TopMost = settings.AlwaysOntop;
@@ -289,7 +289,7 @@ namespace ImageView
 
         private void SetImageReferenceCollection()
         {
-            var randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
+            bool randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
             if (!ImageLoaderService.Instance.IsRunningImport && ImageLoaderService.Instance.ImageReferenceList != null)
             {
                 _imageReferenceCollection =
@@ -310,9 +310,9 @@ namespace ImageView
                 stopwatch.Start();
                 while (stopwatch.ElapsedMilliseconds <= animationTime)
                 {
-                    var elapsedTime = stopwatch.ElapsedMilliseconds;
+                    long elapsedTime = stopwatch.ElapsedMilliseconds;
 
-                    var factor = stopwatch.ElapsedMilliseconds/(float) animationTime;
+                    float factor = stopwatch.ElapsedMilliseconds/(float) animationTime;
                     Image transitionImage;
                     switch (animation)
                     {
@@ -333,8 +333,8 @@ namespace ImageView
                                 new Size(Math.Max(nextImage.Width, currentImage.Width), nextImage.Height), factor, false);
                             break;
                         case ImageViewApplicationSettings.ChangeImageAnimation.FadeIn:
-                            var width = nextImage.Width;
-                            var height = nextImage.Height;
+                            int width = nextImage.Width;
+                            int height = nextImage.Height;
                             var nextImageBitmap = new Bitmap(nextImage, new Size(width, height));
                             transitionImage = ImageTransform.SetImageOpacity(nextImageBitmap, factor);
                             break;
@@ -485,7 +485,7 @@ namespace ImageView
             var formSettings = new FormSettings();
             formSettings.ShowDialog(this);
 
-            foreach (var imageView in _imageViewFormList)
+            foreach (FormImageView imageView in _imageViewFormList)
             {
                 imageView.ReloadSettings();
             }
@@ -576,26 +576,26 @@ namespace ImageView
 
         private void autoArrangeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var index = 0;
-            var windowsPerScreen = 2;
+            int index = 0;
+            int windowsPerScreen = 2;
 
-            var widthOffset = ApplicationSettingsService.Instance.Settings.ScreenWidthOffset;
-            var minXOffset = ApplicationSettingsService.Instance.Settings.ScreenMinXOffset;
+            int widthOffset = ApplicationSettingsService.Instance.Settings.ScreenWidthOffset;
+            int minXOffset = ApplicationSettingsService.Instance.Settings.ScreenMinXOffset;
 
-            foreach (var screen in Screen.AllScreens.OrderBy(s => s.Bounds.X))
+            foreach (Screen screen in Screen.AllScreens.OrderBy(s => s.Bounds.X))
             {
                 if (screen.Primary) continue;
-                for (var i = 0; i < windowsPerScreen; i++)
+                for (int i = 0; i < windowsPerScreen; i++)
                 {
                     if (index >= _imageViewFormList.Count)
                         break;
 
-                    var imageWindow = _imageViewFormList[index++];
+                    FormImageView imageWindow = _imageViewFormList[index++];
                     if (imageWindow == null || imageWindow.IsDisposed) continue;
                     imageWindow.Margin = new Padding(0);
 
-                    var screenWidth = screen.Bounds.Width + widthOffset;
-                    var screenMinx = screen.WorkingArea.X - minXOffset;
+                    int screenWidth = screen.Bounds.Width + widthOffset;
+                    int screenMinx = screen.WorkingArea.X - minXOffset;
 
 
                     if (i == 0)
@@ -619,7 +619,7 @@ namespace ImageView
 
         private void showAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (var imageWindow in _imageViewFormList)
+            foreach (FormImageView imageWindow in _imageViewFormList)
             {
                 if (imageWindow == null || imageWindow.IsDisposed) continue;
                 imageWindow.Show();
@@ -632,7 +632,7 @@ namespace ImageView
 
         private void hideAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (var imageWindow in _imageViewFormList)
+            foreach (FormImageView imageWindow in _imageViewFormList)
             {
                 if (imageWindow != null && !imageWindow.IsDisposed)
                     imageWindow.Hide();
@@ -650,7 +650,7 @@ namespace ImageView
                 var imageWindowQueue = new Queue<FormImageView>(_imageViewFormList);
                 while (imageWindowQueue.Count > 0)
                 {
-                    var imageWindow = imageWindowQueue.Dequeue();
+                    FormImageView imageWindow = imageWindowQueue.Dequeue();
                     imageWindow.Close();
                 }
             }

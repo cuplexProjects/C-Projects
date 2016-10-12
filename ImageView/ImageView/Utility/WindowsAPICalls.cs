@@ -14,12 +14,12 @@ namespace ImageView.Utility
         [DllImport("user32.dll")]
         internal static extern bool ReleaseCapture();
 
-        //internal static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
         //[DllImport("user32.dll")]
         //internal static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
-
         //[DllImport("user32.dll")]
+
+        //internal static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
     }
 }

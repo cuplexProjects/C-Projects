@@ -27,7 +27,7 @@ namespace ImageView
             get
             {
                 const int CS_DROPSHADOW = 0x20000;
-                var cp = base.CreateParams;
+                CreateParams cp = base.CreateParams;
                 cp.ClassStyle |= CS_DROPSHADOW;
                 return cp;
             }
@@ -43,10 +43,10 @@ namespace ImageView
 
         private void InitFolderDropdownList()
         {
-            var rootNode = _bookmarkManager.RootFolder;
+            BookmarkFolder rootNode = _bookmarkManager.RootFolder;
             comboBoxBookmarkFolders.Items.Clear();
 
-            foreach (var folder in rootNode.BookmarkFolders)
+            foreach (BookmarkFolder folder in rootNode.BookmarkFolders)
                 comboBoxBookmarkFolders.Items.Add(folder);
 
             if (comboBoxBookmarkFolders.Items.Count > 0)
@@ -55,7 +55,7 @@ namespace ImageView
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            var bookmarkFolder = comboBoxBookmarkFolders.SelectedItem as BookmarkFolder ?? _bookmarkManager.RootFolder;
+            BookmarkFolder bookmarkFolder = comboBoxBookmarkFolders.SelectedItem as BookmarkFolder ?? _bookmarkManager.RootFolder;
             _bookmarkManager.AddBookmark(bookmarkFolder.ParentFolderId, txtBookmarkName.Text, _imageReference);
 
             Close();

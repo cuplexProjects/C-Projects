@@ -20,8 +20,8 @@ namespace ImageView.Storage
         {
             try
             {
-                var dSecurity = directoryInfo.GetAccessControl();
-                var authorizarionRuleCollecion = dSecurity.GetAccessRules(true, true, typeof(SecurityIdentifier));
+                DirectorySecurity dSecurity = directoryInfo.GetAccessControl();
+                AuthorizationRuleCollection authorizarionRuleCollecion = dSecurity.GetAccessRules(true, true, typeof(SecurityIdentifier));
 
                 foreach (FileSystemAccessRule fsAccessRules in authorizarionRuleCollecion)
                 {
