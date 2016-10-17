@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using GeneralToolkitLib.ConfigHelper;
@@ -11,12 +12,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace ImageView.UnitTest
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BookmarkStorageTest
     {
         private static ImageReferenceElement _imageReference;
         private BookmarkService bookmarkService;
 
-        [ClassInitialize()]
+        [ClassInitialize]
         public static void BookmarkStorageInitialize(TestContext testContext)
         {
             GlobalSettings.UnitTestInitialize("c:\\temp\\");
@@ -34,7 +36,7 @@ namespace ImageView.UnitTest
         }
 
         // Use TestInitialize to run code before running each test 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             bookmarkService = new BookmarkService();
@@ -44,7 +46,7 @@ namespace ImageView.UnitTest
             Assert.IsTrue(bookmarkManager.RootFolder.BookmarkFolders.Count == 0, "Test must start with empty bookmark folder list");
         }
 
-        [ClassCleanup()]
+        [ClassCleanup]
         public static void BookmarkStorageCleanup()
         {
             var files= Directory.GetFiles("c:\\temp", "*.dat");
@@ -55,10 +57,10 @@ namespace ImageView.UnitTest
         }
 
         // Use TestCleanup to run code after each test has run
-        [TestCleanup()]
+        [TestCleanup]
         public void MyTestCleanup()
         {
-           
+            bookmarkService.Dispose();
         }
 
         [TestMethod]

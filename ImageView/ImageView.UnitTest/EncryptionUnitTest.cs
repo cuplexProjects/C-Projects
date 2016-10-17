@@ -64,23 +64,21 @@ namespace ImageView.UnitTest
         [TestMethod]
         public void TestEncryption()
         {
-            //Generate random data of random length;
-            Random r = new Random();
-            int dataLength = r.Next(100, 102400);
-            byte[] testData = new byte[dataLength];
+            byte[] testData = new byte[4096];
 
             RandomNumberGenerator rng = RandomNumberGenerator.Create();
             rng.GetBytes(testData);
             
             string checksumString = GeneralToolkitLib.Hashing.MD5.GetMD5HashAsHexString(testData);
+            const string password = "eab6287454d242a584037576efbfea38";
 
-            EncryptionManager encryptionManager = new EncryptionManager();
+            byte[] encodedbytes= EncryptionManager.EncryptData(testData, password);
+            Assert.IsNotNull(encodedbytes);
+            byte[] decodedBytes = EncryptionManager.DecryptData(encodedbytes, password);
+            Assert.IsNotNull(decodedBytes);
 
-
-          
-
-            //encryptionManager.EncryptAndSaveFile()
-
+            Assert.IsTrue(checksumString != GeneralToolkitLib.Hashing.MD5.GetMD5HashAsHexString(encodedbytes), "Original byte sequence cant be equal to encoded bytes!");
+            Assert.IsTrue(checksumString == GeneralToolkitLib.Hashing.MD5.GetMD5HashAsHexString(decodedBytes), "Original byte sequence was not equal to decoded bytes!");
         }
 
         [TestMethod]
