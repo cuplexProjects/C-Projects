@@ -201,7 +201,10 @@ namespace ImageView.Managers
             {
                 Name = folderName,
                 ParentFolderId = parentFolder.Id,
-                SortOrder = index
+                SortOrder = index,
+                Id = Guid.NewGuid().ToString(),
+                BookmarkFolders = new List<BookmarkFolder>(),
+                Bookmarks = new List<Bookmark>()
             };
 
             var postItems =
@@ -212,15 +215,16 @@ namespace ImageView.Managers
             }
 
             parentFolder.BookmarkFolders.Add(folder);
+            parentFolder.BookmarkFolders.Sort((f1, f2) => f1.SortOrder.CompareTo(f2.SortOrder));
             BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.CreatedBookmarkFolder, typeof(BookmarkFolder)));
             return folder;
         }
 
-        public bool AddBookmark(string parentFolderId, string boookmarkName, ImageReferenceElement imgRef)
+        public Bookmark AddBookmark(string parentFolderId, string boookmarkName, ImageReferenceElement imgRef)
         {
             BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
             if (parentFolder == null)
-                return false;
+                return null;
 
             var bookmark = new Bookmark
             {
@@ -238,14 +242,17 @@ namespace ImageView.Managers
 
             parentFolder.Bookmarks.Add(bookmark);
             BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.CreatedBookmark, typeof(Bookmark)));
-            return true;
+            return bookmark;
         }
 
-        public bool InsertBookmark(string parentFolderId, string boookmarkName, ImageReferenceElement imgRef, int index)
+        public Bookmark InsertBookmark(string parentFolderId, string boookmarkName, ImageReferenceElement imgRef, int index)
         {
             BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
             if (parentFolder == null)
-                return false;
+                return null;
+
+            if (index < 0 || index > parentFolder.Bookmarks.Count)
+                return null;
 
             var bookmark = new Bookmark
             {
@@ -257,7 +264,7 @@ namespace ImageView.Managers
                 LastAccessTime = imgRef.LastAccessTime,
                 LastWriteTime = imgRef.LastWriteTime,
                 Size = imgRef.Size,
-                SortOrder = parentFolder.Bookmarks.Count,
+                SortOrder = index,
                 ParentFolderId = parentFolder.Id
             };
 
@@ -268,8 +275,9 @@ namespace ImageView.Managers
             }
 
             parentFolder.Bookmarks.Add(bookmark);
+            parentFolder.Bookmarks.Sort((b1, b2) => b1.SortOrder.CompareTo(b2.SortOrder));
             BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.CreatedBookmark, typeof(Bookmark)));
-            return true;
+            return bookmark;
         }
 
         public bool DeleteBookmark(Bookmark bookmark)

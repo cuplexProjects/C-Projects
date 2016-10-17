@@ -35,6 +35,11 @@ namespace ImageView.Services
 
         public static BookmarkService Instance => _instance ?? (_instance = new BookmarkService());
 
+        public static void ClearInstance()
+        {
+            _instance = null;
+        }
+
         public void Dispose()
         {
             _instance = null;
