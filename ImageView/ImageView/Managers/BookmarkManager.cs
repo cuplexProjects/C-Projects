@@ -12,11 +12,11 @@ namespace ImageView.Managers
 {
     public class BookmarkManager
     {
-        private readonly BookmarkUpdatedEventHandler _bookmarkUpdated;
         private BookmarkContainer _bookmarkContainer;
         private bool _isModified;
+        public event BookmarkUpdatedEventHandler OnBookmarksUpdate;
 
-        private BookmarkManager(BookmarkUpdatedEventHandler updatedEventHandler)
+        private BookmarkManager()
         {
             _bookmarkContainer = new BookmarkContainer
             {
@@ -31,21 +31,24 @@ namespace ImageView.Managers
                     BookmarkFolders = new List<BookmarkFolder>()
                 }
             };
-            _bookmarkUpdated = updatedEventHandler;
+            
             RootFolder = _bookmarkContainer.RootFolder;
         }
 
         public BookmarkFolder RootFolder { get; private set; }
 
-        public static BookmarkManager CreateNew(BookmarkUpdatedEventHandler updatedEventHandler)
+        public bool IsModified => _isModified;
+
+        public static BookmarkManager CreateNew()
         {
-            var bookmarkManager = new BookmarkManager(updatedEventHandler);
+            var bookmarkManager = new BookmarkManager();
             return bookmarkManager;
         }
 
         private void BookmarkUpdated(BookmarkUpdatedEventArgs e)
         {
-            _bookmarkUpdated?.Invoke(this, e);
+            _isModified = true;
+            OnBookmarksUpdate?.Invoke(this, e);
         }
 
         public bool SaveToFile(string filename, string password)
@@ -152,7 +155,7 @@ namespace ImageView.Managers
                     folderList[i].SortOrder = i + 1;
                 }
 
-                folderList.Sort();
+                _bookmarkContainer.RootFolder.BookmarkFolders.Sort((f1, f2) => f1.SortOrder.CompareTo(f2.SortOrder));
             }
 
             if (ReIndexBookmarks)
@@ -360,6 +363,8 @@ namespace ImageView.Managers
                 {
                     return bookmarkFolder;
                 }
+                if (bookmarkFolder.BookmarkFolders != null && bookmarkFolder.BookmarkFolders.Count > 0)
+                    return GetBookmarkFolderById(bookmarkFolder, id);
             }
 
             return null;

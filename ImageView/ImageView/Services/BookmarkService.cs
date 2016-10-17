@@ -3,7 +3,6 @@ using System.IO;
 using GeneralToolkitLib.ConfigHelper;
 using GeneralToolkitLib.Storage.Memory;
 using GeneralToolkitLib.Utility.RandomGenerator;
-using ImageView.Events;
 using ImageView.Managers;
 
 namespace ImageView.Services
@@ -11,13 +10,13 @@ namespace ImageView.Services
     public class BookmarkService : IDisposable
     {
         private const string BookmarkFileName = "ImageViewBookmarks.dat";
-        private static BookmarkService _instance;
         private readonly string _directory;
 
         private readonly PasswordStorage _passwordStorage;
         private readonly string _protectedMemoryStorageKey;
+        private BookmarkManager _bookmarkManager;
 
-        private BookmarkService()
+        public BookmarkService()
         {
             _protectedMemoryStorageKey = new SecureRandomGenerator().GetAlphaNumericString(256);
             _directory = GlobalSettings.GetUserDataDirectoryPath();
@@ -25,34 +24,26 @@ namespace ImageView.Services
             _passwordStorage = new PasswordStorage();
             _passwordStorage.Set(_protectedMemoryStorageKey, GetDefaultPassword());
 
-            BookmarkManager = BookmarkManager.CreateNew(BookmarkStructureUpdatedEvent);
-
-            if (!ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
-                OpenBookmarks(GetDefaultPassword());
+            _bookmarkManager = BookmarkManager.CreateNew();
+            
+            //if (!ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
+            //    OpenBookmarks(GetDefaultPassword());
         }
 
-        public BookmarkManager BookmarkManager { get; private set; }
-
-        public static BookmarkService Instance => _instance ?? (_instance = new BookmarkService());
-
-        public static void ClearInstance()
-        {
-            _instance = null;
-        }
+        public BookmarkManager BookmarkManager => _bookmarkManager;
 
         public void Dispose()
         {
-            _instance = null;
-            BookmarkManager = null;
+            _bookmarkManager = null;
             _passwordStorage?.Dispose();
             GC.Collect();
         }
 
-        public event BookmarkUpdatedEventHandler OnBookmarksUpdate;
+        
 
-        private void BookmarkStructureUpdatedEvent(object sender, BookmarkUpdatedEventArgs bookmarkUpdatedEventArgs)
+        public bool OpenBookmarks()
         {
-            OnBookmarksUpdate?.Invoke(sender, bookmarkUpdatedEventArgs);
+            return OpenBookmarks(GetDefaultPassword());
         }
 
         public bool OpenBookmarks(string password)
@@ -61,7 +52,7 @@ namespace ImageView.Services
             if (!File.Exists(filename))
                 return false;
 
-            bool loadSuccessful = BookmarkManager.LoadFromFile(filename, password);
+            bool loadSuccessful = _bookmarkManager.LoadFromFile(filename, password);
             if (loadSuccessful)
             {
                 _passwordStorage.Set(_protectedMemoryStorageKey, password);
@@ -73,7 +64,7 @@ namespace ImageView.Services
         public bool SaveBookmarks()
         {
             string password = _passwordStorage.Get(_protectedMemoryStorageKey);
-            return BookmarkManager.SaveToFile(_directory + BookmarkFileName, password);
+            return _bookmarkManager.SaveToFile(_directory + BookmarkFileName, password);
         }
 
         private string GetDefaultPassword()

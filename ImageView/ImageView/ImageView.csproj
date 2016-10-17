@@ -266,6 +266,7 @@
     <Compile Include="Services\ImageLoaderService.cs" />
     <Compile Include="Models\ImageReferenceElement.cs" />
     <Compile Include="DataContracts\ImageViewApplicationSettings.cs" />
+    <Compile Include="Services\ServiceLocator.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
     <Compile Include="UserControls\ListItemDivider.cs" />
     <Compile Include="UserControls\CustomPanel.cs">

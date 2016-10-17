@@ -133,10 +133,9 @@ namespace ImageView
                             return;
                         }
 
-                        ApplicationSettingsService.Instance.Settings.EnablePasswordProtectBookmarks(
-                            formSetPassword.VerifiedPassword);
+                        ApplicationSettingsService.Instance.Settings.EnablePasswordProtectBookmarks(formSetPassword.VerifiedPassword);
                         ApplicationSettingsService.Instance.SaveSettings();
-                        BookmarkService.Instance.SaveBookmarks();
+                        ServiceLocator.GetBookmarkService().SaveBookmarks();
                     }
                     else
                         chkPasswordProtectBookmarks.Checked = false;
@@ -155,8 +154,8 @@ namespace ImageView
                         ApplicationSettingsService.Instance.SaveSettings();
 
                         // Check bookmark status
-                        if (BookmarkService.Instance.BookmarkManager == null)
-                            BookmarkService.Instance.Dispose();
+                        //if (BookmarkService.Instance.BookmarkManager == null)
+                        //    BookmarkService.Instance.Dispose();
                     }
                     else
                         chkPasswordProtectBookmarks.Checked = true;

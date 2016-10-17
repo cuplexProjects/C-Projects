@@ -132,10 +132,10 @@ namespace ImageView
                 ScreenSaver.Enable();
 
             timerSlideShow.Enabled = false;
-            BookmarkService.Instance.SaveBookmarks();
+            ServiceLocator.GetBookmarkService().SaveBookmarks();
             ApplicationSettingsService.Instance.Settings.SetMainFormPosition(Bounds);
             ApplicationSettingsService.Instance.SaveSettings();
-            BookmarkService.Instance.Dispose();
+            ServiceLocator.Clear();
         }
 
         private void imageViewForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -518,7 +518,7 @@ namespace ImageView
 
         private void addBookmarkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (BookmarkService.Instance.BookmarkManager == null)
+            if (ServiceLocator.GetBookmarkService().BookmarkManager == null)
             {
                 MessageBox.Show(Resources.Please_unlock_bookmarks_first);
                 return;

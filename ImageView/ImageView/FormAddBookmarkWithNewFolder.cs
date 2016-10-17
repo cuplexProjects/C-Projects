@@ -15,7 +15,7 @@ namespace ImageView
         public FormAddBookmarkWithNewFolder(ImageReferenceElement imageReference)
         {
             _imageReference = imageReference;
-            rootBookmarkFolder = BookmarkService.Instance.BookmarkManager.RootFolder;
+            rootBookmarkFolder = ServiceLocator.GetBookmarkService().BookmarkManager.RootFolder;
             InitializeComponent();
         }
 

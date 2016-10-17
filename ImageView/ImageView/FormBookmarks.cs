@@ -22,8 +22,7 @@ namespace ImageView
     public partial class FormBookmarks : Form
     {
         private const int CUSTOM_CONTENT_HEIGHT = 4;
-        private readonly TreeViewDataContext _treeViewDataContext;
-        private readonly BookmarkManager bookmarkManager;
+        private TreeViewDataContext _treeViewDataContext;
         private readonly Color gridViewGradientBackgroundColorStart = ColorTranslator.FromHtml("#b2e1ff");
         private readonly Color gridViewGradientBackgroundColorStop = ColorTranslator.FromHtml("#66b6fc");
         private readonly Color GridViewSelectionBorderColor = ColorTranslator.FromHtml("#7da2ce");
@@ -38,9 +37,9 @@ namespace ImageView
             InitializeComponent();
             logStringBuilder = new StringBuilder();
             volumeInfoArray = new List<string>();
-            bookmarkManager = BookmarkService.Instance.BookmarkManager;
+            BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
 
-            _treeViewDataContext = new TreeViewDataContext(bookmarksTree, BookmarkService.Instance.BookmarkManager.RootFolder);
+            _treeViewDataContext = new TreeViewDataContext(bookmarksTree, bookmarkService.BookmarkManager.RootFolder);
 
             try
             {
@@ -60,15 +59,15 @@ namespace ImageView
         {
             if (DesignMode)
                 return;
-
+            BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
+            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
             bookmarksDataGridView.RowPrePaint += bookmarksDataGridView_RowPrePaint;
             bookmarksDataGridView.RowPostPaint += bookmarksDataGridView_RowPostPaint;
-            BookmarkService.Instance.OnBookmarksUpdate += Instance_OnBookmarksUpdate;
+            bookmarkManager.OnBookmarksUpdate += Instance_OnBookmarksUpdate;
             bookmarksTree.AfterSelect += BookmarksTree_AfterSelect;
             InitBookmarksDataGridViev();
 
-            if (BookmarkService.Instance.BookmarkManager == null &&
-                ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
+            if (ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
                 using (var formgetPassword = new FormGetPassword
                 {
                     PasswordDerivedString = ApplicationSettingsService.Instance.Settings.PasswordDerivedString
@@ -83,7 +82,7 @@ namespace ImageView
                             return;
                         }
 
-                        if (BookmarkService.Instance.OpenBookmarks(formgetPassword.PasswordString))
+                        if (bookmarkService.OpenBookmarks(formgetPassword.PasswordString))
                             initBookmarksDataSource();
                         else
                         {
@@ -95,7 +94,11 @@ namespace ImageView
                         Close();
                 }
             else
+            {
+                bookmarkService.OpenBookmarks();
                 initBookmarksDataSource();
+            }
+               
         }
 
         private void BookmarksTree_AfterSelect(object sender, TreeViewEventArgs e)
@@ -132,6 +135,7 @@ namespace ImageView
 
         private void initBookmarksDataSource()
         {
+            _treeViewDataContext = new TreeViewDataContext(bookmarksTree, ServiceLocator.GetBookmarkService().BookmarkManager.RootFolder);
             _treeViewDataContext.BindData();
         }
 
@@ -208,8 +212,10 @@ namespace ImageView
 
         private void bookmarksDataGridView_KeyDown(object sender, KeyEventArgs e)
         {
+            BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
             if (bookmarksDataGridView.SelectedRows.Count != 1) return;
             DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
+            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
 
             if (e.KeyData == Keys.Enter)
             {
@@ -279,6 +285,8 @@ namespace ImageView
         {
             if (bookmarksTree.SelectedNode == null)
                 return;
+            BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
+            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
 
             var inputFormData = new FormInputRow.InputFormData
             {
@@ -305,6 +313,8 @@ namespace ImageView
         private void deleteFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var treeNode = bookmarksTree.SelectedNode?.Tag as BookmarkFolder;
+            BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
+            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
 
             if (treeNode == null)
                 return;
@@ -341,7 +351,9 @@ namespace ImageView
 
         private void tryToFixBrokenLinksToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (BookmarkService.Instance.BookmarkManager == null)
+            BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
+            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
+            if (bookmarkManager == null)
                 return;
 
             showLogToolStripMenuItem.Enabled = true;
@@ -349,14 +361,14 @@ namespace ImageView
             brokenLinks = 0;
             fixedLinks = 0;
 
-            BookmarkFolder bookmarkFolder = BookmarkService.Instance.BookmarkManager.RootFolder;
+            BookmarkFolder bookmarkFolder = bookmarkManager.RootFolder;
             UpdateBrokenLinksOnBookmarks(bookmarkFolder.Bookmarks);
             UpdateBrokenLinksOnThreeNodes(bookmarkFolder.BookmarkFolders);
 
             logStringBuilder.AppendLine($"Found {brokenLinks} broken linkes and fixed {fixedLinks} links.");
 
             if (fixedLinks > 0)
-                BookmarkService.Instance.SaveBookmarks();
+                bookmarkService.SaveBookmarks();
         }
 
         private void UpdateBrokenLinksOnThreeNodes(List<BookmarkFolder> bookmarkTreeNodes)

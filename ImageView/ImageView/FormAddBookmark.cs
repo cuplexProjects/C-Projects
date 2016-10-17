@@ -19,7 +19,7 @@ namespace ImageView
             InitializeComponent();
             SetDesktopLocation(startupPosition.X, startupPosition.Y);
             _imageReference = imageReference;
-            _bookmarkManager = BookmarkService.Instance.BookmarkManager;
+            _bookmarkManager = ServiceLocator.GetBookmarkService().BookmarkManager;
         }
 
         protected override CreateParams CreateParams
