@@ -355,6 +355,7 @@
     </EmbeddedResource>
     <None Include="ImageViewCertificateSignFile.pfx" />
     <None Include="Properties\DataSources\ImageReferenceElement.datasource" />
+    <None Include="Properties\DataSources\ImageView.DataContracts.Bookmark.datasource" />
     <None Include="Properties\DataSources\ImageView.DataModels.Bookmark.datasource" />
     <None Include="Properties\DataSources\ImageView.DataModels.BookmarkFolder.datasource" />
     <None Include="Properties\DataSources\ImageView.DataModels.BookmarkTree.datasource" />

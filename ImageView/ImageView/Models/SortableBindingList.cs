@@ -96,10 +96,9 @@ namespace ImageView.Models
             LambdaExpression propertySelectorLambda =
                 Expression.Lambda(Expression.MakeMemberAccess(lambdaParameter,
                     accesedMember), lambdaParameter);
-            MethodInfo orderByMethod = typeof(Enumerable).GetMethods()
-                .Where(a => a.Name == orderByMethodName &&
-                            a.GetParameters().Length == 2)
-                .Single()
+            MethodInfo orderByMethod = typeof(Enumerable)
+                .GetMethods()
+                .Single(a => a.Name == orderByMethodName && a.GetParameters().Length == 2)
                 .MakeGenericMethod(typeof(T), prop.PropertyType);
 
             var orderByExpression = Expression.Lambda<Func<List<T>, IEnumerable<T>>>(

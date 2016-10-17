@@ -48,10 +48,6 @@ namespace ImageView.Managers
             _bookmarkUpdated?.Invoke(this, e);
         }
 
-        private void BookmarkFolderImplementation_OnBookmarksUpdate(object sender, BookmarkUpdatedEventArgs e)
-        {
-        }
-
         public bool SaveToFile(string filename, string password)
         {
             try
@@ -105,14 +101,35 @@ namespace ImageView.Managers
 
             BookmarkFolder rootFolder = bookmarkContainer.RootFolder;
             CreateEmptyLists(rootFolder);
+            CreateParentFolderRefs(rootFolder);
 
             return true;
+        }
+
+        private void CreateParentFolderRefs(BookmarkFolder rootFolder)
+        {
+            foreach (Bookmark bookmark in rootFolder.Bookmarks)
+            {
+                if (bookmark.ParentFolderId == null)
+                    bookmark.ParentFolderId = rootFolder.Id;
+            }
+
+            if (rootFolder.BookmarkFolders != null)
+            {
+                foreach (BookmarkFolder folder in rootFolder.BookmarkFolders)
+                {
+                    CreateParentFolderRefs(folder);
+                }
+            }
         }
 
         private void CreateEmptyLists(BookmarkFolder rootFolder)
         {
             if (rootFolder.Bookmarks == null)
                 rootFolder.Bookmarks = new List<Bookmark>();
+
+            if (rootFolder.Id == null)
+                rootFolder.Id = Guid.NewGuid().ToString();
 
             if (rootFolder.BookmarkFolders == null)
                 rootFolder.BookmarkFolders = new List<BookmarkFolder>();
@@ -146,7 +163,7 @@ namespace ImageView.Managers
                     bookmarkList[i].SortOrder = i + 1;
                 }
 
-                bookmarkList.Sort();
+                _bookmarkContainer.RootFolder.Bookmarks.Sort((b1, b2) => b1.SortOrder.CompareTo(b2.SortOrder));
             }
         }
 
@@ -159,8 +176,11 @@ namespace ImageView.Managers
             var folder = new BookmarkFolder
             {
                 Name = folderName,
+                Id = Guid.NewGuid().ToString(),
                 ParentFolderId = parentFolder.Id,
-                SortOrder = _bookmarkContainer.RootFolder.BookmarkFolders.Count
+                SortOrder = _bookmarkContainer.RootFolder.BookmarkFolders.Count,
+                BookmarkFolders = new List<BookmarkFolder>(),
+                Bookmarks = new List<Bookmark>()
             };
 
             parentFolder.BookmarkFolders.Add(folder);

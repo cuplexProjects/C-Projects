@@ -40,8 +40,7 @@ namespace ImageView
             volumeInfoArray = new List<string>();
             bookmarkManager = BookmarkService.Instance.BookmarkManager;
 
-            _treeViewDataContext = new TreeViewDataContext(bookmarksTree,
-                BookmarkService.Instance.BookmarkManager.RootFolder);
+            _treeViewDataContext = new TreeViewDataContext(bookmarksTree, BookmarkService.Instance.BookmarkManager.RootFolder);
 
             try
             {
@@ -65,15 +64,15 @@ namespace ImageView
             bookmarksDataGridView.RowPrePaint += bookmarksDataGridView_RowPrePaint;
             bookmarksDataGridView.RowPostPaint += bookmarksDataGridView_RowPostPaint;
             BookmarkService.Instance.OnBookmarksUpdate += Instance_OnBookmarksUpdate;
+            bookmarksTree.AfterSelect += BookmarksTree_AfterSelect;
             InitBookmarksDataGridViev();
 
             if (BookmarkService.Instance.BookmarkManager == null &&
                 ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
-                using (
-                    var formgetPassword = new FormGetPassword
-                    {
-                        PasswordDerivedString = ApplicationSettingsService.Instance.Settings.PasswordDerivedString
-                    })
+                using (var formgetPassword = new FormGetPassword
+                {
+                    PasswordDerivedString = ApplicationSettingsService.Instance.Settings.PasswordDerivedString
+                })
                 {
                     if (formgetPassword.ShowDialog() == DialogResult.OK)
                     {
@@ -99,6 +98,11 @@ namespace ImageView
                 initBookmarksDataSource();
         }
 
+        private void BookmarksTree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            ReLoadBookmarks();
+        }
+
         private void Instance_OnBookmarksUpdate(object sender, BookmarkUpdatedEventArgs e)
         {
             ReLoadBookmarks();
@@ -106,8 +110,14 @@ namespace ImageView
 
         private void ReLoadBookmarks()
         {
-            bookmarksDataGridView.DataSource = bookmarkManager.RootFolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
-            bookmarksDataGridView.Refresh();
+            TreeNode selectedNode = bookmarksTree.SelectedNode;
+            var selectedBookmarkfolder = selectedNode.Tag as BookmarkFolder;
+
+            if (selectedBookmarkfolder != null)
+            {
+                bookmarksDataGridView.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
+                bookmarksDataGridView.Refresh();
+            }
         }
 
         private void AlterTreeViewState(TreeViewFolderStateChange stateChange, BookmarkFolder folder)
@@ -351,6 +361,9 @@ namespace ImageView
 
         private void UpdateBrokenLinksOnThreeNodes(List<BookmarkFolder> bookmarkTreeNodes)
         {
+            if (bookmarkTreeNodes == null)
+                return;
+
             foreach (BookmarkFolder bookmarkTreeNode in bookmarkTreeNodes)
             {
                 UpdateBrokenLinksOnBookmarks(bookmarkTreeNode.Bookmarks);

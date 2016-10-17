@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.mainPanel = new ImageView.UserControls.CustomPanel();
+            this.bookmarksTree = new System.Windows.Forms.TreeView();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtImagePath = new System.Windows.Forms.TextBox();
@@ -38,13 +39,12 @@
             this.btnNewFolder = new System.Windows.Forms.Button();
             this.btnCloseForm = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.bookmarksTree = new System.Windows.Forms.TreeView();
             this.mainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainPanel
             // 
-            
+            this.mainPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.mainPanel.Controls.Add(this.bookmarksTree);
             this.mainPanel.Controls.Add(this.label3);
             this.mainPanel.Controls.Add(this.label2);
@@ -56,18 +56,27 @@
             this.mainPanel.Controls.Add(this.btnCloseForm);
             this.mainPanel.Controls.Add(this.label1);
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainPanel.InnerBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.mainPanel.Location = new System.Drawing.Point(0, 0);
             this.mainPanel.Name = "mainPanel";
+            this.mainPanel.OuterBorderColor = System.Drawing.Color.Empty;
             this.mainPanel.Size = new System.Drawing.Size(450, 500);
             this.mainPanel.TabIndex = 0;
             this.mainPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainPanel_MouseDown);
+            // 
+            // bookmarksTree
+            // 
+            this.bookmarksTree.Location = new System.Drawing.Point(18, 126);
+            this.bookmarksTree.Name = "bookmarksTree";
+            this.bookmarksTree.Size = new System.Drawing.Size(395, 322);
+            this.bookmarksTree.TabIndex = 29;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(15, 98);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 17);
+            this.label3.Size = new System.Drawing.Size(102, 23);
             this.label3.TabIndex = 28;
             this.label3.Text = "Image path:";
             // 
@@ -76,24 +85,24 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(15, 67);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 17);
+            this.label2.Size = new System.Drawing.Size(60, 23);
             this.label2.TabIndex = 27;
             this.label2.Text = "Name:";
             // 
             // txtImagePath
             // 
-            this.txtImagePath.Location = new System.Drawing.Point(113, 95);
+            this.txtImagePath.Location = new System.Drawing.Point(130, 95);
             this.txtImagePath.Name = "txtImagePath";
             this.txtImagePath.ReadOnly = true;
-            this.txtImagePath.Size = new System.Drawing.Size(300, 25);
+            this.txtImagePath.Size = new System.Drawing.Size(283, 29);
             this.txtImagePath.TabIndex = 26;
             // 
             // txtBookmarkName
             // 
-            this.txtBookmarkName.Location = new System.Drawing.Point(113, 64);
+            this.txtBookmarkName.Location = new System.Drawing.Point(130, 64);
             this.txtBookmarkName.MaxLength = 1024;
             this.txtBookmarkName.Name = "txtBookmarkName";
-            this.txtBookmarkName.Size = new System.Drawing.Size(300, 25);
+            this.txtBookmarkName.Size = new System.Drawing.Size(283, 29);
             this.txtBookmarkName.TabIndex = 25;
             // 
             // btnSave
@@ -147,20 +156,13 @@
             this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(13, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(133, 25);
+            this.label1.Size = new System.Drawing.Size(169, 32);
             this.label1.TabIndex = 20;
             this.label1.Text = "Edit bookmark";
             // 
-            // bookmarksTree
-            // 
-            this.bookmarksTree.Location = new System.Drawing.Point(18, 126);
-            this.bookmarksTree.Name = "bookmarksTree";
-            this.bookmarksTree.Size = new System.Drawing.Size(395, 322);
-            this.bookmarksTree.TabIndex = 29;
-            // 
             // FormAddBookmarkWithNewFolder
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(450, 500);
             this.Controls.Add(this.mainPanel);

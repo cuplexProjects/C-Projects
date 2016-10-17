@@ -49,35 +49,35 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.AllowDrop = true;
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
             this.toolStripMenuItem3,
             this.newItemToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 54);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(218, 62);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(217, 26);
             this.toolStripMenuItem1.Text = "toolStripMenuItem1";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(214, 6);
             // 
             // newItemToolStripMenuItem
             // 
             this.newItemToolStripMenuItem.Name = "newItemToolStripMenuItem";
-            this.newItemToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newItemToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
             this.newItemToolStripMenuItem.Text = "New Item";
             // 
             // mainPanel
             // 
-            
+            this.mainPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.mainPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            
             this.mainPanel.Controls.Add(this.btnCreateFolder);
             this.mainPanel.Controls.Add(this.comboBoxBookmarkFolders);
             this.mainPanel.Controls.Add(this.btnCancel);
@@ -87,9 +87,11 @@
             this.mainPanel.Controls.Add(this.label1);
             this.mainPanel.Controls.Add(this.btnSave);
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainPanel.InnerBorderColor = System.Drawing.Color.Empty;
             this.mainPanel.Location = new System.Drawing.Point(0, 0);
             this.mainPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.mainPanel.Name = "mainPanel";
+            this.mainPanel.OuterBorderColor = System.Drawing.Color.Empty;
             this.mainPanel.Size = new System.Drawing.Size(384, 147);
             this.mainPanel.TabIndex = 0;
             this.mainPanel.Text = "CustomComboBox Enabled";
@@ -102,7 +104,7 @@
             this.btnCreateFolder.Location = new System.Drawing.Point(29, 105);
             this.btnCreateFolder.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCreateFolder.Name = "btnCreateFolder";
-            this.btnCreateFolder.Size = new System.Drawing.Size(87, 28);
+            this.btnCreateFolder.Size = new System.Drawing.Size(129, 28);
             this.btnCreateFolder.TabIndex = 8;
             this.btnCreateFolder.Text = "Create new";
             this.btnCreateFolder.UseVisualStyleBackColor = true;
@@ -112,9 +114,9 @@
             // 
             this.comboBoxBookmarkFolders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxBookmarkFolders.FormattingEnabled = true;
-            this.comboBoxBookmarkFolders.Location = new System.Drawing.Point(88, 71);
+            this.comboBoxBookmarkFolders.Location = new System.Drawing.Point(103, 71);
             this.comboBoxBookmarkFolders.Name = "comboBoxBookmarkFolders";
-            this.comboBoxBookmarkFolders.Size = new System.Drawing.Size(275, 25);
+            this.comboBoxBookmarkFolders.Size = new System.Drawing.Size(260, 29);
             this.comboBoxBookmarkFolders.TabIndex = 7;
             // 
             // btnCancel
@@ -133,11 +135,11 @@
             // txtBookmarkName
             // 
             this.txtBookmarkName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBookmarkName.Location = new System.Drawing.Point(88, 40);
+            this.txtBookmarkName.Location = new System.Drawing.Point(103, 40);
             this.txtBookmarkName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtBookmarkName.MaxLength = 255;
             this.txtBookmarkName.Name = "txtBookmarkName";
-            this.txtBookmarkName.Size = new System.Drawing.Size(275, 25);
+            this.txtBookmarkName.Size = new System.Drawing.Size(260, 29);
             this.txtBookmarkName.TabIndex = 4;
             this.txtBookmarkName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtBookmarkName_KeyUp);
             // 
@@ -147,7 +149,7 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(10, 10);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(119, 21);
+            this.label3.Size = new System.Drawing.Size(148, 28);
             this.label3.TabIndex = 3;
             this.label3.Text = "Add bookmark";
             // 
@@ -158,7 +160,7 @@
             this.label2.Location = new System.Drawing.Point(25, 71);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 21);
+            this.label2.Size = new System.Drawing.Size(72, 28);
             this.label2.TabIndex = 2;
             this.label2.Text = "Folder:";
             // 
@@ -168,7 +170,7 @@
             this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(25, 40);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 21);
+            this.label1.Size = new System.Drawing.Size(68, 28);
             this.label1.TabIndex = 1;
             this.label1.Text = "Name:";
             // 
@@ -187,7 +189,7 @@
             // 
             // FormAddBookmark
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(384, 147);

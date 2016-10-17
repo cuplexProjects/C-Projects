@@ -46,9 +46,6 @@ namespace ImageView.UnitTest
             BookmarkService.Instance.BookmarkManager.AddBookmark(rootFolder.Id,"TestImageBookmark", _imageReference);
             bool saveSuccessful = BookmarkService.Instance.SaveBookmarks();
             Assert.IsTrue(saveSuccessful, "Saving bookmarks data file failed!");
-
-
         }
     }
-    
 }

@@ -46,6 +46,8 @@ namespace ImageView
             BookmarkFolder rootNode = _bookmarkManager.RootFolder;
             comboBoxBookmarkFolders.Items.Clear();
 
+            comboBoxBookmarkFolders.Items.Add(rootNode);
+
             foreach (BookmarkFolder folder in rootNode.BookmarkFolders)
                 comboBoxBookmarkFolders.Items.Add(folder);
 
@@ -56,7 +58,8 @@ namespace ImageView
         private void btnSave_Click(object sender, EventArgs e)
         {
             BookmarkFolder bookmarkFolder = comboBoxBookmarkFolders.SelectedItem as BookmarkFolder ?? _bookmarkManager.RootFolder;
-            _bookmarkManager.AddBookmark(bookmarkFolder.ParentFolderId, txtBookmarkName.Text, _imageReference);
+
+            _bookmarkManager.AddBookmark(bookmarkFolder.Id, txtBookmarkName.Text, _imageReference);
 
             Close();
         }
