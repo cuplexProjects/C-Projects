@@ -530,8 +530,11 @@ namespace ImageView
                 starupPosition.X += addBookmarkToolStripMenuItem.Width;
                 starupPosition.Y += addBookmarkToolStripMenuItem.Height + (Height - ClientSize.Height);
 
-                var formAddBookmark = new FormAddBookmark(starupPosition, _imageReferenceCollection.CurrentImage);
-                formAddBookmark.ShowDialog(this);
+                if (_imageReferenceCollection.CurrentImage != null)
+                {
+                     var formAddBookmark = new FormAddBookmark(starupPosition, _imageReferenceCollection.CurrentImage);
+                    formAddBookmark.ShowDialog(this);
+                }
             }
         }
 

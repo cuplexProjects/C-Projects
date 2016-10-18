@@ -37,9 +37,9 @@ namespace ImageView
             InitializeComponent();
             logStringBuilder = new StringBuilder();
             volumeInfoArray = new List<string>();
-            BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
+           
 
-            _treeViewDataContext = new TreeViewDataContext(bookmarksTree, bookmarkService.BookmarkManager.RootFolder);
+            
 
             try
             {
@@ -59,6 +59,7 @@ namespace ImageView
         {
             if (DesignMode)
                 return;
+
             BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
             BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
             bookmarksDataGridView.RowPrePaint += bookmarksDataGridView_RowPrePaint;
@@ -66,6 +67,7 @@ namespace ImageView
             bookmarkManager.OnBookmarksUpdate += Instance_OnBookmarksUpdate;
             bookmarksTree.AfterSelect += BookmarksTree_AfterSelect;
             InitBookmarksDataGridViev();
+            _treeViewDataContext = new TreeViewDataContext(bookmarksTree, bookmarkService.BookmarkManager.RootFolder);
 
             if (ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
                 using (var formgetPassword = new FormGetPassword
@@ -95,7 +97,11 @@ namespace ImageView
                 }
             else
             {
-                bookmarkService.OpenBookmarks();
+                if (!bookmarkService.BookmarkManager.LoadedFromFile)
+                {
+                    bookmarkService.OpenBookmarks();
+                }
+                
                 initBookmarksDataSource();
             }
                
@@ -328,17 +334,25 @@ namespace ImageView
             }
         }
 
-
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var selectedRow = bookmarksDataGridView.CurrentRow;
+            
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var selectedRow = bookmarksDataGridView.CurrentRow;
+            Bookmark bookmark = selectedRow?.DataBoundItem as Bookmark;
+            if (bookmark == null) return;
+
+            BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
+            bookmarkService.BookmarkManager.DeleteBookmark(bookmark);
         }
 
         private bool VolumeExists(string volumeLabel)

@@ -11,7 +11,7 @@ namespace ImageView
 {
     public partial class FormAddBookmark : Form
     {
-        private readonly BookmarkManager _bookmarkManager;
+        private BookmarkManager _bookmarkManager;
         private readonly ImageReferenceElement _imageReference;
 
         public FormAddBookmark(Point startupPosition, ImageReferenceElement imageReference)
@@ -19,7 +19,7 @@ namespace ImageView
             InitializeComponent();
             SetDesktopLocation(startupPosition.X, startupPosition.Y);
             _imageReference = imageReference;
-            _bookmarkManager = ServiceLocator.GetBookmarkService().BookmarkManager;
+           
         }
 
         protected override CreateParams CreateParams
@@ -35,6 +35,20 @@ namespace ImageView
 
         private void FormAddBookmark_Load(object sender, EventArgs e)
         {
+            BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
+
+            if (!bookmarkService.BookmarkManager.LoadedFromFile && !ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
+            {
+                bookmarkService.OpenBookmarks();
+            }
+
+            _bookmarkManager = bookmarkService.BookmarkManager;
+            if (_imageReference == null)
+            {
+                Close();
+                return;
+            }
+
             txtBookmarkName.Text = _imageReference.FileName;
             InitFolderDropdownList();
             txtBookmarkName.Focus();

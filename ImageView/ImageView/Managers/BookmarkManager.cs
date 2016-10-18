@@ -14,6 +14,7 @@ namespace ImageView.Managers
     {
         private BookmarkContainer _bookmarkContainer;
         private bool _isModified;
+        private bool _isLoadedFromFile;
         public event BookmarkUpdatedEventHandler OnBookmarksUpdate;
 
         private BookmarkManager()
@@ -38,6 +39,8 @@ namespace ImageView.Managers
         public BookmarkFolder RootFolder { get; private set; }
 
         public bool IsModified => _isModified;
+
+        public bool LoadedFromFile => _isLoadedFromFile;
 
         public static BookmarkManager CreateNew()
         {
@@ -77,6 +80,8 @@ namespace ImageView.Managers
         {
             try
             {
+                _isLoadedFromFile = true;
+
                 var settings = new StorageManagerSettings(false, Environment.ProcessorCount, true, password);
                 var storageManager = new StorageManager(settings);
                 var bookmarkContainer = storageManager.DeserializeObjectFromFile<BookmarkContainer>(filename, null);
@@ -86,6 +91,7 @@ namespace ImageView.Managers
                     _bookmarkContainer = bookmarkContainer;
                     RootFolder = _bookmarkContainer.RootFolder;
                     _isModified = false;
+                   
                     return true;
                 }
             }
@@ -294,6 +300,7 @@ namespace ImageView.Managers
             if (success)
             {
                 ReindexSortOrder(false, true);
+                BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.DeletedBookmark, typeof(Bookmark)));
             }
             return success;
         }
@@ -318,6 +325,7 @@ namespace ImageView.Managers
             {
                 parentFolder.Bookmarks.Remove(bookmarkToDelete);
                 ReindexSortOrder(false, true);
+                BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.DeletedBookmark, typeof(Bookmark)));
                 return true;
             }
 
@@ -335,6 +343,7 @@ namespace ImageView.Managers
             if (success)
             {
                 ReindexSortOrder(false, true);
+                BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.DeletedBookmarkFolder, typeof(Bookmark)));
             }
             return success;
         }
@@ -349,11 +358,15 @@ namespace ImageView.Managers
             BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmarkFolder.ParentFolderId);
             bool result = parentFolder.BookmarkFolders.Remove(bookmarkFolder);
             ReindexSortOrder(true, false);
+            if (result)
+                BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.DeletedBookmarkFolder, typeof(Bookmark)));
+
             return result;
         }
 
         private BookmarkFolder GetBookmarkFolderById(BookmarkFolder rootFolder, string id)
         {
+            BookmarkFolder subFolder = null;
             if (rootFolder.Id == id)
                 return rootFolder;
 
@@ -364,7 +377,10 @@ namespace ImageView.Managers
                     return bookmarkFolder;
                 }
                 if (bookmarkFolder.BookmarkFolders != null && bookmarkFolder.BookmarkFolders.Count > 0)
-                    return GetBookmarkFolderById(bookmarkFolder, id);
+                    subFolder = GetBookmarkFolderById(bookmarkFolder, id);
+
+                if (subFolder != null)
+                    return subFolder;
             }
 
             return null;

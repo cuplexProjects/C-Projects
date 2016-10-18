@@ -14,6 +14,10 @@ namespace ImageView.Services
 
         public static void Clear()
         {
+            if (_bookmarkService == null)
+                return;
+
+            _bookmarkService.Dispose();
             _bookmarkService = null;
         }
     }
