@@ -25,9 +25,10 @@ namespace ImageView.UserControls
         {
             _defaultSize = new Size(250, 250);
             Size = _defaultSize;
-            SetStyle(
-                ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.DoubleBuffer |
-                ControlStyles.AllPaintingInWmPaint, true);
+            if (DesignMode)
+                return;
+
+            SetStyle(ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             UpdateStyles();
             _pen = new Pen(InnerBorderColor) {Width = BorderWidthInner};
 

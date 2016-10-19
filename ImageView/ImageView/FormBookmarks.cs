@@ -337,7 +337,17 @@ namespace ImageView
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var selectedRow = bookmarksDataGridView.CurrentRow;
-            
+            Bookmark bookmark = selectedRow?.DataBoundItem as Bookmark;
+            if (bookmark == null) return;
+
+            FormEditBookmark editBookmark = new FormEditBookmark();
+            editBookmark.InitForRename(bookmark.BoookmarkName, bookmark.FileName);
+            if (editBookmark.ShowDialog(this) == DialogResult.OK)
+            {
+                string name = editBookmark.GetNewName();
+                bookmark.BoookmarkName = name;
+                ReLoadBookmarks();
+            }
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)

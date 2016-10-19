@@ -104,7 +104,7 @@
             this.btnCreateFolder.Location = new System.Drawing.Point(29, 105);
             this.btnCreateFolder.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCreateFolder.Name = "btnCreateFolder";
-            this.btnCreateFolder.Size = new System.Drawing.Size(129, 28);
+            this.btnCreateFolder.Size = new System.Drawing.Size(129, 30);
             this.btnCreateFolder.TabIndex = 8;
             this.btnCreateFolder.Text = "Create new";
             this.btnCreateFolder.UseVisualStyleBackColor = true;
@@ -126,7 +126,7 @@
             this.btnCancel.Location = new System.Drawing.Point(173, 104);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(87, 28);
+            this.btnCancel.Size = new System.Drawing.Size(87, 30);
             this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -181,7 +181,7 @@
             this.btnSave.Location = new System.Drawing.Point(276, 104);
             this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(87, 28);
+            this.btnSave.Size = new System.Drawing.Size(87, 30);
             this.btnSave.TabIndex = 0;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;

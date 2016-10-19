@@ -45,6 +45,7 @@ namespace ImageView
             this.renameFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
             this.bookmarksDataGridView = new System.Windows.Forms.DataGridView();
+            this.bookmarkBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.mainWinMenu = new System.Windows.Forms.MenuStrip();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tryToFixBrokenLinksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +57,6 @@ namespace ImageView
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bookmarkFolderBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.bookmarkBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.boookmarkNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.completePathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -75,10 +75,10 @@ namespace ImageView
             this.contextMenuStripFolders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarksDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).BeginInit();
             this.mainWinMenu.SuspendLayout();
             this.contextMenuStripBookmarks.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarkFolderBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -247,6 +247,10 @@ namespace ImageView
             this.bookmarksDataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.bookmarksDataGridView_KeyDown);
             this.bookmarksDataGridView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.bookmarksDataGridView_MouseUp);
             // 
+            // bookmarkBindingSource
+            // 
+            this.bookmarkBindingSource.DataSource = typeof(ImageView.DataContracts.Bookmark);
+            // 
             // mainWinMenu
             // 
             this.mainWinMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -331,51 +335,60 @@ namespace ImageView
             // 
             this.bookmarkFolderBindingSource.DataSource = typeof(ImageView.DataContracts.BookmarkFolder);
             // 
-            // bookmarkBindingSource
-            // 
-            this.bookmarkBindingSource.DataSource = typeof(ImageView.DataContracts.Bookmark);
-            // 
             // boookmarkNameDataGridViewTextBoxColumn
             // 
+            this.boookmarkNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.boookmarkNameDataGridViewTextBoxColumn.DataPropertyName = "BoookmarkName";
             this.boookmarkNameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.boookmarkNameDataGridViewTextBoxColumn.Name = "boookmarkNameDataGridViewTextBoxColumn";
             // 
             // fileNameDataGridViewTextBoxColumn
             // 
+            this.fileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.fileNameDataGridViewTextBoxColumn.DataPropertyName = "FileName";
+            this.fileNameDataGridViewTextBoxColumn.FillWeight = 80F;
             this.fileNameDataGridViewTextBoxColumn.HeaderText = "File Name";
             this.fileNameDataGridViewTextBoxColumn.Name = "fileNameDataGridViewTextBoxColumn";
             // 
             // completePathDataGridViewTextBoxColumn
             // 
+            this.completePathDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.completePathDataGridViewTextBoxColumn.DataPropertyName = "CompletePath";
+            this.completePathDataGridViewTextBoxColumn.FillWeight = 65F;
             this.completePathDataGridViewTextBoxColumn.HeaderText = "Complete Path";
             this.completePathDataGridViewTextBoxColumn.Name = "completePathDataGridViewTextBoxColumn";
             // 
             // sizeDataGridViewTextBoxColumn
             // 
+            this.sizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.sizeDataGridViewTextBoxColumn.DataPropertyName = "Size";
+            this.sizeDataGridViewTextBoxColumn.FillWeight = 25F;
             this.sizeDataGridViewTextBoxColumn.HeaderText = "Size";
             this.sizeDataGridViewTextBoxColumn.Name = "sizeDataGridViewTextBoxColumn";
             // 
             // creationTimeDataGridViewTextBoxColumn
             // 
+            this.creationTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
             this.creationTimeDataGridViewTextBoxColumn.DataPropertyName = "CreationTime";
             this.creationTimeDataGridViewTextBoxColumn.HeaderText = "Creation Time";
             this.creationTimeDataGridViewTextBoxColumn.Name = "creationTimeDataGridViewTextBoxColumn";
+            this.creationTimeDataGridViewTextBoxColumn.Width = 5;
             // 
             // lastWriteTimeDataGridViewTextBoxColumn
             // 
+            this.lastWriteTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
             this.lastWriteTimeDataGridViewTextBoxColumn.DataPropertyName = "LastWriteTime";
             this.lastWriteTimeDataGridViewTextBoxColumn.HeaderText = "Last Write Time";
             this.lastWriteTimeDataGridViewTextBoxColumn.Name = "lastWriteTimeDataGridViewTextBoxColumn";
+            this.lastWriteTimeDataGridViewTextBoxColumn.Width = 5;
             // 
             // lastAccessTimeDataGridViewTextBoxColumn
             // 
+            this.lastAccessTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
             this.lastAccessTimeDataGridViewTextBoxColumn.DataPropertyName = "LastAccessTime";
             this.lastAccessTimeDataGridViewTextBoxColumn.HeaderText = "Last Access Time";
             this.lastAccessTimeDataGridViewTextBoxColumn.Name = "lastAccessTimeDataGridViewTextBoxColumn";
+            this.lastAccessTimeDataGridViewTextBoxColumn.Width = 5;
             // 
             // FormBookmarks
             // 
@@ -403,11 +416,11 @@ namespace ImageView
             this.contextMenuStripFolders.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarksDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).EndInit();
             this.mainWinMenu.ResumeLayout(false);
             this.mainWinMenu.PerformLayout();
             this.contextMenuStripBookmarks.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bookmarkFolderBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -440,6 +453,7 @@ namespace ImageView
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem renameFolderMenuItem;
         private System.Windows.Forms.BindingSource bookmarkFolderBindingSource;
+        private System.Windows.Forms.BindingSource bookmarkBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn boookmarkNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn fileNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn completePathDataGridViewTextBoxColumn;
@@ -447,6 +461,5 @@ namespace ImageView
         private System.Windows.Forms.DataGridViewTextBoxColumn creationTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn lastWriteTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn lastAccessTimeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.BindingSource bookmarkBindingSource;
     }
 }

@@ -39,8 +39,6 @@ namespace ImageView.Services
             GC.Collect();
         }
 
-        
-
         public bool OpenBookmarks()
         {
             return OpenBookmarks(GetDefaultPassword());

@@ -137,6 +137,12 @@
     <Compile Include="DataContracts\Bookmark.cs" />
     <Compile Include="DataContracts\BookmarkContainer.cs" />
     <Compile Include="DataContracts\BookmarkFolder.cs" />
+    <Compile Include="FormEditBookmark.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEditBookmark.Designer.cs">
+      <DependentUpon>FormEditBookmark.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\CachedImage.cs" />
     <Compile Include="Managers\BookmarkManager.cs" />
     <Compile Include="DataContracts\ImageReference.cs" />
@@ -275,6 +281,12 @@
     <Compile Include="UserControls\CustomPanel.Designer.cs">
       <DependentUpon>CustomPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\RenameBookmark.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\RenameBookmark.Designer.cs">
+      <DependentUpon>RenameBookmark.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\DelayOperation.cs" />
     <Compile Include="Utility\ImageTransform.cs" />
     <Compile Include="Program.cs" />
@@ -295,6 +307,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormBookmarks.resx">
       <DependentUpon>FormBookmarks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormEditBookmark.resx">
+      <DependentUpon>FormEditBookmark.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormInputText.resx">
       <DependentUpon>FormInputText.cs</DependentUpon>
@@ -353,6 +368,9 @@
     </Compile>
     <EmbeddedResource Include="UserControls\CustomPanel.resx">
       <DependentUpon>CustomPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\RenameBookmark.resx">
+      <DependentUpon>RenameBookmark.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ImageViewCertificateSignFile.pfx" />
     <None Include="Properties\DataSources\ImageReferenceElement.datasource" />
