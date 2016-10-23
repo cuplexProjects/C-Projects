@@ -31,6 +31,7 @@ namespace ImageView
         private int _imgy;
         private Point _mouseDown;
         private bool _mouseHover;
+        private bool _showSwitchImgPanel;
         private MouseHoverInfo _mouseHoverInfo;
         private bool _mousepressed; // true as long as left mousebutton is pressed
         private bool _requireFocusNotification = true;
@@ -158,10 +159,6 @@ namespace ImageView
             MouseEventArgs mouse = e;
             if (mouse.Button == MouseButtons.Left)
             {
-                if (_switchImgButtonsEnabled)
-                {
-                }
-
                 if (_mousepressed) return;
                 _mousepressed = true;
                 _mouseDown = mouse.Location;
@@ -193,24 +190,32 @@ namespace ImageView
 
            
             var leftPanel = new Rectangle(0, 0, ChangeImagePanelWidth, Height);
-            var rightPanel = new Rectangle(Width - ChangeImagePanelWidth, 0, ChangeImagePanelWidth, Height);
+            var rightPanel = new Rectangle(ClientSize.Width - ChangeImagePanelWidth, 0, ChangeImagePanelWidth, Height);
 
-            _mouseHoverInfo.OverLeftButton = false;
-            _mouseHoverInfo.OverRightButton = false;
+            _mouseHoverInfo.OverLeftPanel = false;
+            _mouseHoverInfo.OverRightPanel = false;
+            _mouseHoverInfo.LeftButtonPressed = mouse.Button == MouseButtons.Left;
             if (leftPanel.IntersectsWith(new Rectangle(mouse.Location, new Size(1, 1))))
             {
-                _mouseHoverInfo.OverLeftButton = true;
+                _mouseHoverInfo.OverLeftPanel = true;
             }
             else if (rightPanel.IntersectsWith(new Rectangle(mouse.Location, new Size(1, 1))))
             {
-                _mouseHoverInfo.OverRightButton = true;
+                _mouseHoverInfo.OverRightPanel = true;
             }
+
+            UpdateSwitchImgPanelState();
 
             if (_mouseHoverInfo.StateChanged)
             {
                 pictureBox.Refresh();
                 _mouseHoverInfo.ResetState();
             }
+        }
+
+        private void UpdateSwitchImgPanelState()
+        {
+            _showSwitchImgPanel = _switchImgButtonsEnabled && _mouseHover && !_mouseHoverInfo.LeftButtonPressed;
         }
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
@@ -363,16 +368,20 @@ namespace ImageView
                 g.ScaleTransform(_zoom, _zoom);
                 g.DrawImage(_currentImage, _imgx, _imgy);
 
-                if (_switchImgButtonsEnabled && _mouseHover)
+                if (_showSwitchImgPanel)
                 {
                     if (!_showSwitchImgOnMouseOverWindow && !_mouseHoverInfo.OverAnyButton)
                         return;
 
                     g.ResetTransform();
-                    Brush b = new SolidBrush(Color.FromArgb(128, Color.Black));
+                    Brush b = new SolidBrush(Color.FromArgb(64, Color.LightGray));
 
-                    g.FillRectangle(b, new Rectangle(0, 0, ChangeImagePanelWidth, ClientSize.Height));
-                    g.FillRectangle(b, new Rectangle(ClientSize.Width - ChangeImagePanelWidth, 0, ChangeImagePanelWidth, ClientSize.Height));
+                    for (int i = 0; i < 2; i++)
+                    {
+                        g.FillRectangle(b, new Rectangle(0, 0, ChangeImagePanelWidth, ClientSize.Height));
+                        g.FillRectangle(b, new Rectangle(ClientSize.Width - ChangeImagePanelWidth, 0, ChangeImagePanelWidth, ClientSize.Height));
+                        b = new SolidBrush(Color.FromArgb(128, Color.Black));
+                    }
 
                     int imgWidth = Convert.ToInt32(Math.Min(Resources.Arrow_Back_icon.Width, ChangeImagePanelWidth)*0.8);
                     float imgScale = (float)imgWidth/Resources.Arrow_Back_icon.Width*0.7f;
@@ -390,7 +399,7 @@ namespace ImageView
 
                     if (_mouseHoverInfo.OverAnyButton)
                     {
-                        Rectangle rect = _mouseHoverInfo.OverLeftButton
+                        Rectangle rect = _mouseHoverInfo.OverLeftPanel
                             ? new Rectangle(0, 0, ChangeImagePanelWidth, Height)
                             : new Rectangle(ClientSize.Width - ChangeImagePanelWidth - 1, 0, ChangeImagePanelWidth, Height);
                         Brush selectionBrush = new HatchBrush(HatchStyle.Percent50, Color.DimGray);
@@ -400,9 +409,8 @@ namespace ImageView
                         rect.Inflate(-1, -1);
                         p.Color = Color.FromArgb(128, Color.MidnightBlue);
                         g.DrawRectangle(p, rect);
-
-
-                        b = new SolidBrush(Color.FromArgb(64, Color.Black));
+                        
+                        b = new SolidBrush(Color.FromArgb(96, Color.Black));
                         g.FillRectangle(b, rect);
                     }
                 }
@@ -429,15 +437,15 @@ namespace ImageView
 
         private void openWithDefaultProgramToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_imgRef != null)
-                try
-                {
-                    Process.Start(_imgRef.CompletePath);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            if (_imgRef == null) return;
+            try
+            {
+                Process.Start(_imgRef.CompletePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void FormImageView_Activated(object sender, EventArgs e)
@@ -467,11 +475,11 @@ namespace ImageView
             }
         }
 
-
         private void pictureBox_MouseEnter(object sender, EventArgs e)
         {
             if (!_switchImgButtonsEnabled) return;
             _mouseHover = true;
+            UpdateSwitchImgPanelState();
             pictureBox.Refresh();
         }
 
@@ -479,14 +487,15 @@ namespace ImageView
         {
             if (!_switchImgButtonsEnabled) return;
             _mouseHover = false;
+            UpdateSwitchImgPanelState();
             pictureBox.Refresh();
         }
 
         private void pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            if (_mouseHoverInfo != null && _mouseHoverInfo.OverAnyButton)
+            if (_mouseHoverInfo != null && _mouseHoverInfo.OverAnyButton && _showSwitchImgPanel)
             {
-                if (_mouseHoverInfo.OverLeftButton)
+                if (_mouseHoverInfo.OverLeftPanel)
                     SetPreviousImage();
                 else
                     SetNextImage();
@@ -497,8 +506,9 @@ namespace ImageView
         {
             private bool _overLeftButton;
             private bool _overRightButton;
+            private bool _leftButtonPressed;
 
-            public bool OverLeftButton
+            public bool OverLeftPanel
             {
                 get { return _overLeftButton; }
                 set
@@ -510,7 +520,7 @@ namespace ImageView
                 }
             }
 
-            public bool OverRightButton
+            public bool OverRightPanel
             {
                 get { return _overRightButton; }
                 set
@@ -521,9 +531,19 @@ namespace ImageView
                 }
             }
 
-            public bool OverAnyButton => OverLeftButton || OverRightButton;
+            public bool OverAnyButton => OverLeftPanel || OverRightPanel;
 
             public bool StateChanged { get; private set; }
+
+            public bool LeftButtonPressed
+            {
+                get { return _leftButtonPressed; }
+                set {
+                    if (_leftButtonPressed != value)
+                        StateChanged = true;
+                    _leftButtonPressed = value;
+                }
+            }
 
             public void ResetState()
             {
