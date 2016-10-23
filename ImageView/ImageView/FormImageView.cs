@@ -18,7 +18,7 @@ namespace ImageView
     public partial class FormImageView : Form, IObservable<ImageViewFormInfoBase>, ImageViewFormWindow
     {
         private const float ZOOM_MIN = 0.0095f;
-        private const float SwitchImageButtonsPercentOfScreen = 0.1f;
+        private const int ChangeImagePanelWidth = 50; 
         private readonly ImageLoaderService _imageLoaderService;
         private readonly List<IObserver<ImageViewFormInfoBase>> _observers;
         private Image _currentImage;
@@ -51,8 +51,7 @@ namespace ImageView
             _switchImgButtonsEnabled = ApplicationSettingsService.Instance.Settings.ShowSwitchImageButtons;
             if (_switchImgButtonsEnabled)
             {
-                _showSwitchImgOnMouseOverWindow =
-                    ApplicationSettingsService.Instance.Settings.ShowNextPrevControlsOnEnterWindow;
+                _showSwitchImgOnMouseOverWindow = ApplicationSettingsService.Instance.Settings.ShowNextPrevControlsOnEnterWindow;
                 _mouseHoverInfo = new MouseHoverInfo();
             }
         }
@@ -192,17 +191,17 @@ namespace ImageView
 
             if (_mouseHoverInfo == null) return;
 
-            int buttonWidth = (int) (ClientSize.Width*SwitchImageButtonsPercentOfScreen);
-            var leftButton = new Rectangle(0, 0, buttonWidth, Height);
-            var rightButton = new Rectangle(Width - buttonWidth, 0, buttonWidth, Height);
+           
+            var leftPanel = new Rectangle(0, 0, ChangeImagePanelWidth, Height);
+            var rightPanel = new Rectangle(Width - ChangeImagePanelWidth, 0, ChangeImagePanelWidth, Height);
 
             _mouseHoverInfo.OverLeftButton = false;
             _mouseHoverInfo.OverRightButton = false;
-            if (leftButton.IntersectsWith(new Rectangle(mouse.Location, new Size(1, 1))))
+            if (leftPanel.IntersectsWith(new Rectangle(mouse.Location, new Size(1, 1))))
             {
                 _mouseHoverInfo.OverLeftButton = true;
             }
-            else if (rightButton.IntersectsWith(new Rectangle(mouse.Location, new Size(1, 1))))
+            else if (rightPanel.IntersectsWith(new Rectangle(mouse.Location, new Size(1, 1))))
             {
                 _mouseHoverInfo.OverRightButton = true;
             }
@@ -371,28 +370,29 @@ namespace ImageView
 
                     g.ResetTransform();
                     Brush b = new SolidBrush(Color.FromArgb(128, Color.Black));
-                    int buttonWidth = (int) (ClientSize.Width*SwitchImageButtonsPercentOfScreen);
 
-                    g.FillRectangle(b, new Rectangle(0, 0, buttonWidth, ClientSize.Height));
-                    g.FillRectangle(b, new Rectangle(ClientSize.Width - buttonWidth, 0, buttonWidth, ClientSize.Height));
+                    g.FillRectangle(b, new Rectangle(0, 0, ChangeImagePanelWidth, ClientSize.Height));
+                    g.FillRectangle(b, new Rectangle(ClientSize.Width - ChangeImagePanelWidth, 0, ChangeImagePanelWidth, ClientSize.Height));
 
-                    float imgScale = buttonWidth/(float) Resources.Arrow_Next_icon.Size.Width;
+                    int imgWidth = Convert.ToInt32(Math.Min(Resources.Arrow_Back_icon.Width, ChangeImagePanelWidth)*0.8);
+                    float imgScale = (float)imgWidth/Resources.Arrow_Back_icon.Width*0.7f;
+                    int imgMargin = (ChangeImagePanelWidth - imgWidth)/2;
+                    int imgYpos = ClientSize.Height/2 - imgWidth/2;
 
-                    imgScale = imgScale*0.75f;
-
-                    float imgScaleInv = 1/imgScale;
                     g.ScaleTransform(imgScale, imgScale);
-                    g.DrawImage(Resources.Arrow_Next_icon, (ClientSize.Width - buttonWidth)*imgScaleInv,
-                        (ClientSize.Height/2f - 32*imgScale)*imgScaleInv);
-                    g.DrawImage(Resources.Arrow_Back_icon, 0, (ClientSize.Height/2f - 32*imgScale)*imgScaleInv);
+                    g.TranslateTransform(imgMargin, 0);
+                    Point leftArrowPos = new Point(0, imgYpos);
+                    Point rightArrowPos=new Point(ClientSize.Width- ChangeImagePanelWidth, imgYpos);
+                    
+                    g.DrawImage(Resources.Arrow_Back_icon, TranslatePoint(leftArrowPos, imgScale));
+                    g.DrawImage(Resources.Arrow_Next_icon, TranslatePoint(rightArrowPos, imgScale));
                     g.ResetTransform();
-
 
                     if (_mouseHoverInfo.OverAnyButton)
                     {
                         Rectangle rect = _mouseHoverInfo.OverLeftButton
-                            ? new Rectangle(0, 0, buttonWidth, Height)
-                            : new Rectangle(ClientSize.Width - buttonWidth - 1, 0, buttonWidth, Height);
+                            ? new Rectangle(0, 0, ChangeImagePanelWidth, Height)
+                            : new Rectangle(ClientSize.Width - ChangeImagePanelWidth - 1, 0, ChangeImagePanelWidth, Height);
                         Brush selectionBrush = new HatchBrush(HatchStyle.Percent50, Color.DimGray);
 
                         var p = new Pen(selectionBrush);
@@ -413,6 +413,11 @@ namespace ImageView
             }
         }
 
+        private PointF TranslatePoint(Point point, float scale)
+        {
+            return new PointF(point.X/scale, point.Y/scale);
+        }
+
         private void copyFilepathToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (_imgRef != null)
@@ -431,7 +436,7 @@ namespace ImageView
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
         }
 
