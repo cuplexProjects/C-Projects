@@ -287,7 +287,14 @@
     <Compile Include="UserControls\RenameBookmark.Designer.cs">
       <DependentUpon>RenameBookmark.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ThumbnailSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\ThumbnailSettings.Designer.cs">
+      <DependentUpon>ThumbnailSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\DelayOperation.cs" />
+    <Compile Include="Utility\FormFactory.cs" />
     <Compile Include="Utility\ImageTransform.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -371,6 +378,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\RenameBookmark.resx">
       <DependentUpon>RenameBookmark.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ThumbnailSettings.resx">
+      <DependentUpon>ThumbnailSettings.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ImageViewCertificateSignFile.pfx" />
     <None Include="Properties\DataSources\ImageReferenceElement.datasource" />

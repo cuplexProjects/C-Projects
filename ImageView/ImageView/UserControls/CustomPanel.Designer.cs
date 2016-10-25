@@ -36,8 +36,8 @@ namespace ImageView.UserControls
             // 
             this.Name = "CustomPanel";
             this.BackgroundImageLayout=ImageLayout.Stretch;
-            this.BorderWidthOuter = 1;
-            this.BorderWidthInner = 1;
+            //this.BorderWidthOuter = 1;
+            //this.BorderWidthInner = 1;
             this.ResumeLayout(false);
 
         }

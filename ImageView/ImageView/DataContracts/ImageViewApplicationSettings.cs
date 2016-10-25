@@ -44,6 +44,7 @@ namespace ImageView.DataContracts
             PasswordProtectBookmarks = false;
             PasswordDerivedString = "";
             ShowNextPrevControlsOnEnterWindow = true;
+            ThumbnailSize = 128;
         }
 
         [DataMember(Name = "ShowImageViewFormsInTaskBar", Order = 1)]
@@ -112,8 +113,11 @@ namespace ImageView.DataContracts
         [DataMember(Name = "ImageCacheSize", Order = 22)]
         public int ImageCacheSize { get; set; }
 
-        [DataMember(Name = "ImageCacheSize", Order = 23)]
+        [DataMember(Name = "DefaultKey", Order = 23)]
         public string DefaultKey { get; set; }
+
+        [DataMember(Name = "ThumbnailSize", Order = 24)]
+        public int ThumbnailSize { get; set; }
 
         public void RemoveDuplicateEntriesWithIgnoreCase()
         {
