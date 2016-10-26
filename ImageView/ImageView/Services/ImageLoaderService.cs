@@ -261,6 +261,29 @@ namespace ImageView.Services
             var imageReferenceCollection = new ImageReferenceCollection(randomImagePosList);
             return imageReferenceCollection;
         }
+
+        public List<ImageReferenceElement> GenerateThumbnailList(bool randomOrder)
+        {
+            List<ImageReferenceElement> imgRefList = new List<ImageReferenceElement>();
+            if (randomOrder)
+            {
+                var randomImagePosList = GetRandomImagePositionList();
+                while (randomImagePosList.Count>0)
+                {
+                    int position = randomImagePosList[0];
+                    randomImagePosList.RemoveAt(0);
+                    imgRefList.Add(_imageReferenceList[position]);
+                }
+            }
+            else
+            {
+                foreach (ImageReferenceElement element in _imageReferenceList)
+                {
+                    imgRefList.Add(element);
+                }
+            }
+            return imgRefList;
+        }
     }
 
     public class ProgressEventArgs : EventArgs

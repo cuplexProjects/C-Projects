@@ -32,9 +32,11 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.grpBoxControls = new System.Windows.Forms.GroupBox();
-            this.btnGenerate = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
+            this.btnGenerate = new System.Windows.Forms.Button();
+            this.picBoxMaximized = new System.Windows.Forms.PictureBox();
             this.grpBoxControls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picBoxMaximized)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -53,6 +55,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(5, 70);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
@@ -72,6 +75,16 @@
             this.grpBoxControls.TabIndex = 2;
             this.grpBoxControls.TabStop = false;
             // 
+            // btnSettings
+            // 
+            this.btnSettings.Location = new System.Drawing.Point(101, 19);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(92, 30);
+            this.btnSettings.TabIndex = 1;
+            this.btnSettings.Text = "Settings";
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
             // btnGenerate
             // 
             this.btnGenerate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -83,15 +96,18 @@
             this.btnGenerate.UseVisualStyleBackColor = true;
             this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
-            // btnSettings
+            // picBoxMaximized
             // 
-            this.btnSettings.Location = new System.Drawing.Point(101, 19);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(92, 30);
-            this.btnSettings.TabIndex = 1;
-            this.btnSettings.Text = "Settings";
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            this.picBoxMaximized.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.picBoxMaximized.Location = new System.Drawing.Point(9, 69);
+            this.picBoxMaximized.Name = "picBoxMaximized";
+            this.picBoxMaximized.Size = new System.Drawing.Size(764, 453);
+            this.picBoxMaximized.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picBoxMaximized.TabIndex = 0;
+            this.picBoxMaximized.TabStop = false;
+            this.picBoxMaximized.Click += new System.EventHandler(this.picBoxMaximized_Click);
             // 
             // FormThumbnailView
             // 
@@ -101,6 +117,7 @@
             this.Controls.Add(this.grpBoxControls);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.statusStrip);
+            this.Controls.Add(this.picBoxMaximized);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(400, 300);
@@ -110,6 +127,7 @@
             this.Text = "Thumbnails";
             this.Load += new System.EventHandler(this.FormThumbnailView_Load);
             this.grpBoxControls.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picBoxMaximized)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,5 +140,6 @@
         private System.Windows.Forms.GroupBox grpBoxControls;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnGenerate;
+        private System.Windows.Forms.PictureBox picBoxMaximized;
     }
 }

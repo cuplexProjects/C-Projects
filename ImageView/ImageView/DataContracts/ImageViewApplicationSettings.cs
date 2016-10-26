@@ -45,6 +45,7 @@ namespace ImageView.DataContracts
             PasswordDerivedString = "";
             ShowNextPrevControlsOnEnterWindow = true;
             ThumbnailSize = 128;
+            MaxThumbnails = 256;
         }
 
         [DataMember(Name = "ShowImageViewFormsInTaskBar", Order = 1)]
@@ -118,6 +119,9 @@ namespace ImageView.DataContracts
 
         [DataMember(Name = "ThumbnailSize", Order = 24)]
         public int ThumbnailSize { get; set; }
+
+        [DataMember(Name = "MaxThumbnails", Order = 25)]
+        public int MaxThumbnails { get; set; }
 
         public void RemoveDuplicateEntriesWithIgnoreCase()
         {
