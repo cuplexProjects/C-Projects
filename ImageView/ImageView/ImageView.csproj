@@ -137,12 +137,15 @@
     <Compile Include="DataContracts\Bookmark.cs" />
     <Compile Include="DataContracts\BookmarkContainer.cs" />
     <Compile Include="DataContracts\BookmarkFolder.cs" />
+    <Compile Include="DataContracts\ThumbnailDatabase.cs" />
+    <Compile Include="DataContracts\ThumbnailEntry.cs" />
     <Compile Include="FormEditBookmark.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormEditBookmark.Designer.cs">
       <DependentUpon>FormEditBookmark.cs</DependentUpon>
     </Compile>
+    <Compile Include="Managers\ThumbnailManager.cs" />
     <Compile Include="Models\CachedImage.cs" />
     <Compile Include="Managers\BookmarkManager.cs" />
     <Compile Include="DataContracts\ImageReference.cs" />
@@ -273,6 +276,7 @@
     <Compile Include="Models\ImageReferenceElement.cs" />
     <Compile Include="DataContracts\ImageViewApplicationSettings.cs" />
     <Compile Include="Services\ServiceLocator.cs" />
+    <Compile Include="Services\ThumbnailService.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
     <Compile Include="UserControls\ListItemDivider.cs" />
     <Compile Include="UserControls\CustomPanel.cs">
