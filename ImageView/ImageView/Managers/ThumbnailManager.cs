@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage;
@@ -26,7 +23,7 @@ namespace ImageView.Managers
         private bool _isRunningThumbnailScan;
         private bool _abortScan;
         private FileManager _fileManager;
-        private Regex _fileNameRegExp;
+        private readonly Regex _fileNameRegExp;
         private const string DatabaseFilename = "thumbs.db";
         private const string DatabaseImgDataFilename = "thumbs.ibd";
         private const string DatabaseKey = "2C1D350D-B0E5-4181-8D60-CAE050132DC1";
@@ -66,10 +63,9 @@ namespace ImageView.Managers
             if (!path.EndsWith("\\"))
                 path += "\\";
 
-            for (int i = 0; i < files.Length; i++)
+            foreach (string fullPath in files)
             {
-                string fileName = files[i];
-                string fullPath = fileName;
+                string fileName = GeneralConverters.GetFileNameFromPath(fullPath);
                 if (_abortScan)
                     break;
 
@@ -91,7 +87,6 @@ namespace ImageView.Managers
                     _thumbnailDatabase.ThumbnailEntries.Add(thumbnail);
                     _fileDictionary.Add(path + fileName, thumbnail);
                 }
-
             }
 
             _fileManager.CloseStream();
@@ -263,9 +258,9 @@ namespace ImageView.Managers
                 if (_fileStream == null)
                     _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
-
+                _fileStream.Position = position;
                 byte[] buffer = new byte[length];
-                _fileStream.Read(buffer, position, length);
+                _fileStream.Read(buffer, 0, length);
 
                 MemoryStream ms = new MemoryStream(buffer);
                 Image img = Image.FromStream(ms);
@@ -292,10 +287,7 @@ namespace ImageView.Managers
 
             public void SaveToDisk()
             {
-                if (_fileStream != null)
-                {
-                    _fileStream.Flush(true);
-                }
+                _fileStream?.Flush(true);
             }
 
             public void CloseStream()

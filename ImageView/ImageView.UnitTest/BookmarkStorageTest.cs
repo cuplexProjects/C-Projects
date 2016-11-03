@@ -35,6 +35,16 @@ namespace ImageView.UnitTest
 
         }
 
+        [ClassCleanup]
+        public static void BookmarkStorageCleanup()
+        {
+            var files = Directory.GetFiles("c:\\temp", "*.dat");
+            foreach (string filename in files)
+            {
+                File.Delete(filename);
+            }
+        }
+
         // Use TestInitialize to run code before running each test 
         [TestInitialize]
         public void MyTestInitialize()
@@ -44,16 +54,6 @@ namespace ImageView.UnitTest
             Assert.IsFalse(bookmarkManager.IsModified, "BookmarkManager can not be modified before test begins");
             Assert.IsTrue(bookmarkManager.RootFolder.Bookmarks.Count==0, "Test must start with empty bookmark list");
             Assert.IsTrue(bookmarkManager.RootFolder.BookmarkFolders.Count == 0, "Test must start with empty bookmark folder list");
-        }
-
-        [ClassCleanup]
-        public static void BookmarkStorageCleanup()
-        {
-            var files= Directory.GetFiles("c:\\temp", "*.dat");
-            foreach (string filename in files)
-            {
-                File.Delete(filename);
-            }
         }
 
         // Use TestCleanup to run code after each test has run
