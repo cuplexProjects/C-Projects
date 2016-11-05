@@ -85,5 +85,23 @@ namespace ImageView.UnitTest
             thumbnailService.Dispose();
         }
 
+        [TestMethod]
+        public void ThumbnailLoadDatabase()
+        {
+            ThumbnailService thumbnailService = new ThumbnailService(TestDirectory);
+            CreateThumbnailDatabase(thumbnailService);
+            bool result = thumbnailService.LoadThumbnailDatabase();
+
+            Assert.IsTrue(result,"Load thumbnail database failed");
+            Assert.AreEqual(thumbnailService.GetNumberOfCachedThumbnails(), 3, "Database did not contain 3 items");
+
+            thumbnailService.Dispose();
+        }
+
+        private void CreateThumbnailDatabase(ThumbnailService thumbnailService)
+        {
+            thumbnailService.ScanDirectory(TestDirectory);
+            thumbnailService.SaveThumbnailDatabase();
+        }
     }
 }

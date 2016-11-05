@@ -16,6 +16,8 @@ namespace ImageView.Services
             _thumbnailManager = ThumbnailManager.CreateNew(_basePath);
         }
 
+        public string BasePath => _basePath;
+
         public void ScanDirectory(string path)
         {
             _thumbnailManager.StartThumbnailScan(path);
@@ -29,6 +31,21 @@ namespace ImageView.Services
                 _thumbnailManager.StartThumbnailScan(path);
                 _thumbnailManager.SaveThumbnailDatabase();
             });
+        }
+
+        public bool SaveThumbnailDatabase()
+        {
+            return _thumbnailManager.SaveThumbnailDatabase();
+        }
+
+        public bool LoadThumbnailDatabase()
+        {
+            return _thumbnailManager.LoadThumbnailDatabase();
+        }
+
+        public int GetNumberOfCachedThumbnails()
+        {
+            return _thumbnailManager.GetNumberOfCachedThumbnails();
         }
 
         public Image GetThumbnail(string filename)

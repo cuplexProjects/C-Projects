@@ -317,5 +317,10 @@ namespace ImageView.Managers
             _fileManager.Dispose();
             _fileManager = null;
         }
+
+        public int GetNumberOfCachedThumbnails()
+        {
+            return _thumbnailDatabase.ThumbnailEntries.Count;
+        }
     }
 }

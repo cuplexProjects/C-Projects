@@ -412,7 +412,7 @@ namespace ImageView
         private void openThumbnailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var formThumbnailView = new FormThumbnailView();
-            formThumbnailView.ShowDialog(this);
+            formThumbnailView.Show(this);
         }
 
         private void topMostToolStripMenuItem_Click(object sender, EventArgs e)
