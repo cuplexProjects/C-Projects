@@ -35,6 +35,7 @@
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.picBoxMaximized = new System.Windows.Forms.PictureBox();
+            this.btnScanDirectory = new System.Windows.Forms.Button();
             this.grpBoxControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxMaximized)).BeginInit();
             this.SuspendLayout();
@@ -67,6 +68,7 @@
             // 
             this.grpBoxControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpBoxControls.Controls.Add(this.btnScanDirectory);
             this.grpBoxControls.Controls.Add(this.btnSettings);
             this.grpBoxControls.Controls.Add(this.btnGenerate);
             this.grpBoxControls.Location = new System.Drawing.Point(5, 8);
@@ -109,6 +111,16 @@
             this.picBoxMaximized.TabStop = false;
             this.picBoxMaximized.Click += new System.EventHandler(this.picBoxMaximized_Click);
             // 
+            // btnScanDirectory
+            // 
+            this.btnScanDirectory.Location = new System.Drawing.Point(199, 19);
+            this.btnScanDirectory.Name = "btnScanDirectory";
+            this.btnScanDirectory.Size = new System.Drawing.Size(120, 30);
+            this.btnScanDirectory.TabIndex = 2;
+            this.btnScanDirectory.Text = "Scan Directory";
+            this.btnScanDirectory.UseVisualStyleBackColor = true;
+            this.btnScanDirectory.Click += new System.EventHandler(this.btnScanDirectory_Click);
+            // 
             // FormThumbnailView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -125,6 +137,7 @@
             this.Padding = new System.Windows.Forms.Padding(5);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Thumbnails";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormThumbnailView_FormClosing);
             this.Load += new System.EventHandler(this.FormThumbnailView_Load);
             this.grpBoxControls.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picBoxMaximized)).EndInit();
@@ -141,5 +154,6 @@
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnGenerate;
         private System.Windows.Forms.PictureBox picBoxMaximized;
+        private System.Windows.Forms.Button btnScanDirectory;
     }
 }

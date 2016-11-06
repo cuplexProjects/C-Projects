@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GeneralToolkitLib.ConfigHelper;
+using GeneralToolkitLib.Log;
 using ImageView.Models;
+using ImageView.Properties;
 using ImageView.Services;
 using ImageView.UserControls;
 using ImageView.Utility;
@@ -15,10 +18,15 @@ namespace ImageView
         private int _thumbnailSize;
         private int _maxThumbnails;
         private List<Control> _pictureBoxList;
+        private readonly ThumbnailService _thumbnailService;
+        private ThumbnailScanDirectory _thumbnailScan;
         public FormThumbnailView()
         {
             _thumbnailSize = ValidateThumbnailSize(ApplicationSettingsService.Instance.Settings.ThumbnailSize);
             _maxThumbnails = ApplicationSettingsService.Instance.Settings.MaxThumbnails;
+            string dataPath = GlobalSettings.GetUserDataDirectoryPath();
+            _thumbnailService = new ThumbnailService(dataPath);
+            _thumbnailService.LoadThumbnailDatabase();
             InitializeComponent();
         }
 
@@ -37,18 +45,28 @@ namespace ImageView
                 return;
 
             flowLayoutPanel1.Controls.Clear();
-           
-            await Task.Run(() =>
+
+            try
             {
-                _pictureBoxList = GenerateThumbnails();
-                Invoke(new EventHandler(UpdatePictureBoxList));
-            });
+                await Task.Run(() =>
+                {
+                    _pictureBoxList = GenerateThumbnails();
+                    if (!IsDisposed)
+                        Invoke(new EventHandler(UpdatePictureBoxList));
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogWriter.LogError("Error in generate thumbnails", ex);
+            }
         }
 
         private void UpdatePictureBoxList(object sender,EventArgs e)
         {
             if (_pictureBoxList == null) return;
             flowLayoutPanel1.Controls.AddRange(_pictureBoxList.ToArray());
+            GC.Collect();
         }
 
         private List<Control> GenerateThumbnails()
@@ -61,12 +79,15 @@ namespace ImageView
             foreach (ImageReferenceElement element in imgRefList)
             {
                 PictureBox pictureBox = new PictureBox();
-                pictureBox.Load(element.CompletePath);
+                pictureBox.Image = _thumbnailService.GetThumbnail(element.CompletePath);
+
+                //pictureBox.Load(element.CompletePath);
                 pictureBox.Width = _thumbnailSize;
                 pictureBox.Height = _thumbnailSize;
                 pictureBox.BorderStyle = BorderStyle.FixedSingle;
                 pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                 pictureBox.BackColor = Color.White;
+                pictureBox.Tag = element.CompletePath;
                 pictureBox.Click += PictureBox_Click;
                 pictureBoxes.Add(pictureBox);
 
@@ -85,7 +106,12 @@ namespace ImageView
             if (pictureBox == null)
                 return;
 
-            picBoxMaximized.Image = pictureBox.Image;
+            string filename = pictureBox.Tag as string;
+            if (filename != null)
+            {
+                Image fullScaleIMage = Image.FromFile(filename);
+                picBoxMaximized.Image = fullScaleIMage;
+            }
 
             picBoxMaximized.Visible = true;
             flowLayoutPanel1.Visible = false;
@@ -128,6 +154,29 @@ namespace ImageView
         {
             picBoxMaximized.Visible = false;
             flowLayoutPanel1.Visible = true;
+        }
+
+        private void btnScanDirectory_Click(object sender, EventArgs e)
+        {
+            _thumbnailScan = new ThumbnailScanDirectory();
+            Form frmDirectoryScan = FormFactory.CreateModalForm(_thumbnailScan);
+            frmDirectoryScan.FormClosed += FrmDirectoryScan_FormClosed;
+
+            frmDirectoryScan.ShowDialog(this);
+            GC.Collect();
+        }
+
+        private void FrmDirectoryScan_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _thumbnailScan?.OnFormClosed();
+            _thumbnailScan = null;
+        }
+
+        private void FormThumbnailView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _thumbnailService.SaveThumbnailDatabase();
+            _thumbnailService.Dispose();
+            GC.Collect();
         }
     }
 }

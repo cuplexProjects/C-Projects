@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using GeneralToolkitLib.Log;
 using ImageView.Managers;
+using ImageView.Models;
 
 namespace ImageView.Services
 {
@@ -20,17 +22,31 @@ namespace ImageView.Services
 
         public void ScanDirectory(string path)
         {
-            _thumbnailManager.StartThumbnailScan(path);
+            _thumbnailManager.StartThumbnailScan(path, null);
             _thumbnailManager.SaveThumbnailDatabase();
         }
 
-        public async void ScanDirectoryAsync(string path)
+        public async void ScanDirectoryAsync(string path, IProgress<ThumbnailScanProgress> progress)
         {
-            await Task.Run(() =>
+            try
             {
-                _thumbnailManager.StartThumbnailScan(path);
-                _thumbnailManager.SaveThumbnailDatabase();
-            });
+                await Task.Run(() =>
+                {
+                    _thumbnailManager.StartThumbnailScan(path, progress);
+                    _thumbnailManager.SaveThumbnailDatabase();
+                });
+
+            }
+            catch (Exception ex)
+            {
+                _thumbnailManager.CloseFileHandle();
+                LogWriter.LogError("Exception in ScanDirectoryAsync()", ex);
+            }
+        }
+
+        public void StopThumbnailScan()
+        {
+            _thumbnailManager.StopThumbnailScan();
         }
 
         public bool SaveThumbnailDatabase()

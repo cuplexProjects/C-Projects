@@ -10,6 +10,7 @@ using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
 using ImageView.DataContracts;
+using ImageView.Models;
 using ImageView.Utility;
 
 namespace ImageView.Managers
@@ -48,10 +49,12 @@ namespace ImageView.Managers
             return new ThumbnailManager(dataStoragePath);
         }
 
-        public void StartThumbnailScan(string path)
+        public void StartThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress)
         {
             if (_isRunningThumbnailScan)
                 return;
+
+            _fileManager.CloseStream();
 
             _isRunningThumbnailScan = true;
             _abortScan = false;
@@ -62,6 +65,9 @@ namespace ImageView.Managers
 
             if (!path.EndsWith("\\"))
                 path += "\\";
+
+            int scannedFiles = 0;
+            int filesToScan = files.Length;
 
             foreach (string fullPath in files)
             {
@@ -86,16 +92,21 @@ namespace ImageView.Managers
 
                     _thumbnailDatabase.ThumbnailEntries.Add(thumbnail);
                     _fileDictionary.Add(path + fileName, thumbnail);
+
+                    // Update progress
+                    scannedFiles++;
+                    progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = filesToScan, ScannedFiles = scannedFiles});
                 }
             }
 
             _fileManager.CloseStream();
             SaveThumbnailDatabase();
 
+            progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = filesToScan, ScannedFiles = scannedFiles, IsComplete = true});
             _isRunningThumbnailScan = false;
         }
 
-        public void StopThumbnailScan(string path)
+        public void StopThumbnailScan()
         {
             if (_isRunningThumbnailScan)
                 _abortScan = true;
@@ -169,7 +180,7 @@ namespace ImageView.Managers
             }
 
             Image img = LoadImageFromFile(fullPath);
-            string directory = GeneralConverters.GetDirectoryNameFromPath(fullPath, true);
+            string directory = GeneralConverters.GetDirectoryNameFromPath(fullPath);
             string filename = GeneralConverters.GetFileNameFromPath(fullPath);
             AddImageToCache(img, directory, filename);
             return img;
@@ -227,6 +238,9 @@ namespace ImageView.Managers
 
         private void AddImageToCache(Image img, string path, string fileName)
         {
+            if (_fileManager == null)
+                return;
+
             ThumbnailEntry thumbnail = new ThumbnailEntry
             {
                 Date = DateTime.Now,
@@ -316,11 +330,19 @@ namespace ImageView.Managers
         {
             _fileManager.Dispose();
             _fileManager = null;
+
+            _fileDictionary = null;
+            _thumbnailDatabase = null;
         }
 
         public int GetNumberOfCachedThumbnails()
         {
             return _thumbnailDatabase.ThumbnailEntries.Count;
+        }
+
+        public void CloseFileHandle()
+        {
+            _fileManager.CloseStream();
         }
     }
 }

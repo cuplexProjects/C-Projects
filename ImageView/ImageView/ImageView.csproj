@@ -226,6 +226,7 @@
     <Compile Include="FormWindows.Designer.cs">
       <DependentUpon>FormWindows.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\ThumbnailScanProgress.cs" />
     <Compile Include="Services\ApplicationSettingsService.cs" />
     <Compile Include="FileBrowser.cs">
       <SubType>Form</SubType>
@@ -289,6 +290,12 @@
     </Compile>
     <Compile Include="UserControls\RenameBookmark.Designer.cs">
       <DependentUpon>RenameBookmark.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ThumbnailScanDirectory.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\ThumbnailScanDirectory.Designer.cs">
+      <DependentUpon>ThumbnailScanDirectory.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ThumbnailSettings.cs">
       <SubType>UserControl</SubType>
@@ -381,6 +388,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\RenameBookmark.resx">
       <DependentUpon>RenameBookmark.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\ThumbnailScanDirectory.resx">
+      <DependentUpon>ThumbnailScanDirectory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\ThumbnailSettings.resx">
       <DependentUpon>ThumbnailSettings.cs</DependentUpon>
