@@ -47,6 +47,7 @@ namespace ImageView
             if (ImageLoaderService.Instance.ImageReferenceList == null)
                 return;
 
+            HideMaximizedView();
             flowLayoutPanel1.Controls.Clear();
 
             try
@@ -74,7 +75,7 @@ namespace ImageView
 
         private List<Control> GenerateThumbnails()
         {
-            List<Control> pictureBoxes = new List<Control>();
+            var pictureBoxes = new List<Control>();
             bool randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
             var imgLoaderService = ImageLoaderService.Instance;
             var imgRefList = imgLoaderService.GenerateThumbnailList(randomizeImageCollection);
@@ -92,8 +93,7 @@ namespace ImageView
                     Tag = element.CompletePath
                 };
 
-                //pictureBox.Load(element.CompletePath);
-                pictureBox.Click += PictureBox_Click;
+                pictureBox.MouseClick += PictureBox_MouseClick;
                 pictureBoxes.Add(pictureBox);
 
                 items++;
@@ -104,11 +104,11 @@ namespace ImageView
            
         }
 
-        private void PictureBox_Click(object sender, EventArgs e)
+        private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             PictureBox pictureBox = sender as PictureBox;
 
-            if (pictureBox == null)
+            if (pictureBox == null || e.Button != MouseButtons.Left)
                 return;
 
             string filename = pictureBox.Tag as string;

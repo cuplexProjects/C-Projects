@@ -24,8 +24,7 @@ namespace ImageView
         private void btnOk_Click(object sender, EventArgs e)
         {
             _timerInterval = Convert.ToInt32(numericUDInterval.Value);
-            if (OnIntervalChanged != null)
-                OnIntervalChanged.Invoke(this, new IntervalEventArgs(_timerInterval));
+            OnIntervalChanged?.Invoke(this, new IntervalEventArgs(_timerInterval));
             Close();
         }
 

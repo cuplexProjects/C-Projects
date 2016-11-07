@@ -35,6 +35,7 @@ namespace ImageView
         private bool _imageTransitionRunning;
         private int _imageViewFormIdCnt = 1;
         private bool _winKeyDown;
+        private FormThumbnailView _formThumbnailView;
 
         public FormMain()
         {
@@ -411,8 +412,20 @@ namespace ImageView
 
         private void openThumbnailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formThumbnailView = new FormThumbnailView();
-            formThumbnailView.Show(this);
+            if (_formThumbnailView == null)
+            {
+                _formThumbnailView = new FormThumbnailView();
+                _formThumbnailView.Closed += _formThumbnailView_Closed;
+            }
+
+            _formThumbnailView.Show();
+            _formThumbnailView.Focus();
+        }
+
+        private void _formThumbnailView_Closed(object sender, EventArgs e)
+        {
+            _formThumbnailView = null;
+            GC.Collect();
         }
 
         private void topMostToolStripMenuItem_Click(object sender, EventArgs e)
