@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralToolkitLib.ConfigHelper;
@@ -20,6 +22,7 @@ namespace ImageView
         private List<Control> _pictureBoxList;
         private readonly ThumbnailService _thumbnailService;
         private ThumbnailScanDirectory _thumbnailScan;
+        private string _maximizedImgFilename;
         public FormThumbnailView()
         {
             _thumbnailSize = ValidateThumbnailSize(ApplicationSettingsService.Instance.Settings.ThumbnailSize);
@@ -78,16 +81,18 @@ namespace ImageView
             int items = 0;
             foreach (ImageReferenceElement element in imgRefList)
             {
-                PictureBox pictureBox = new PictureBox();
-                pictureBox.Image = _thumbnailService.GetThumbnail(element.CompletePath);
+                PictureBox pictureBox = new PictureBox
+                {
+                    Image = _thumbnailService.GetThumbnail(element.CompletePath),
+                    Width = _thumbnailSize,
+                    Height = _thumbnailSize,
+                    BorderStyle = BorderStyle.FixedSingle,
+                    SizeMode = PictureBoxSizeMode.Zoom,
+                    BackColor = Color.White,
+                    Tag = element.CompletePath
+                };
 
                 //pictureBox.Load(element.CompletePath);
-                pictureBox.Width = _thumbnailSize;
-                pictureBox.Height = _thumbnailSize;
-                pictureBox.BorderStyle = BorderStyle.FixedSingle;
-                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                pictureBox.BackColor = Color.White;
-                pictureBox.Tag = element.CompletePath;
                 pictureBox.Click += PictureBox_Click;
                 pictureBoxes.Add(pictureBox);
 
@@ -110,6 +115,7 @@ namespace ImageView
             if (filename != null)
             {
                 Image fullScaleIMage = Image.FromFile(filename);
+                _maximizedImgFilename = filename;
                 picBoxMaximized.Image = fullScaleIMage;
             }
 
@@ -150,7 +156,7 @@ namespace ImageView
             return defVal;
         }
 
-        private void picBoxMaximized_Click(object sender, EventArgs e)
+        private void HideMaximizedView()
         {
             picBoxMaximized.Visible = false;
             flowLayoutPanel1.Visible = true;
@@ -158,7 +164,8 @@ namespace ImageView
 
         private void btnScanDirectory_Click(object sender, EventArgs e)
         {
-            _thumbnailScan = new ThumbnailScanDirectory();
+            _thumbnailService.SaveThumbnailDatabase();
+            _thumbnailScan = new ThumbnailScanDirectory(_thumbnailService);
             Form frmDirectoryScan = FormFactory.CreateModalForm(_thumbnailScan);
             frmDirectoryScan.FormClosed += FrmDirectoryScan_FormClosed;
 
@@ -175,9 +182,61 @@ namespace ImageView
 
         private void FormThumbnailView_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _thumbnailService.SaveThumbnailDatabase();
-            _thumbnailService.Dispose();
-            GC.Collect();
+            Task.Run(() =>
+            {
+                _thumbnailService.SaveThumbnailDatabase();
+                _thumbnailService.Dispose();
+                GC.Collect();
+            }); 
+        }
+
+        private void picBoxMaximized_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                HideMaximizedView();
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                Point menuPos = e.Location;
+                contextMenuFullSizeImg.Show(picBoxMaximized, menuPos);
+            }
+        }
+
+        private void menuItemOpenInDefApp_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(_maximizedImgFilename);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void menuItemBookmark_Click(object sender, EventArgs e)
+        {
+            FileInfo fi = new FileInfo(_maximizedImgFilename);
+            ImageReferenceElement imgRef = new ImageReferenceElement
+            {
+                CompletePath = _maximizedImgFilename,
+                Size = fi.Length,
+                CreationTime = fi.CreationTime,
+                LastAccessTime = fi.LastAccessTime,
+                LastWriteTime = fi.LastWriteTime,
+                FileName = fi.Name,
+                Directory = fi.DirectoryName
+            };
+
+            FormAddBookmark addBookmark = new FormAddBookmark(contextMenuFullSizeImg.Location, imgRef);
+            addBookmark.ShowDialog(this);
+        }
+
+        private void menuItemCopyPath_Click(object sender, EventArgs e)
+        {
+            Clipboard.Clear();
+            Clipboard.SetText(_maximizedImgFilename);
         }
     }
 }

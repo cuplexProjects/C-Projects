@@ -28,16 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormThumbnailView));
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.grpBoxControls = new System.Windows.Forms.GroupBox();
+            this.btnScanDirectory = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.picBoxMaximized = new System.Windows.Forms.PictureBox();
-            this.btnScanDirectory = new System.Windows.Forms.Button();
+            this.contextMenuFullSizeImg = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuItemOpenInDefApp = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemBookmark = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemCopyPath = new System.Windows.Forms.ToolStripMenuItem();
             this.grpBoxControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxMaximized)).BeginInit();
+            this.contextMenuFullSizeImg.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -77,6 +83,16 @@
             this.grpBoxControls.TabIndex = 2;
             this.grpBoxControls.TabStop = false;
             // 
+            // btnScanDirectory
+            // 
+            this.btnScanDirectory.Location = new System.Drawing.Point(199, 19);
+            this.btnScanDirectory.Name = "btnScanDirectory";
+            this.btnScanDirectory.Size = new System.Drawing.Size(120, 30);
+            this.btnScanDirectory.TabIndex = 2;
+            this.btnScanDirectory.Text = "Scan Directory";
+            this.btnScanDirectory.UseVisualStyleBackColor = true;
+            this.btnScanDirectory.Click += new System.EventHandler(this.btnScanDirectory_Click);
+            // 
             // btnSettings
             // 
             this.btnSettings.Location = new System.Drawing.Point(101, 19);
@@ -109,17 +125,38 @@
             this.picBoxMaximized.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBoxMaximized.TabIndex = 0;
             this.picBoxMaximized.TabStop = false;
-            this.picBoxMaximized.Click += new System.EventHandler(this.picBoxMaximized_Click);
+            this.picBoxMaximized.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picBoxMaximized_MouseClick);
             // 
-            // btnScanDirectory
+            // contextMenuFullSizeImg
             // 
-            this.btnScanDirectory.Location = new System.Drawing.Point(199, 19);
-            this.btnScanDirectory.Name = "btnScanDirectory";
-            this.btnScanDirectory.Size = new System.Drawing.Size(120, 30);
-            this.btnScanDirectory.TabIndex = 2;
-            this.btnScanDirectory.Text = "Scan Directory";
-            this.btnScanDirectory.UseVisualStyleBackColor = true;
-            this.btnScanDirectory.Click += new System.EventHandler(this.btnScanDirectory_Click);
+            this.contextMenuFullSizeImg.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuFullSizeImg.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemOpenInDefApp,
+            this.menuItemBookmark,
+            this.menuItemCopyPath});
+            this.contextMenuFullSizeImg.Name = "contextMenuFullSizeImg";
+            this.contextMenuFullSizeImg.Size = new System.Drawing.Size(271, 110);
+            // 
+            // menuItemOpenInDefApp
+            // 
+            this.menuItemOpenInDefApp.Name = "menuItemOpenInDefApp";
+            this.menuItemOpenInDefApp.Size = new System.Drawing.Size(270, 26);
+            this.menuItemOpenInDefApp.Text = "Open In Default Application";
+            this.menuItemOpenInDefApp.Click += new System.EventHandler(this.menuItemOpenInDefApp_Click);
+            // 
+            // menuItemBookmark
+            // 
+            this.menuItemBookmark.Name = "menuItemBookmark";
+            this.menuItemBookmark.Size = new System.Drawing.Size(270, 26);
+            this.menuItemBookmark.Text = "Bookmark Image";
+            this.menuItemBookmark.Click += new System.EventHandler(this.menuItemBookmark_Click);
+            // 
+            // menuItemCopyPath
+            // 
+            this.menuItemCopyPath.Name = "menuItemCopyPath";
+            this.menuItemCopyPath.Size = new System.Drawing.Size(270, 26);
+            this.menuItemCopyPath.Text = "Copy Filepath";
+            this.menuItemCopyPath.Click += new System.EventHandler(this.menuItemCopyPath_Click);
             // 
             // FormThumbnailView
             // 
@@ -141,6 +178,7 @@
             this.Load += new System.EventHandler(this.FormThumbnailView_Load);
             this.grpBoxControls.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picBoxMaximized)).EndInit();
+            this.contextMenuFullSizeImg.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -155,5 +193,9 @@
         private System.Windows.Forms.Button btnGenerate;
         private System.Windows.Forms.PictureBox picBoxMaximized;
         private System.Windows.Forms.Button btnScanDirectory;
+        private System.Windows.Forms.ContextMenuStrip contextMenuFullSizeImg;
+        private System.Windows.Forms.ToolStripMenuItem menuItemOpenInDefApp;
+        private System.Windows.Forms.ToolStripMenuItem menuItemBookmark;
+        private System.Windows.Forms.ToolStripMenuItem menuItemCopyPath;
     }
 }

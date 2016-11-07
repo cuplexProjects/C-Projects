@@ -37,9 +37,6 @@ namespace ImageView
             InitializeComponent();
             logStringBuilder = new StringBuilder();
             volumeInfoArray = new List<string>();
-           
-
-            
 
             try
             {

@@ -12,12 +12,10 @@ namespace ImageView.UserControls
         private bool _directorySelected;
         private bool _scaningDirectory;
 
-        public ThumbnailScanDirectory()
+        public ThumbnailScanDirectory(ThumbnailService thumbnailService)
         {
             InitializeComponent();
-            string dataPath = GlobalSettings.GetUserDataDirectoryPath();
-            _thumbnailService = new ThumbnailService(dataPath);
-            _thumbnailService.LoadThumbnailDatabase();
+            _thumbnailService = thumbnailService;
         }
 
         private void ThumbnailScanDirectory_Load(object sender, EventArgs e)

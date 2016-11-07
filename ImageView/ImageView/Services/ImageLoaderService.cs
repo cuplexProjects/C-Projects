@@ -145,7 +145,7 @@ namespace ImageView.Services
             return false;
         }
 
-        public List<ImageReferenceElement> GetAllImagesRecursive(string baseDir)
+        private List<ImageReferenceElement> GetAllImagesRecursive(string baseDir)
         {
             var imageReferenceList = new List<ImageReferenceElement>();
 
@@ -177,8 +177,7 @@ namespace ImageView.Services
             if (OnProgressUpdate != null && Environment.TickCount > _tickCount + _progressInterval)
             {
                 _tickCount = Environment.TickCount;
-                OnProgressUpdate.Invoke(this,
-                    new ProgressEventArgs(ProgressStatusEnum.Running, _filesLoaded, _totalNumberOfFiles));
+                OnProgressUpdate.Invoke(this, new ProgressEventArgs(ProgressStatusEnum.Running, _filesLoaded, _totalNumberOfFiles));
             }
 
             foreach (DirectoryInfo directory in currentDirectory.GetDirectories())
