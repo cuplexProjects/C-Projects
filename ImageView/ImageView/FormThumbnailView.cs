@@ -163,6 +163,7 @@ namespace ImageView
             frmDirectoryScan.FormClosed += FrmDirectoryScan_FormClosed;
 
             frmDirectoryScan.ShowDialog(this);
+            _thumbnailService.LoadThumbnailDatabase();
             GC.Collect();
         }
 

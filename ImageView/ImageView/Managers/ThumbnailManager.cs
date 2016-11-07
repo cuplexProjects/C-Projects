@@ -139,9 +139,13 @@ namespace ImageView.Managers
         {
             try
             {
-                _isLoadedFromFile = true;
-
                 string filename = _thumbnailDatabase.DataStroragePath + DatabaseFilename;
+                if (!File.Exists(filename))
+                {
+                    return false;
+                }
+
+                _isLoadedFromFile = true;
                 var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, DatabaseKey);
                 var storageManager = new StorageManager(settings);
                 var thumbnailDatabase = storageManager.DeserializeObjectFromFile<ThumbnailDatabase>(filename, null);

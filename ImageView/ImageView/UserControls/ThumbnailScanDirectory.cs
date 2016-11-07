@@ -17,6 +17,12 @@ namespace ImageView.UserControls
             InitializeComponent();
             string dataPath = GlobalSettings.GetUserDataDirectoryPath();
             _thumbnailService = new ThumbnailService(dataPath);
+            _thumbnailService.LoadThumbnailDatabase();
+        }
+
+        private void ThumbnailScanDirectory_Load(object sender, EventArgs e)
+        {
+            UpdateButtonState();
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -72,14 +78,10 @@ namespace ImageView.UserControls
             }
         }
 
-        private void ThumbnailScanDirectory_Load(object sender, EventArgs e)
-        {
-            UpdateButtonState();
-        }
-
         private void CancelScan()
         {
             _thumbnailService.StopThumbnailScan();
+            _thumbnailService.SaveThumbnailDatabase();
         }
 
         public void OnFormClosed()
