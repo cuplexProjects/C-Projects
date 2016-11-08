@@ -256,14 +256,12 @@ namespace ImageView
         {
             try
             {
-                if (ApplicationSettingsService.Instance.Settings.NextImageAnimation ==
-                    ImageViewApplicationSettings.ChangeImageAnimation.None)
+                if (ApplicationSettingsService.Instance.Settings.NextImageAnimation == ImageViewApplicationSettings.ChangeImageAnimation.None)
                     _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.None;
 
                 _pictureBoxAnimation.ImageLocation = null;
 
-                if (pictureBox1.Image != null &&
-                    (_changeImageAnimation != ImageViewApplicationSettings.ChangeImageAnimation.None))
+                if (pictureBox1.Image != null && (_changeImageAnimation != ImageViewApplicationSettings.ChangeImageAnimation.None))
                 {
                     //_pictureBoxAnimation.ImageLocation = imagePath;
                     //_pictureBoxAnimation.LoadAsync();
@@ -282,9 +280,7 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                LogWriter.LogError(
-                    $"FormMain.LoadNewImageFile(string imagePath) Error when trying to load file: {imagePath} : {ex.Message}",
-                    ex);
+                LogWriter.LogError($"FormMain.LoadNewImageFile(string imagePath) Error when trying to load file: {imagePath} : {ex.Message}", ex);
             }
         }
 
@@ -293,8 +289,7 @@ namespace ImageView
             bool randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
             if (!ImageLoaderService.Instance.IsRunningImport && ImageLoaderService.Instance.ImageReferenceList != null)
             {
-                _imageReferenceCollection =
-                    ImageLoaderService.Instance.GenerateImageReferenceCollection(randomizeImageCollection);
+                _imageReferenceCollection = ImageLoaderService.Instance.GenerateImageReferenceCollection(randomizeImageCollection);
                 if (ImageLoaderService.Instance.ImageReferenceList.Count > 0)
                     _dataReady = true;
             }
@@ -686,6 +681,26 @@ namespace ImageView
             _formWindows.RestoreFocusOnPreviouslyActiveImageForm();
         }
 
+        private void menuItemOpenImage_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = Resources.ImageFormatFilter;
+            openFileDialog1.FileName = "";
+            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                LoadNewImageFile(openFileDialog1.FileName);
+                if (pictureBox1.Image != null)
+                    addBookmarkToolStripMenuItem.Enabled = true;
+
+                if (_imageReferenceCollection != null) return;
+                _imageReferenceCollection = new ImageReferenceCollection(new List<int>());
+                var currentImage= _imageReferenceCollection.SetCurrentImage(openFileDialog1.FileName);
+                _dataReady = true;
+                if (ImageLoaderService.Instance.ImageReferenceList == null)
+                {
+                    ImageLoaderService.Instance.CreateFromOpenSingleImage(currentImage);
+                }
+            }
+        }
         #endregion
     }
 }

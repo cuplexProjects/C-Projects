@@ -226,6 +226,15 @@ namespace ImageView.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image Files(*.jpg;*.jpeg;*.png;*.gif;*.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.bmp.
+        /// </summary>
+        internal static string ImageFormatFilter {
+            get {
+                return ResourceManager.GetString("ImageFormatFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid password..
         /// </summary>
         internal static string Invalid_password_ {

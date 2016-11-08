@@ -173,8 +173,8 @@ namespace ImageView
             lblCacheItems.Text = ImageCacheService.Instance.CachedItems.ToString();
             lblUsedSpace.Text = cacheUsage + Resources.FormSettings_UpdateCacheSizeLabel__MB;
             lblFreeSpace.Text = cacheSize - cacheUsage + Resources.FormSettings_UpdateCacheSizeLabel__MB;
-            pbarPercentUsed.Value = Convert.ToInt32(cacheUsage/maxSize)*100;
-
+            pbarPercentUsed.Value = Convert.ToInt32((double)cacheUsage/ cacheSize * 100);
+          
             trackBarCacheSize.Minimum = minSize;
             trackBarCacheSize.Maximum = maxSize;
             trackBarCacheSize.Value = cacheSize;

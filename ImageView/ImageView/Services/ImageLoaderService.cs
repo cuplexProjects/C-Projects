@@ -50,10 +50,7 @@ namespace ImageView.Services
             _winId = WindowsIdentity.GetCurrent();
         }
 
-        public static ImageLoaderService Instance
-        {
-            get { return _instance ?? (_instance = new ImageLoaderService()); }
-        }
+        public static ImageLoaderService Instance => _instance ?? (_instance = new ImageLoaderService());
 
         public int ProgressInterval
         {
@@ -93,10 +90,7 @@ namespace ImageView.Services
                     _imageReferenceList = GetAllImagesRecursive(_imageBaseDir);
                     IsRunningImport = false;
                 }
-                if (OnImportComplete != null)
-                    OnImportComplete.Invoke(this,
-                        new ProgressEventArgs(ProgressStatusEnum.Complete, _imageReferenceList.Count,
-                            _totalNumberOfFiles));
+                OnImportComplete?.Invoke(this, new ProgressEventArgs(ProgressStatusEnum.Complete, _imageReferenceList.Count, _totalNumberOfFiles));
             }
             catch (Exception ex)
             {
@@ -116,9 +110,7 @@ namespace ImageView.Services
                 if (UserHasReadAccessToDirectory(currentDirectory))
                 {
                     noFiles += currentDirectory.GetFiles().Count(f => _fileNameRegExp.IsMatch(f.Name));
-                    noFiles +=
-                        currentDirectory.GetDirectories()
-                            .Sum(directory => GetNumberOfFilesMatchingRegexp(directory.FullName));
+                    noFiles += currentDirectory.GetDirectories().Sum(directory => GetNumberOfFilesMatchingRegexp(directory.FullName));
                 }
             }
             catch (Exception ex)
@@ -282,6 +274,12 @@ namespace ImageView.Services
                 }
             }
             return imgRefList;
+        }
+     
+        public void CreateFromOpenSingleImage(ImageReferenceElement currentImage)
+        {
+            _imageReferenceList=new List<ImageReferenceElement>();
+            _imageReferenceList.Add(currentImage);
         }
     }
 
