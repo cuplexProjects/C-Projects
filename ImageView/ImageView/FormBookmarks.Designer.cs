@@ -45,7 +45,6 @@ namespace ImageView
             this.renameFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
             this.bookmarksDataGridView = new System.Windows.Forms.DataGridView();
-            this.bookmarkBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.mainWinMenu = new System.Windows.Forms.MenuStrip();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tryToFixBrokenLinksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,6 +55,7 @@ namespace ImageView
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bookmarkBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.bookmarkFolderBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.boookmarkNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -75,9 +75,9 @@ namespace ImageView
             this.contextMenuStripFolders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarksDataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).BeginInit();
             this.mainWinMenu.SuspendLayout();
             this.contextMenuStripBookmarks.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarkFolderBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -153,6 +153,9 @@ namespace ImageView
             this.bookmarksTree.ShowRootLines = false;
             this.bookmarksTree.Size = new System.Drawing.Size(206, 225);
             this.bookmarksTree.TabIndex = 0;
+            this.bookmarksTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.bookmarksTree_DragDrop);
+            this.bookmarksTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.bookmarksTree_DragEnter);
+            this.bookmarksTree.DragOver += new System.Windows.Forms.DragEventHandler(this.bookmarksTree_DragOver);
             // 
             // contextMenuStripFolders
             // 
@@ -205,14 +208,13 @@ namespace ImageView
             // 
             // bookmarksDataGridView
             // 
-            this.bookmarksDataGridView.AllowDrop = true;
             this.bookmarksDataGridView.AllowUserToAddRows = false;
+            this.bookmarksDataGridView.AllowUserToOrderColumns = true;
             this.bookmarksDataGridView.AllowUserToResizeRows = false;
             this.bookmarksDataGridView.AutoGenerateColumns = false;
             this.bookmarksDataGridView.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.bookmarksDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.bookmarksDataGridView.ColumnHeadersHeight = 25;
-            this.bookmarksDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.bookmarksDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.boookmarkNameDataGridViewTextBoxColumn,
             this.fileNameDataGridViewTextBoxColumn,
@@ -245,11 +247,9 @@ namespace ImageView
             this.bookmarksDataGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.bookmarksDataGridView_CellMouseDoubleClick);
             this.bookmarksDataGridView.SelectionChanged += new System.EventHandler(this.bookmarksDataGridView_SelectionChanged);
             this.bookmarksDataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.bookmarksDataGridView_KeyDown);
+            this.bookmarksDataGridView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.bookmarksDataGridView_MouseDown);
+            this.bookmarksDataGridView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.bookmarksDataGridView_MouseMove);
             this.bookmarksDataGridView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.bookmarksDataGridView_MouseUp);
-            // 
-            // bookmarkBindingSource
-            // 
-            this.bookmarkBindingSource.DataSource = typeof(ImageView.DataContracts.Bookmark);
             // 
             // mainWinMenu
             // 
@@ -331,6 +331,10 @@ namespace ImageView
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
+            // bookmarkBindingSource
+            // 
+            this.bookmarkBindingSource.DataSource = typeof(ImageView.DataContracts.Bookmark);
+            // 
             // bookmarkFolderBindingSource
             // 
             this.bookmarkFolderBindingSource.DataSource = typeof(ImageView.DataContracts.BookmarkFolder);
@@ -362,33 +366,33 @@ namespace ImageView
             // 
             this.sizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.sizeDataGridViewTextBoxColumn.DataPropertyName = "Size";
-            this.sizeDataGridViewTextBoxColumn.FillWeight = 25F;
+            this.sizeDataGridViewTextBoxColumn.FillWeight = 30F;
             this.sizeDataGridViewTextBoxColumn.HeaderText = "Size";
             this.sizeDataGridViewTextBoxColumn.Name = "sizeDataGridViewTextBoxColumn";
             // 
             // creationTimeDataGridViewTextBoxColumn
             // 
-            this.creationTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            this.creationTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.creationTimeDataGridViewTextBoxColumn.DataPropertyName = "CreationTime";
+            this.creationTimeDataGridViewTextBoxColumn.FillWeight = 25F;
             this.creationTimeDataGridViewTextBoxColumn.HeaderText = "Creation Time";
             this.creationTimeDataGridViewTextBoxColumn.Name = "creationTimeDataGridViewTextBoxColumn";
-            this.creationTimeDataGridViewTextBoxColumn.Width = 5;
             // 
             // lastWriteTimeDataGridViewTextBoxColumn
             // 
-            this.lastWriteTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            this.lastWriteTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.lastWriteTimeDataGridViewTextBoxColumn.DataPropertyName = "LastWriteTime";
+            this.lastWriteTimeDataGridViewTextBoxColumn.FillWeight = 25F;
             this.lastWriteTimeDataGridViewTextBoxColumn.HeaderText = "Last Write Time";
             this.lastWriteTimeDataGridViewTextBoxColumn.Name = "lastWriteTimeDataGridViewTextBoxColumn";
-            this.lastWriteTimeDataGridViewTextBoxColumn.Width = 5;
             // 
             // lastAccessTimeDataGridViewTextBoxColumn
             // 
-            this.lastAccessTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            this.lastAccessTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.lastAccessTimeDataGridViewTextBoxColumn.DataPropertyName = "LastAccessTime";
+            this.lastAccessTimeDataGridViewTextBoxColumn.FillWeight = 25F;
             this.lastAccessTimeDataGridViewTextBoxColumn.HeaderText = "Last Access Time";
             this.lastAccessTimeDataGridViewTextBoxColumn.Name = "lastAccessTimeDataGridViewTextBoxColumn";
-            this.lastAccessTimeDataGridViewTextBoxColumn.Width = 5;
             // 
             // FormBookmarks
             // 
@@ -416,10 +420,10 @@ namespace ImageView
             this.contextMenuStripFolders.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarksDataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).EndInit();
             this.mainWinMenu.ResumeLayout(false);
             this.mainWinMenu.PerformLayout();
             this.contextMenuStripBookmarks.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarkFolderBindingSource)).EndInit();
             this.ResumeLayout(false);
 

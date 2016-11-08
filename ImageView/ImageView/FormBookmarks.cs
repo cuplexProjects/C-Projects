@@ -16,18 +16,20 @@ using ImageView.InputForms;
 using ImageView.Managers;
 using ImageView.Properties;
 using ImageView.Services;
+using ImageView.UserControls;
+using ImageView.Utility;
 
 namespace ImageView
 {
     public partial class FormBookmarks : Form
     {
         private const int CUSTOM_CONTENT_HEIGHT = 4;
-        private TreeViewDataContext _treeViewDataContext;
         private readonly Color gridViewGradientBackgroundColorStart = ColorTranslator.FromHtml("#b2e1ff");
         private readonly Color gridViewGradientBackgroundColorStop = ColorTranslator.FromHtml("#66b6fc");
         private readonly Color GridViewSelectionBorderColor = ColorTranslator.FromHtml("#7da2ce");
         private readonly StringBuilder logStringBuilder;
         private readonly List<string> volumeInfoArray;
+        private TreeViewDataContext _treeViewDataContext;
         private int brokenLinks;
         private string defaultDrive = "c:\\";
         private int fixedLinks;
@@ -98,10 +100,9 @@ namespace ImageView
                 {
                     bookmarkService.OpenBookmarks();
                 }
-                
+
                 initBookmarksDataSource();
             }
-               
         }
 
         private void BookmarksTree_AfterSelect(object sender, TreeViewEventArgs e)
@@ -129,7 +130,14 @@ namespace ImageView
         private void AlterTreeViewState(TreeViewFolderStateChange stateChange, BookmarkFolder folder)
         {
             if (stateChange == TreeViewFolderStateChange.FolderAdded)
+            {
                 _treeViewDataContext.ExpandNode(folder);
+            }
+            else if (stateChange == TreeViewFolderStateChange.FolderRenamed)
+            {
+                initBookmarksDataSource();
+                _treeViewDataContext.ExpandNode(folder);
+            }
             else
             {
                 _treeViewDataContext.ExpandNode(bookmarksTree.TopNode.Tag as BookmarkFolder);
@@ -333,11 +341,11 @@ namespace ImageView
 
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var selectedRow = bookmarksDataGridView.CurrentRow;
-            Bookmark bookmark = selectedRow?.DataBoundItem as Bookmark;
+            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
+            var bookmark = selectedRow?.DataBoundItem as Bookmark;
             if (bookmark == null) return;
 
-            FormEditBookmark editBookmark = new FormEditBookmark();
+            var editBookmark = new FormEditBookmark();
             editBookmark.InitForRename(bookmark.BoookmarkName, bookmark.FileName);
             if (editBookmark.ShowDialog(this) == DialogResult.OK)
             {
@@ -349,13 +357,12 @@ namespace ImageView
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var selectedRow = bookmarksDataGridView.CurrentRow;
-            Bookmark bookmark = selectedRow?.DataBoundItem as Bookmark;
+            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
+            var bookmark = selectedRow?.DataBoundItem as Bookmark;
             if (bookmark == null) return;
 
             BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
@@ -463,16 +470,105 @@ namespace ImageView
 
         private void renameFolderMenuItem_Click(object sender, EventArgs e)
         {
-            var bookmarkTree = bookmarksTree.SelectedNode?.Tag as BookmarkFolder;
-            if (bookmarkTree != null)
+            var bookmarkFolder = bookmarksTree.SelectedNode?.Tag as BookmarkFolder;
+            if (bookmarkFolder != null)
             {
+                var ucRenameFolder = new RenameBookmarkFolder();
+                ucRenameFolder.InitControl(bookmarkFolder.Name, bookmarkFolder.Bookmarks.Count);
+                Form renameForm = FormFactory.CreateModalForm(ucRenameFolder);
+
+                if (renameForm.ShowDialog(this) == DialogResult.OK)
+                {
+                    string newName = ucRenameFolder.GetNewFolderName();
+                    bookmarkFolder.Name = newName;
+                    AlterTreeViewState(TreeViewFolderStateChange.FolderRenamed, bookmarkFolder);
+                }
             }
         }
 
         private enum TreeViewFolderStateChange
         {
             FolderRemoved,
-            FolderAdded
+            FolderAdded,
+            FolderRenamed
+        }
+
+        private void bookmarksTree_DragDrop(object sender, DragEventArgs e)
+        {
+            Bookmark bookmark = e.Data.GetData(typeof(Bookmark)) as Bookmark;
+
+            if (bookmark != null)
+            {
+                // The mouse locations are relative to the screen, so they must be 
+                // converted to client coordinates.
+                Point clientPoint = bookmarksTree.PointToClient(new Point(e.X, e.Y));
+
+                // If the drag operation was a move then add the row to the other control.
+                if (e.Effect == DragDropEffects.Move)
+                {
+                    
+                    var hittest = bookmarksTree.HitTest(clientPoint.X, clientPoint.Y);
+                    if (hittest.Node == null) return;
+                    TreeNode dropNode = hittest.Node;
+                    var dropFolder = dropNode.Tag as BookmarkFolder;
+                    if (dropFolder == null) return;
+                    BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
+                    bookmarkService.BookmarkManager.MoveBookmark(bookmark, dropFolder.Id);
+                    ReLoadBookmarks();
+                }
+            }
+        }
+
+        private void bookmarksTree_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = e.Data.GetDataPresent(typeof(Bookmark)) ? DragDropEffects.Move : DragDropEffects.None;
+        }
+
+        private void bookmarksTree_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(Bookmark)))
+                e.Effect = e.AllowedEffect;
+        }
+
+        private Rectangle dragBoxFromMouseDown;
+        private object valueFromMouseDown;
+
+        private void bookmarksDataGridView_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Get the index of the item the mouse is below.
+            var hittestInfo = bookmarksDataGridView.HitTest(e.X, e.Y);
+
+            if (hittestInfo.RowIndex != -1 && hittestInfo.ColumnIndex != -1)
+            {
+                valueFromMouseDown = bookmarksDataGridView.Rows[hittestInfo.RowIndex].DataBoundItem;
+                if (valueFromMouseDown != null)
+                {
+                    // Remember the point where the mouse down occurred. 
+                    // The DragSize indicates the size that the mouse can move 
+                    // before a drag event should be started.                
+                    Size dragSize = SystemInformation.DragSize;
+
+                    // Create a rectangle using the DragSize, with the mouse position being
+                    // at the center of the rectangle.
+                    dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
+                }
+            }
+            else
+                // Reset the rectangle if the mouse is not over an item in the ListBox.
+                dragBoxFromMouseDown = Rectangle.Empty;
+        }
+
+        private void bookmarksDataGridView_MouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+            {
+                // If the mouse moves outside the rectangle, start the drag.
+                if (dragBoxFromMouseDown != Rectangle.Empty && !dragBoxFromMouseDown.Contains(e.X, e.Y))
+                {
+                    // Proceed with the drag and drop, passing in the list item.                    
+                    DragDropEffects dropEffect = bookmarksDataGridView.DoDragDrop(valueFromMouseDown, DragDropEffects.Move);
+                }
+            }
         }
     }
 }

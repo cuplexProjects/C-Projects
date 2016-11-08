@@ -25,9 +25,7 @@ namespace ImageView.DataBinding
 
         private void TreeView_ControlAdded(object sender, ControlEventArgs e)
         {
-            //BindData();
-            //TreeView treeView = e.Control as TreeView;
-            //treeView?.SelectedNode?.Expand();
+
         }
 
         private void TreeView_AfterExpand(object sender, TreeViewEventArgs e)
@@ -48,12 +46,6 @@ namespace ImageView.DataBinding
         {
             e.Node.Expand();
         }
-
-        //public void BindData(BookmarkFolder rootFolder)
-        //{
-        //    _rootFolder = rootFolder;
-        //    BindData();
-        //}
 
         public void ExpandNode(BookmarkFolder folderToExpand)
         {

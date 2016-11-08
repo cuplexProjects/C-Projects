@@ -291,6 +291,12 @@
     <Compile Include="UserControls\RenameBookmark.Designer.cs">
       <DependentUpon>RenameBookmark.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\RenameBookmarkFolder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\RenameBookmarkFolder.Designer.cs">
+      <DependentUpon>RenameBookmarkFolder.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ThumbnailScanDirectory.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -388,6 +394,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\RenameBookmark.resx">
       <DependentUpon>RenameBookmark.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\RenameBookmarkFolder.resx">
+      <DependentUpon>RenameBookmarkFolder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\ThumbnailScanDirectory.resx">
       <DependentUpon>ThumbnailScanDirectory.cs</DependentUpon>

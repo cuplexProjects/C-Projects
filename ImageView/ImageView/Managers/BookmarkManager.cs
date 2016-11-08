@@ -289,6 +289,21 @@ namespace ImageView.Managers
             return bookmark;
         }
 
+        public bool MoveBookmark(Bookmark bookmark, string destinationFolderId)
+        {
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmark.ParentFolderId);
+            BookmarkFolder destinationFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, destinationFolderId);
+
+            if (parentFolder == null | destinationFolder == null || parentFolder == destinationFolder)
+                return false;
+
+            parentFolder.Bookmarks.Remove(bookmark);
+            destinationFolder.Bookmarks.Add(bookmark);
+            bookmark.ParentFolderId = destinationFolder.Id;
+
+            return true;
+        }
+
         public bool DeleteBookmark(Bookmark bookmark)
         {
             BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmark.ParentFolderId);

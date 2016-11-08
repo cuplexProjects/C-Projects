@@ -54,6 +54,7 @@ namespace ImageView
             {
                 await Task.Run(() =>
                 {
+                    _pictureBoxList = null;
                     _pictureBoxList = GenerateThumbnails();
                     if (!IsDisposed)
                         Invoke(new EventHandler(UpdatePictureBoxList));
