@@ -38,8 +38,19 @@ namespace ImageView
             if (DesignMode)
                 return;
 
+            var appSettings = ApplicationSettingsService.Instance.Settings;
+            RestoreFormState.SetFormSizeAndPosition(this, appSettings.ThumbnailFormSize, appSettings.ThumbnailFormLocation, Screen.PrimaryScreen.WorkingArea);
+            Closing += FormThumbnailView_Closing;
             SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             UpdateStyles();
+        }
+
+        private void FormThumbnailView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var appSettings = ApplicationSettingsService.Instance.Settings;
+            appSettings.ThumbnailFormLocation = Location;
+            appSettings.ThumbnailFormSize = Size;
+            ApplicationSettingsService.Instance.SaveSettings();
         }
 
         private async void btnGenerate_Click(object sender, EventArgs e)

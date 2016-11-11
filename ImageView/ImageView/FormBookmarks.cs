@@ -32,7 +32,10 @@ namespace ImageView
         private TreeViewDataContext _treeViewDataContext;
         private int brokenLinks;
         private string defaultDrive = "c:\\";
+
+        private Rectangle dragBoxFromMouseDown;
         private int fixedLinks;
+        private object valueFromMouseDown;
 
         public FormBookmarks()
         {
@@ -112,19 +115,44 @@ namespace ImageView
 
         private void Instance_OnBookmarksUpdate(object sender, BookmarkUpdatedEventArgs e)
         {
+            if (bookmarksDataGridView.SelectedRows.Count > 0)
+            {
+                DataGridViewSelectedRowCollection selectedItems = bookmarksDataGridView.SelectedRows;
+                var selectionList = new List<int>();
+                for (int i = 0; i < selectedItems.Count; i++)
+                {
+                    selectionList.Add(selectedItems[i].Index);
+                }
+
+                ReLoadBookmarks(selectionList);
+                return;
+            }
+
             ReLoadBookmarks();
         }
 
-        private void ReLoadBookmarks()
+        private void ReLoadBookmarks(IEnumerable<int> selectedIndexList)
+        {
+            if (!ReLoadBookmarks()) return;
+            foreach (int index in selectedIndexList)
+            {
+                if (index >= bookmarksDataGridView.Rows.Count)
+                    break;
+
+                bookmarksDataGridView.Rows[index].Selected = true;
+            }
+        }
+
+        private bool ReLoadBookmarks()
         {
             TreeNode selectedNode = bookmarksTree.SelectedNode;
             var selectedBookmarkfolder = selectedNode.Tag as BookmarkFolder;
 
-            if (selectedBookmarkfolder != null)
-            {
-                bookmarksDataGridView.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
-                bookmarksDataGridView.Refresh();
-            }
+            if (selectedBookmarkfolder == null) return false;
+            bookmarksDataGridView.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
+            bookmarksDataGridView.Refresh();
+
+            return true;
         }
 
         private void AlterTreeViewState(TreeViewFolderStateChange stateChange, BookmarkFolder folder)
@@ -233,17 +261,12 @@ namespace ImageView
                 e.Handled = true;
                 LoadImageFromSelectedRow();
             }
-            if (e.KeyData == Keys.Delete && selectedRow != null &&
-                MessageBox.Show(this, Resources.Are_you_sure_you_want_to_delete_this_bookmark_, Resources.Delete,
-                    MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                var bookmark = selectedRow.DataBoundItem as Bookmark;
+            if (e.KeyData != Keys.Delete || selectedRow == null || MessageBox.Show(this, Resources.Are_you_sure_you_want_to_delete_this_bookmark_, Resources.Delete, MessageBoxButtons.YesNo) != DialogResult.Yes) return;
+            var bookmark = selectedRow.DataBoundItem as Bookmark;
 
-                if (bookmark == null) return;
-                bookmarkManager.DeleteBookmark(bookmark);
-                bookmarksDataGridView.DataSource =
-                    bookmarkManager.RootFolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
-            }
+            if (bookmark == null) return;
+            bookmarkManager.DeleteBookmark(bookmark);
+            bookmarksDataGridView.DataSource = bookmarkManager.RootFolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
         }
 
         private void LoadImageFromSelectedRow()
@@ -486,16 +509,9 @@ namespace ImageView
             }
         }
 
-        private enum TreeViewFolderStateChange
-        {
-            FolderRemoved,
-            FolderAdded,
-            FolderRenamed
-        }
-
         private void bookmarksTree_DragDrop(object sender, DragEventArgs e)
         {
-            Bookmark bookmark = e.Data.GetData(typeof(Bookmark)) as Bookmark;
+            var bookmark = e.Data.GetData(typeof(Bookmark)) as Bookmark;
 
             if (bookmark != null)
             {
@@ -506,8 +522,7 @@ namespace ImageView
                 // If the drag operation was a move then add the row to the other control.
                 if (e.Effect == DragDropEffects.Move)
                 {
-                    
-                    var hittest = bookmarksTree.HitTest(clientPoint.X, clientPoint.Y);
+                    TreeViewHitTestInfo hittest = bookmarksTree.HitTest(clientPoint.X, clientPoint.Y);
                     if (hittest.Node == null) return;
                     TreeNode dropNode = hittest.Node;
                     var dropFolder = dropNode.Tag as BookmarkFolder;
@@ -530,13 +545,10 @@ namespace ImageView
                 e.Effect = e.AllowedEffect;
         }
 
-        private Rectangle dragBoxFromMouseDown;
-        private object valueFromMouseDown;
-
         private void bookmarksDataGridView_MouseDown(object sender, MouseEventArgs e)
         {
             // Get the index of the item the mouse is below.
-            var hittestInfo = bookmarksDataGridView.HitTest(e.X, e.Y);
+            DataGridView.HitTestInfo hittestInfo = bookmarksDataGridView.HitTest(e.X, e.Y);
 
             if (hittestInfo.RowIndex != -1 && hittestInfo.ColumnIndex != -1)
             {
@@ -550,11 +562,11 @@ namespace ImageView
 
                     // Create a rectangle using the DragSize, with the mouse position being
                     // at the center of the rectangle.
-                    dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
+                    dragBoxFromMouseDown = new Rectangle(new Point(e.X - dragSize.Width/2, e.Y - dragSize.Height/2), dragSize);
                 }
             }
             else
-                // Reset the rectangle if the mouse is not over an item in the ListBox.
+            // Reset the rectangle if the mouse is not over an item in the ListBox.
                 dragBoxFromMouseDown = Rectangle.Empty;
         }
 
@@ -566,9 +578,16 @@ namespace ImageView
                 if (dragBoxFromMouseDown != Rectangle.Empty && !dragBoxFromMouseDown.Contains(e.X, e.Y))
                 {
                     // Proceed with the drag and drop, passing in the list item.                    
-                    DragDropEffects dropEffect = bookmarksDataGridView.DoDragDrop(valueFromMouseDown, DragDropEffects.Move);
+                    bookmarksDataGridView.DoDragDrop(valueFromMouseDown, DragDropEffects.Move);
                 }
             }
+        }
+
+        private enum TreeViewFolderStateChange
+        {
+            FolderRemoved,
+            FolderAdded,
+            FolderRenamed
         }
     }
 }

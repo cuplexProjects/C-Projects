@@ -315,6 +315,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SortableBindingList.cs" />
+    <Compile Include="Utility\RestoreFormState.cs" />
     <Compile Include="Utility\WindowsAPICalls.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>

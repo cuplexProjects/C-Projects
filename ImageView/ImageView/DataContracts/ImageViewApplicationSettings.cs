@@ -123,6 +123,12 @@ namespace ImageView.DataContracts
         [DataMember(Name = "MaxThumbnails", Order = 25)]
         public int MaxThumbnails { get; set; }
 
+        [DataMember(Name = "ThumbnailFormSize", Order = 26)]
+        public Size ThumbnailFormSize { get; set; }
+
+        [DataMember(Name = "ThumbnailFormLocation", Order = 27)]
+        public Point ThumbnailFormLocation { get; set; }
+
         public void RemoveDuplicateEntriesWithIgnoreCase()
         {
             var deleteStack = new Stack<string>();

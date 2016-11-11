@@ -41,7 +41,7 @@ namespace ImageView
         {
             InitializeComponent();
             _imageViewFormList = new List<FormImageView>();
-            _windowTitle = "Random image viewer - " + Application.ProductVersion;
+            _windowTitle = "Image Viewer - " + Application.ProductVersion;
         }
 
 
@@ -71,20 +71,8 @@ namespace ImageView
 
             if (ApplicationSettingsService.Instance.Settings.UseSavedMainFormPosition)
             {
-                if (ApplicationSettingsService.Instance.Settings.MainFormSize.Width > 0 &&
-                    ApplicationSettingsService.Instance.Settings.MainFormSize.Height > 0)
-                {
-                    Width = ApplicationSettingsService.Instance.Settings.MainFormSize.Width;
-                    Height = ApplicationSettingsService.Instance.Settings.MainFormSize.Height;
-                }
-
-                if (ApplicationSettingsService.Instance.Settings.MainFormPosition.X >= 0 &&
-                    ApplicationSettingsService.Instance.Settings.MainFormPosition.Y <
-                    Screen.PrimaryScreen.WorkingArea.Bottom)
-                {
-                    Left = ApplicationSettingsService.Instance.Settings.MainFormPosition.X;
-                    Top = ApplicationSettingsService.Instance.Settings.MainFormPosition.Y;
-                }
+                RestoreFormState.SetFormSizeAndPosition(this, ApplicationSettingsService.Instance.Settings.MainFormSize,
+                    ApplicationSettingsService.Instance.Settings.MainFormPosition, Screen.PrimaryScreen.WorkingArea);
             }
 
             _changeImageAnimation = ApplicationSettingsService.Instance.Settings.NextImageAnimation;
@@ -263,20 +251,16 @@ namespace ImageView
 
                 if (pictureBox1.Image != null && (_changeImageAnimation != ImageViewApplicationSettings.ChangeImageAnimation.None))
                 {
-                    //_pictureBoxAnimation.ImageLocation = imagePath;
-                    //_pictureBoxAnimation.LoadAsync();
                     _pictureBoxAnimation.Image = ImageCacheService.Instance.GetImage(imagePath);
                     _pictureBoxAnimation.Refresh();
                 }
                 else
                 {
-                    //pictureBox1.ImageLocation = imagePath;
-                    //pictureBox1.Load();
                     pictureBox1.Image = ImageCacheService.Instance.GetImage(imagePath);
                     pictureBox1.Refresh();
                 }
 
-                Text = _windowTitle + " | " + GeneralConverters.GetFileNameFromPath(imagePath);
+                Text = _windowTitle + @" | " + GeneralConverters.GetFileNameFromPath(imagePath);
             }
             catch (Exception ex)
             {
@@ -551,8 +535,10 @@ namespace ImageView
             if (_formBookmarks == null || _formBookmarks.IsDisposed)
             {
                 _formBookmarks = new FormBookmarks();
-                _formBookmarks.Show();
             }
+            
+            _formBookmarks.Show();
+            _formBookmarks.Focus();
         }
 
         private void newWindowToolStripMenuItem_Click(object sender, EventArgs e)
