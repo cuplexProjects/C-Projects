@@ -21,5 +21,8 @@ namespace ImageView.DataContracts
 
         [DataMember(Name = "Date", Order = 5)]
         public DateTime Date { get; set; }
+
+        [DataMember(Name = "SourceImageDate", Order = 6)]
+        public DateTime SourceImageDate { get; set; }
     }
 }

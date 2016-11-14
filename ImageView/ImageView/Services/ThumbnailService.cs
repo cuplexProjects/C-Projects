@@ -49,6 +49,27 @@ namespace ImageView.Services
             _thumbnailManager.StopThumbnailScan();
         }
 
+        public void OptimizeDatabase()
+        {
+            _thumbnailManager.OptimizeDatabase();
+        }
+
+        public async void OptimizeDatabaseAsync()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _thumbnailManager.OptimizeDatabase();
+                });
+            }
+            catch (Exception exception)
+            {
+                _thumbnailManager.CloseFileHandle();
+                LogWriter.LogError("Error in OptimizeDatabaseAsync()", exception);
+            }
+        }
+
         public bool SaveThumbnailDatabase()
         {
             return _thumbnailManager.SaveThumbnailDatabase();

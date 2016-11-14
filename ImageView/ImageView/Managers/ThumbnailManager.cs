@@ -27,6 +27,7 @@ namespace ImageView.Managers
         private readonly Regex _fileNameRegExp;
         private const string DatabaseFilename = "thumbs.db";
         private const string DatabaseImgDataFilename = "thumbs.ibd";
+        private const string TemporaryDatabaseFilename = "temp.ibd";
         private const string DatabaseKey = "2C1D350D-B0E5-4181-8D60-CAE050132DC1";
         private const string ImageSearchPatterb = @"^[a-zA-Z0-9_]((.+\.jpg$)|(.+\.png$)|(.+\.jpeg$)|(.+\.gif$))";
 
@@ -44,6 +45,11 @@ namespace ImageView.Managers
             _fileNameRegExp = new Regex(ImageSearchPatterb, RegexOptions.IgnoreCase);
         }
 
+        public bool IsModified
+        {
+            get { return _isModified; }
+        }
+
         public static ThumbnailManager CreateNew(string dataStoragePath)
         {
             return new ThumbnailManager(dataStoragePath);
@@ -51,7 +57,7 @@ namespace ImageView.Managers
 
         public void StartThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress)
         {
-            if (_isRunningThumbnailScan)
+            if (_isRunningThumbnailScan || _fileManager.IsLocked)
                 return;
 
             _fileManager.CloseStream();
@@ -78,10 +84,12 @@ namespace ImageView.Managers
                 if (_fileNameRegExp.IsMatch(fileName) && !ThumbnailIsCached(fullPath))
                 {
                     Image img = LoadImageFromFile(fullPath);
+                    FileInfo fileInfo = new FileInfo(fullPath);
 
                     ThumbnailEntry thumbnail = new ThumbnailEntry
                     {
                         Date = DateTime.Now,
+                        SourceImageDate = fileInfo.LastWriteTime,
                         FileName = fileName,
                         Directory = path
                     };
@@ -92,6 +100,7 @@ namespace ImageView.Managers
 
                     _thumbnailDatabase.ThumbnailEntries.Add(thumbnail);
                     _fileDictionary.Add(path + fileName, thumbnail);
+                    _isModified = true;
 
                     // Update progress
                     scannedFiles++;
@@ -116,6 +125,9 @@ namespace ImageView.Managers
         {
             try
             {
+                if (_fileManager.IsLocked)
+                    return false;
+
                 string filename = _thumbnailDatabase.DataStroragePath + DatabaseFilename;
                 var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, DatabaseKey);
                 var storageManager = new StorageManager(settings);
@@ -139,6 +151,9 @@ namespace ImageView.Managers
         {
             try
             {
+                if (_fileManager.IsLocked)
+                    return false;
+
                 string filename = _thumbnailDatabase.DataStroragePath + DatabaseFilename;
                 if (!File.Exists(filename))
                 {
@@ -178,6 +193,11 @@ namespace ImageView.Managers
 
         public Image GetThumbnail(string fullPath)
         {
+            if (_fileManager.IsLocked)
+            {
+                return LoadImageFromFile(fullPath);
+            }
+
             if (ThumbnailIsCached(fullPath))
             {
                 return LoadImageFromCache(fullPath);
@@ -245,9 +265,11 @@ namespace ImageView.Managers
             if (_fileManager == null)
                 return;
 
+            FileInfo fileInfo= new FileInfo(path + fileName);
             ThumbnailEntry thumbnail = new ThumbnailEntry
             {
                 Date = DateTime.Now,
+                SourceImageDate = fileInfo.LastWriteTime,
                 FileName = fileName,
                 Directory = path
             };
@@ -258,17 +280,49 @@ namespace ImageView.Managers
 
             _thumbnailDatabase.ThumbnailEntries.Add(thumbnail);
             _fileDictionary.Add(path + fileName, thumbnail);
+            _isModified = true;
+        }
 
+        public void OptimizeDatabase()
+        {
+            var thumbnailsToRemove = new Queue<ThumbnailEntry>();
+            _fileManager.ClearDirectoryAccessCache();
+            foreach (ThumbnailEntry entry in _thumbnailDatabase.ThumbnailEntries)
+            {
+                if (!_fileManager.HasAccessToDirectory(entry.Directory)) continue;
+                if (FileManager.IsUpToDate(entry)) continue;
+                thumbnailsToRemove.Enqueue(entry);
+            }
+
+            if (thumbnailsToRemove.Count == 0)
+                return;
+
+            if (_fileManager.LockDatabase())
+            {
+                while (thumbnailsToRemove.Count > 0)
+                {
+                    ThumbnailEntry entry = thumbnailsToRemove.Dequeue();
+                    _thumbnailDatabase.ThumbnailEntries.Remove(entry);
+                }
+
+                _fileManager.RecreateDatabase(_thumbnailDatabase.ThumbnailEntries);
+                _fileDictionary = _thumbnailDatabase.ThumbnailEntries.ToDictionary(x => x.Directory + x.FileName, x => x);
+                _fileManager.UnlockDatabase();
+                SaveThumbnailDatabase();
+            }
         }
 
         private class FileManager : IDisposable
         {
             private readonly string _fileName;
             private FileStream _fileStream;
+            private readonly Dictionary<string, bool> _directoryAccessDictionary;
+            public bool IsLocked { get; private set; }
 
             public FileManager(string fileName)
             {
                 _fileName = fileName;
+                _directoryAccessDictionary = new Dictionary<string, bool>();
             }
 
             public Image ReadImage(int position, int length)
@@ -303,6 +357,52 @@ namespace ImageView.Managers
                 return fileEntry;
             }
 
+            public void RecreateDatabase(IEnumerable<ThumbnailEntry> thumbnailEntries)
+            {
+                if (_fileStream == null)
+                    _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                else
+                {
+                    SaveToDisk();
+                }
+
+                string tempFileName = GeneralConverters.GetDirectoryNameFromPath(_fileName)+ TemporaryDatabaseFilename;
+
+                FileStream temporaryDatabaseFile = null;
+                try
+                {
+                    if (File.Exists(tempFileName))
+                        File.Delete(tempFileName);
+
+                    temporaryDatabaseFile = File.OpenWrite(tempFileName);
+                    foreach (ThumbnailEntry entry in thumbnailEntries)
+                    {
+                        byte[] buffer = new byte[entry.Length];
+                        _fileStream.Position = entry.FilePosition;
+                        _fileStream.Read(buffer, 0, entry.Length);
+
+                        entry.FilePosition = temporaryDatabaseFile.Position;
+                        temporaryDatabaseFile.Write(buffer, 0, entry.Length);
+                    }
+
+                    CloseStream();
+                    temporaryDatabaseFile.Close();
+                    temporaryDatabaseFile = null;
+                    File.Delete(_fileName);
+                    File.Move(tempFileName, _fileName);
+                }
+                catch (Exception exception)
+                {
+                    LogWriter.LogError("Error in RecreateDatabase()", exception);
+                }
+                finally
+                {
+                    temporaryDatabaseFile?.Close();
+                    _fileStream?.Close();
+                    _fileStream = null;
+                }
+            }
+
             public void SaveToDisk()
             {
                 _fileStream?.Flush(true);
@@ -321,6 +421,64 @@ namespace ImageView.Managers
             public void Dispose()
             {
                 CloseStream();
+            }
+
+            /// <summary>
+            /// Verifies that the file does excist and that the physical file has not been written to after the thumbnail was created.
+            /// Assumes access to the directory
+            /// </summary>
+            /// <param name="thumbnailEntry"></param>
+            /// <returns>True if the thumbnail is up to date and the original file exists</returns>
+            public static bool IsUpToDate(ThumbnailEntry thumbnailEntry)
+            {
+                FileInfo fileInfo = new FileInfo(thumbnailEntry.Directory + thumbnailEntry.FileName);
+                return fileInfo.Exists && fileInfo.LastWriteTime == thumbnailEntry.SourceImageDate;
+            }
+
+            public void ClearDirectoryAccessCache()
+            {
+                _directoryAccessDictionary.Clear();
+            }
+
+            public bool HasAccessToDirectory(string directory)
+            {
+                if (_directoryAccessDictionary.ContainsKey(directory))
+                    return _directoryAccessDictionary[directory];
+
+                string volume = GeneralConverters.GetVolumeLabelFromPath(directory);
+                var drives = DriveInfo.GetDrives().ToList();
+
+                if (drives.Any(d => d.IsReady && d.Name.Equals(volume, StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    try
+                    {
+                        DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+                        directoryInfo.EnumerateFiles();
+                        _directoryAccessDictionary.Add(directory, true);
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        // ignored
+                    }
+                }
+
+                _directoryAccessDictionary.Add(directory, false);
+                return false;
+            }
+
+            public bool LockDatabase()
+            {
+                if (IsLocked)
+                    return false;
+
+                IsLocked = true;
+                return true;
+            }
+
+            public void UnlockDatabase()
+            {
+                IsLocked = false;
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralToolkitLib.ConfigHelper;
 using GeneralToolkitLib.Log;
+using ImageView.DataContracts;
 using ImageView.Models;
 using ImageView.Properties;
 using ImageView.Services;
@@ -17,12 +19,13 @@ namespace ImageView
 {
     public partial class FormThumbnailView : Form
     {
-        private int _thumbnailSize;
+        private readonly ThumbnailService _thumbnailService;
+        private string _maximizedImgFilename;
         private int _maxThumbnails;
         private List<Control> _pictureBoxList;
-        private readonly ThumbnailService _thumbnailService;
         private ThumbnailScanDirectory _thumbnailScan;
-        private string _maximizedImgFilename;
+        private int _thumbnailSize;
+
         public FormThumbnailView()
         {
             _thumbnailSize = ValidateThumbnailSize(ApplicationSettingsService.Instance.Settings.ThumbnailSize);
@@ -38,16 +41,16 @@ namespace ImageView
             if (DesignMode)
                 return;
 
-            var appSettings = ApplicationSettingsService.Instance.Settings;
+            ImageViewApplicationSettings appSettings = ApplicationSettingsService.Instance.Settings;
             RestoreFormState.SetFormSizeAndPosition(this, appSettings.ThumbnailFormSize, appSettings.ThumbnailFormLocation, Screen.PrimaryScreen.WorkingArea);
             Closing += FormThumbnailView_Closing;
             SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             UpdateStyles();
         }
 
-        private void FormThumbnailView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void FormThumbnailView_Closing(object sender, CancelEventArgs e)
         {
-            var appSettings = ApplicationSettingsService.Instance.Settings;
+            ImageViewApplicationSettings appSettings = ApplicationSettingsService.Instance.Settings;
             appSettings.ThumbnailFormLocation = Location;
             appSettings.ThumbnailFormSize = Size;
             ApplicationSettingsService.Instance.SaveSettings();
@@ -59,6 +62,7 @@ namespace ImageView
                 return;
 
             HideMaximizedView();
+            SetUpdateDatabaseEnabledState(false);
             flowLayoutPanel1.Controls.Clear();
 
             try
@@ -78,23 +82,36 @@ namespace ImageView
             }
         }
 
-        private void UpdatePictureBoxList(object sender,EventArgs e)
+        private void UpdatePictureBoxList(object sender, EventArgs e)
         {
             if (_pictureBoxList == null) return;
             flowLayoutPanel1.Controls.AddRange(_pictureBoxList.ToArray());
+            SetUpdateDatabaseEnabledState(true);
+
             GC.Collect();
+        }
+
+        private void SetUpdateDatabaseEnabledState(bool enabled)
+        {
+            btnOptimize.Enabled = enabled;
+            btnScanDirectory.Enabled = enabled;
+        }
+
+        private void OptimizeDatabaseComplete(object sender, EventArgs e)
+        {
+            SetUpdateDatabaseEnabledState(true);
         }
 
         private List<Control> GenerateThumbnails()
         {
             var pictureBoxes = new List<Control>();
             bool randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
-            var imgLoaderService = ImageLoaderService.Instance;
+            ImageLoaderService imgLoaderService = ImageLoaderService.Instance;
             var imgRefList = imgLoaderService.GenerateThumbnailList(randomizeImageCollection);
             int items = 0;
             foreach (ImageReferenceElement element in imgRefList)
             {
-                PictureBox pictureBox = new PictureBox
+                var pictureBox = new PictureBox
                 {
                     Image = _thumbnailService.GetThumbnail(element.CompletePath),
                     Width = _thumbnailSize,
@@ -113,12 +130,11 @@ namespace ImageView
                     return pictureBoxes;
             }
             return pictureBoxes;
-           
         }
 
         private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            PictureBox pictureBox = sender as PictureBox;
+            var pictureBox = sender as PictureBox;
 
             if (pictureBox == null || e.Button != MouseButtons.Left)
                 return;
@@ -199,7 +215,7 @@ namespace ImageView
                 _thumbnailService.SaveThumbnailDatabase();
                 _thumbnailService.Dispose();
                 GC.Collect();
-            }); 
+            });
         }
 
         private void picBoxMaximized_MouseClick(object sender, MouseEventArgs e)
@@ -229,8 +245,8 @@ namespace ImageView
 
         private void menuItemBookmark_Click(object sender, EventArgs e)
         {
-            FileInfo fi = new FileInfo(_maximizedImgFilename);
-            ImageReferenceElement imgRef = new ImageReferenceElement
+            var fi = new FileInfo(_maximizedImgFilename);
+            var imgRef = new ImageReferenceElement
             {
                 CompletePath = _maximizedImgFilename,
                 Size = fi.Length,
@@ -241,7 +257,7 @@ namespace ImageView
                 Directory = fi.DirectoryName
             };
 
-            FormAddBookmark addBookmark = new FormAddBookmark(contextMenuFullSizeImg.Location, imgRef);
+            var addBookmark = new FormAddBookmark(contextMenuFullSizeImg.Location, imgRef);
             addBookmark.ShowDialog(this);
         }
 
@@ -249,6 +265,18 @@ namespace ImageView
         {
             Clipboard.Clear();
             Clipboard.SetText(_maximizedImgFilename);
+        }
+
+        private async void btnOptimize_Click(object sender, EventArgs e)
+        {
+            SetUpdateDatabaseEnabledState(false);
+
+            await Task.Run(() =>
+            {
+                _thumbnailService.OptimizeDatabase();
+                if (!IsDisposed)
+                    Invoke(new EventHandler(OptimizeDatabaseComplete));
+            });
         }
     }
 }

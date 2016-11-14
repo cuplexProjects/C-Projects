@@ -41,6 +41,7 @@
             this.menuItemOpenInDefApp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemBookmark = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemCopyPath = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOptimize = new System.Windows.Forms.Button();
             this.grpBoxControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxMaximized)).BeginInit();
             this.contextMenuFullSizeImg.SuspendLayout();
@@ -74,6 +75,7 @@
             // 
             this.grpBoxControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpBoxControls.Controls.Add(this.btnOptimize);
             this.grpBoxControls.Controls.Add(this.btnScanDirectory);
             this.grpBoxControls.Controls.Add(this.btnSettings);
             this.grpBoxControls.Controls.Add(this.btnGenerate);
@@ -135,7 +137,7 @@
             this.menuItemBookmark,
             this.menuItemCopyPath});
             this.contextMenuFullSizeImg.Name = "contextMenuFullSizeImg";
-            this.contextMenuFullSizeImg.Size = new System.Drawing.Size(271, 110);
+            this.contextMenuFullSizeImg.Size = new System.Drawing.Size(271, 82);
             // 
             // menuItemOpenInDefApp
             // 
@@ -157,6 +159,16 @@
             this.menuItemCopyPath.Size = new System.Drawing.Size(270, 26);
             this.menuItemCopyPath.Text = "Copy Filepath";
             this.menuItemCopyPath.Click += new System.EventHandler(this.menuItemCopyPath_Click);
+            // 
+            // btnOptimize
+            // 
+            this.btnOptimize.Location = new System.Drawing.Point(325, 21);
+            this.btnOptimize.Name = "btnOptimize";
+            this.btnOptimize.Size = new System.Drawing.Size(92, 30);
+            this.btnOptimize.TabIndex = 3;
+            this.btnOptimize.Text = "Optimize";
+            this.btnOptimize.UseVisualStyleBackColor = true;
+            this.btnOptimize.Click += new System.EventHandler(this.btnOptimize_Click);
             // 
             // FormThumbnailView
             // 
@@ -197,5 +209,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuItemOpenInDefApp;
         private System.Windows.Forms.ToolStripMenuItem menuItemBookmark;
         private System.Windows.Forms.ToolStripMenuItem menuItemCopyPath;
+        private System.Windows.Forms.Button btnOptimize;
     }
 }
