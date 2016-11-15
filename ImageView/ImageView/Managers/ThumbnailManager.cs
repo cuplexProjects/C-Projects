@@ -83,7 +83,21 @@ namespace ImageView.Managers
 
                 if (_fileNameRegExp.IsMatch(fileName) && !ThumbnailIsCached(fullPath))
                 {
-                    Image img = LoadImageFromFile(fullPath);
+
+                    Image img = null;
+
+                    try
+                    {
+                        img = LoadImageFromFile(fullPath);
+                    }
+                    catch (Exception exception)
+                    {
+                        LogWriter.LogError("Error loading file: " + fullPath, exception);
+                    }
+
+                    if (img == null)
+                        continue;
+
                     FileInfo fileInfo = new FileInfo(fullPath);
 
                     ThumbnailEntry thumbnail = new ThumbnailEntry

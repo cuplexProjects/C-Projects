@@ -70,6 +70,7 @@ namespace ImageView
                 await Task.Run(() =>
                 {
                     _pictureBoxList = null;
+                    GC.Collect();
                     _pictureBoxList = GenerateThumbnails();
                     if (!IsDisposed)
                         Invoke(new EventHandler(UpdatePictureBoxList));
@@ -198,8 +199,9 @@ namespace ImageView
             frmDirectoryScan.FormClosed += FrmDirectoryScan_FormClosed;
 
             frmDirectoryScan.ShowDialog(this);
-            _thumbnailService.LoadThumbnailDatabase();
+            _thumbnailScan = null;
             GC.Collect();
+            _thumbnailService.LoadThumbnailDatabase();
         }
 
         private void FrmDirectoryScan_FormClosed(object sender, FormClosedEventArgs e)
