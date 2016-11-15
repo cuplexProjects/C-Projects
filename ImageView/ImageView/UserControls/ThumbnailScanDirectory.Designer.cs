@@ -36,6 +36,7 @@
             this.btnBrowse = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chbIncludeSubdirs = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -104,6 +105,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chbIncludeSubdirs);
             this.groupBox1.Controls.Add(this.lblDirectory);
             this.groupBox1.Controls.Add(this.btnCancel);
             this.groupBox1.Controls.Add(this.txtFolderPath);
@@ -116,6 +118,16 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Create thumbnails";
+            // 
+            // chbIncludeSubdirs
+            // 
+            this.chbIncludeSubdirs.AutoSize = true;
+            this.chbIncludeSubdirs.Location = new System.Drawing.Point(16, 85);
+            this.chbIncludeSubdirs.Name = "chbIncludeSubdirs";
+            this.chbIncludeSubdirs.Size = new System.Drawing.Size(147, 21);
+            this.chbIncludeSubdirs.TabIndex = 6;
+            this.chbIncludeSubdirs.Text = "Include Subfolders";
+            this.chbIncludeSubdirs.UseVisualStyleBackColor = true;
             // 
             // ThumbnailScanDirectory
             // 
@@ -141,5 +153,6 @@
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox chbIncludeSubdirs;
     }
 }

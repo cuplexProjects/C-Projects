@@ -9,33 +9,36 @@ namespace ImageView.Services
 {
     public class ThumbnailService : IDisposable
     {
-        private readonly string _basePath;
         private readonly ThumbnailManager _thumbnailManager;
 
         public ThumbnailService(string databaseDirectory)
         {
-            _basePath = databaseDirectory;
-            _thumbnailManager = ThumbnailManager.CreateNew(_basePath);
+            BasePath = databaseDirectory;
+            _thumbnailManager = ThumbnailManager.CreateNew(BasePath);
         }
 
-        public string BasePath => _basePath;
+        public string BasePath { get; }
 
-        public void ScanDirectory(string path)
+        public void Dispose()
         {
-            _thumbnailManager.StartThumbnailScan(path, null);
+            _thumbnailManager.Dispose();
+        }
+
+        public void ScanDirectory(string path, bool scanSubdirectories)
+        {
+            _thumbnailManager.StartThumbnailScan(path, null, scanSubdirectories);
             _thumbnailManager.SaveThumbnailDatabase();
         }
 
-        public async void ScanDirectoryAsync(string path, IProgress<ThumbnailScanProgress> progress)
+        public async void ScanDirectoryAsync(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
         {
             try
             {
                 await Task.Run(() =>
                 {
-                    _thumbnailManager.StartThumbnailScan(path, progress);
+                    _thumbnailManager.StartThumbnailScan(path, progress, scanSubdirectories);
                     _thumbnailManager.SaveThumbnailDatabase();
                 });
-
             }
             catch (Exception ex)
             {
@@ -58,10 +61,7 @@ namespace ImageView.Services
         {
             try
             {
-                await Task.Run(() =>
-                {
-                    _thumbnailManager.OptimizeDatabase();
-                });
+                await Task.Run(() => { _thumbnailManager.OptimizeDatabase(); });
             }
             catch (Exception exception)
             {
@@ -88,11 +88,6 @@ namespace ImageView.Services
         public Image GetThumbnail(string filename)
         {
             return _thumbnailManager.GetThumbnail(filename);
-        }
-
-        public void Dispose()
-        {
-            _thumbnailManager.Dispose();
         }
     }
 }

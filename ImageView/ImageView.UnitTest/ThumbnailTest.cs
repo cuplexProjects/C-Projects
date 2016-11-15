@@ -71,7 +71,7 @@ namespace ImageView.UnitTest
         public void ThumbnailScanDirectory()
         {
             ThumbnailService thumbnailService = new ThumbnailService(TestDirectory);
-            thumbnailService.ScanDirectory(TestDirectory);
+            thumbnailService.ScanDirectory(TestDirectory, false);
 
             Image thumbNailImage = thumbnailService.GetThumbnail(TestDirectory + testImages[0]);
             Assert.IsNotNull(thumbNailImage,"Thumbnail image 1 was null");
@@ -100,7 +100,7 @@ namespace ImageView.UnitTest
 
         private void CreateThumbnailDatabase(ThumbnailService thumbnailService)
         {
-            thumbnailService.ScanDirectory(TestDirectory);
+            thumbnailService.ScanDirectory(TestDirectory, false);
             thumbnailService.SaveThumbnailDatabase();
         }
     }

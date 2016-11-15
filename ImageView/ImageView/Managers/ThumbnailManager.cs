@@ -17,19 +17,17 @@ namespace ImageView.Managers
 {
     public class ThumbnailManager : IDisposable
     {
-        private Dictionary<string, ThumbnailEntry> _fileDictionary;
-        private ThumbnailDatabase _thumbnailDatabase;
-        private bool _isLoadedFromFile;
-        private bool _isModified;
-        private bool _isRunningThumbnailScan;
-        private bool _abortScan;
-        private FileManager _fileManager;
-        private readonly Regex _fileNameRegExp;
         private const string DatabaseFilename = "thumbs.db";
         private const string DatabaseImgDataFilename = "thumbs.ibd";
         private const string TemporaryDatabaseFilename = "temp.ibd";
         private const string DatabaseKey = "2C1D350D-B0E5-4181-8D60-CAE050132DC1";
         private const string ImageSearchPatterb = @"^[a-zA-Z0-9_]((.+\.jpg$)|(.+\.png$)|(.+\.jpeg$)|(.+\.gif$))";
+        private readonly Regex _fileNameRegExp;
+        private bool _abortScan;
+        private Dictionary<string, ThumbnailEntry> _fileDictionary;
+        private FileManager _fileManager;
+        private bool _isRunningThumbnailScan;
+        private ThumbnailDatabase _thumbnailDatabase;
 
         private ThumbnailManager(string dataStoragePath)
         {
@@ -45,9 +43,15 @@ namespace ImageView.Managers
             _fileNameRegExp = new Regex(ImageSearchPatterb, RegexOptions.IgnoreCase);
         }
 
-        public bool IsModified
+        public bool IsModified { get; private set; }
+
+        public void Dispose()
         {
-            get { return _isModified; }
+            _fileManager.Dispose();
+            _fileManager = null;
+
+            _fileDictionary = null;
+            _thumbnailDatabase = null;
         }
 
         public static ThumbnailManager CreateNew(string dataStoragePath)
@@ -55,7 +59,7 @@ namespace ImageView.Managers
             return new ThumbnailManager(dataStoragePath);
         }
 
-        public void StartThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress)
+        public void StartThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
         {
             if (_isRunningThumbnailScan || _fileManager.IsLocked)
                 return;
@@ -65,15 +69,45 @@ namespace ImageView.Managers
             _isRunningThumbnailScan = true;
             _abortScan = false;
 
-            string[] files = Directory.GetFiles(path);
             if (!Directory.Exists(path))
                 return;
+
+            var dirList = scanSubdirectories ? GetSubdirectoryList(path) : new List<string>();
+            dirList.Add(path);
+            int scannedFiles = dirList.TakeWhile(directory => !_abortScan).Sum(directory => PerformThumbnailScan(directory, progress));
+
+            _fileManager.CloseStream();
+            SaveThumbnailDatabase();
+
+            progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = scannedFiles, ScannedFiles = scannedFiles, IsComplete = true});
+            _isRunningThumbnailScan = false;
+        }
+
+        private List<string> GetSubdirectoryList(string path)
+        {
+            var subdirectoryList = new List<string>();
+            var directories = Directory.GetDirectories(path);
+
+            foreach (string directory in directories)
+            {
+                subdirectoryList.Add(directory);
+                subdirectoryList.AddRange(GetSubdirectoryList(directory));
+            }
+
+            return subdirectoryList;
+        }
+
+        private int PerformThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress)
+        {
+            var files = Directory.GetFiles(path);
+            if (!Directory.Exists(path))
+                return 0;
 
             if (!path.EndsWith("\\"))
                 path += "\\";
 
-            int scannedFiles = 0;
             int filesToScan = files.Length;
+            int scannedFiles = 0;
 
             foreach (string fullPath in files)
             {
@@ -81,52 +115,45 @@ namespace ImageView.Managers
                 if (_abortScan)
                     break;
 
-                if (_fileNameRegExp.IsMatch(fileName) && !ThumbnailIsCached(fullPath))
+                if (!_fileNameRegExp.IsMatch(fileName) || ThumbnailIsCached(fullPath)) continue;
+                Image img = null;
+
+                try
                 {
-
-                    Image img = null;
-
-                    try
-                    {
-                        img = LoadImageFromFile(fullPath);
-                    }
-                    catch (Exception exception)
-                    {
-                        LogWriter.LogError("Error loading file: " + fullPath, exception);
-                    }
-
-                    if (img == null)
-                        continue;
-
-                    FileInfo fileInfo = new FileInfo(fullPath);
-
-                    ThumbnailEntry thumbnail = new ThumbnailEntry
-                    {
-                        Date = DateTime.Now,
-                        SourceImageDate = fileInfo.LastWriteTime,
-                        FileName = fileName,
-                        Directory = path
-                    };
-
-                    FileEntry fileEntry = _fileManager.WriteImage(img);
-                    thumbnail.FilePosition = fileEntry.Position;
-                    thumbnail.Length = fileEntry.Length;
-
-                    _thumbnailDatabase.ThumbnailEntries.Add(thumbnail);
-                    _fileDictionary.Add(path + fileName, thumbnail);
-                    _isModified = true;
-
-                    // Update progress
-                    scannedFiles++;
-                    progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = filesToScan, ScannedFiles = scannedFiles});
+                    img = LoadImageFromFile(fullPath);
                 }
+                catch (Exception exception)
+                {
+                    LogWriter.LogError("Error loading file: " + fullPath, exception);
+                }
+
+                if (img == null)
+                    continue;
+
+                var fileInfo = new FileInfo(fullPath);
+
+                var thumbnail = new ThumbnailEntry
+                {
+                    Date = DateTime.Now,
+                    SourceImageDate = fileInfo.LastWriteTime,
+                    FileName = fileName,
+                    Directory = path
+                };
+
+                FileEntry fileEntry = _fileManager.WriteImage(img);
+                thumbnail.FilePosition = fileEntry.Position;
+                thumbnail.Length = fileEntry.Length;
+
+                _thumbnailDatabase.ThumbnailEntries.Add(thumbnail);
+                _fileDictionary.Add(path + fileName, thumbnail);
+                IsModified = true;
+
+                // Update progress
+                scannedFiles++;
+                progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = filesToScan, ScannedFiles = scannedFiles});
             }
 
-            _fileManager.CloseStream();
-            SaveThumbnailDatabase();
-
-            progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = filesToScan, ScannedFiles = scannedFiles, IsComplete = true});
-            _isRunningThumbnailScan = false;
+            return scannedFiles;
         }
 
         public void StopThumbnailScan()
@@ -149,7 +176,7 @@ namespace ImageView.Managers
 
                 if (successful)
                 {
-                    _isModified = false;
+                    IsModified = false;
                 }
 
                 return successful;
@@ -174,7 +201,6 @@ namespace ImageView.Managers
                     return false;
                 }
 
-                _isLoadedFromFile = true;
                 var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, DatabaseKey);
                 var storageManager = new StorageManager(settings);
                 var thumbnailDatabase = storageManager.DeserializeObjectFromFile<ThumbnailDatabase>(filename, null);
@@ -184,7 +210,7 @@ namespace ImageView.Managers
                     _thumbnailDatabase = thumbnailDatabase;
                     _fileDictionary = _thumbnailDatabase.ThumbnailEntries.ToDictionary(x => x.Directory + x.FileName, x => x);
 
-                    _isModified = false;
+                    IsModified = false;
 
                     return true;
                 }
@@ -209,7 +235,15 @@ namespace ImageView.Managers
         {
             if (_fileManager.IsLocked)
             {
-                return LoadImageFromFile(fullPath);
+                try
+                {
+                    return LoadImageFromFile(fullPath);
+                }
+                catch (Exception)
+                {
+                    LogWriter.LogMessage("Failed to load file: " + fullPath + "\nThe file might me corrupt.", LogWriter.LogLevel.Error);
+                    throw;
+                }
             }
 
             if (ThumbnailIsCached(fullPath))
@@ -240,7 +274,6 @@ namespace ImageView.Managers
             {
                 if (width > MaxSize)
                 {
-
                     double factor = (double) width/MaxSize;
                     width = MaxSize;
                     height = Convert.ToInt32(Math.Ceiling(height/factor));
@@ -279,8 +312,8 @@ namespace ImageView.Managers
             if (_fileManager == null)
                 return;
 
-            FileInfo fileInfo= new FileInfo(path + fileName);
-            ThumbnailEntry thumbnail = new ThumbnailEntry
+            var fileInfo = new FileInfo(path + fileName);
+            var thumbnail = new ThumbnailEntry
             {
                 Date = DateTime.Now,
                 SourceImageDate = fileInfo.LastWriteTime,
@@ -294,7 +327,7 @@ namespace ImageView.Managers
 
             _thumbnailDatabase.ThumbnailEntries.Add(thumbnail);
             _fileDictionary.Add(path + fileName, thumbnail);
-            _isModified = true;
+            IsModified = true;
         }
 
         public void OptimizeDatabase()
@@ -326,17 +359,33 @@ namespace ImageView.Managers
             }
         }
 
+        public int GetNumberOfCachedThumbnails()
+        {
+            return _thumbnailDatabase.ThumbnailEntries.Count;
+        }
+
+        public void CloseFileHandle()
+        {
+            _fileManager.CloseStream();
+        }
+
         private class FileManager : IDisposable
         {
+            private readonly Dictionary<string, bool> _directoryAccessDictionary;
             private readonly string _fileName;
             private FileStream _fileStream;
-            private readonly Dictionary<string, bool> _directoryAccessDictionary;
-            public bool IsLocked { get; private set; }
 
             public FileManager(string fileName)
             {
                 _fileName = fileName;
                 _directoryAccessDictionary = new Dictionary<string, bool>();
+            }
+
+            public bool IsLocked { get; private set; }
+
+            public void Dispose()
+            {
+                CloseStream();
             }
 
             public Image ReadImage(int position, int length)
@@ -345,10 +394,10 @@ namespace ImageView.Managers
                     _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
                 _fileStream.Position = position;
-                byte[] buffer = new byte[length];
+                var buffer = new byte[length];
                 _fileStream.Read(buffer, 0, length);
 
-                MemoryStream ms = new MemoryStream(buffer);
+                var ms = new MemoryStream(buffer);
                 Image img = Image.FromStream(ms);
                 return img;
             }
@@ -362,7 +411,7 @@ namespace ImageView.Managers
                 long position = _fileStream.Position;
                 img.Save(_fileStream, ImageFormat.Jpeg);
 
-                FileEntry fileEntry = new FileEntry
+                var fileEntry = new FileEntry
                 {
                     Position = position,
                     Length = Convert.ToInt32(_fileStream.Position - position)
@@ -380,7 +429,7 @@ namespace ImageView.Managers
                     SaveToDisk();
                 }
 
-                string tempFileName = GeneralConverters.GetDirectoryNameFromPath(_fileName)+ TemporaryDatabaseFilename;
+                string tempFileName = GeneralConverters.GetDirectoryNameFromPath(_fileName) + TemporaryDatabaseFilename;
 
                 FileStream temporaryDatabaseFile = null;
                 try
@@ -391,7 +440,7 @@ namespace ImageView.Managers
                     temporaryDatabaseFile = File.OpenWrite(tempFileName);
                     foreach (ThumbnailEntry entry in thumbnailEntries)
                     {
-                        byte[] buffer = new byte[entry.Length];
+                        var buffer = new byte[entry.Length];
                         _fileStream.Position = entry.FilePosition;
                         _fileStream.Read(buffer, 0, entry.Length);
 
@@ -432,20 +481,16 @@ namespace ImageView.Managers
                 }
             }
 
-            public void Dispose()
-            {
-                CloseStream();
-            }
-
             /// <summary>
-            /// Verifies that the file does excist and that the physical file has not been written to after the thumbnail was created.
-            /// Assumes access to the directory
+            ///     Verifies that the file does excist and that the physical file has not been written to after the thumbnail was
+            ///     created.
+            ///     Assumes access to the directory
             /// </summary>
             /// <param name="thumbnailEntry"></param>
             /// <returns>True if the thumbnail is up to date and the original file exists</returns>
             public static bool IsUpToDate(ThumbnailEntry thumbnailEntry)
             {
-                FileInfo fileInfo = new FileInfo(thumbnailEntry.Directory + thumbnailEntry.FileName);
+                var fileInfo = new FileInfo(thumbnailEntry.Directory + thumbnailEntry.FileName);
                 return fileInfo.Exists && fileInfo.LastWriteTime == thumbnailEntry.SourceImageDate;
             }
 
@@ -466,7 +511,7 @@ namespace ImageView.Managers
                 {
                     try
                     {
-                        DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+                        var directoryInfo = new DirectoryInfo(directory);
                         directoryInfo.EnumerateFiles();
                         _directoryAccessDictionary.Add(directory, true);
                         return true;
@@ -500,25 +545,6 @@ namespace ImageView.Managers
         {
             public long Position { get; set; }
             public int Length { get; set; }
-        }
-
-        public void Dispose()
-        {
-            _fileManager.Dispose();
-            _fileManager = null;
-
-            _fileDictionary = null;
-            _thumbnailDatabase = null;
-        }
-
-        public int GetNumberOfCachedThumbnails()
-        {
-            return _thumbnailDatabase.ThumbnailEntries.Count;
-        }
-
-        public void CloseFileHandle()
-        {
-            _fileManager.CloseStream();
         }
     }
 }

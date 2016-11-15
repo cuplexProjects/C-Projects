@@ -36,8 +36,8 @@ namespace ImageView.UserControls
         {
             _scaningDirectory = true;
             var progress = new Progress<ThumbnailScanProgress>(Handler);
-           
-            _thumbnailService.ScanDirectoryAsync(txtFolderPath.Text, progress);
+
+            _thumbnailService.ScanDirectoryAsync(txtFolderPath.Text, progress, chbIncludeSubdirs.Checked);
             UpdateButtonState();
         }
 

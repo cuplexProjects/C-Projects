@@ -12,6 +12,7 @@ namespace ImageView.Utility
             frmSettings.StartPosition = FormStartPosition.CenterParent;
             frmSettings.ShowInTaskbar = false;
             frmSettings.ShowIcon = false;
+            frmSettings.MaximizeBox = false;
             frmSettings.Width = frmSettings.Controls[0].Size.Width + 25;
             frmSettings.Height = frmSettings.Controls[0].Size.Height + 55;
 
@@ -26,6 +27,7 @@ namespace ImageView.Utility
             frmModal.StartPosition = FormStartPosition.CenterParent;
             frmModal.ShowInTaskbar = false;
             frmModal.ShowIcon = false;
+            frmModal.MaximizeBox = false;
             frmModal.Width = userControl.Controls[0].Size.Width + 25;
             frmModal.Height = userControl.Controls[0].Size.Height + 55;
 
