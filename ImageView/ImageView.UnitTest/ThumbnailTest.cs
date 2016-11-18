@@ -98,6 +98,53 @@ namespace ImageView.UnitTest
             thumbnailService.Dispose();
         }
 
+        [TestMethod]
+        public void ThumbnailOptimizeDatabaseAfterFileRemoval()
+        {
+            ThumbnailService thumbnailService = new ThumbnailService(TestDirectory);
+            thumbnailService.ScanDirectory(TestDirectory, false);
+
+            // Verify that there are testImages.Length thumbnails created
+            Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == testImages.Length, "The thumbnail cache did not contain thhe right amount of images");
+
+            //Remove the first file
+            File.Delete(TestDirectory + testImages[0]);
+
+            // Optimize DB
+            thumbnailService.OptimizeDatabase();
+
+            // Verify that one thumbnail was removed
+            Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == testImages.Length-1, "The thumbnail service did not remove a cached item");
+
+            thumbnailService.Dispose();
+        }
+
+        [TestMethod]
+        public void ThumbnailOptimizeDatabaseAfterFileUpdated()
+        {
+            ThumbnailService thumbnailService = new ThumbnailService(TestDirectory);
+            thumbnailService.ScanDirectory(TestDirectory, false);
+
+            // Verify that there are testImages.Length thumbnails created
+            Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == testImages.Length, "The thumbnail cache did not contain thhe right amount of images");
+
+            //Modify the first file
+            FileStream fs = File.OpenWrite(TestDirectory + testImages[0]);
+            byte[] buffer=new byte[1];
+            buffer[0] = 0xff;
+            fs.Write(buffer,0,1);
+            fs.Flush(true);
+            fs.Close();
+
+            // Optimize DB
+            thumbnailService.OptimizeDatabase();
+
+            // Verify that one thumbnail was removed
+            Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == testImages.Length - 1, "The thumbnail service did not remove a cached item");
+
+            thumbnailService.Dispose();
+        }
+
         private void CreateThumbnailDatabase(ThumbnailService thumbnailService)
         {
             thumbnailService.ScanDirectory(TestDirectory, false);

@@ -83,6 +83,139 @@ namespace ImageView.Managers
             _isRunningThumbnailScan = false;
         }
 
+        public void StopThumbnailScan()
+        {
+            if (_isRunningThumbnailScan)
+                _abortScan = true;
+        }
+
+        public bool SaveThumbnailDatabase()
+        {
+            try
+            {
+                if (_fileManager.IsLocked)
+                    return false;
+
+                string filename = _thumbnailDatabase.DataStroragePath + DatabaseFilename;
+                var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, DatabaseKey);
+                var storageManager = new StorageManager(settings);
+                bool successful = storageManager.SerializeObjectToFile(_thumbnailDatabase, filename, null);
+
+                if (successful)
+                {
+                    IsModified = false;
+                }
+
+                return successful;
+            }
+            catch (Exception ex)
+            {
+                LogWriter.LogError("ThumbnailManager.SaveToFile(string filename, string password) : " + ex.Message, ex);
+                return false;
+            }
+        }
+
+        public bool LoadThumbnailDatabase()
+        {
+            try
+            {
+                if (_fileManager.IsLocked)
+                    return false;
+
+                string filename = _thumbnailDatabase.DataStroragePath + DatabaseFilename;
+                if (!File.Exists(filename))
+                {
+                    return false;
+                }
+
+                var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, DatabaseKey);
+                var storageManager = new StorageManager(settings);
+                var thumbnailDatabase = storageManager.DeserializeObjectFromFile<ThumbnailDatabase>(filename, null);
+
+                if (ValidateThumbnailDatabase(thumbnailDatabase))
+                {
+                    _thumbnailDatabase = thumbnailDatabase;
+                    _fileDictionary = _thumbnailDatabase.ThumbnailEntries.ToDictionary(x => x.Directory + x.FileName, x => x);
+
+                    IsModified = false;
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.LogError("ThumbnailManager.LoadFromFile(string filename, string password) : " + ex.Message, ex);
+            }
+
+            return false;
+        }
+
+        public Image GetThumbnail(string fullPath)
+        {
+            if (_fileManager.IsLocked)
+            {
+                try
+                {
+                    return LoadImageFromFile(fullPath);
+                }
+                catch (Exception)
+                {
+                    LogWriter.LogMessage("Failed to load file: " + fullPath + "\nThe file might me corrupt.", LogWriter.LogLevel.Error);
+                    throw;
+                }
+            }
+
+            if (ThumbnailIsCached(fullPath))
+            {
+                return LoadImageFromCache(fullPath);
+            }
+
+            Image img = LoadImageFromFile(fullPath);
+            string directory = GeneralConverters.GetDirectoryNameFromPath(fullPath);
+            string filename = GeneralConverters.GetFileNameFromPath(fullPath);
+            AddImageToCache(img, directory, filename);
+            return img;
+        }
+
+        public void OptimizeDatabase()
+        {
+            var thumbnailsToRemove = new Queue<ThumbnailEntry>();
+            _fileManager.ClearDirectoryAccessCache();
+            foreach (ThumbnailEntry entry in _thumbnailDatabase.ThumbnailEntries)
+            {
+                if (!_fileManager.HasAccessToDirectory(entry.Directory)) continue;
+                if (FileManager.IsUpToDate(entry)) continue;
+                thumbnailsToRemove.Enqueue(entry);
+            }
+
+            if (thumbnailsToRemove.Count == 0)
+                return;
+
+            if (_fileManager.LockDatabase())
+            {
+                while (thumbnailsToRemove.Count > 0)
+                {
+                    ThumbnailEntry entry = thumbnailsToRemove.Dequeue();
+                    _thumbnailDatabase.ThumbnailEntries.Remove(entry);
+                }
+
+                _fileManager.RecreateDatabase(_thumbnailDatabase.ThumbnailEntries);
+                _fileDictionary = _thumbnailDatabase.ThumbnailEntries.ToDictionary(x => x.Directory + x.FileName, x => x);
+                _fileManager.UnlockDatabase();
+                SaveThumbnailDatabase();
+            }
+        }
+
+        public int GetNumberOfCachedThumbnails()
+        {
+            return _thumbnailDatabase.ThumbnailEntries.Count;
+        }
+
+        public void CloseFileHandle()
+        {
+            _fileManager.CloseStream();
+        }
+
         private List<string> GetSubdirectoryList(string path)
         {
             var subdirectoryList = new List<string>();
@@ -156,106 +289,12 @@ namespace ImageView.Managers
             return scannedFiles;
         }
 
-        public void StopThumbnailScan()
-        {
-            if (_isRunningThumbnailScan)
-                _abortScan = true;
-        }
-
-        public bool SaveThumbnailDatabase()
-        {
-            try
-            {
-                if (_fileManager.IsLocked)
-                    return false;
-
-                string filename = _thumbnailDatabase.DataStroragePath + DatabaseFilename;
-                var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, DatabaseKey);
-                var storageManager = new StorageManager(settings);
-                bool successful = storageManager.SerializeObjectToFile(_thumbnailDatabase, filename, null);
-
-                if (successful)
-                {
-                    IsModified = false;
-                }
-
-                return successful;
-            }
-            catch (Exception ex)
-            {
-                LogWriter.LogError("ThumbnailManager.SaveToFile(string filename, string password) : " + ex.Message, ex);
-                return false;
-            }
-        }
-
-        public bool LoadThumbnailDatabase()
-        {
-            try
-            {
-                if (_fileManager.IsLocked)
-                    return false;
-
-                string filename = _thumbnailDatabase.DataStroragePath + DatabaseFilename;
-                if (!File.Exists(filename))
-                {
-                    return false;
-                }
-
-                var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, DatabaseKey);
-                var storageManager = new StorageManager(settings);
-                var thumbnailDatabase = storageManager.DeserializeObjectFromFile<ThumbnailDatabase>(filename, null);
-
-                if (ValidateThumbnailDatabase(thumbnailDatabase))
-                {
-                    _thumbnailDatabase = thumbnailDatabase;
-                    _fileDictionary = _thumbnailDatabase.ThumbnailEntries.ToDictionary(x => x.Directory + x.FileName, x => x);
-
-                    IsModified = false;
-
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                LogWriter.LogError("ThumbnailManager.LoadFromFile(string filename, string password) : " + ex.Message, ex);
-            }
-
-            return false;
-        }
-
         private bool ValidateThumbnailDatabase(ThumbnailDatabase thumbnailDatabase)
         {
             if (thumbnailDatabase.ThumbnailEntries == null)
                 thumbnailDatabase.ThumbnailEntries = new List<ThumbnailEntry>();
 
             return true;
-        }
-
-        public Image GetThumbnail(string fullPath)
-        {
-            if (_fileManager.IsLocked)
-            {
-                try
-                {
-                    return LoadImageFromFile(fullPath);
-                }
-                catch (Exception)
-                {
-                    LogWriter.LogMessage("Failed to load file: " + fullPath + "\nThe file might me corrupt.", LogWriter.LogLevel.Error);
-                    throw;
-                }
-            }
-
-            if (ThumbnailIsCached(fullPath))
-            {
-                return LoadImageFromCache(fullPath);
-            }
-
-            Image img = LoadImageFromFile(fullPath);
-            string directory = GeneralConverters.GetDirectoryNameFromPath(fullPath);
-            string filename = GeneralConverters.GetFileNameFromPath(fullPath);
-            AddImageToCache(img, directory, filename);
-            return img;
         }
 
         private bool ThumbnailIsCached(string filename)
@@ -328,45 +367,6 @@ namespace ImageView.Managers
             _thumbnailDatabase.ThumbnailEntries.Add(thumbnail);
             _fileDictionary.Add(path + fileName, thumbnail);
             IsModified = true;
-        }
-
-        public void OptimizeDatabase()
-        {
-            var thumbnailsToRemove = new Queue<ThumbnailEntry>();
-            _fileManager.ClearDirectoryAccessCache();
-            foreach (ThumbnailEntry entry in _thumbnailDatabase.ThumbnailEntries)
-            {
-                if (!_fileManager.HasAccessToDirectory(entry.Directory)) continue;
-                if (FileManager.IsUpToDate(entry)) continue;
-                thumbnailsToRemove.Enqueue(entry);
-            }
-
-            if (thumbnailsToRemove.Count == 0)
-                return;
-
-            if (_fileManager.LockDatabase())
-            {
-                while (thumbnailsToRemove.Count > 0)
-                {
-                    ThumbnailEntry entry = thumbnailsToRemove.Dequeue();
-                    _thumbnailDatabase.ThumbnailEntries.Remove(entry);
-                }
-
-                _fileManager.RecreateDatabase(_thumbnailDatabase.ThumbnailEntries);
-                _fileDictionary = _thumbnailDatabase.ThumbnailEntries.ToDictionary(x => x.Directory + x.FileName, x => x);
-                _fileManager.UnlockDatabase();
-                SaveThumbnailDatabase();
-            }
-        }
-
-        public int GetNumberOfCachedThumbnails()
-        {
-            return _thumbnailDatabase.ThumbnailEntries.Count;
-        }
-
-        public void CloseFileHandle()
-        {
-            _fileManager.CloseStream();
         }
 
         private class FileManager : IDisposable
@@ -539,12 +539,6 @@ namespace ImageView.Managers
             {
                 IsLocked = false;
             }
-        }
-
-        private class FileEntry
-        {
-            public long Position { get; set; }
-            public int Length { get; set; }
         }
     }
 }

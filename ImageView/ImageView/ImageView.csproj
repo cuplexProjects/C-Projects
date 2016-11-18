@@ -148,6 +148,7 @@
     <Compile Include="Models\CachedImage.cs" />
     <Compile Include="Managers\BookmarkManager.cs" />
     <Compile Include="DataContracts\ImageReference.cs" />
+    <Compile Include="Models\FileEntry.cs" />
     <Compile Include="Models\ImageReferenceCollection.cs" />
     <Compile Include="Models\Interface\ImageViewFormWindow.cs" />
     <Compile Include="Events\ImageViewFormImageInfo.cs" />
@@ -226,6 +227,7 @@
     <Compile Include="FormWindows.Designer.cs">
       <DependentUpon>FormWindows.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Interface\IRepository.cs" />
     <Compile Include="Models\ThumbnailScanProgress.cs" />
     <Compile Include="Services\ApplicationSettingsService.cs" />
     <Compile Include="FileBrowser.cs">
