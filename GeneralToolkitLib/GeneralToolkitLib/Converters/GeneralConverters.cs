@@ -9,14 +9,9 @@ namespace GeneralToolkitLib.Converters
 {
     public static class GeneralConverters
     {
-        internal struct StaticLongFileSizes
-        {
-            public static readonly string[] FileSizeTypesStrings = {"b", "kB", "Mb", "Gb", "Tb", "Pbyte"};
-        }
-
         public static int GetSecondsFromDateTime(DateTime date)
         {
-            return (date.Hour * 3600) + (date.Minute * 60) + date.Second;
+            return date.Hour*3600 + date.Minute*60 + date.Second;
         }
 
         public static string GetFileNameFromPath(string path)
@@ -49,7 +44,7 @@ namespace GeneralToolkitLib.Converters
             if (string.IsNullOrEmpty(path))
                 return null;
 
-            string[] pathSplitArr = path.Split('\\');
+            var pathSplitArr = path.Split('\\');
             if (pathSplitArr.Length > 0)
                 return pathSplitArr[0] + "\\";
 
@@ -64,7 +59,7 @@ namespace GeneralToolkitLib.Converters
             while (dblRes > 1024)
             {
                 iCnt++;
-                dblRes = dblRes / 1024;
+                dblRes = dblRes/1024;
             }
             dblRes = Math.Round(dblRes, 2);
             if (iCnt < fileSizeType.Length)
@@ -80,7 +75,7 @@ namespace GeneralToolkitLib.Converters
 
         public static string ByteArrayToHexString(byte[] data)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (byte b in data)
                 sb.AppendFormat("{0:X2}", b);
 
@@ -90,9 +85,9 @@ namespace GeneralToolkitLib.Converters
         public static byte[] HexStringToByteArray(string hex)
         {
             return Enumerable.Range(0, hex.Length)
-                             .Where(x => x % 2 == 0)
-                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                             .ToArray();
+                .Where(x => x%2 == 0)
+                .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                .ToArray();
         }
 
         public static string GetRandomHexValue(int length)
@@ -100,9 +95,9 @@ namespace GeneralToolkitLib.Converters
             if (length < 2)
                 throw new ArgumentException("Data length must be atleast 2");
 
-            using (var rndGen = RNGCryptoServiceProvider.Create())
+            using (RandomNumberGenerator rndGen = RandomNumberGenerator.Create())
             {
-                byte[] buffer = new byte[length / 2];
+                var buffer = new byte[length/2];
                 rndGen.GetBytes(buffer);
                 return ByteArrayToHexString(buffer);
             }
@@ -137,13 +132,15 @@ namespace GeneralToolkitLib.Converters
 
         public static string GeneratePasswordDerivedString(string verifiedPassword)
         {
-            using (var sha512Implementation = SHA512.Create())
+            using (SHA512 sha512Implementation = SHA512.Create())
             {
-                const string salt1 = "MVtdiy4OhAMRMKDSKUojgAirwacYRuUnT9R84DgnwOaOl0QTppuv8m3poCaElfKVBlEClohoXusGzg6vOUEgHK7yHj0vzq8eedTX0sHkmrk1sDH1AXMJ1ELODvbia6R0but4npqsVzuT3q3GukH20pswOatqLVzMSuPZrigZKRUqlJMeG4NoNqkdJyh0QPKQDeznEshFB7VqwIiqeMMtDNQx6H4HXBibpMqBhV2Ptcbf3MdkKvg8stdjsS6cd7ds";
-                const string salt2 = "Nv7YkXUghdWRN2MJVF6fe8p3Llo4D5rsHckmtzPdJnsLRQisCT442Wh1nIdnmbgGxE4NuEBTjtthzM42mmFT74knRWiVhoXpBoQWdOc0njJGikZNJbSMQU3sZwtq5uhRNb3WKyRSfOM0RoRB6KqRO5ItxdhxXYVjSEvYq0NlMVllydrV7NjR65eaVdl6RIxHe6y42O3j79N0dL67aeoxTHTRP0YxnfxiOqLtIsdMB2Wb2xulXht9UZjTcTLLMe09";
+                const string salt1 =
+                    "MVtdiy4OhAMRMKDSKUojgAirwacYRuUnT9R84DgnwOaOl0QTppuv8m3poCaElfKVBlEClohoXusGzg6vOUEgHK7yHj0vzq8eedTX0sHkmrk1sDH1AXMJ1ELODvbia6R0but4npqsVzuT3q3GukH20pswOatqLVzMSuPZrigZKRUqlJMeG4NoNqkdJyh0QPKQDeznEshFB7VqwIiqeMMtDNQx6H4HXBibpMqBhV2Ptcbf3MdkKvg8stdjsS6cd7ds";
+                const string salt2 =
+                    "Nv7YkXUghdWRN2MJVF6fe8p3Llo4D5rsHckmtzPdJnsLRQisCT442Wh1nIdnmbgGxE4NuEBTjtthzM42mmFT74knRWiVhoXpBoQWdOc0njJGikZNJbSMQU3sZwtq5uhRNb3WKyRSfOM0RoRB6KqRO5ItxdhxXYVjSEvYq0NlMVllydrV7NjR65eaVdl6RIxHe6y42O3j79N0dL67aeoxTHTRP0YxnfxiOqLtIsdMB2Wb2xulXht9UZjTcTLLMe09";
 
-                byte[] hashInputArray = Encoding.UTF8.GetBytes(salt1 + verifiedPassword + salt2);
-                byte[] hashedBytes = sha512Implementation.ComputeHash(hashInputArray, 0, hashInputArray.Length);
+                var hashInputArray = Encoding.UTF8.GetBytes(salt1 + verifiedPassword + salt2);
+                var hashedBytes = sha512Implementation.ComputeHash(hashInputArray, 0, hashInputArray.Length);
 
                 for (int i = 0; i < 10; i++)
                     hashedBytes = sha512Implementation.ComputeHash(hashedBytes, 0, hashedBytes.Length);
@@ -152,24 +149,43 @@ namespace GeneralToolkitLib.Converters
             }
         }
 
+        public static byte[] GetByteArrayFromString(string str)
+        {
+            var bytes = new byte[str.Length*sizeof(char)];
+            Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
+        }
+
+        public static string GetStringFromByteArray(byte[] bytes)
+        {
+            var chars = new char[bytes.Length/sizeof(char)];
+            Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+            return new string(chars);
+        }
+
+
+        public static string ByteArrayToBase64(byte[] bytes)
+        {
+            return Convert.ToBase64String(bytes);
+        }
+
+        private struct StaticLongFileSizes
+        {
+            public static readonly string[] FileSizeTypesStrings = {"b", "kB", "Mb", "Gb", "Tb", "Pbyte"};
+        }
+
         public static class FileSizeToStringFormater
         {
-            private static readonly string[] FileSizeTypesStrings = {" B", " KB", " MB", " GB", " TB", " PByte"};
-
             public enum FileSizeSteps : long
             {
                 Byte = 0x0,
                 KiloByte = 0x400,
                 MegaByte = 0x100000,
                 GigaByte = 0x40000000,
-                PetaByte = 0x10000000000,
+                PetaByte = 0x10000000000
             }
 
-            public struct OffsetRange
-            {
-                public FileSizeSteps FileSizeStep;
-                public long Max;
-            }
+            private static readonly string[] FileSizeTypesStrings = {" B", " KB", " MB", " GB", " TB", " PByte"};
 
             public static string ConvertFileSizeToString(long fileSize)
             {
@@ -197,7 +213,7 @@ namespace GeneralToolkitLib.Converters
                     int arrayPos = 0;
                     do
                     {
-                        decData = decData / 1024d;
+                        decData = decData/1024d;
                         arrayPos++;
                     } while (decData > 0x400);
 
@@ -207,26 +223,11 @@ namespace GeneralToolkitLib.Converters
                 return fileSize + FileSizeTypesStrings[0];
             }
 
-        }
- 
-        public static byte[] GetByteArrayFromString(string str)
-        {
-            byte[] bytes = new byte[str.Length * sizeof(char)];
-            Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
-            return bytes;
-        }
-
-        public static string GetStringFromByteArray(byte[] bytes)
-        {
-            char[] chars = new char[bytes.Length / sizeof(char)];
-            Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
-            return new string(chars);
-        }
-        
-
-        public static string ByteArrayToBase64(byte[] bytes)
-        {
-            return Convert.ToBase64String(bytes);
+            public struct OffsetRange
+            {
+                public FileSizeSteps FileSizeStep;
+                public long Max;
+            }
         }
     }
 }
