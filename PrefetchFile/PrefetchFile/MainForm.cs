@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,6 +21,7 @@ namespace PrefetchFile
         private void MainForm_Load(object sender, EventArgs e)
         {
             UpdateFileRangeLabel();
+            Text = Assembly.GetExecutingAssembly().GetName().Name + @" - Version "+ Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
