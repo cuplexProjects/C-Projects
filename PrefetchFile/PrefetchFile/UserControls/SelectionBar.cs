@@ -6,14 +6,13 @@ using System.Windows.Forms;
 
 namespace PrefetchFile.UserControls
 {
-    public class BarSelector : Panel
+    public class SelectionBar : Panel
     {
         private readonly MouseAction _mouseAction;
         private int _selectionEnd;
         private int _selectionStart;
-        public event EventHandler SelectionChanged;
 
-        public BarSelector()
+        public SelectionBar()
         {
             MinValue = 0;
             MaxValue = 100;
@@ -49,7 +48,6 @@ namespace PrefetchFile.UserControls
                     SelectionChanged?.Invoke(this, new EventArgs());
                     Invalidate();
                 }
-                   
             }
         }
 
@@ -118,7 +116,6 @@ namespace PrefetchFile.UserControls
         {
             bool pointOverResizeLeft = IsPointOverSelectionStart(e.Location);
             bool pointOverResizeRight = IsPointOverSelectionEnd(e.Location);
-
             bool mouseOverResize = pointOverResizeLeft || pointOverResizeRight;
 
             //Set cursor
@@ -127,55 +124,90 @@ namespace PrefetchFile.UserControls
                 Cursor.Current = mouseOverResize ? Cursors.SizeWE : DefaultCursor;
                 _mouseAction.Resizing = mouseOverResize;
             }
-            else if(Enabled)
+            else if (Enabled)
             {
-                if (_mouseAction.Resizing)
+                if (_mouseAction.BarState == BarState.None)
                 {
-                    if (pointOverResizeLeft)
+                    if (_mouseAction.Resizing)
                     {
-                        double delta = (double) e.Location.X/ClientSize.Width;
-                        SelectionStart = Convert.ToInt32(MaxValue*delta);
-                        if (SelectionStart < 1 - MinValue)
-                            SelectionStart = MinValue;
-                        Invalidate();
+                        if (pointOverResizeLeft)
+                            _mouseAction.BarState = BarState.ResizingLeft;
+                        else if (pointOverResizeRight)
+                            _mouseAction.BarState = BarState.ResizingRight;
                     }
-                    else
-                    {
-                        double delta = (double) e.Location.X/ClientSize.Width;
-                        SelectionEnd = Convert.ToInt32(MaxValue*delta);
-                        if (SelectionEnd > MaxValue - 1)
-                            SelectionEnd = MaxValue;
-                        Invalidate();
-                    }
+                    else if (IsPointWithinBar(e.Location))
+                        _mouseAction.BarState = BarState.Moving;
                 }
-                else if (IsPointWithinBar(e.Location))
+
+                double delta;
+                if ((_mouseAction.BarState | BarState.Resizing) == BarState.Resizing)
                 {
-                    double delta = (double) (e.Location.X - _mouseAction.MousePosition.X)/ClientSize.Width*MaxValue;
-
-                    int selectionLength = SelectionEnd - SelectionStart;
-                    int minSelectionStart = MinValue;
-                    int maxSelectionStart = MaxValue - selectionLength;
-
-                    int newSelectionStart = SelectionStart + Convert.ToInt32(Math.Round(delta, 0));
-
-                    if (newSelectionStart < minSelectionStart)
-                        newSelectionStart = minSelectionStart;
-
-                    if (newSelectionStart > maxSelectionStart)
-                        newSelectionStart = maxSelectionStart;
-
-                    if (SelectionStart != newSelectionStart)
-                    {
-                        SelectionStart = newSelectionStart;
-                        SelectionEnd = SelectionStart + selectionLength;
-                        Invalidate();
-                    }
-
+                    delta = (double) e.Location.X/ClientSize.Width;
+                    ResizeBar(delta);
+                }
+                else if (_mouseAction.BarState == BarState.Moving)
+                {
+                    delta = (double) (e.Location.X - _mouseAction.MousePosition.X)/ClientSize.Width*MaxValue;
+                    MoveBar(delta);
                     _mouseAction.SetMousePosition(e.Location);
                 }
             }
 
             base.OnMouseMove(e);
+        }
+
+        private void ResizeBar(double delta)
+        {
+            if (_mouseAction.BarState == BarState.ResizingLeft)
+            {
+                SelectionStart = Convert.ToInt32(MaxValue*delta);
+                if (SelectionStart < 1 - MinValue)
+                    SelectionStart = MinValue;
+                Invalidate();
+            }
+            else if (_mouseAction.BarState == BarState.ResizingRight)
+            {
+                SelectionEnd = Convert.ToInt32(MaxValue*delta);
+                if (SelectionEnd > MaxValue - 1)
+                    SelectionEnd = MaxValue;
+                Invalidate();
+            }
+        }
+
+        private void MoveBar(double delta)
+        {
+            int selectionLength = SelectionEnd - SelectionStart;
+            int minSelectionStart = MinValue;
+            int maxSelectionStart = MaxValue - selectionLength;
+            int delta_i = Convert.ToInt32(delta);
+
+            _mouseAction.DeltaRemainder += delta - delta_i;
+
+            if (_mouseAction.DeltaRemainder > 1)
+            {
+                _mouseAction.DeltaRemainder--;
+                delta_i++;
+            }
+            else if (_mouseAction.DeltaRemainder < -1)
+            {
+                _mouseAction.DeltaRemainder++;
+                delta_i--;
+            }
+
+            int newSelectionStart = SelectionStart + delta_i;
+
+            if (newSelectionStart < minSelectionStart)
+                newSelectionStart = minSelectionStart;
+
+            if (newSelectionStart > maxSelectionStart)
+                newSelectionStart = maxSelectionStart;
+
+            if (SelectionStart != newSelectionStart)
+            {
+                SelectionStart = newSelectionStart;
+                SelectionEnd = SelectionStart + selectionLength;
+                Invalidate();
+            }
         }
 
         protected override void OnResize(EventArgs eventargs)
@@ -234,6 +266,8 @@ namespace PrefetchFile.UserControls
 
             base.OnPaint(e);
         }
+
+        public event EventHandler SelectionChanged;
     }
 
     public class MouseAction
@@ -241,6 +275,8 @@ namespace PrefetchFile.UserControls
         public Point MousePosition { get; private set; }
         public bool MouseButtonDown { get; private set; }
         public bool Resizing { get; set; }
+        public BarState BarState { get; set; }
+        public double DeltaRemainder { get; set; } 
 
         public void MouseDown(Point mousePosition)
         {
@@ -252,11 +288,22 @@ namespace PrefetchFile.UserControls
         {
             MousePosition = mousePosition;
             MouseButtonDown = false;
+            BarState = BarState.None;
         }
 
         public void SetMousePosition(Point mousePosition)
         {
             MousePosition = mousePosition;
         }
+    }
+
+    [Flags]
+    public enum BarState
+    {
+        None = 1,
+        ResizingLeft = 2,
+        ResizingRight = 4,
+        Resizing = 6,
+        Moving = 8
     }
 }

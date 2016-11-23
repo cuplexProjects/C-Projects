@@ -9,17 +9,23 @@ namespace ImageView
         public AboutBox1()
         {
             InitializeComponent();
-            Text = string.Format("About {0}", AssemblyTitle);
+            Text = $"About {AssemblyTitle}";
             labelProductName.Text = AssemblyProduct;
-            labelVersion.Text = string.Format("Version {0}", AssemblyVersion);
+            labelVersion.Text = $"Version {AssemblyVersion}";
             labelCopyright.Text = AssemblyCopyright;
             labelCompanyName.Text = AssemblyCompany;
             textBoxDescription.Text = AssemblyDescription;
         }
 
+        public sealed override string Text
+        {
+            get { return base.Text; }
+            set { base.Text = value; }
+        }
+
         #region Assembly Attribute Accessors
 
-        public string AssemblyTitle
+        private string AssemblyTitle
         {
             get
             {
@@ -35,56 +41,45 @@ namespace ImageView
             }
         }
 
-        public string AssemblyVersion
-        {
-            get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); }
-        }
+        private string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-        public string AssemblyDescription
+        private string AssemblyDescription
         {
             get
             {
                 var attributes =
                     Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
-                if (attributes.Length == 0)
-                    return "";
-                return ((AssemblyDescriptionAttribute) attributes[0]).Description;
+                return attributes.Length == 0 ? "" : ((AssemblyDescriptionAttribute) attributes[0]).Description;
             }
         }
 
-        public string AssemblyProduct
+        private string AssemblyProduct
         {
             get
             {
                 var attributes = Assembly.GetExecutingAssembly()
                     .GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-                if (attributes.Length == 0)
-                    return "";
-                return ((AssemblyProductAttribute) attributes[0]).Product;
+                return attributes.Length == 0 ? "" : ((AssemblyProductAttribute) attributes[0]).Product;
             }
         }
 
-        public string AssemblyCopyright
+        private string AssemblyCopyright
         {
             get
             {
                 var attributes = Assembly.GetExecutingAssembly()
                     .GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-                if (attributes.Length == 0)
-                    return "";
-                return ((AssemblyCopyrightAttribute) attributes[0]).Copyright;
+                return attributes.Length == 0 ? "" : ((AssemblyCopyrightAttribute) attributes[0]).Copyright;
             }
         }
 
-        public string AssemblyCompany
+        private string AssemblyCompany
         {
             get
             {
                 var attributes = Assembly.GetExecutingAssembly()
                     .GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
-                if (attributes.Length == 0)
-                    return "";
-                return ((AssemblyCompanyAttribute) attributes[0]).Company;
+                return attributes.Length == 0 ? "" : ((AssemblyCompanyAttribute) attributes[0]).Company;
             }
         }
 

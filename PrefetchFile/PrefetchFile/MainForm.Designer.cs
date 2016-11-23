@@ -35,7 +35,7 @@
             this.txtFilename = new System.Windows.Forms.TextBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnBrowse = new System.Windows.Forms.Button();
-            this.barSelector = new PrefetchFile.UserControls.BarSelector();
+            this.barSelector = new PrefetchFile.UserControls.SelectionBar();
             this.lblFileReadRange = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -135,7 +135,7 @@
         private System.Windows.Forms.TextBox txtFilename;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Button btnBrowse;
-        private UserControls.BarSelector barSelector;
+        private UserControls.SelectionBar barSelector;
         private System.Windows.Forms.Label lblFileReadRange;
     }
 }

@@ -59,7 +59,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserControls\BarSelector.cs">
+    <Compile Include="UserControls\SelectionBar.cs">
       <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="MainForm.resx">

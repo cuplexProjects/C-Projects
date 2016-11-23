@@ -348,8 +348,7 @@ namespace ImageView
                         Thread.Sleep(Convert.ToInt32(sleepTime - elapsedTime));
                 }
                 stopwatch.Stop();
-                LogWriter.LogMessage("Image transition finished after " + stopwatch.ElapsedMilliseconds + " ms",
-                    LogWriter.LogLevel.Trace);
+                LogWriter.LogMessage("Image transition finished after " + stopwatch.ElapsedMilliseconds + " ms", LogWriter.LogLevel.Trace);
                 Invoke(new EventHandler(OnImageLoadComplete), this, new EventArgs());
             });
 
