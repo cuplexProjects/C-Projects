@@ -24,11 +24,12 @@ namespace SecureMemo
     {
         private const string PwdKey = "SecureMemo";
         private const string LicenceFilename = "licence.txt";
+        private readonly ApplicationState _applicationState;
         private readonly AppSettingsService _appSettingsService;
         private readonly LicenceService _licenceService;
         private readonly MemoStorageService _memoStorageService;
         private readonly PasswordStorage _passwordStorage;
-        private readonly ApplicationState _applicationState;
+        private TabDropData _dropData;
         private FormFind _formFind;
         private TabPageDataCollection _tabPageDataCollection;
         private TabSearchEngine _tabSearchEngine;
@@ -38,14 +39,29 @@ namespace SecureMemo
             if (DesignMode)
                 return;
 
-            InitializeComponent();
             _applicationState = new ApplicationState();
             _appSettingsService = AppSettingsService.Instance;
             _memoStorageService = MemoStorageService.Instance;
             _passwordStorage = new PasswordStorage();
             _tabPageDataCollection = TabPageDataCollection.CreateNewPageDataCollection(_appSettingsService.Settings.DefaultEmptyTabPages);
             _licenceService = LicenceService.Instance;
+            InitializeComponent();
             InitializeTabControls();
+        }
+
+        private string AssemblyTitle
+        {
+            get
+            {
+                var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+                if (attributes.Length > 0)
+                {
+                    var titleAttribute = (AssemblyTitleAttribute) attributes[0];
+                    if (titleAttribute.Title != "")
+                        return titleAttribute.Title;
+                }
+                return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+            }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -56,6 +72,8 @@ namespace SecureMemo
                 InitFormSettings();
                 LoadLicenceFile();
                 _licenceService.Init(SerialNumbersSettings.ProtectedApp.SecureMemo);
+
+                Text = AssemblyTitle + " - v" + Assembly.GetExecutingAssembly().GetName().Version;
                 UpdateApplicationState();
             }
             catch (Exception ex)
@@ -165,17 +183,91 @@ namespace SecureMemo
 
         private void CheckFormUpdatesMenuItem_Click(object sender, EventArgs e)
         {
-            ApplicationUpdate applicationUpdate= new ApplicationUpdate();
+            var applicationUpdate = new ApplicationUpdate();
             applicationUpdate.ShowDialog(this);
         }
 
         private void tabControlNotepad_DoubleClick(object sender, EventArgs e)
         {
-            TabControl tabControl = sender as TabControl;
+            var tabControl = sender as TabControl;
             if (tabControl != null)
             {
-                
             }
+        }
+
+        private void tabControlNotepad_DragDrop(object sender, DragEventArgs e)
+        {
+            var tabDropData = e.Data.GetData(typeof(TabDropData)) as TabDropData;
+
+            if (tabDropData == null)
+                return;
+
+            InitializeTabControls();
+        }
+
+        private void tabControlNotepad_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(TabDropData)))
+                e.Effect = e.AllowedEffect;
+        }
+
+        private void tabControlNotepad_DragOver(object sender, DragEventArgs e)
+        {
+            var p = new Point(e.X, e.Y);
+            p = tabControlNotepad.PointToClient(p);
+            var tabDropData = e.Data.GetData(typeof(TabDropData)) as TabDropData;
+
+            if (tabDropData == null)
+                return;
+
+            int sourceIndex = tabDropData.SourceIndex;
+
+            for (int i = 0; i < tabControlNotepad.TabCount; i++)
+            {
+                if (sourceIndex == i)
+                    continue;
+
+                Rectangle tabRectangle = tabControlNotepad.GetTabRect(i);
+                if (!tabRectangle.Contains(p)) continue;
+                SwapTabs(sourceIndex, i);
+                tabDropData.SourceIndex = i;
+                e.Data.SetData(typeof(TabDropData), tabDropData);
+                break;
+            }
+        }
+
+        private void tabControlNotepad_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (tabControlNotepad.SelectedIndex < 0)
+                return;
+
+            int i = tabControlNotepad.SelectedIndex;
+            _dropData = new TabDropData {SourceIndex = i, DoingDragDrop = false, InitialPosition = e.Location};
+        }
+
+        private void tabControlNotepad_MouseUp(object sender, MouseEventArgs e)
+        {
+            _dropData = null;
+        }
+
+        private void tabControlNotepad_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_dropData == null || e.Button != MouseButtons.Left) return;
+            if (_dropData.DoingDragDrop || !_dropData.CheckValidHorizontalDistance(e.X)) return;
+            _dropData.DoingDragDrop = true;
+            DoDragDrop(_dropData, DragDropEffects.Move);
+        }
+
+        private void SwapTabs(int sourceIndex, int destinationIndex)
+        {
+            TabPageData tabData = _tabPageDataCollection.TabPageDictionary[sourceIndex];
+            _tabPageDataCollection.TabPageDictionary[sourceIndex] = _tabPageDataCollection.TabPageDictionary[destinationIndex];
+            _tabPageDataCollection.TabPageDictionary[destinationIndex] = tabData;
+
+            _tabPageDataCollection.TabPageDictionary[sourceIndex].PageIndex = sourceIndex;
+            _tabPageDataCollection.TabPageDictionary[destinationIndex].PageIndex = destinationIndex;
+
+            _tabPageDataCollection.ActiveTabIndex = destinationIndex;
         }
 
         private class ApplicationState
@@ -187,6 +279,19 @@ namespace SecureMemo
             public bool TabPageAddOrRemove { get; set; }
             public bool UniqueIdMissingFromExistingTabPage { get; set; }
             public bool Initializing { get; set; }
+        }
+
+        private class TabDropData
+        {
+            private const int MinDistance = 10;
+            public int SourceIndex { get; set; }
+            public Point InitialPosition { get; set; }
+            public bool DoingDragDrop { get; set; }
+
+            public bool CheckValidHorizontalDistance(int x)
+            {
+                return x < InitialPosition.X - MinDistance || x > InitialPosition.X + MinDistance;
+            }
         }
 
         #region Private Methods
