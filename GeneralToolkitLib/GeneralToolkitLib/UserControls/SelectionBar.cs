@@ -278,6 +278,11 @@ namespace GeneralToolkitLib.UserControls
         public BarState BarState { get; set; }
         public double DeltaRemainder { get; set; }
 
+        public MouseAction()
+        {
+            BarState = BarState.None;
+        }
+
         public void MouseDown(Point mousePosition)
         {
             MouseButtonDown = true;

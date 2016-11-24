@@ -276,7 +276,12 @@ namespace PrefetchFile.UserControls
         public bool MouseButtonDown { get; private set; }
         public bool Resizing { get; set; }
         public BarState BarState { get; set; }
-        public double DeltaRemainder { get; set; } 
+        public double DeltaRemainder { get; set; }
+
+        public MouseAction()
+        {
+            BarState = BarState.None;
+        }
 
         public void MouseDown(Point mousePosition)
         {
