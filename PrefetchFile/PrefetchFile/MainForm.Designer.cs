@@ -35,8 +35,8 @@
             this.txtFilename = new System.Windows.Forms.TextBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnBrowse = new System.Windows.Forms.Button();
-            this.barSelector = new PrefetchFile.UserControls.SelectionBar();
             this.lblFileReadRange = new System.Windows.Forms.Label();
+            this.barSelector = new PrefetchFile.UserControls.SelectionBar();
             this.SuspendLayout();
             // 
             // btnReadFile
@@ -84,16 +84,6 @@
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
-            // barSelector
-            // 
-            this.barSelector.Location = new System.Drawing.Point(15, 47);
-            this.barSelector.Name = "barSelector";
-            this.barSelector.SelectionStart = 0;
-            this.barSelector.Size = new System.Drawing.Size(510, 36);
-            this.barSelector.TabIndex = 7;
-            this.barSelector.Text = "barSelector1";
-            this.barSelector.SelectionChanged += new System.EventHandler(this.barSelector_SelectionChanged);
-            // 
             // lblFileReadRange
             // 
             this.lblFileReadRange.AutoSize = true;
@@ -102,6 +92,23 @@
             this.lblFileReadRange.Size = new System.Drawing.Size(120, 17);
             this.lblFileReadRange.TabIndex = 8;
             this.lblFileReadRange.Text = "lblFileReadRange";
+            // 
+            // barSelector
+            // 
+            this.barSelector.BackgroundColor = System.Drawing.Color.LightGray;
+            this.barSelector.BackgroundHatchStyle = System.Drawing.Drawing2D.HatchStyle.OutlinedDiamond;
+            this.barSelector.BarBorderColor = System.Drawing.Color.Black;
+            this.barSelector.BarColor = System.Drawing.Color.Chartreuse;
+            this.barSelector.BarHatchStyle = System.Drawing.Drawing2D.HatchStyle.WideDownwardDiagonal;
+            this.barSelector.Location = new System.Drawing.Point(15, 47);
+            this.barSelector.Name = "barSelector";
+            this.barSelector.SelectionEnd = 75;
+            this.barSelector.SelectionStart = 25;
+            this.barSelector.ShowBarBorder = true;
+            this.barSelector.Size = new System.Drawing.Size(510, 36);
+            this.barSelector.TabIndex = 7;
+            this.barSelector.Text = "barSelector1";
+            this.barSelector.SelectionChanged += new System.EventHandler(this.barSelector_SelectionChanged);
             // 
             // MainForm
             // 

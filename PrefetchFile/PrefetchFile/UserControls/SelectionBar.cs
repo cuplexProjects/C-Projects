@@ -11,12 +11,25 @@ namespace PrefetchFile.UserControls
         private readonly MouseAction _mouseAction;
         private int _selectionEnd;
         private int _selectionStart;
+        private bool _showBarBorder;
+        private Color _barColor;
+        private Color _borderColor;
+        private Color _backgroundColor;
+        private Color _barBorderColor;
+        private HatchStyle? _backgroundHatchStyle;
+        private HatchStyle? _barHatchStyle;
 
         public SelectionBar()
         {
             MinValue = 0;
             MaxValue = 100;
             SelectionEnd = 100;
+            BarColor = Color.LawnGreen;
+            BackgroundColor = Color.MediumSeaGreen;
+            BackgroundHatchStyle = HatchStyle.LargeGrid;
+            BarBorderColor = Color.Gray;
+            BorderColor = Color.Gray;
+            BarHatchStyle = HatchStyle.DarkUpwardDiagonal;
 
             SetStyle(ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             UpdateStyles();
@@ -26,6 +39,7 @@ namespace PrefetchFile.UserControls
         [Browsable(true)]
         [Category("Behavior")]
         [Description("The timestamp of the latest entry.")]
+        [DefaultValue(0)]
         public int MinValue { get; protected set; }
 
         [Browsable(true)]
@@ -66,6 +80,104 @@ namespace PrefetchFile.UserControls
                     SelectionChanged?.Invoke(this, new EventArgs());
                     Invalidate();
                 }
+            }
+        }
+
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("The color of the main bar")]
+        [DefaultValue(typeof(Color), "0xff7cfc00")]
+        public Color BarColor
+        {
+            get { return _barColor; }
+            set
+            {
+                _barColor = value;
+                Invalidate();
+            }
+        }
+
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("The border color of the main bar")]
+        [DefaultValue(typeof(Color), "0xff808080")]
+        public Color BarBorderColor
+        {
+            get { return _barBorderColor; }
+            set
+            {
+                _barBorderColor = value;
+                Invalidate();
+            }
+        }
+
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("Display a border around the bar")]
+        [DefaultValue(false)]
+        public bool ShowBarBorder
+        {
+            get { return _showBarBorder; }
+            set
+            {
+                _showBarBorder = value;
+                Invalidate();
+            }
+        }
+
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("The background color")]
+        [DefaultValue(typeof(Color), "0xff3cb371")]
+        public Color BackgroundColor
+        {
+            get { return _backgroundColor; }
+            set
+            {
+                _backgroundColor = value;
+                Invalidate();
+            }
+        }
+
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("The control border color")]
+        [DefaultValue(typeof(Color), "0xff808080")]
+        public Color BorderColor
+        {
+            get { return _borderColor; }
+            set
+            {
+                _borderColor = value;
+                Invalidate();
+            }
+        }
+
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("The background hash style")]
+        [DefaultValue(typeof(HatchStyle), "LargeGrid")]
+        public HatchStyle? BackgroundHatchStyle
+        {
+            get { return _backgroundHatchStyle; }
+            set
+            {
+                _backgroundHatchStyle = value;
+                Invalidate();
+            }
+        }
+
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("The bar hash style")]
+        [DefaultValue(typeof(HatchStyle), "DarkUpwardDiagonal")]
+        public HatchStyle? BarHatchStyle
+        {
+            get { return _barHatchStyle; }
+            set
+            {
+                _barHatchStyle = value;
+                Invalidate();
             }
         }
 
@@ -226,32 +338,32 @@ namespace PrefetchFile.UserControls
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
             g.CompositingQuality = CompositingQuality.HighQuality;
-            g.InterpolationMode = InterpolationMode.HighQualityBilinear;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
             //Draw frame
             Rectangle drawRect = e.ClipRectangle;
-            Brush b = new SolidBrush(ForeColor);
-            var p = new Pen(b, 2f);
+            drawRect.Inflate(-1, -1);
+            Brush b = new SolidBrush(BorderColor);
+            var p = new Pen(b, 1f);
             g.DrawRectangle(p, drawRect);
 
             // Draw background
-            Color c = Color.MediumSeaGreen;
-            drawRect.Inflate(new Size(-2, -2));
-            b = new HatchBrush(HatchStyle.LargeGrid, c);
+            Color c = BackgroundColor;
+            drawRect.Inflate(new Size(-1, -1));
+            if (BackgroundHatchStyle.HasValue)
+                b = new HatchBrush(BackgroundHatchStyle.Value, c,BackColor);
+            else
+                b = new SolidBrush(c);
+            
             g.FillRectangle(b, drawRect);
 
             // Draw bar
-            c = Color.LawnGreen;
+            c = BarColor;
 
             int x = drawRect.Left;
             int length = drawRect.Right - drawRect.Left;
             int selectionLength = Convert.ToInt32(length*(double) (SelectionEnd - SelectionStart)/(MaxValue - MinValue));
             x += Convert.ToInt32((double) SelectionStart/MaxValue*length);
-
-            //Draw Inner Frame
-            p = new Pen(Color.Black, 1);
-            g.DrawRectangle(p, drawRect);
-            drawRect.Inflate(new Size(-1, -1));
 
             //Fill Inner
             b = new SolidBrush(c);
@@ -260,9 +372,18 @@ namespace PrefetchFile.UserControls
 
 
             // Blend fill inner
-            g.CompositingMode = CompositingMode.SourceCopy;
-            b = new HatchBrush(HatchStyle.DarkUpwardDiagonal, c);
-            g.FillRectangle(b, drawRect);
+            if (BarHatchStyle.HasValue)
+            {
+                g.CompositingMode = CompositingMode.SourceCopy;
+                b = new HatchBrush(BarHatchStyle.Value, c);
+                g.FillRectangle(b, drawRect);
+            }
+
+            if (ShowBarBorder)
+            {
+                p = new Pen(BarBorderColor);
+                g.DrawRectangle(p, drawRect);
+            }
 
             base.OnPaint(e);
         }
