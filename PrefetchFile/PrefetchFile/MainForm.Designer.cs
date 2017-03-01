@@ -98,8 +98,8 @@
             this.barSelector.BackgroundColor = System.Drawing.Color.LightGray;
             this.barSelector.BackgroundHatchStyle = System.Drawing.Drawing2D.HatchStyle.OutlinedDiamond;
             this.barSelector.BarBorderColor = System.Drawing.Color.Black;
-            this.barSelector.BarColor = System.Drawing.Color.Chartreuse;
-            this.barSelector.BarHatchStyle = System.Drawing.Drawing2D.HatchStyle.WideDownwardDiagonal;
+            this.barSelector.BarColor = System.Drawing.Color.LimeGreen;
+            this.barSelector.BarHatchStyle = null;
             this.barSelector.Location = new System.Drawing.Point(15, 47);
             this.barSelector.Name = "barSelector";
             this.barSelector.SelectionEnd = 75;

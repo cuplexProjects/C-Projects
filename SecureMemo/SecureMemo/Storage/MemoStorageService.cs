@@ -159,13 +159,14 @@ namespace SecureMemo.Storage
                     }
                     else
                     {
-                        AppSettingsService.Instance.Settings.ApplicationSaltValue = secureMemoAppSettings.ApplicationSaltValue;
-                        AppSettingsService.Instance.Settings.PasswordDerivedString = secureMemoAppSettings.PasswordDerivedString;
-                        AppSettingsService.Instance.Settings.FontSettings = secureMemoAppSettings.FontSettings;
-                        AppSettingsService.Instance.Settings.UseSharedSyncFolder = secureMemoAppSettings.UseSharedSyncFolder;
-                        AppSettingsService.Instance.Settings.DefaultEmptyTabPages = secureMemoAppSettings.DefaultEmptyTabPages;
-                        AppSettingsService.Instance.Settings.MainWindowHeight = secureMemoAppSettings.MainWindowHeight;
-                        AppSettingsService.Instance.Settings.MainWindowWith = secureMemoAppSettings.MainWindowWith;
+                        var s = AppSettingsService.Instance.Settings;
+                        s.ApplicationSaltValue = secureMemoAppSettings.ApplicationSaltValue;
+                        s.PasswordDerivedString = secureMemoAppSettings.PasswordDerivedString;
+                        s.FontSettings = secureMemoAppSettings.FontSettings;
+                        s.UseSharedSyncFolder = secureMemoAppSettings.UseSharedSyncFolder;
+                        s.DefaultEmptyTabPages = secureMemoAppSettings.DefaultEmptyTabPages;
+                        s.MainWindowHeight = secureMemoAppSettings.MainWindowHeight;
+                        s.MainWindowWith = secureMemoAppSettings.MainWindowWith;
                         AppSettingsService.Instance.SaveSettings();
                         AppSettingsService.Instance.LoadSettings();
 
