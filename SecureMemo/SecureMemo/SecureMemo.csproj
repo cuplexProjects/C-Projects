@@ -134,6 +134,7 @@
     <Compile Include="DataModels\BackupFileInfo.cs" />
     <Compile Include="DataModels\OTPSettings.cs" />
     <Compile Include="DataModels\RestoreSyncDataResult.cs" />
+    <Compile Include="Forms\FormFactory.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Services\OTPConfigService.cs" />
     <Compile Include="TextSearchModels\TabSearchEngine.cs" />
@@ -224,6 +225,12 @@
     <Compile Include="UserControls\MemoTabPageControl.Designer.cs">
       <DependentUpon>MemoTabPageControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\RenameTabPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\RenameTabPageControl.Designer.cs">
+      <DependentUpon>RenameTabPageControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ConfigHelper.cs" />
     <Compile Include="Utility\ControlHelper.cs" />
     <Compile Include="Utility\ConfigSpecificSettings.cs" />
@@ -276,6 +283,9 @@
     </Compile>
     <EmbeddedResource Include="UserControls\MemoTabPageControl.resx">
       <DependentUpon>MemoTabPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\RenameTabPageControl.resx">
+      <DependentUpon>RenameTabPageControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">

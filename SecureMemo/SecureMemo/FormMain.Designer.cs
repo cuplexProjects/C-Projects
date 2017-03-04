@@ -80,9 +80,14 @@
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuEditTabPage = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.renameTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.tabControlNotepad.SuspendLayout();
             this.contextMenuTextArea.SuspendLayout();
+            this.contextMenuEditTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -405,6 +410,7 @@
             this.tabControlNotepad.DragEnter += new System.Windows.Forms.DragEventHandler(this.tabControlNotepad_DragEnter);
             this.tabControlNotepad.DragOver += new System.Windows.Forms.DragEventHandler(this.tabControlNotepad_DragOver);
             this.tabControlNotepad.DoubleClick += new System.EventHandler(this.tabControlNotepad_DoubleClick);
+            this.tabControlNotepad.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tabControlNotepad_MouseClick);
             this.tabControlNotepad.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControlNotepad_MouseDown);
             this.tabControlNotepad.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tabControlNotepad_MouseMove);
             this.tabControlNotepad.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tabControlNotepad_MouseUp);
@@ -492,6 +498,35 @@
             this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
             this.selectAllToolStripMenuItem.Text = "Select All";
             // 
+            // contextMenuEditTabPage
+            // 
+            this.contextMenuEditTabPage.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuEditTabPage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.renameTabToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.deleteTabToolStripMenuItem});
+            this.contextMenuEditTabPage.Name = "contextMenuEditTabPage";
+            this.contextMenuEditTabPage.Size = new System.Drawing.Size(182, 90);
+            // 
+            // renameTabToolStripMenuItem
+            // 
+            this.renameTabToolStripMenuItem.Name = "renameTabToolStripMenuItem";
+            this.renameTabToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.renameTabToolStripMenuItem.Text = "Rename Tab";
+            this.renameTabToolStripMenuItem.Click += new System.EventHandler(this.renameTabToolStripMenuItem_Click);
+            // 
+            // deleteTabToolStripMenuItem
+            // 
+            this.deleteTabToolStripMenuItem.Name = "deleteTabToolStripMenuItem";
+            this.deleteTabToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.deleteTabToolStripMenuItem.Text = "Delete Tab";
+            this.deleteTabToolStripMenuItem.Click += new System.EventHandler(this.deleteTabToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(178, 6);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -513,6 +548,7 @@
             this.menuStrip1.PerformLayout();
             this.tabControlNotepad.ResumeLayout(false);
             this.contextMenuTextArea.ResumeLayout(false);
+            this.contextMenuEditTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -570,6 +606,10 @@
         private System.Windows.Forms.ToolStripMenuItem RestoreDatabaseFromSyncPathMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
         private System.Windows.Forms.ToolStripMenuItem CheckFormUpdatesMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuEditTabPage;
+        private System.Windows.Forms.ToolStripMenuItem renameTabToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem deleteTabToolStripMenuItem;
     }
 }
 

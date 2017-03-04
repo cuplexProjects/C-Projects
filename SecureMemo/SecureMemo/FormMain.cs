@@ -10,6 +10,7 @@ using GeneralToolkitLib.Encryption.Licence.StaticData;
 using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage.Memory;
 using SecureMemo.DataModels;
+using SecureMemo.Forms;
 using SecureMemo.InputForms;
 using SecureMemo.Properties;
 using SecureMemo.Services;
@@ -33,6 +34,7 @@ namespace SecureMemo
         private FormFind _formFind;
         private TabPageDataCollection _tabPageDataCollection;
         private TabSearchEngine _tabSearchEngine;
+        private int _tabPageClickIndex = -1;
 
         public FormMain()
         {
@@ -158,8 +160,7 @@ namespace SecureMemo
                     "Replace database from sync folder",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
 
-            var formGetPassword = new FormGetPassword();
-            formGetPassword.UsePasswordValidation = false;
+            var formGetPassword = new FormGetPassword {UsePasswordValidation = false};
             if (formGetPassword.ShowDialog(this) != DialogResult.OK)
                 return;
 
@@ -752,5 +753,68 @@ namespace SecureMemo
         }
 
         #endregion
+
+        private void tabControlNotepad_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right) return;
+            var p = new Point(e.X, e.Y);
+            _tabPageClickIndex = -1;
+
+            for (int i = 0; i < tabControlNotepad.TabCount; i++)
+            {
+                Rectangle tabRectangle = tabControlNotepad.GetTabRect(i);
+                if (!tabRectangle.Contains(p)) continue;
+                _tabPageClickIndex = i;
+                break;
+            }
+            contextMenuEditTabPage.Show(tabControlNotepad, e.Location);
+        }
+
+        private void renameTabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_tabPageClickIndex < 0 || _tabPageClickIndex > tabControlNotepad.TabCount)
+            {
+                LogWriter.LogMessage($"Rename tab page could not find selected index: {_tabPageClickIndex}", LogWriter.LogLevel.Warning);
+                return;
+            }
+            var tabPage = tabControlNotepad.TabPages[_tabPageClickIndex];
+
+            var renameTabControl = new RenameTabPageControl {TabPageName = tabPage.Text};
+            var renameTabForm = FormFactory.CreateFormFromUserControl(renameTabControl);
+
+            if (renameTabForm.ShowDialog(this) == DialogResult.OK)
+            {
+                string tabPageName = renameTabControl.TabPageName;
+                _tabPageDataCollection.TabPageDictionary[_tabPageClickIndex].TabPageLabel = tabPageName;
+                tabPage.Text = tabPageName;
+                _applicationState.TabTextDataChanged = true;
+            }
+        }
+
+        private void deleteTabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_tabPageClickIndex < 0 || _tabPageClickIndex > tabControlNotepad.TabCount)
+            {
+                LogWriter.LogMessage($"Delete tab page could not find selected index: {_tabPageClickIndex}", LogWriter.LogLevel.Warning);
+                return;
+            }
+
+            if (_tabPageDataCollection.TabPageDictionary.Count == 1)
+            {
+                MessageBox.Show(this, "You must have atleast one tab page active", "Could not delete tab page", MessageBoxButtons.OK);
+                return;
+            }
+
+            if (MessageBox.Show(this, "Are you sure you want to delete this tab page?", "Confirm delete", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                if (_tabPageDataCollection.ActiveTabIndex >= _tabPageDataCollection.TabPageDictionary.Count)
+                {
+                    _tabPageDataCollection.ActiveTabIndex--;
+                }
+                _tabPageDataCollection.TabPageDictionary.Remove(_tabPageClickIndex);
+                _applicationState.TabPageAddOrRemove = true;
+                InitializeTabControls();
+            }
+        }
     }
 }
