@@ -4,89 +4,12 @@
         <name>ASP_Web_API</name>
     </assembly>
     <members>
-        <member name="T:ASP_Web_API.Controllers.GeoLocationController">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:ASP_Web_API.Controllers.GeoLocationController.#ctor">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:ASP_Web_API.Controllers.GeoLocationController.getGeoIpCountryFromIpAddress(System.String)">
-            <summary>
-                Get Geo location country information from ip adress
-            </summary>
-            <param name="IPV4Adress">IPv4 address in string format</param>
-            <returns></returns>
-        </member>
-        <member name="M:ASP_Web_API.Controllers.GeoLocationController.getGeoIpCityFromIpAddress(System.String)">
-            <summary>
-                Get Geo location city information from ip adress
-            </summary>
-            <param name="IPV4Adress">IPv4 address in string format</param>
-            <returns></returns>
-        </member>
-        <member name="T:ASP_Web_API.Controllers.UtilityController">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:ASP_Web_API.Controllers.UtilityController.ConvertFromBase64String(System.String)">
-            <summary>
-            Convert Base64 string to UTF-8
-            </summary>
-            <param name="b64InputText">Base64 encoded string</param>
-            <returns>UTF-8 encoded string</returns>
-        </member>
-        <member name="M:ASP_Web_API.Controllers.UtilityController.ConvertToBase64String(System.String)">
-            <summary>
-            Convert UTF-8 string to Base 64
-            </summary>
-            <param name="strInput">UTF-8 encoded string</param>
-            <returns>Base64 encoded string </returns>
-        </member>
-        <member name="M:ASP_Web_API.Controllers.UtilityController.HtmlEncodeString(ASP_Web_API.Controllers.UtilityController.HtmlEncodeData)">
-            <summary>
-            Html Encode content
-            </summary>
-            <param name="encodeData"></param>
-            <returns>encoded string</returns>
-        </member>
-        <member name="M:ASP_Web_API.Controllers.UtilityController.HtmlDecodeString(ASP_Web_API.Controllers.UtilityController.HtmlEncodeData)">
-            <summary>
-            Html Decode content
-            </summary>
-            <param name="decodeData"></param>
-            <returns>decoded string</returns>
-        </member>
-        <member name="T:ASP_Web_API.Controllers.UtilityController.HtmlEncodeData">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:ASP_Web_API.Controllers.UtilityController.HtmlEncodeData.Content">
-            <summary>
-            String content to encode or decode
-            </summary>
-        </member>
-        <member name="T:ASP_Web_API.Models.GeoIpCountry">
-            <summary>
-            Geo ip location
-            </summary>
-        </member>
         <member name="M:ASP_Web_API.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
             <summary>
             Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
             </summary>
             <param name="description">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
             <returns>The ID as a string.</returns>
-        </member>
-        <member name="T:ASP_Web_API.Areas.HelpPage.HelpPageConfig">
-            <summary>
-            Use this class to customize the Help Page.
-            For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
-            or you can provide the samples for the requests/responses.
-            </summary>
         </member>
         <member name="T:ASP_Web_API.Areas.HelpPage.Controllers.HelpController">
             <summary>
@@ -324,6 +247,31 @@
             Initializes a new instance of the <see cref="T:ASP_Web_API.Areas.HelpPage.HelpPageSampleGenerator"/> class.
             </summary>
         </member>
+        <member name="P:ASP_Web_API.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
+            <summary>
+            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="P:ASP_Web_API.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
+            <summary>
+            Gets the objects that are used directly as samples for certain actions.
+            </summary>
+        </member>
+        <member name="P:ASP_Web_API.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
+            <summary>
+            Gets the objects that are serialized as samples by the supported formatters.
+            </summary>
+        </member>
+        <member name="P:ASP_Web_API.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories">
+            <summary>
+            Gets factories for the objects that the supported formatters will serialize as samples. Processed in order,
+            stopping when the factory successfully returns a non-<see langref="null"/> object.
+            </summary>
+            <remarks>
+            Collection includes just <see cref="M:ASP_Web_API.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)"/> initially. Use
+            <code>SampleObjectFactories.Insert(0, func)</code> to provide an override and
+            <code>SampleObjectFactories.Add(func)</code> to provide a fallback.</remarks>
+        </member>
         <member name="M:ASP_Web_API.Areas.HelpPage.HelpPageSampleGenerator.GetSampleRequests(System.Web.Http.Description.ApiDescription)">
             <summary>
             Gets the request body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
@@ -396,31 +344,6 @@
             <param name="type">The type.</param>
             <param name="mediaType">Type of the media.</param>
             <returns></returns>
-        </member>
-        <member name="P:ASP_Web_API.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
-            <summary>
-            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
-            </summary>
-        </member>
-        <member name="P:ASP_Web_API.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
-            <summary>
-            Gets the objects that are used directly as samples for certain actions.
-            </summary>
-        </member>
-        <member name="P:ASP_Web_API.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
-            <summary>
-            Gets the objects that are serialized as samples by the supported formatters.
-            </summary>
-        </member>
-        <member name="P:ASP_Web_API.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories">
-            <summary>
-            Gets factories for the objects that the supported formatters will serialize as samples. Processed in order,
-            stopping when the factory successfully returns a non-<see langref="null"/> object.
-            </summary>
-            <remarks>
-            Collection includes just <see cref="M:ASP_Web_API.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)"/> initially. Use
-            <code>SampleObjectFactories.Insert(0, func)</code> to provide an override and
-            <code>SampleObjectFactories.Add(func)</code> to provide a fallback.</remarks>
         </member>
         <member name="T:ASP_Web_API.Areas.HelpPage.HelpPageSampleKey">
             <summary>
@@ -551,6 +474,78 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="T:ASP_Web_API.Areas.HelpPage.HelpPageConfig">
+            <summary>
+            Use this class to customize the Help Page.
+            For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
+            or you can provide the samples for the requests/responses.
+            </summary>
+        </member>
+        <member name="T:ASP_Web_API.Controllers.GeoLocationController">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:ASP_Web_API.Controllers.GeoLocationController.#ctor">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:ASP_Web_API.Controllers.GeoLocationController.getGeoIpCountryFromIpAddress(System.String)">
+            <summary>
+                Get Geo location country information from ip adress
+            </summary>
+            <param name="IPV4Adress">IPv4 address in string format</param>
+            <returns></returns>
+        </member>
+        <member name="M:ASP_Web_API.Controllers.GeoLocationController.getGeoIpCityFromIpAddress(System.String)">
+            <summary>
+                Get Geo location city information from ip adress
+            </summary>
+            <param name="IPV4Adress">IPv4 address in string format</param>
+            <returns></returns>
+        </member>
+        <member name="T:ASP_Web_API.Controllers.UtilityController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ASP_Web_API.Controllers.UtilityController.ConvertFromBase64String(System.String)">
+            <summary>
+            Convert Base64 string to UTF-8
+            </summary>
+            <param name="b64InputText">Base64 encoded string</param>
+            <returns>UTF-8 encoded string</returns>
+        </member>
+        <member name="M:ASP_Web_API.Controllers.UtilityController.ConvertToBase64String(System.String)">
+            <summary>
+            Convert UTF-8 string to Base 64
+            </summary>
+            <param name="strInput">UTF-8 encoded string</param>
+            <returns>Base64 encoded string </returns>
+        </member>
+        <member name="M:ASP_Web_API.Controllers.UtilityController.HtmlEncodeString(ASP_Web_API.Controllers.UtilityController.HtmlEncodeData)">
+            <summary>
+            Html Encode content
+            </summary>
+            <param name="encodeData"></param>
+            <returns>encoded string</returns>
+        </member>
+        <member name="M:ASP_Web_API.Controllers.UtilityController.HtmlDecodeString(ASP_Web_API.Controllers.UtilityController.HtmlEncodeData)">
+            <summary>
+            Html Decode content
+            </summary>
+            <param name="decodeData"></param>
+            <returns>decoded string</returns>
+        </member>
+        <member name="T:ASP_Web_API.Controllers.UtilityController.HtmlEncodeData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ASP_Web_API.Controllers.UtilityController.HtmlEncodeData.Content">
+            <summary>
+            String content to encode or decode
+            </summary>
+        </member>
         <member name="T:ASP_Web_API.Controllers.GetExternalIpController">
             <summary>
             
@@ -638,6 +633,22 @@
             </summary>
             <param name="length">Length is in kb. Minimum 1 kb Maximum 10485760 kb = 10 mb </param>
             <returns>randomdata_YYYY_MM_DD.bin</returns>
+        </member>
+        <member name="T:ASP_Web_API.Models.GeoIpCountry">
+            <summary>
+            Geo ip location
+            </summary>
+        </member>
+        <member name="T:ASP_Web_API.BundleConfig">
+            <summary>
+            Bundle Config
+            </summary>
+        </member>
+        <member name="M:ASP_Web_API.BundleConfig.RegisterBundles(System.Web.Optimization.BundleCollection)">
+            <summary>
+            Register Bundles
+            </summary>
+            <param name="bundles"></param>
         </member>
     </members>
 </doc>

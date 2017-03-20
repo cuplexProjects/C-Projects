@@ -94,10 +94,9 @@ namespace DatabaseLib.BulkCopy
                         SqlBulkCopyOptions.FireTriggers |
                         SqlBulkCopyOptions.UseInternalTransaction,
                         null
-                        );
+                        ) {DestinationTableName = tableName};
 
                 // set the destination table name
-                bulkCopy.DestinationTableName = tableName;
                 connection.Open();
 
                 // write the data in the "dataTable"

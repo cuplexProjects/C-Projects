@@ -1,10 +1,9 @@
-@using System
 @using System.Web.Http
 @using System.Web.Http.Controllers
 @using System.Web.Http.Description
 @using ASP_Web_API.Areas.HelpPage
 @using ASP_Web_API.Areas.HelpPage.Models
-@model System.Linq.IGrouping<HttpControllerDescriptor, ApiDescription>
+@model IGrouping<HttpControllerDescriptor, ApiDescription>
 
 @{
     var controllerDocumentation = ViewBag.DocumentationProvider != null ? 

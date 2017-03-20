@@ -39,7 +39,7 @@ namespace DatabaseLib.Linq
             }
         }
 
-        new public void Dispose()
+        public new void Dispose()
         {
             if (this._useCount > 0)
             {

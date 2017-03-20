@@ -1,7 +1,10 @@
-@using System.Linq
+@using System.Web.Http
 @using System.Web.Http.Controllers
 @using System.Web.Http.Description
-@model System.Collections.ObjectModel.Collection<System.Web.Http.Description.ApiDescription>
+@using System.Collections.ObjectModel
+@using System.Web.Optimization
+@using ASP_Web_API.Areas.HelpPage.Models
+@model Collection<ApiDescription>
 
 @{
     ViewBag.Title = "ASP.NET Web API Help Page";
@@ -10,7 +13,14 @@
     ILookup<HttpControllerDescriptor, ApiDescription> apiGroups = Model.ToLookup(api => api.ActionDescriptor.ControllerDescriptor);
 }
 
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
 <link type="text/css" href="~/Areas/HelpPage/HelpPage.css" rel="stylesheet" />
+<ul class="breadcrumb">
+    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    <li class="active"><a href="#">Help</a> <span class="divider">/</span></li>
+</ul>
+
 <header class="help-page">
     <div class="content-wrapper">
         <div class="float-left">
