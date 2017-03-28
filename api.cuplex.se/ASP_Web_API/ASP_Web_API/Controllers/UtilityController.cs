@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web;
 using System.Web.Http;
+using Elmah;
 
 namespace ASP_Web_API.Controllers
 {
@@ -26,9 +27,10 @@ namespace ASP_Web_API.Controllers
                 byte[] data = Convert.FromBase64String(b64InputText);
                 return Encoding.UTF8.GetString(data);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return ex.Message;
+                ErrorSignal.FromCurrentContext().Raise(e);
+                return e.Message;
             }
         }
 
@@ -46,9 +48,10 @@ namespace ASP_Web_API.Controllers
                 byte[] data = Encoding.UTF8.GetBytes(strInput);
                 return Convert.ToBase64String(data);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return ex.Message;
+                ErrorSignal.FromCurrentContext().Raise(e);
+                return e.Message;
             }
         }
 

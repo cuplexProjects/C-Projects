@@ -6,6 +6,12 @@
 <div class="row">
     <div class="col-md-4">
         <h2></h2>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <p>
+                Hello @User.Identity.Name
+            </p>
+        }
         <p></p>
         <p><a class="btn btn-default" href=""></a></p>
     </div>

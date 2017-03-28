@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Caching;
 using System.Web.Http;
 using CuplexApiCommon.GeoIP.BoModels;
+using Elmah;
 using InternalServices.GeoIp;
 
 namespace ASP_Web_API.Controllers
@@ -48,9 +49,10 @@ namespace ASP_Web_API.Controllers
 
                 return geoIpCountry == null ? Request.CreateResponse(HttpStatusCode.NotFound) : Request.CreateResponse(HttpStatusCode.OK, _geoIpManager.ConvertToGeoIPCountryDto(geoIpCountry));
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+                ErrorSignal.FromCurrentContext().Raise(e);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, e.Message);
             }
         }
 
@@ -81,9 +83,10 @@ namespace ASP_Web_API.Controllers
 
                 return geoIpCity == null ? Request.CreateResponse(HttpStatusCode.NotFound) : Request.CreateResponse(HttpStatusCode.OK, _geoIpManager.ConvertToGeoIpCityDto(geoIpCity));
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+                ErrorSignal.FromCurrentContext().Raise(e);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, e.Message);
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Http;
+using Elmah;
 
 namespace ASP_Web_API.Controllers
 {
@@ -84,10 +85,14 @@ namespace ASP_Web_API.Controllers
             {
                 string externalIP = (new WebClient()).DownloadString("http://checkip.dyndns.org/");
                 externalIP = (new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"))
-                             .Matches(externalIP)[0].ToString();
+                    .Matches(externalIP)[0].ToString();
                 return externalIP;
             }
-            catch { return null; }
+            catch (Exception e)
+            {
+                ErrorSignal.FromCurrentContext().Raise(e);
+                return null;
+            }
         }
 
     }
