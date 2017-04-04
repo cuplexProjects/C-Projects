@@ -37,15 +37,17 @@ namespace TextSharpTestApp
             try
             {
 
-                PdfContent pdfContent = new PdfContent();
-                pdfContent.Text1 = txtText1.Text;
-                pdfContent.Text2 = txtText2.Text;
-                pdfContent.Text3 = txtText3.Text;
+                PdfContent pdfContent = new PdfContent
+                {
+                    Text1 = txtText1.Text,
+                    Text2 = txtText2.Text,
+                    Text3 = txtText3.Text,
+                    PdfFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, txtFont.Font.Size)
+                };
                 //var fontFactory = new FontFactoryImp();
                 //fontFactory.RegisterFamily(txtFont.Font.FontFamily.Name, txtFont.Font.Name,);
 
                 //pdfContent.PdfFont = new iTextSharp.text.Font(BaseFont.CreateFont(txtFont.Font.FontFamily.Name, iTextSharp.text.FontFactory.DefaultEncoding, true));
-                pdfContent.PdfFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, txtFont.Font.Size);
                 //pdfContent.PdfFont.Size = txtFont.Font.Size;
                 //pdfContent.PdfFont.SetStyle(txtFont.Font.Style.ToString());
                 System.Drawing.Image img = pictureBoxBackground.Image;

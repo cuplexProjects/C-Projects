@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using FileSystemImage.FileSystem;
 
 namespace FileSystemImage.FileTree
@@ -14,50 +15,51 @@ namespace FileSystemImage.FileTree
 
         public TreeSearch(FileSystemDrive fileSystemDrive)
         {
-            this.root = new FileSystemDirectory {DirectoryList = fileSystemDrive.DirectoryList, FileList = fileSystemDrive.RootFileList};
-            this.driveLetter = fileSystemDrive.DriveLetter.Replace("\\", "");
+            root = new FileSystemDirectory {DirectoryList = fileSystemDrive.DirectoryList, FileList = fileSystemDrive.RootFileList};
+            driveLetter = fileSystemDrive.DriveLetter.Replace("\\", "");
         }
 
-        public List<TreeSearchResult> Search(string searchString, bool isRegex, bool ignoreCaseSensitiveMatch)
+        public async Task<List<TreeSearchResult>> Search(string searchString, bool isRegex, bool ignoreCaseSensitiveMatch)
         {
             List<TreeSearchResult> searchRes = null;
-            this.ignoreCase = ignoreCaseSensitiveMatch;
+            ignoreCase = ignoreCaseSensitiveMatch;
 
-            if(isRegex)
+            if (isRegex)
             {
-                this.regularExpression = ignoreCaseSensitiveMatch ? new Regex(searchString, RegexOptions.IgnoreCase) : new Regex(searchString);
+                regularExpression = ignoreCaseSensitiveMatch ? new Regex(searchString, RegexOptions.IgnoreCase) : new Regex(searchString);
             }
             else
-                this.regularExpression = null;
+                regularExpression = null;
 
-            searchRes = this._search(searchString, this.root, this.driveLetter);
+            searchRes = await _search(searchString, root, driveLetter);
             return searchRes;
         }
 
-        private List<TreeSearchResult> _search(string searchString, FileSystemDirectory rootDirectory, string currentPath)
+        private async Task<List<TreeSearchResult>> _search(string searchString, FileSystemDirectory rootDirectory, string currentPath)
         {
-            List<TreeSearchResult> searchRes = new List<TreeSearchResult>();
+            var searchRes = new List<TreeSearchResult>();
 
-            if(rootDirectory.FileList != null)
+            if (rootDirectory.FileList != null)
             {
                 foreach (FileSystemFile fileSystemFile in rootDirectory.FileList)
                 {
-                    if(this.regularExpression != null)
+                    if (regularExpression != null)
                     {
-                        if(this.regularExpression.IsMatch(fileSystemFile.Name))
+                        if (regularExpression.IsMatch(fileSystemFile.Name))
                             searchRes.Add(new TreeSearchResult(fileSystemFile, currentPath));
                     }
-                    else if(this.ignoreCase && fileSystemFile.Name.Equals(searchString, StringComparison.CurrentCultureIgnoreCase) || (!this.ignoreCase && fileSystemFile.Name.Equals(searchString)))
+                    else if (ignoreCase && fileSystemFile.Name.Equals(searchString, StringComparison.CurrentCultureIgnoreCase) ||
+                             (!ignoreCase && fileSystemFile.Name.Equals(searchString)))
                         searchRes.Add(new TreeSearchResult(fileSystemFile, currentPath));
                 }
             }
 
-            if(rootDirectory.DirectoryList != null)
+            if (rootDirectory.DirectoryList != null)
             {
                 foreach (FileSystemDirectory fsd in rootDirectory.DirectoryList)
                 {
-                    List<TreeSearchResult> recursiveResult = this._search(searchString, fsd, currentPath + "\\" + fsd.Name);
-                    if(recursiveResult.Count > 0)
+                    var recursiveResult = await _search(searchString, fsd, currentPath + "\\" + fsd.Name);
+                    if (recursiveResult.Count > 0)
                         searchRes.AddRange(recursiveResult);
                 }
             }
@@ -70,16 +72,16 @@ namespace FileSystemImage.FileTree
     {
         public TreeSearchResult(FileSystemFile fileSystemFile, string path)
         {
-            this.file = fileSystemFile;
+            file = fileSystemFile;
             this.path = path;
         }
 
-        public FileSystemFile file { get; private set; }
-        public string path { get; private set; }
+        public FileSystemFile file { get; }
+        public string path { get; }
 
         public override string ToString()
         {
-            return this.path + "\\" + this.file.Name;
+            return path + "\\" + file.Name;
         }
     }
 }

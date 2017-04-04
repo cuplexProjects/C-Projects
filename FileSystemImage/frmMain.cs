@@ -340,6 +340,8 @@ namespace FileSystemImage
             if (rootNode.Parent == null)
             {
                 DirectoryInfoDataLabel.Text = GetRootDirectoryData(_currentFileSystemDrive);
+                if (_currentFileSystemDrive.RootFileList == null)
+                    _currentFileSystemDrive.RootFileList = new List<FileSystemFile>();
                 return _currentFileSystemDrive.RootFileList.ConvertAll(FileSystemFileWrapper.ConvertObject);
             }
 
