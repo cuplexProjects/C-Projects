@@ -481,6 +481,32 @@
             or you can provide the samples for the requests/responses.
             </summary>
         </member>
+        <member name="M:ASP_Web_API.Controllers.AuthController.Index">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ASP_Web_API.Controllers.AuthController.LogIn(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ASP_Web_API.Controllers.AuthController.LogIn(ASP_Web_API.Models.LogInModel)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ASP_Web_API.Controllers.AuthController.LogOut">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:ASP_Web_API.Controllers.GeoLocationController">
             <summary>
             </summary>
@@ -637,6 +663,26 @@
         <member name="T:ASP_Web_API.Models.GeoIpCountry">
             <summary>
             Geo ip location
+            </summary>
+        </member>
+        <member name="T:ASP_Web_API.Models.LogInModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ASP_Web_API.Models.LogInModel.Email">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ASP_Web_API.Models.LogInModel.Password">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ASP_Web_API.Models.LogInModel.ReturnUrl">
+            <summary>
+            
             </summary>
         </member>
         <member name="T:ASP_Web_API.BundleConfig">

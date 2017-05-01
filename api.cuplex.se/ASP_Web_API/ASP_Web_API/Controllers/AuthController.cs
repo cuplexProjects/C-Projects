@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using ASP_Web_API.Models;
@@ -12,11 +9,20 @@ namespace ASP_Web_API.Controllers
     public class AuthController : Controller
     {
         // GET: Auth
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("index", "home");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult LogIn(string returnUrl)
         {
@@ -28,6 +34,11 @@ namespace ASP_Web_API.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult LogIn(LogInModel model)
         {
@@ -61,6 +72,10 @@ namespace ASP_Web_API.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LogOut()
         {
             var ctx = Request.GetOwinContext();

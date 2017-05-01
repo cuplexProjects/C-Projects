@@ -15,3 +15,10 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+.login-block {
+    margin-top: 50px;
+    display: block;
+    float: left
+}
