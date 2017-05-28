@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Caching;
 using System.Web.Http;
 using Elmah;
+using Serilog;
 
 namespace ASP_Web_API.Controllers
 {
@@ -90,6 +91,7 @@ namespace ASP_Web_API.Controllers
             }
             catch (Exception e)
             {
+                Log.Error(e, "GetExternalIpStr failed");
                 ErrorSignal.FromCurrentContext().Raise(e);
                 return null;
             }

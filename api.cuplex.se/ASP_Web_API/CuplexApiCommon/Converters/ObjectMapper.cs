@@ -17,7 +17,7 @@ namespace CuplexApiCommon.Converters
         private static FieldInfo[] _toFields;
         private static readonly object LockObject = new object();
 
-        private static readonly IFormatProvider FormatProvider = new CultureInfo("Fr-fr");
+        private static readonly IFormatProvider FormatProvider = new CultureInfo("SE-se");
 
         public static void Bind<TFrom, TTo>(Action<TFrom, TTo> map1 = null, Action<TTo, TFrom> map2 = null)
             where TFrom : class, new()
@@ -60,8 +60,7 @@ namespace CuplexApiCommon.Converters
                 var map = (Action<TFrom, TTo>)Maps[key];
 
                 if (!Maps.Any(x => x.Key.Equals(key)))
-                    throw new Exception(string.Format("No map defined for {0} => {1}", typeof(TFrom).Name,
-                        typeof(TTo).Name));
+                    throw new Exception($"No map defined for {typeof(TFrom).Name} => {typeof(TTo).Name}");
 
                 var tFrom = typeof(TFrom);
                 var tTo = typeof(TTo);
@@ -74,8 +73,7 @@ namespace CuplexApiCommon.Converters
                 SyncProperties(fromObj, toObj);
                 SyncFields(fromObj, toObj);
 
-                if (map != null)
-                    map(fromObj, toObj);
+                map?.Invoke(fromObj, toObj);
 
                 return toObj;
             }
@@ -110,7 +108,7 @@ namespace CuplexApiCommon.Converters
                 var toField = toFields.FirstOrDefault(x => x.Name == fromProperty.Name);
                 if (!MatchingPropertyToField(fromProperty, toField)) continue;
                 fromValue = fromProperty.GetValue(fromObj, null);
-                if (toField != null) toField.SetValue(toObj, fromValue);
+                toField?.SetValue(toObj, fromValue);
             }
         }
 
@@ -133,7 +131,7 @@ namespace CuplexApiCommon.Converters
 
                         //To handle nullable fields
                         var type = Nullable.GetUnderlyingType(fromValue.GetType()) ?? fromValue.GetType();
-                        var safeValue = (fromValue == null) ? null : Convert.ChangeType(fromValue, type, FormatProvider);
+                        var safeValue = Convert.ChangeType(fromValue, type, FormatProvider);
                         toField.SetValue(toObj, safeValue);
                     }
                 }
@@ -142,7 +140,7 @@ namespace CuplexApiCommon.Converters
                 var toProperty = toProperties.FirstOrDefault(x => x.Name == fromField.Name);
                 if (!MatchingFieldToProperty(fromField, toProperty)) continue;
                 fromValue = fromField.GetValue(fromObj);
-                if (toProperty != null) toProperty.SetValue(toObj, fromValue, null);
+                toProperty?.SetValue(toObj, fromValue, null);
             }
         }
 

@@ -7,6 +7,7 @@ using System.Web.Http;
 using CuplexApiCommon.GeoIP.BoModels;
 using Elmah;
 using InternalServices.GeoIp;
+using Serilog;
 
 namespace ASP_Web_API.Controllers
 {
@@ -41,16 +42,15 @@ namespace ASP_Web_API.Controllers
 
                 var geoIpCountry = HttpRuntime.Cache["getGeoIpCountryFromIpAddress:" + IPV4Adress] as GeoIPCountryBo;
 
-                if (geoIpCountry == null)
-                {
-                    geoIpCountry = _geoIpManager.GetGeoIpCountry(IPV4Adress);
-                    HttpRuntime.Cache.Add("getGeoIpCountryFromIpAddress:" + IPV4Adress, geoIpCountry, null, DateTime.Now.AddMinutes(15), Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-                }
+                if (geoIpCountry != null) return Request.CreateResponse(HttpStatusCode.OK, _geoIpManager.ConvertToGeoIPCountryDto(geoIpCountry));
+                geoIpCountry = _geoIpManager.GetGeoIpCountry(IPV4Adress);
+                HttpRuntime.Cache.Add("getGeoIpCountryFromIpAddress:" + IPV4Adress, geoIpCountry, null, DateTime.Now.AddMinutes(15), Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
 
-                return geoIpCountry == null ? Request.CreateResponse(HttpStatusCode.NotFound) : Request.CreateResponse(HttpStatusCode.OK, _geoIpManager.ConvertToGeoIPCountryDto(geoIpCountry));
+                return Request.CreateResponse(HttpStatusCode.OK, _geoIpManager.ConvertToGeoIPCountryDto(geoIpCountry));
             }
             catch (Exception e)
             {
+                Log.Error(e, "Error getting GeoIpCountryFromIp for address {IPV4Adress}");
                 ErrorSignal.FromCurrentContext().Raise(e);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, e.Message);
             }
@@ -85,6 +85,7 @@ namespace ASP_Web_API.Controllers
             }
             catch (Exception e)
             {
+                Log.Error(e, "Error getting GeoIpCityFromIp for address {IPV4Adress}");
                 ErrorSignal.FromCurrentContext().Raise(e);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, e.Message);
             }

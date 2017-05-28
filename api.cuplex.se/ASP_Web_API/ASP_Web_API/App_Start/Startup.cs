@@ -1,6 +1,7 @@
 ﻿using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
+using Serilog;
 
 namespace ASP_Web_API
 {
@@ -9,6 +10,10 @@ namespace ASP_Web_API
     /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Application startup configuration OWIN
+        /// </summary>
+        /// <param name="app"></param>
         public void Configuration(IAppBuilder app)
         {
             app.UseCookieAuthentication(new CookieAuthenticationOptions
@@ -16,6 +21,10 @@ namespace ASP_Web_API
                 AuthenticationType = "ApplicationCookie",
                 LoginPath = new PathString("/auth/login")
             });
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.AppSettings()
+                .CreateLogger();
         }
     }
 }

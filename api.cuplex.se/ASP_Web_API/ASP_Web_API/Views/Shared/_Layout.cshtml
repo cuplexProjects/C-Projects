@@ -25,7 +25,11 @@
                     <li>@Html.ActionLink("API Definition", "Index", "Help", new {area = ""}, null)</li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a href="@Url.Action("logout", "auth")">Log Out</a></li>
+                        <li><a href="@Url.Action("LogOut", "auth")">Log Out</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("LogIn", "auth")">Log In</a></li>
                     }
                 </ul>
             </div>

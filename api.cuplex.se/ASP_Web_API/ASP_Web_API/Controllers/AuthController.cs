@@ -2,9 +2,14 @@
 using System.Web;
 using System.Web.Mvc;
 using ASP_Web_API.Models;
+using Serilog;
+using Serilog.Events;
 
 namespace ASP_Web_API.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [AllowAnonymous]
     public class AuthController : Controller
     {
@@ -31,6 +36,8 @@ namespace ASP_Web_API.Controllers
                 ReturnUrl = returnUrl
             };
 
+            Log.Write(LogEventLevel.Debug, "AuthController httpget -> Login request for "+ returnUrl);
+
             return View(model);
         }
 
@@ -50,6 +57,7 @@ namespace ASP_Web_API.Controllers
             // Don't do this in production!
             if (model.Email == "iddt@hotmail.com" && model.Password == "kickass")
             {
+                Log.Write(LogEventLevel.Debug, "Login successful for user with email " + model.Email);
                 var identity = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, "Martin"),
@@ -68,6 +76,7 @@ namespace ASP_Web_API.Controllers
             }
 
             // user authN failed
+            Log.Write(LogEventLevel.Debug, $"Login failed for user with email {model.Email} using password {model.Password}");
             ModelState.AddModelError("", "Invalid email or password");
             return View();
         }

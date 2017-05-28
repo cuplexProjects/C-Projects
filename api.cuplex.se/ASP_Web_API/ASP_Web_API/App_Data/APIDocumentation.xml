@@ -481,6 +481,11 @@
             or you can provide the samples for the requests/responses.
             </summary>
         </member>
+        <member name="T:ASP_Web_API.Controllers.AuthController">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:ASP_Web_API.Controllers.AuthController.Index">
             <summary>
             
@@ -700,6 +705,12 @@
             <summary>
             
             </summary>
+        </member>
+        <member name="M:ASP_Web_API.Startup.Configuration(Owin.IAppBuilder)">
+            <summary>
+            Application startup configuration OWIN
+            </summary>
+            <param name="app"></param>
         </member>
     </members>
 </doc>
