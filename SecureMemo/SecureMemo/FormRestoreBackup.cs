@@ -7,17 +7,17 @@ namespace SecureMemo
 {
     public partial class FormRestoreBackup : Form
     {
-        private readonly MemoStorageService memoStorageService;
+        private readonly MemoStorageService _memoStorageService;
 
-        public FormRestoreBackup()
+        public FormRestoreBackup(MemoStorageService memoStorageService)
         {
+            _memoStorageService = memoStorageService;
             InitializeComponent();
-            memoStorageService = MemoStorageService.Instance;
         }
 
         private void frmRestoreBackup_Load(object sender, EventArgs e)
         {
-            var datasource = memoStorageService.GetBackupFiles();
+            var datasource = _memoStorageService.GetBackupFiles();
             if (datasource == null)
                 return;
 
@@ -51,7 +51,7 @@ namespace SecureMemo
             {
                 try
                 {
-                    memoStorageService.RestoreBackup(backupFileInfo);
+                    _memoStorageService.RestoreBackup(backupFileInfo);
                 }
                 catch (Exception ex)
                 {

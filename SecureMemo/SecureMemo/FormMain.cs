@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using Autofac;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Encryption.Licence;
 using GeneralToolkitLib.Encryption.Licence.StaticData;
@@ -35,21 +36,23 @@ namespace SecureMemo
         private TabPageDataCollection _tabPageDataCollection;
         private TabSearchEngine _tabSearchEngine;
         private int _tabPageClickIndex = -1;
-        private bool _isResizingWindow = false;
+        private bool _isResizingWindow;
+        private readonly ILifetimeScope _scope;
 
-        public FormMain()
+        public FormMain(AppSettingsService appSettingsService, MemoStorageService memoStorageService, PasswordStorage passwordStorage, ILifetimeScope scope)
         {
             if (DesignMode)
                 return;
 
+            _appSettingsService = appSettingsService;
+            _memoStorageService = memoStorageService;
+            _passwordStorage = passwordStorage;
+            _scope = scope;
+
             _applicationState = new ApplicationState();
-            _appSettingsService = AppSettingsService.Instance;
-            _memoStorageService = MemoStorageService.Instance;
-            _passwordStorage = new PasswordStorage();
             _tabPageDataCollection = TabPageDataCollection.CreateNewPageDataCollection(_appSettingsService.Settings.DefaultEmptyTabPages);
             _licenceService = LicenceService.Instance;
             InitializeComponent();
-            InitializeTabControls();
         }
 
         private string AssemblyTitle
@@ -71,6 +74,7 @@ namespace SecureMemo
         {
             try
             {
+                InitializeTabControls();
                 _appSettingsService.LoadSettings();
                 InitFormSettings();
                 LoadLicenceFile();
@@ -601,7 +605,7 @@ namespace SecureMemo
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var frmSettings = new FormSettings();
+            var frmSettings = _scope.Resolve<FormSettings>();
             if (frmSettings.ShowDialog(this) == DialogResult.OK)
             {
                 _appSettingsService.SaveSettings();
@@ -626,7 +630,7 @@ namespace SecureMemo
 
         private void RestoreDatabasetoolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var frmSelectBackup = new FormRestoreBackup();
+            var frmSelectBackup = _scope.Resolve<FormRestoreBackup>();
             frmSelectBackup.ShowDialog(this);
         }
 

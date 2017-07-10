@@ -105,6 +105,12 @@
     </ManifestTimestampUrl>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.0\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -130,6 +136,7 @@
     <Compile Include="ApplicationUpdate.Designer.cs">
       <DependentUpon>ApplicationUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\AutofacConfig.cs" />
     <Compile Include="DataModels\BackupFileInfo.cs" />
     <Compile Include="DataModels\OTPSettings.cs" />
     <Compile Include="DataModels\RestoreSyncDataResult.cs" />
@@ -286,6 +293,7 @@
     <EmbeddedResource Include="UserControls\RenameTabPageControl.resx">
       <DependentUpon>RenameTabPageControl.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -343,6 +351,7 @@
       <FileType>ManifestEntryPoint</FileType>
     </PublishFile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

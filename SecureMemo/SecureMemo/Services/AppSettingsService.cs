@@ -10,24 +10,22 @@ using SecureMemo.Utility;
 namespace SecureMemo.Services
 {
     public class AppSettingsService
-    {
-        private static AppSettingsService _instance;
+    {       
         private readonly SecureMemoAppSettings _defaultAppSettings;
         private readonly IniConfigFileManager _iniConfigFileManager;
         private readonly string _iniConfigFilePath;
 
-        private AppSettingsService()
+        public AppSettingsService(SecureMemoAppSettings defaultAppSettings, IniConfigFileManager iniConfigFileManager, string iniConfigFilePath)
         {
-            _iniConfigFileManager = new IniConfigFileManager();
+            _defaultAppSettings = defaultAppSettings;
+            _iniConfigFileManager = iniConfigFileManager;
+            _iniConfigFilePath = iniConfigFilePath;
             Settings = ConfigHelper.GetDefaultSettings();
             CreateAppDataDirectoryIfDirNotFound(ConfigSpecificSettings.GetSettingsFolderPath(false));
-            _defaultAppSettings = ConfigHelper.GetDefaultSettings();
-            _iniConfigFilePath = ConfigSpecificSettings.GetSettingsFolderPath(false) + "\\ApplicationSettings.ini";
         }
 
         public SecureMemoAppSettings Settings { get; }
-
-        public static AppSettingsService Instance => _instance ?? (_instance = new AppSettingsService());
+        
 
         private void CreateAppDataDirectoryIfDirNotFound(string settingsFolderPath)
         {

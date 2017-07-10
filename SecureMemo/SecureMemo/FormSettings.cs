@@ -10,12 +10,14 @@ namespace SecureMemo
     public partial class FormSettings : Form
     {
         private readonly SecureMemoFontSettings _fontSettings;
+        private readonly AppSettingsService _appSettingsService;
         private Font _selectedFont;
 
-        public FormSettings()
+        public FormSettings(AppSettingsService appSettingsService)
         {
+            _fontSettings = appSettingsService.Settings.FontSettings;
+            _appSettingsService = appSettingsService;
             InitializeComponent();
-            _fontSettings = AppSettingsService.Instance.Settings.FontSettings;
         }
 
         private void frmSettings_Load(object sender, EventArgs e)
@@ -32,8 +34,8 @@ namespace SecureMemo
             _fontSettings.FontSize = _selectedFont.Size;
             _fontSettings.Style = _selectedFont.Style;
 
-            AppSettingsService.Instance.Settings.AlwaysOntop = chkAlwaysOntop.Checked;
-            AppSettingsService.Instance.Settings.DefaultEmptyTabPages = Convert.ToInt32(numericUpDownTabPages.Value);
+            _appSettingsService.Settings.AlwaysOntop = chkAlwaysOntop.Checked;
+            _appSettingsService.Settings.DefaultEmptyTabPages = Convert.ToInt32(numericUpDownTabPages.Value);
 
             if (chkSyncDatabase.Checked && !FileSystem.IsValidDirectory(txtSyncDatabaseDirectory.Text))
             {
@@ -41,9 +43,9 @@ namespace SecureMemo
                 return;
             }
 
-            AppSettingsService.Instance.Settings.UseSharedSyncFolder = chkSyncDatabase.Checked;
-            if (AppSettingsService.Instance.Settings.UseSharedSyncFolder)
-                AppSettingsService.Instance.Settings.SyncFolderPath = txtSyncDatabaseDirectory.Text;
+            _appSettingsService.Settings.UseSharedSyncFolder = chkSyncDatabase.Checked;
+            if (_appSettingsService.Settings.UseSharedSyncFolder)
+                _appSettingsService.Settings.SyncFolderPath = txtSyncDatabaseDirectory.Text;
 
             DialogResult = DialogResult.OK;
             Close();
@@ -74,10 +76,10 @@ namespace SecureMemo
 
         private void LoadGeneralSettings()
         {
-            chkAlwaysOntop.Checked = AppSettingsService.Instance.Settings.AlwaysOntop;
-            numericUpDownTabPages.Value = AppSettingsService.Instance.Settings.DefaultEmptyTabPages;
-            chkSyncDatabase.Checked = AppSettingsService.Instance.Settings.UseSharedSyncFolder;
-            txtSyncDatabaseDirectory.Text = AppSettingsService.Instance.Settings.SyncFolderPath;
+            chkAlwaysOntop.Checked = _appSettingsService.Settings.AlwaysOntop;
+            numericUpDownTabPages.Value = _appSettingsService.Settings.DefaultEmptyTabPages;
+            chkSyncDatabase.Checked = _appSettingsService.Settings.UseSharedSyncFolder;
+            txtSyncDatabaseDirectory.Text = _appSettingsService.Settings.SyncFolderPath;
         }
 
         private void LoadFontSettings(Font font)

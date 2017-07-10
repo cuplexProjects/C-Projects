@@ -7,43 +7,41 @@ using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
 using SecureMemo.DataModels;
 using SecureMemo.Services;
-using SecureMemo.Utility;
 
 namespace SecureMemo.Storage
 {
     public class MemoStorageService : IDisposable
     {
-        private const string databaeFileName = "MemoDatabase.dat";
-        private const string confSaltVal = "l73hgwiHLwscWqHQUT7vwJSTX58K0XWZlecm77NbzmqbsF60LOEeftqSdeSvL6cB";
-        private const string confSaltVal2 = "BxV0CQsjr6f7MbiXTqdpHN4bjyhqUX9Yd79zA2vRZLGPQj0qdTGlTwBFiK7eiFqc";
-        private static MemoStorageService _instance;
-        private readonly string databaseFilePath;
+        private const string DatabaeFileName = "MemoDatabase.dat";
+        private const string ConfSaltVal = "l73hgwiHLwscWqHQUT7vwJSTX58K0XWZlecm77NbzmqbsF60LOEeftqSdeSvL6cB";
+        private const string ConfSaltVal2 = "BxV0CQsjr6f7MbiXTqdpHN4bjyhqUX9Yd79zA2vRZLGPQj0qdTGlTwBFiK7eiFqc";
+        private readonly string _databaseFilePath;
+        private readonly AppSettingsService _appSettingsService;
 
-        private MemoStorageService()
+        public MemoStorageService(AppSettingsService appSettingsService, string databaseFilePath)
         {
-            databaseFilePath = ConfigSpecificSettings.GetSettingsFolderPath(false);
+            _appSettingsService = appSettingsService;
+            _databaseFilePath = databaseFilePath;
         }
-
-        public static MemoStorageService Instance => _instance ?? (_instance = new MemoStorageService());
 
         public void Dispose()
         {
-            _instance = null;
+           
         }
 
         private string GetFullPathToDatabaseFile()
         {
-            return databaseFilePath + "\\" + databaeFileName;
+            return _databaseFilePath + "\\" + DatabaeFileName;
         }
 
         private string GetFullPathToSharedDatabaseFile()
         {
-            return AppSettingsService.Instance.Settings.SyncFolderPath + "\\" + databaeFileName;
+            return _appSettingsService.Settings.SyncFolderPath + "\\" + DatabaeFileName;
         }
 
         private string GetFullPathToSharedEcryptedConfigFile()
         {
-            return AppSettingsService.Instance.Settings.SyncFolderPath + "\\" + "ApplicationSettings.dat";
+            return _appSettingsService.Settings.SyncFolderPath + "\\" + "ApplicationSettings.dat";
         }
 
         public bool DatabaseExists()
@@ -81,9 +79,9 @@ namespace SecureMemo.Storage
                     if (File.Exists(encodedConfigFilePath))
                         File.Delete(encodedConfigFilePath);
 
-                    settings.Password = confSaltVal + settings.Password + confSaltVal2;
+                    settings.Password = ConfSaltVal + settings.Password + ConfSaltVal2;
                     File.Copy(GetFullPathToDatabaseFile(), encodedConfigFilePath);
-                    success = storageManager.SerializeObjectToFile(AppSettingsService.Instance.Settings, GetFullPathToSharedEcryptedConfigFile(), null);
+                    success = storageManager.SerializeObjectToFile(_appSettingsService.Settings, GetFullPathToSharedEcryptedConfigFile(), null);
                 }
                 else
                     success = storageManager.SerializeObjectToFile(tabPageDataCollection, GetFullPathToDatabaseFile(), null);
@@ -98,7 +96,7 @@ namespace SecureMemo.Storage
 
         public IEnumerable<BackupFileInfo> GetBackupFiles()
         {
-            string backupPath = databaseFilePath + "\\backup\\";
+            string backupPath = _databaseFilePath + "\\backup\\";
             var dirInfo = new DirectoryInfo(backupPath);
 
             if (!dirInfo.Exists)
@@ -110,15 +108,15 @@ namespace SecureMemo.Storage
 
         public void MakeBackup()
         {
-            if (!Directory.Exists(databaseFilePath))
+            if (!Directory.Exists(_databaseFilePath))
                 throw new Exception("No database found, create a new database first.");
 
-            string backupPath = databaseFilePath + "\\backup\\";
+            string backupPath = _databaseFilePath + "\\backup\\";
 
             if (!Directory.Exists(backupPath))
                 Directory.CreateDirectory(backupPath);
 
-            File.Copy(GetFullPathToDatabaseFile(), backupPath + DateTime.Now.ToString("yyyyMMdd_HH.mm.ss_") + databaeFileName);
+            File.Copy(GetFullPathToDatabaseFile(), backupPath + DateTime.Now.ToString("yyyyMMdd_HH.mm.ss_") + DatabaeFileName);
         }
 
         public void RestoreBackup(BackupFileInfo backupFileInfo)
@@ -147,7 +145,7 @@ namespace SecureMemo.Storage
                     restoreSyncDataResult.ErrorCode = restoreSyncDataResult.ErrorCode | RestoreSyncDataErrorCodes.ApplicationSettingsFileNotFound;
                 else
                 {
-                    var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, confSaltVal + password + confSaltVal2);
+                    var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, ConfSaltVal + password + ConfSaltVal2);
                     var storageManager = new StorageManager(settings);
 
                     var secureMemoAppSettings = storageManager.DeserializeObjectFromFile<SecureMemoAppSettings>(GetFullPathToSharedEcryptedConfigFile(), null);
@@ -159,7 +157,7 @@ namespace SecureMemo.Storage
                     }
                     else
                     {
-                        var s = AppSettingsService.Instance.Settings;
+                        var s = _appSettingsService.Settings;
                         s.ApplicationSaltValue = secureMemoAppSettings.ApplicationSaltValue;
                         s.PasswordDerivedString = secureMemoAppSettings.PasswordDerivedString;
                         s.FontSettings = secureMemoAppSettings.FontSettings;
@@ -167,8 +165,8 @@ namespace SecureMemo.Storage
                         s.DefaultEmptyTabPages = secureMemoAppSettings.DefaultEmptyTabPages;
                         s.MainWindowHeight = secureMemoAppSettings.MainWindowHeight;
                         s.MainWindowWith = secureMemoAppSettings.MainWindowWith;
-                        AppSettingsService.Instance.SaveSettings();
-                        AppSettingsService.Instance.LoadSettings();
+                        _appSettingsService.SaveSettings();
+                        _appSettingsService.LoadSettings();
 
                         if (File.Exists(dbFilePath))
                             File.Delete(dbFilePath);
