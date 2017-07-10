@@ -8,7 +8,7 @@ namespace GeneralToolkitLib.Storage.Memory
     public sealed class PasswordStorage : IDisposable
     {
         private readonly Dictionary<string, PasswordStorageItem> _encodedDataDictionary;
-
+      
         public PasswordStorage()
         {
             _encodedDataDictionary = new Dictionary<string, PasswordStorageItem>();
@@ -56,7 +56,7 @@ namespace GeneralToolkitLib.Storage.Memory
 
         public void Dispose()
         {
-            
+            _encodedDataDictionary.Clear();
         }
     }
 }

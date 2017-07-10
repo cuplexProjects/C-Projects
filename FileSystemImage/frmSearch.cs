@@ -12,7 +12,7 @@ namespace FileSystemImage
 {
     public partial class frmSearch : Form
     {
-        private FileSystemDrive fileSystemDrive;
+        private FileSystemDrive _fileSystemDrive;
         private CancellationTokenSource _searchCancellation;
 
         private delegate void SearchCompleteEventHandler(object sender, SearchEventArgs e);
@@ -26,7 +26,7 @@ namespace FileSystemImage
 
         public void SetFileSystemDrive(FileSystemDrive fsd)
         {
-            fileSystemDrive = fsd;
+            _fileSystemDrive = fsd;
         }
 
         private void frmSearch_Load(object sender, EventArgs e)
@@ -80,7 +80,7 @@ namespace FileSystemImage
             btnSearch.Text = "Cancel";
             _isSearching = true;
 
-            var searchAlg = new TreeSearch(fileSystemDrive);
+            var searchAlg = new TreeSearch(_fileSystemDrive);
 
             try
             {
@@ -103,10 +103,10 @@ namespace FileSystemImage
             btnSearch.Text = "Search";
             _searchCancellation = new CancellationTokenSource();
             if (e.TreeSearchResults != null)
-                populateSearchResult(e.TreeSearchResults);
+                PopulateSearchResult(e.TreeSearchResults);
         }
 
-        private void populateSearchResult(List<TreeSearchResult> searchResults)
+        private void PopulateSearchResult(List<TreeSearchResult> searchResults)
         {
             toolStripSearchResCount.Text = searchResults.Count.ToString();
             bool truncate = false;
