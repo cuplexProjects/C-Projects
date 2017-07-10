@@ -35,6 +35,7 @@ namespace SecureMemo
         private TabPageDataCollection _tabPageDataCollection;
         private TabSearchEngine _tabSearchEngine;
         private int _tabPageClickIndex = -1;
+        private bool _isResizingWindow = false;
 
         public FormMain()
         {
@@ -86,8 +87,11 @@ namespace SecureMemo
 
         private void frmMain_Resize(object sender, EventArgs e)
         {
-            _appSettingsService.Settings.MainWindowWith = Width;
-            _appSettingsService.Settings.MainWindowHeight = Height;
+            if (!_isResizingWindow)
+            {
+                _appSettingsService.Settings.MainWindowWith = ClientRectangle.Width;
+                _appSettingsService.Settings.MainWindowHeight = ClientRectangle.Height;
+            }
         }
 
         private void tabPageControl_TabTextDataChanged(object sender, EventArgs e)
@@ -341,9 +345,9 @@ namespace SecureMemo
         {
             var richTextBox = sender as RichTextBox;
 
-            if (richTextBox != null)
-                if (_tabSearchEngine != null && !_tabSearchEngine.SelectionSetByCode)
-                    _tabSearchEngine.ResetSearchState(_tabPageDataCollection.ActiveTabIndex, richTextBox.SelectionStart, richTextBox.SelectionLength);
+            if (richTextBox == null) return;
+            if (_tabSearchEngine != null && !_tabSearchEngine.SelectionSetByCode)
+                _tabSearchEngine.ResetSearchState(_tabPageDataCollection.ActiveTabIndex, richTextBox.SelectionStart, richTextBox.SelectionLength);
         }
 
         private void SaveFormDataToModel()
@@ -401,9 +405,30 @@ namespace SecureMemo
 
         private void InitFormSettings()
         {
+            _isResizingWindow = true;
+            var screenSize = Screen.PrimaryScreen.Bounds;
             TopMost = _appSettingsService.Settings.AlwaysOntop;
-            Width = _appSettingsService.Settings.MainWindowWith;
-            Height = _appSettingsService.Settings.MainWindowHeight;
+            Width = GetSafeParameter(_appSettingsService.Settings.MainWindowWith, this.MinimumSize.Width, screenSize.Width);
+            Height = GetSafeParameter(_appSettingsService.Settings.MainWindowHeight, MinimumSize.Height, screenSize.Height);
+
+            // Center form
+            Left = screenSize.Width / 2 - Width / 2;
+            Top = screenSize.Height / 2 - Height / 2;
+            _isResizingWindow = false;
+        }
+
+        private int GetSafeParameter(int value, int min, int max)
+        {
+            if (value < min)
+            {
+                return min;
+            }
+            if (value > max)
+            {
+                return max;
+            }
+
+            return value;
         }
 
         private bool PromptExit()

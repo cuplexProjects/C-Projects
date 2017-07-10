@@ -51,7 +51,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>28069D4C254AA8E1B9CF0FE8413D3C538ADD30A4</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>287F80DFC26B414919B90BD1A8B18190C2E02224</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>Internet</TargetZone>
@@ -92,8 +92,7 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>SecureMemo_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>SecureMemo.Program</StartupObject>
@@ -298,6 +297,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="SecureMemoSignKey.pfx" />
+    <None Include="SecureMemo_TemporaryKey.pfx" />
     <None Include="WorkTempSignKey.pfx" />
   </ItemGroup>
   <ItemGroup>

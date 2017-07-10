@@ -14,7 +14,7 @@ namespace SecureMemo.Services
         private static AppSettingsService _instance;
         private readonly SecureMemoAppSettings _defaultAppSettings;
         private readonly IniConfigFileManager _iniConfigFileManager;
-        private readonly string iniConfigFilePath;
+        private readonly string _iniConfigFilePath;
 
         private AppSettingsService()
         {
@@ -22,7 +22,7 @@ namespace SecureMemo.Services
             Settings = ConfigHelper.GetDefaultSettings();
             CreateAppDataDirectoryIfDirNotFound(ConfigSpecificSettings.GetSettingsFolderPath(false));
             _defaultAppSettings = ConfigHelper.GetDefaultSettings();
-            iniConfigFilePath = ConfigSpecificSettings.GetSettingsFolderPath(false) + "\\ApplicationSettings.ini";
+            _iniConfigFilePath = ConfigSpecificSettings.GetSettingsFolderPath(false) + "\\ApplicationSettings.ini";
         }
 
         public SecureMemoAppSettings Settings { get; }
@@ -46,13 +46,13 @@ namespace SecureMemo.Services
         {
             try
             {
-                if (!File.Exists(iniConfigFilePath))
+                if (!File.Exists(_iniConfigFilePath))
                 {
                     SaveSettings();
                     return;
                 }
 
-                if (!_iniConfigFileManager.LoadConfigFile(iniConfigFilePath))
+                if (!_iniConfigFileManager.LoadConfigFile(_iniConfigFilePath))
                     throw new Exception("Unable to load application settings");
 
                 int winSize;
@@ -147,7 +147,7 @@ namespace SecureMemo.Services
                 fontConfigFileSection.ConfigItems["Style"] = Settings.FontSettings.Style.ToString();
                 fontConfigFileSection.ConfigItems["FontSize"] = Settings.FontSettings.FontSize.ToString();
 
-                _iniConfigFileManager.SaveConfigFile(iniConfigFilePath);
+                _iniConfigFileManager.SaveConfigFile(_iniConfigFilePath);
             }
             catch (Exception ex)
             {

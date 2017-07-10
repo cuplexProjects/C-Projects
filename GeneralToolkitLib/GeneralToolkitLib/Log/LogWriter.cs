@@ -9,14 +9,14 @@ namespace GeneralToolkitLib.Log
     public static class LogWriter
     {
         private static readonly Object ThreadLock = new object();
-        private static readonly string _basePath;
+        private static readonly string BasePath;
         private const string ErrorLogPrefix = "error_";
         private const string StandardLogPrefix = "info_";
         private static LogLevel _logLevel;
 
         static LogWriter()
         {
-            _basePath = GlobalSettings.GetUserDataDirectoryPath();
+            BasePath = GlobalSettings.GetUserDataDirectoryPath();
             _logLevel = 0;
         }
 
@@ -40,7 +40,7 @@ namespace GeneralToolkitLib.Log
             if (logLevel < _logLevel)
                 return;
 
-            string logFileName = _basePath + (isErrorLog ? ErrorLogPrefix : StandardLogPrefix) + DateTime.Today.ToString("yyyy_MM_dd") + ".log";
+            string logFileName = BasePath + (isErrorLog ? ErrorLogPrefix : StandardLogPrefix) + DateTime.Today.ToString("yyyy_MM_dd") + ".log";
             try
             {
                 //If exists then append else create new file
