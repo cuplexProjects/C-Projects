@@ -175,6 +175,13 @@ namespace ImageView
             if (!ImageSourceDataAvailable) return;
             ImageReferenceElement imgRef;
 
+            //Reset timer
+            if (timerSlideShow.Enabled)
+            {
+                timerSlideShow.Stop();
+                timerSlideShow.Start();
+            }
+
             //Go Forward
             if (e.Button == MouseButtons.Left)
             {
