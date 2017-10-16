@@ -60,19 +60,27 @@ namespace DeleteDuplicateFiles
 
         private void _duplicateFileFinder_OnCompleteFileHash(object sender, FileHashEventArgs e)
         {
-            _hashComputeCount--;
+            lock (this)
+            {
+                _hashComputeCount--;
+            }
+            
             Invoke(new FileHashEventHandler(UpdateFileHashStatus), sender, e);
         }
 
         private void _duplicateFileFinder_OnBeginNewFileHash(object sender, FileHashEventArgs e)
         {
-            _hashComputeCount++;
+            lock (this)
+            {
+                _hashComputeCount++;
+            }
+
             Invoke(new FileHashEventHandler(UpdateFileHashStatus), sender, e);
         }
 
         private void UpdateFileHashStatus(object sender, FileHashEventArgs e)
         {
-            lblFileHashesRunning.Text = _hashComputeCount.ToString();
+            lblFileHashesRunning.Text = Math.Max(0, _hashComputeCount).ToString();
             if (e.FileName == null)
                 lblFileHashInfo.Text = "";
             else
@@ -214,6 +222,7 @@ namespace DeleteDuplicateFiles
         private void SearchCompleted()
         {
             lblSearchStatus.Text = "";
+            lblFileHashesRunning.Text = "0";
             pbFileSearch.Value = 100;
 
             CleanFileInfoUI();
@@ -317,8 +326,7 @@ namespace DeleteDuplicateFiles
                 if (duplicateFile == null) return;
                 lblDirectoryInfo.Text = duplicateFile.Dir;
                 lblFileNameInfo.Text = duplicateFile.Filename;
-                lblFileSizeInfo.Text =
-                    GeneralConverters.FileSizeToStringFormater.ConvertFileSizeToString(duplicateFile.FileSize);
+                lblFileSizeInfo.Text = GeneralConverters.FileSizeToStringFormater.ConvertFileSizeToString(duplicateFile.FileSize);
                 lblCreationTimeInfo.Text = duplicateFile.CreationTime.ToString("yyyy-MM-dd - HH:mm:ss");
                 lblLastWriteTimeInfo.Text = duplicateFile.LastWriteTime.ToString("yyyy-MM-dd - HH:mm:ss");
             }
@@ -496,9 +504,9 @@ namespace DeleteDuplicateFiles
         /// <param name="e"></param>
         private void lbResults_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.A && lbResults.Items.Count > 0)
-                for (int i = 0; i < lbResults.Items.Count; i++)
-                    lbResults.SetSelected(i, true);
+            if (!e.Control || e.KeyCode != Keys.A || lbResults.Items.Count <= 0) return;
+            for (int i = 0; i < lbResults.Items.Count; i++)
+                lbResults.SetSelected(i, true);
         }
 
         private void RemoveSelectedFolderFromList()
@@ -613,6 +621,7 @@ namespace DeleteDuplicateFiles
         private void openProfileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
                 try
                 {
                     _searchProfileManager.OpenSearchProfile(openFileDialog1.FileName);
@@ -622,7 +631,8 @@ namespace DeleteDuplicateFiles
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                } 
+            }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -642,6 +652,7 @@ namespace DeleteDuplicateFiles
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
                 try
                 {
                     _searchProfileManager.CurrentProfile.FullPath = saveFileDialog1.FileName;
@@ -656,6 +667,7 @@ namespace DeleteDuplicateFiles
                 {
                     MessageBox.Show(ex.Message, "Error saving file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -736,6 +748,14 @@ namespace DeleteDuplicateFiles
             if (MessageBox.Show("Are you sure you want to cancel the search?", "Cancel?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
             _duplicateFileFinder.StopSearching();
             UpdateMenuItemState();
+            ClearSearchResults();
+        }
+
+        private void ClearSearchResults()
+        {
+            lbDuplicateFiles.Items.Clear();
+            txtMasterFilename.Text = "";
+            lbResults.Items.Clear();
         }
 
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
