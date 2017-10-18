@@ -29,13 +29,13 @@ namespace ImageView
         private bool _dataReady;
         private FormBookmarks _formBookmarks;
         private FormRestartWithAdminPrivileges _formRestartWithAdminPrivileges;
+        private FormThumbnailView _formThumbnailView;
         private FormWindows _formWindows;
         private bool _fullScreen;
         private ImageReferenceCollection _imageReferenceCollection;
         private bool _imageTransitionRunning;
         private int _imageViewFormIdCnt = 1;
         private bool _winKeyDown;
-        private FormThumbnailView _formThumbnailView;
 
         public FormMain()
         {
@@ -50,7 +50,9 @@ namespace ImageView
         private void FormMain_Load(object sender, EventArgs e)
         {
             if (DesignMode)
+            {
                 return;
+            }
 
             DoubleBuffered = true;
             ApplicationSettingsService.Instance.OnSettingsChanged += Instance_OnSettingsChanged;
@@ -64,7 +66,9 @@ namespace ImageView
                     Resources.Faild_to_load_settings, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _formRestartWithAdminPrivileges = new FormRestartWithAdminPrivileges();
                 if (_formRestartWithAdminPrivileges.ShowDialog(this) == DialogResult.OK)
+                {
                     return;
+                }
             }
 
             SyncUserControlStateWithAppSettings();
@@ -91,9 +95,11 @@ namespace ImageView
         private async void pictureBoxAnimation_LoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
             if (_imageTransitionRunning)
+            {
                 return;
+            }
 
-            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
+            var settings = ApplicationSettingsService.Instance.Settings;
             var currentImage = pictureBox1.Image.Clone() as Image;
             var nextImage = _pictureBoxAnimation.Image.Clone() as Image;
             _pictureBoxAnimation.Image = null;
@@ -118,7 +124,9 @@ namespace ImageView
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!ScreenSaver.ScreenSaverEnabled)
+            {
                 ScreenSaver.Enable();
+            }
 
             timerSlideShow.Enabled = false;
             ServiceLocator.GetBookmarkService().SaveBookmarks();
@@ -135,7 +143,9 @@ namespace ImageView
         private void FormMain_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape && _fullScreen)
+            {
                 ToggleFullscreen();
+            }
 
             //if (e.KeyCode == Keys.F11)
             //{
@@ -145,10 +155,14 @@ namespace ImageView
             //}
 
             if (_imageTransitionRunning)
+            {
                 return;
+            }
 
             if (_winKeyDown || !ImageSourceDataAvailable)
+            {
                 return;
+            }
 
             if (e.KeyCode == Keys.Right || e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
             {
@@ -170,9 +184,14 @@ namespace ImageView
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
             if (_imageTransitionRunning)
+            {
                 return;
+            }
 
-            if (!ImageSourceDataAvailable) return;
+            if (!ImageSourceDataAvailable)
+            {
+                return;
+            }
             ImageReferenceElement imgRef;
 
             //Reset timer
@@ -200,7 +219,9 @@ namespace ImageView
         private void timerSlideShow_Tick(object sender, EventArgs e)
         {
             if (_imageTransitionRunning)
+            {
                 return;
+            }
 
             timerSlideShow.Interval = ApplicationSettingsService.Instance.Settings.SlideshowInterval;
             LoadNewImageFile(_imageReferenceCollection.GetNextImage().CompletePath);
@@ -218,7 +239,7 @@ namespace ImageView
 
         private void formSetSlideshowInterval_OnIntervalChanged(object sender, IntervalEventArgs e)
         {
-            timerSlideShow.Interval = e.Interval*1000;
+            timerSlideShow.Interval = e.Interval * 1000;
             ApplicationSettingsService.Instance.Settings.SlideshowInterval = timerSlideShow.Interval;
         }
 
@@ -235,10 +256,12 @@ namespace ImageView
 
         private void SyncUserControlStateWithAppSettings()
         {
-            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
+            var settings = ApplicationSettingsService.Instance.Settings;
 
             if (TopMost != settings.AlwaysOntop)
+            {
                 TopMost = settings.AlwaysOntop;
+            }
 
             topMostToolStripMenuItem.Checked = settings.AlwaysOntop;
 
@@ -252,11 +275,13 @@ namespace ImageView
             try
             {
                 if (ApplicationSettingsService.Instance.Settings.NextImageAnimation == ImageViewApplicationSettings.ChangeImageAnimation.None)
+                {
                     _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.None;
+                }
 
                 _pictureBoxAnimation.ImageLocation = null;
 
-                if (pictureBox1.Image != null && (_changeImageAnimation != ImageViewApplicationSettings.ChangeImageAnimation.None))
+                if (pictureBox1.Image != null && _changeImageAnimation != ImageViewApplicationSettings.ChangeImageAnimation.None)
                 {
                     _pictureBoxAnimation.Image = ImageCacheService.Instance.GetImage(imagePath);
                     _pictureBoxAnimation.Refresh();
@@ -282,7 +307,9 @@ namespace ImageView
             {
                 _imageReferenceCollection = ImageLoaderService.Instance.GenerateImageReferenceCollection(randomizeImageCollection);
                 if (ImageLoaderService.Instance.ImageReferenceList.Count > 0)
+                {
                     _dataReady = true;
+                }
             }
         }
 
@@ -299,7 +326,7 @@ namespace ImageView
                 {
                     long elapsedTime = stopwatch.ElapsedMilliseconds;
 
-                    float factor = stopwatch.ElapsedMilliseconds/(float) animationTime;
+                    float factor = stopwatch.ElapsedMilliseconds / (float) animationTime;
                     Image transitionImage;
                     switch (animation)
                     {
@@ -330,7 +357,9 @@ namespace ImageView
                     }
 
                     if (!Visible)
+                    {
                         return;
+                    }
                     try
                     {
                         pictureBox1.Image = transitionImage.Clone() as Image;
@@ -352,7 +381,9 @@ namespace ImageView
                     elapsedTime = stopwatch.ElapsedMilliseconds - elapsedTime;
 
                     if (sleepTime - elapsedTime > 0)
+                    {
                         Thread.Sleep(Convert.ToInt32(sleepTime - elapsedTime));
+                    }
                 }
                 stopwatch.Stop();
                 LogWriter.LogMessage("Image transition finished after " + stopwatch.ElapsedMilliseconds + " ms", LogWriter.LogLevel.Trace);
@@ -413,6 +444,84 @@ namespace ImageView
             GC.Collect();
         }
 
+        private void AutoArrangeOnSingleScreen()
+        {
+            if (_imageViewFormList.Count == 0)
+            {
+                return;
+            }
+
+            var screen = Screen.PrimaryScreen;
+            int widthPerScreen = screen.WorkingArea.Width / _imageViewFormList.Count;
+            int offset = 0;
+
+            foreach (var formImage in _imageViewFormList)
+            {
+                formImage.Width = widthPerScreen;
+                formImage.Height = screen.WorkingArea.Height;
+                formImage.Left = offset;
+                formImage.Top = 0;
+                formImage.Focus();
+                offset += widthPerScreen;
+            }
+        }
+
+        private void AutoArrangeOnMultipleScreens()
+        {
+            int index = 0;
+            int windowsPerScreen = 2;
+
+            int widthOffset = ApplicationSettingsService.Instance.Settings.ScreenWidthOffset;
+            int minXOffset = ApplicationSettingsService.Instance.Settings.ScreenMinXOffset;
+
+            foreach (var screen in Screen.AllScreens.OrderBy(s => s.Bounds.X))
+            {
+                if (screen.Primary)
+                {
+                    continue;
+                }
+                for (int i = 0; i < windowsPerScreen; i++)
+                {
+                    if (index >= _imageViewFormList.Count)
+                    {
+                        break;
+                    }
+
+                    var imageWindow = _imageViewFormList[index++];
+                    if (imageWindow == null || imageWindow.IsDisposed)
+                    {
+                        continue;
+                    }
+                    imageWindow.Margin = new Padding(0);
+
+                    int screenWidth = screen.Bounds.Width + widthOffset;
+                    int screenMinx = screen.WorkingArea.X - minXOffset;
+
+
+                    if (i == 0)
+                    {
+                        imageWindow.SetDesktopBounds(screenMinx, screen.WorkingArea.Y, screenWidth / 2,
+                            screen.WorkingArea.Height);
+                    }
+                    else
+                    {
+                        imageWindow.SetDesktopBounds(screenMinx + screen.WorkingArea.Width / 2, screen.WorkingArea.Y,
+                            screenWidth / 2, screen.WorkingArea.Height);
+                    }
+
+
+                    imageWindow.WindowState = FormWindowState.Normal;
+                    imageWindow.ResetZoomAndRepaint();
+                    imageWindow.Show();
+                    imageWindow.Focus();
+                }
+            }
+        }
+
+        private delegate void NativeThreadFunctin();
+
+        #region Main Menu Functions
+
         private void topMostToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ApplicationSettingsService.Instance.Settings.AlwaysOntop =
@@ -440,11 +549,6 @@ namespace ImageView
         {
         }
 
-
-        private delegate void NativeThreadFunctin();
-
-        #region Main Menu Functions
-
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var fileBrowser = new FileBrowser();
@@ -453,7 +557,10 @@ namespace ImageView
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!ImageSourceDataAvailable) return;
+            if (!ImageSourceDataAvailable)
+            {
+                return;
+            }
             SyncUserControlStateWithAppSettings();
             timerSlideShow.Interval = 1;
             timerSlideShow.Start();
@@ -472,7 +579,7 @@ namespace ImageView
 
         private void setIntervalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formSetSlideshowInterval = new FormSetSlideshowInterval(timerSlideShow.Interval/1000);
+            var formSetSlideshowInterval = new FormSetSlideshowInterval(timerSlideShow.Interval / 1000);
             formSetSlideshowInterval.OnIntervalChanged += formSetSlideshowInterval_OnIntervalChanged;
             formSetSlideshowInterval.ShowDialog(this);
         }
@@ -483,7 +590,7 @@ namespace ImageView
             var formSettings = new FormSettings();
             formSettings.ShowDialog(this);
 
-            foreach (FormImageView imageView in _imageViewFormList)
+            foreach (var imageView in _imageViewFormList)
             {
                 imageView.ReloadSettings();
             }
@@ -511,7 +618,9 @@ namespace ImageView
         private void copyFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (pictureBox1.Image != null)
+            {
                 Clipboard.SetImage(pictureBox1.Image);
+            }
         }
 
         private void addBookmarkToolStripMenuItem_Click(object sender, EventArgs e)
@@ -530,7 +639,7 @@ namespace ImageView
 
                 if (_imageReferenceCollection.CurrentImage != null)
                 {
-                     var formAddBookmark = new FormAddBookmark(starupPosition, _imageReferenceCollection.CurrentImage);
+                    var formAddBookmark = new FormAddBookmark(starupPosition, _imageReferenceCollection.CurrentImage);
                     formAddBookmark.ShowDialog(this);
                 }
             }
@@ -542,7 +651,7 @@ namespace ImageView
             {
                 _formBookmarks = new FormBookmarks();
             }
-            
+
             _formBookmarks.Show();
             _formBookmarks.Focus();
         }
@@ -555,7 +664,9 @@ namespace ImageView
             imageViewForm.Show();
 
             if (_formWindows != null && !_formWindows.IsDisposed)
+            {
                 _formWindows.Subscribe(imageViewForm);
+            }
 
             Focus();
         }
@@ -569,7 +680,9 @@ namespace ImageView
             }
 
             if (!_formWindows.Visible)
+            {
                 _formWindows.Show(this);
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -579,41 +692,13 @@ namespace ImageView
 
         private void autoArrangeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int index = 0;
-            int windowsPerScreen = 2;
-
-            int widthOffset = ApplicationSettingsService.Instance.Settings.ScreenWidthOffset;
-            int minXOffset = ApplicationSettingsService.Instance.Settings.ScreenMinXOffset;
-
-            foreach (Screen screen in Screen.AllScreens.OrderBy(s => s.Bounds.X))
+            if (Screen.AllScreens.Length == 1)
             {
-                if (screen.Primary) continue;
-                for (int i = 0; i < windowsPerScreen; i++)
-                {
-                    if (index >= _imageViewFormList.Count)
-                        break;
-
-                    FormImageView imageWindow = _imageViewFormList[index++];
-                    if (imageWindow == null || imageWindow.IsDisposed) continue;
-                    imageWindow.Margin = new Padding(0);
-
-                    int screenWidth = screen.Bounds.Width + widthOffset;
-                    int screenMinx = screen.WorkingArea.X - minXOffset;
-
-
-                    if (i == 0)
-                        imageWindow.SetDesktopBounds(screenMinx, screen.WorkingArea.Y, screenWidth/2,
-                            screen.WorkingArea.Height);
-                    else
-                        imageWindow.SetDesktopBounds(screenMinx + screen.WorkingArea.Width/2, screen.WorkingArea.Y,
-                            screenWidth/2, screen.WorkingArea.Height);
-
-
-                    imageWindow.WindowState = FormWindowState.Normal;
-                    imageWindow.ResetZoomAndRepaint();
-                    imageWindow.Show();
-                    imageWindow.Focus();
-                }
+                AutoArrangeOnSingleScreen();
+            }
+            else
+            {
+                AutoArrangeOnMultipleScreens();
             }
 
             Show();
@@ -622,9 +707,12 @@ namespace ImageView
 
         private void showAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (FormImageView imageWindow in _imageViewFormList)
+            foreach (var imageWindow in _imageViewFormList)
             {
-                if (imageWindow == null || imageWindow.IsDisposed) continue;
+                if (imageWindow == null || imageWindow.IsDisposed)
+                {
+                    continue;
+                }
                 imageWindow.Show();
                 imageWindow.Focus();
             }
@@ -635,16 +723,21 @@ namespace ImageView
 
         private void hideAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (FormImageView imageWindow in _imageViewFormList)
+            foreach (var imageWindow in _imageViewFormList)
             {
                 if (imageWindow != null && !imageWindow.IsDisposed)
+                {
                     imageWindow.Hide();
+                }
             }
         }
 
         private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_imageViewFormList.Count == 0) return;
+            if (_imageViewFormList.Count == 0)
+            {
+                return;
+            }
             if (
                 MessageBox.Show(this, Resources.Are_you_sure_you_want_to_close_all_windows_,
                     Resources.Close_all_windows_, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) ==
@@ -653,7 +746,7 @@ namespace ImageView
                 var imageWindowQueue = new Queue<FormImageView>(_imageViewFormList);
                 while (imageWindowQueue.Count > 0)
                 {
-                    FormImageView imageWindow = imageWindowQueue.Dequeue();
+                    var imageWindow = imageWindowQueue.Dequeue();
                     imageWindow.Close();
                 }
             }
@@ -662,7 +755,9 @@ namespace ImageView
         private void OnImageLoadComplete(object sender, EventArgs e)
         {
             if (!timerSlideShow.Enabled)
+            {
                 return;
+            }
 
             if (_formWindows == null)
             {
@@ -681,11 +776,16 @@ namespace ImageView
             {
                 LoadNewImageFile(openFileDialog1.FileName);
                 if (pictureBox1.Image != null)
+                {
                     addBookmarkToolStripMenuItem.Enabled = true;
+                }
 
-                if (_imageReferenceCollection != null) return;
+                if (_imageReferenceCollection != null)
+                {
+                    return;
+                }
                 _imageReferenceCollection = new ImageReferenceCollection(new List<int>());
-                var currentImage= _imageReferenceCollection.SetCurrentImage(openFileDialog1.FileName);
+                var currentImage = _imageReferenceCollection.SetCurrentImage(openFileDialog1.FileName);
                 _dataReady = true;
                 if (ImageLoaderService.Instance.ImageReferenceList == null)
                 {
@@ -693,6 +793,7 @@ namespace ImageView
                 }
             }
         }
+
         #endregion
     }
 }

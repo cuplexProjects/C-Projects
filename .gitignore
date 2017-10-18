@@ -40,4 +40,7 @@ Desktop.ini
 /CuplexDB
 /BitServe/packages
 /TestSite/packages
+/api.cuplex.se/ASP_Web_API/packages
 /Geo-IpImport/packages
+/SecureMemo/packages
+/OauthClient/packages
