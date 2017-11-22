@@ -522,7 +522,7 @@ namespace ImageView
 
             public bool OverRightPanel
             {
-                get { return _overRightButton; }
+                get => _overRightButton;
                 set
                 {
                     if (_overRightButton != value)
@@ -537,7 +537,7 @@ namespace ImageView
 
             public bool LeftButtonPressed
             {
-                get { return _leftButtonPressed; }
+                get => _leftButtonPressed;
                 set {
                     if (_leftButtonPressed != value)
                         StateChanged = true;
@@ -549,6 +549,23 @@ namespace ImageView
             {
                 StateChanged = false;
             }
+        }
+
+        private void bookmarkImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ServiceLocator.GetBookmarkService().BookmarkManager == null)
+            {
+                MessageBox.Show(Resources.Please_unlock_bookmarks_first);
+                return;
+            }
+            if (!ImageSourceDataAvailable || _imageReferenceCollection.CurrentImage == null)
+            {
+                return;
+            }
+        
+            var starupPosition = Location;
+            var formAddBookmark = new FormAddBookmark(starupPosition, _imageReferenceCollection.CurrentImage);
+            formAddBookmark.ShowDialog(this);
         }
     }
 }
