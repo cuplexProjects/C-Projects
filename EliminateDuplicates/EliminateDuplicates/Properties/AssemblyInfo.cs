@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Cuplex")]
 [assembly: AssemblyProduct("Delete Duplicates")]
-[assembly: AssemblyCopyright("Martin Dahl Copyright ©  2016")]
+[assembly: AssemblyCopyright("Martin Dahl Copyright ©  2017")]
 [assembly: AssemblyTrademark("Martin Dahl")]
 [assembly: AssemblyCulture("")]
 
