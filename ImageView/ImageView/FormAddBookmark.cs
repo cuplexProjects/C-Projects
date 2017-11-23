@@ -11,38 +11,44 @@ namespace ImageView
 {
     public partial class FormAddBookmark : Form
     {
-        private BookmarkManager _bookmarkManager;
-        private readonly ImageReferenceElement _imageReference;
-
-        public FormAddBookmark(Point startupPosition, ImageReferenceElement imageReference)
+        private readonly BookmarkManager _bookmarkManager;
+        private readonly BookmarkService _bookmarkService;
+        private ImageReferenceElement _imageReference;
+        private readonly ApplicationSettingsService _applicationSettingsService;
+        public FormAddBookmark(BookmarkManager bookmarkManager, BookmarkService bookmarkService, ApplicationSettingsService applicationSettingsService)
         {
             InitializeComponent();
+
+            _bookmarkManager = bookmarkManager;
+            _bookmarkService = bookmarkService;
+            _applicationSettingsService = applicationSettingsService;
+        }
+
+        public void Init(Point startupPosition, ImageReferenceElement imageReference)
+        {
             SetDesktopLocation(startupPosition.X, startupPosition.Y);
             _imageReference = imageReference;
-           
         }
 
         protected override CreateParams CreateParams
         {
             get
             {
-                const int CS_DROPSHADOW = 0x20000;
+                const int csDropshadow = 0x20000;
                 CreateParams cp = base.CreateParams;
-                cp.ClassStyle |= CS_DROPSHADOW;
+                cp.ClassStyle |= csDropshadow;
                 return cp;
             }
         }
 
         private void FormAddBookmark_Load(object sender, EventArgs e)
         {
-            BookmarkService bookmarkService = ServiceLocator.GetBookmarkService();
 
-            if (!bookmarkService.BookmarkManager.LoadedFromFile && !ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
+            if (!_bookmarkManager.LoadedFromFile && !_applicationSettingsService.Settings.PasswordProtectBookmarks)
             {
-                bookmarkService.OpenBookmarks();
+                _bookmarkService.OpenBookmarks();
             }
 
-            _bookmarkManager = bookmarkService.BookmarkManager;
             if (_imageReference == null)
             {
                 Close();
@@ -74,8 +80,7 @@ namespace ImageView
             BookmarkFolder bookmarkFolder = comboBoxBookmarkFolders.SelectedItem as BookmarkFolder ?? _bookmarkManager.RootFolder;
 
             _bookmarkManager.AddBookmark(bookmarkFolder.Id, txtBookmarkName.Text, _imageReference);
-
-            Close();
+            _bookmarkService.SaveBookmarks();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -94,7 +99,7 @@ namespace ImageView
 
         private void btnCreateFolder_Click(object sender, EventArgs e)
         {
-            var formAddBookmarkWithNewFolder = new FormAddBookmarkWithNewFolder(_imageReference);
+            var formAddBookmarkWithNewFolder = new FormAddBookmarkWithNewFolder(_imageReference, _bookmarkService, _bookmarkManager);
             formAddBookmarkWithNewFolder.Show();
             Close();
         }

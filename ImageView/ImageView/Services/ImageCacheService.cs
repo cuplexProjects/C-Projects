@@ -11,13 +11,14 @@ namespace ImageView.Services
         private const int DefaultCacheSize = 16777216;
         public const int MinCacheSize = 4194304;
         public const int MaxCacheSize = 268435456;
-        private static ImageCacheService _instance;
         private Dictionary<string, CachedImage> _cachedImages;
         private int _cacheSize;
+        private readonly ApplicationSettingsService _applicationSettingsService;
 
-        private ImageCacheService()
+        public ImageCacheService(ApplicationSettingsService applicationSettingsService)
         {
-            int cacheSizeFromSetings = ApplicationSettingsService.Instance.Settings.ImageCacheSize;
+            _applicationSettingsService = applicationSettingsService;
+            int cacheSizeFromSetings = _applicationSettingsService.Settings.ImageCacheSize;
             _cacheSize = DefaultCacheSize;
             _cachedImages = new Dictionary<string, CachedImage>();
 
@@ -27,12 +28,10 @@ namespace ImageView.Services
             }
             else
             {
-                ApplicationSettingsService.Instance.Settings.ImageCacheSize = CacheSize;
-                ApplicationSettingsService.Instance.SaveSettings();
+                _applicationSettingsService.Settings.ImageCacheSize = CacheSize;
+                _applicationSettingsService.SaveSettings();
             }
         }
-
-        public static ImageCacheService Instance => _instance ?? (_instance = new ImageCacheService());
 
         public int CacheSize
         {
@@ -53,7 +52,6 @@ namespace ImageView.Services
 
         public void Dispose()
         {
-            _instance = null;
             _cachedImages = null;
         }
 

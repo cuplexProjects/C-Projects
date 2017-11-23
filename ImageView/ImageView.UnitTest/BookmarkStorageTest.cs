@@ -49,7 +49,8 @@ namespace ImageView.UnitTest
         [TestInitialize]
         public void MyTestInitialize()
         {
-            bookmarkService = new BookmarkService();
+            var appsettings = new ApplicationSettingsService();
+            bookmarkService = new BookmarkService(new BookmarkManager(), appsettings);
             BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
             Assert.IsFalse(bookmarkManager.IsModified, "BookmarkManager can not be modified before test begins");
             Assert.IsTrue(bookmarkManager.RootFolder.Bookmarks.Count==0, "Test must start with empty bookmark list");
@@ -69,11 +70,12 @@ namespace ImageView.UnitTest
             BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
             BookmarkFolder rootFolder = bookmarkManager.RootFolder;
             Assert.AreEqual("Root", rootFolder.Name, "Invaild Root folder name");
+            ApplicationSettingsService applicationSettingsService= new ApplicationSettingsService();
 
             bookmarkManager.AddBookmark(rootFolder.Id, "TestImageBookmark", _imageReference);
             bool saveSuccessful = bookmarkService.SaveBookmarks();
             Assert.IsTrue(saveSuccessful, "Saving bookmarks data file failed!");
-            bookmarkService = new BookmarkService();
+            bookmarkService = new BookmarkService(new BookmarkManager(), applicationSettingsService);
             bookmarkService.OpenBookmarks();
             bookmarkManager = bookmarkService.BookmarkManager;
 

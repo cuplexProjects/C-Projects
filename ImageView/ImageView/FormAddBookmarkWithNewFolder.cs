@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using ImageView.DataContracts;
+using ImageView.Managers;
 using ImageView.Models;
 using ImageView.Services;
 using ImageView.Utility;
@@ -11,11 +12,15 @@ namespace ImageView
     {
         private readonly ImageReferenceElement _imageReference;
         private readonly BookmarkFolder rootBookmarkFolder;
+        private readonly BookmarkService _bookmarkService;
+        private readonly BookmarkManager _bookmarkManager;
 
-        public FormAddBookmarkWithNewFolder(ImageReferenceElement imageReference)
+        public FormAddBookmarkWithNewFolder(ImageReferenceElement imageReference, BookmarkService bookmarkService, BookmarkManager bookmarkManager)
         {
             _imageReference = imageReference;
-            rootBookmarkFolder = ServiceLocator.GetBookmarkService().BookmarkManager.RootFolder;
+            _bookmarkService = bookmarkService;
+            _bookmarkManager = bookmarkManager;
+            rootBookmarkFolder = _bookmarkManager.RootFolder;
             InitializeComponent();
         }
 

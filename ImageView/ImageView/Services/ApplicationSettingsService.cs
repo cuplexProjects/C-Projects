@@ -9,10 +9,9 @@ namespace ImageView.Services
 {
     public class ApplicationSettingsService
     {
-        private static ApplicationSettingsService _instance;
         private readonly RegistryAccess _registryService;
 
-        private ApplicationSettingsService()
+        public ApplicationSettingsService()
         {
             try
             {
@@ -36,9 +35,7 @@ namespace ImageView.Services
             Settings = new ImageViewApplicationSettings();
         }
 
-        public static ApplicationSettingsService Instance => _instance ?? (_instance = new ApplicationSettingsService())
-            ;
-
+       
         public ImageViewApplicationSettings Settings { get; private set; }
 
         public event EventHandler OnSettingsChanged;

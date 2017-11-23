@@ -7,8 +7,10 @@ namespace ImageView
 {
     public partial class FormImageSizeModes : Form
     {
-        public FormImageSizeModes()
+        private readonly ApplicationSettingsService _applicationSettingsService;
+        public FormImageSizeModes(ApplicationSettingsService applicationSettingsService)
         {
+            _applicationSettingsService = applicationSettingsService;
             InitializeComponent();
         }
 
@@ -17,7 +19,7 @@ namespace ImageView
         private void FormImageSizeModes_Load(object sender, EventArgs e)
         {
             comboBoxImageSizeModes.DataSource = Enum.GetValues(typeof(PictureBoxSizeMode));
-            int sizeMode = ApplicationSettingsService.Instance.Settings.PrimaryImageSizeMode;
+            int sizeMode =_applicationSettingsService.Settings.PrimaryImageSizeMode;
 
             try
             {
@@ -26,7 +28,7 @@ namespace ImageView
             catch (Exception ex)
             {
                 LogWriter.LogError("Invalid image Size mode in app settings. Actual value:" + sizeMode, ex);
-                ApplicationSettingsService.Instance.Settings.PrimaryImageSizeMode = 0;
+               _applicationSettingsService.Settings.PrimaryImageSizeMode = 0;
             }
         }
 

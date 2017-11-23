@@ -27,18 +27,26 @@ namespace ImageView
         private readonly string _windowTitle;
         private ImageViewApplicationSettings.ChangeImageAnimation _changeImageAnimation;
         private bool _dataReady;
-        private FormBookmarks _formBookmarks;
         private FormRestartWithAdminPrivileges _formRestartWithAdminPrivileges;
-        private FormThumbnailView _formThumbnailView;
         private FormWindows _formWindows;
         private bool _fullScreen;
         private ImageReferenceCollection _imageReferenceCollection;
         private bool _imageTransitionRunning;
         private int _imageViewFormIdCnt = 1;
         private bool _winKeyDown;
+        private readonly FormAddBookmark _formAddBookmark;
+        private readonly BookmarkService _bookmarkService;
+        private readonly FormSettings _formSettings;
+        private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly ImageCacheService _imageCacheService;
 
-        public FormMain()
+        public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings,  ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
         {
+            _formAddBookmark = formAddBookmark;
+            _bookmarkService = bookmarkService;
+            _formSettings = formSettings;
+            _applicationSettingsService = applicationSettingsService;
+            _imageCacheService = imageCacheService;
             InitializeComponent();
             _imageViewFormList = new List<FormImageView>();
             _windowTitle = "Image Viewer - " + Application.ProductVersion;
@@ -55,12 +63,12 @@ namespace ImageView
             }
 
             DoubleBuffered = true;
-            ApplicationSettingsService.Instance.OnSettingsChanged += Instance_OnSettingsChanged;
-            ApplicationSettingsService.Instance.OnRegistryAccessDenied += Instance_OnRegistryAccessDenied;
+            _applicationSettingsService.OnSettingsChanged += Instance_OnSettingsChanged;
+            _applicationSettingsService.OnRegistryAccessDenied += Instance_OnRegistryAccessDenied;
             ImageLoaderService.Instance.OnImportComplete += Instance_OnImportComplete;
             ImageLoaderService.Instance.OnImageWasDeleted += Instance_OnImageWasDeleted;
 
-            if (!ApplicationSettingsService.Instance.LoadSettings())
+            if (!_applicationSettingsService.LoadSettings())
             {
                 MessageBox.Show(Resources.Unable_To_Access_application_settings_in_registry,
                     Resources.Faild_to_load_settings, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -73,14 +81,14 @@ namespace ImageView
 
             SyncUserControlStateWithAppSettings();
 
-            if (ApplicationSettingsService.Instance.Settings.UseSavedMainFormPosition)
+            if (_applicationSettingsService.Settings.UseSavedMainFormPosition)
             {
-                RestoreFormState.SetFormSizeAndPosition(this, ApplicationSettingsService.Instance.Settings.MainFormSize,
-                    ApplicationSettingsService.Instance.Settings.MainFormPosition, Screen.PrimaryScreen.WorkingArea);
+                RestoreFormState.SetFormSizeAndPosition(this, _applicationSettingsService.Settings.MainFormSize,
+                    _applicationSettingsService.Settings.MainFormPosition, Screen.PrimaryScreen.WorkingArea);
             }
 
-            _changeImageAnimation = ApplicationSettingsService.Instance.Settings.NextImageAnimation;
-            timerSlideShow.Interval = ApplicationSettingsService.Instance.Settings.SlideshowInterval;
+            _changeImageAnimation = _applicationSettingsService.Settings.NextImageAnimation;
+            timerSlideShow.Interval = _applicationSettingsService.Settings.SlideshowInterval;
 
 
             addBookmarkToolStripMenuItem.Enabled = false;
@@ -99,7 +107,7 @@ namespace ImageView
                 return;
             }
 
-            var settings = ApplicationSettingsService.Instance.Settings;
+            var settings = _applicationSettingsService.Settings;
             var currentImage = pictureBox1.Image.Clone() as Image;
             var nextImage = _pictureBoxAnimation.Image.Clone() as Image;
             _pictureBoxAnimation.Image = null;
@@ -129,9 +137,9 @@ namespace ImageView
             }
 
             timerSlideShow.Enabled = false;
-            ServiceLocator.GetBookmarkService().SaveBookmarks();
-            ApplicationSettingsService.Instance.Settings.SetMainFormPosition(Bounds);
-            ApplicationSettingsService.Instance.SaveSettings();
+            _bookmarkService.SaveBookmarks();
+            _applicationSettingsService.Settings.SetMainFormPosition(Bounds);
+            _applicationSettingsService.SaveSettings();
             ServiceLocator.Clear();
         }
 
@@ -223,7 +231,7 @@ namespace ImageView
                 return;
             }
 
-            timerSlideShow.Interval = ApplicationSettingsService.Instance.Settings.SlideshowInterval;
+            timerSlideShow.Interval = _applicationSettingsService.Settings.SlideshowInterval;
             LoadNewImageFile(_imageReferenceCollection.GetNextImage().CompletePath);
         }
 
@@ -240,7 +248,7 @@ namespace ImageView
         private void formSetSlideshowInterval_OnIntervalChanged(object sender, IntervalEventArgs e)
         {
             timerSlideShow.Interval = e.Interval * 1000;
-            ApplicationSettingsService.Instance.Settings.SlideshowInterval = timerSlideShow.Interval;
+            _applicationSettingsService.Settings.SlideshowInterval = timerSlideShow.Interval;
         }
 
         private void HandleImportDataComplete()
@@ -256,7 +264,7 @@ namespace ImageView
 
         private void SyncUserControlStateWithAppSettings()
         {
-            var settings = ApplicationSettingsService.Instance.Settings;
+            var settings = _applicationSettingsService.Settings;
 
             if (TopMost != settings.AlwaysOntop)
             {
@@ -274,7 +282,7 @@ namespace ImageView
         {
             try
             {
-                if (ApplicationSettingsService.Instance.Settings.NextImageAnimation == ImageViewApplicationSettings.ChangeImageAnimation.None)
+                if (_applicationSettingsService.Settings.NextImageAnimation == ImageViewApplicationSettings.ChangeImageAnimation.None)
                 {
                     _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.None;
                 }
@@ -283,12 +291,12 @@ namespace ImageView
 
                 if (pictureBox1.Image != null && _changeImageAnimation != ImageViewApplicationSettings.ChangeImageAnimation.None)
                 {
-                    _pictureBoxAnimation.Image = ImageCacheService.Instance.GetImage(imagePath);
+                    _pictureBoxAnimation.Image = _imageCacheService.GetImage(imagePath);
                     _pictureBoxAnimation.Refresh();
                 }
                 else
                 {
-                    pictureBox1.Image = ImageCacheService.Instance.GetImage(imagePath);
+                    pictureBox1.Image = _imageCacheService.GetImage(imagePath);
                     pictureBox1.Refresh();
                 }
 
@@ -302,7 +310,7 @@ namespace ImageView
 
         private void SetImageReferenceCollection()
         {
-            bool randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
+            bool randomizeImageCollection = _applicationSettingsService.Settings.AutoRandomizeCollection;
             if (!ImageLoaderService.Instance.IsRunningImport && ImageLoaderService.Instance.ImageReferenceList != null)
             {
                 _imageReferenceCollection = ImageLoaderService.Instance.GenerateImageReferenceCollection(randomizeImageCollection);
@@ -424,28 +432,10 @@ namespace ImageView
         private void autoLoadPreviousFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var formLoad = new FormLoad();
-            formLoad.SetBasePath(ApplicationSettingsService.Instance.Settings.LastFolderLocation);
+            formLoad.SetBasePath(_applicationSettingsService.Settings.LastFolderLocation);
             formLoad.ShowDialog(this);
         }
-
-        private void openThumbnailsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_formThumbnailView == null)
-            {
-                _formThumbnailView = new FormThumbnailView();
-                _formThumbnailView.Closed += _formThumbnailView_Closed;
-            }
-
-            _formThumbnailView.Show();
-            _formThumbnailView.Focus();
-        }
-
-        private void _formThumbnailView_Closed(object sender, EventArgs e)
-        {
-            _formThumbnailView = null;
-            GC.Collect();
-        }
-
+        
         private void AutoArrangeOnSingleScreen()
         {
             if (_imageViewFormList.Count == 0)
@@ -465,6 +455,7 @@ namespace ImageView
                 formImage.Top = 0;
                 formImage.Focus();
                 offset += widthPerScreen;
+                formImage.ResetZoomAndRepaint();
             }
         }
 
@@ -473,8 +464,8 @@ namespace ImageView
             int index = 0;
             int windowsPerScreen = 2;
 
-            int widthOffset = ApplicationSettingsService.Instance.Settings.ScreenWidthOffset;
-            int minXOffset = ApplicationSettingsService.Instance.Settings.ScreenMinXOffset;
+            int widthOffset = _applicationSettingsService.Settings.ScreenWidthOffset;
+            int minXOffset = _applicationSettingsService.Settings.ScreenMinXOffset;
 
             foreach (var screen in Screen.AllScreens.OrderBy(s => s.Bounds.X))
             {
@@ -526,9 +517,8 @@ namespace ImageView
 
         private void topMostToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ApplicationSettingsService.Instance.Settings.AlwaysOntop =
-                !ApplicationSettingsService.Instance.Settings.AlwaysOntop;
-            ApplicationSettingsService.Instance.SaveSettings();
+            _applicationSettingsService.Settings.AlwaysOntop = !_applicationSettingsService.Settings.AlwaysOntop;
+            _applicationSettingsService.SaveSettings();
             SyncUserControlStateWithAppSettings();
         }
 
@@ -539,7 +529,7 @@ namespace ImageView
 
         private void setImageScalingModeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formImageSizeModes = new FormImageSizeModes();
+            var formImageSizeModes = new FormImageSizeModes(_applicationSettingsService);
 
             if (formImageSizeModes.ShowDialog(this) == DialogResult.OK)
             {
@@ -553,7 +543,7 @@ namespace ImageView
 
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var fileBrowser = new FileBrowser();
+            var fileBrowser = new FileBrowser(_applicationSettingsService);
             fileBrowser.ShowDialog(this);
         }
 
@@ -589,8 +579,7 @@ namespace ImageView
 
         private void openSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formSettings = new FormSettings();
-            formSettings.ShowDialog(this);
+            _formSettings.ShowDialog(this);
 
             foreach (var imageView in _imageViewFormList)
             {
@@ -627,7 +616,7 @@ namespace ImageView
 
         private void addBookmarkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (ServiceLocator.GetBookmarkService().BookmarkManager == null)
+            if (_bookmarkService.BookmarkManager == null)
             {
                 MessageBox.Show(Resources.Please_unlock_bookmarks_first);
                 return;
@@ -641,26 +630,22 @@ namespace ImageView
 
                 if (_imageReferenceCollection.CurrentImage != null)
                 {
-                    var formAddBookmark = new FormAddBookmark(starupPosition, _imageReferenceCollection.CurrentImage);
-                    formAddBookmark.ShowDialog(this);
+                    _formAddBookmark.Init(starupPosition, _imageReferenceCollection.CurrentImage);
+                    _formAddBookmark.ShowDialog(this);
                 }
             }
         }
 
         private void openBookmarksToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            if (_formBookmarks == null || _formBookmarks.IsDisposed)
-            {
-                _formBookmarks = new FormBookmarks();
-            }
-
-            _formBookmarks.Show();
-            _formBookmarks.Focus();
+            var  formBookmarks= new FormBookmarks(_bookmarkService,_bookmarkService.BookmarkManager,_applicationSettingsService);
+            formBookmarks.Show();
+            formBookmarks.Focus();
         }
 
         private void newWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var imageViewForm = new FormImageView(_imageViewFormIdCnt++);
+            var imageViewForm = new FormImageView(_imageViewFormIdCnt++, _formAddBookmark,_bookmarkService.BookmarkManager, _applicationSettingsService);
             _imageViewFormList.Add(imageViewForm);
             imageViewForm.FormClosed += imageViewForm_FormClosed;
             imageViewForm.Show();
@@ -677,7 +662,7 @@ namespace ImageView
         {
             if (_formWindows == null || _formWindows.IsDisposed)
             {
-                _formWindows = new FormWindows();
+                _formWindows = new FormWindows(_applicationSettingsService);
                 _formWindows.SubscribeToList(_imageViewFormList);
             }
 
@@ -763,7 +748,7 @@ namespace ImageView
 
             if (_formWindows == null)
             {
-                _formWindows = new FormWindows();
+                _formWindows = new FormWindows(_applicationSettingsService);
                 _formWindows.SubscribeToList(_imageViewFormList);
             }
 
@@ -797,5 +782,11 @@ namespace ImageView
         }
 
         #endregion
+
+        private void openThumbnailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var formThumbnailView = new FormThumbnailView(_formAddBookmark, _applicationSettingsService);
+            formThumbnailView.Show(this);
+        }
     }
 }

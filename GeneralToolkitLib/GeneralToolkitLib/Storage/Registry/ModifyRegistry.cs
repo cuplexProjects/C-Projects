@@ -53,7 +53,7 @@ namespace GeneralToolkitLib.Storage.Registry
         ///     A property to set the BaseRegistryKey value.
         ///     (default = Registry.LocalMachine)
         /// </summary>
-        public RegistryKey BaseRegKeyCurrentUser { get; set; } = Microsoft.Win32.Registry.CurrentUser;
+        private RegistryKey BaseRegKeyCurrentUser { get; set; } = Microsoft.Win32.Registry.CurrentUser;
 
         public void SetupSubKeyPathAndAccessRights()
         {

@@ -16,9 +16,11 @@ namespace ImageView
     {
         private string _selectedPath;
         private bool enableLoadFormOnEnterKey = true;
+        private readonly ApplicationSettingsService _applicationSettingsService;
 
-        public FileBrowser()
+        public FileBrowser(ApplicationSettingsService applicationSettingsService)
         {
+            _applicationSettingsService = applicationSettingsService;
             InitializeComponent();
         }
 
@@ -41,7 +43,7 @@ namespace ImageView
 
             dataGridViewLoadedImages.DataBindingComplete += dataGridViewLoadedImages_DataBindingComplete;
             var lastUsedSearchPathsList = new List<string>();
-            var searchDirsFromSettings = ApplicationSettingsService.Instance.Settings.LastUsedSearchPaths;
+            var searchDirsFromSettings = _applicationSettingsService.Settings.LastUsedSearchPaths;
             bool validList = true;
 
             // Validate every directory and check for duplicates. 
@@ -65,8 +67,8 @@ namespace ImageView
 
             if (!validList)
             {
-                ApplicationSettingsService.Instance.Settings.LastUsedSearchPaths = lastUsedSearchPathsList;
-                ApplicationSettingsService.Instance.SaveSettings();
+                _applicationSettingsService.Settings.LastUsedSearchPaths = lastUsedSearchPathsList;
+                _applicationSettingsService.SaveSettings();
             }
 
             if (lastUsedSearchPathsList.Count > 0)
@@ -133,10 +135,10 @@ namespace ImageView
             formLoad.SetBasePath(SelectedPath);
             formLoad.ShowDialog(this);
 
-            if (ApplicationSettingsService.Instance.Settings.EnableAutoLoadFunctionFromMenu)
+            if (_applicationSettingsService.Settings.EnableAutoLoadFunctionFromMenu)
             {
-                ApplicationSettingsService.Instance.Settings.LastFolderLocation = SelectedPath;
-                ApplicationSettingsService.Instance.SaveSettings();
+                _applicationSettingsService.Settings.LastFolderLocation = SelectedPath;
+                _applicationSettingsService.SaveSettings();
             }
 
             if (ImageLoaderService.Instance.ImageReferenceList != null)
@@ -221,8 +223,8 @@ namespace ImageView
         private void SavePathListToSettings()
         {
             var lastUsedSearchPaths = PathCollection.Cast<string>().ToList();
-            ApplicationSettingsService.Instance.Settings.LastUsedSearchPaths = lastUsedSearchPaths;
-            ApplicationSettingsService.Instance.SaveSettings();
+            _applicationSettingsService.Settings.LastUsedSearchPaths = lastUsedSearchPaths;
+            _applicationSettingsService.SaveSettings();
         }
 
         private void txtBaseDirectory_KeyUp(object sender, KeyEventArgs e)

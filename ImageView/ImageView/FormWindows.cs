@@ -15,9 +15,11 @@ namespace ImageView
         private readonly Dictionary<Form, ImageWindowListItem> _imageWindowListItems;
         private Form _lastActiveImageViewForm;
         private int _winCnt;
+        private readonly ApplicationSettingsService _applicationSettingsService;
 
-        public FormWindows()
+        public FormWindows(ApplicationSettingsService applicationSettingsService)
         {
+            _applicationSettingsService = applicationSettingsService;
             InitializeComponent();
             _formDisposables = new List<IDisposable>();
             _imageWindowListItems = new Dictionary<Form, ImageWindowListItem>();
@@ -75,7 +77,7 @@ namespace ImageView
 
         private void FormWindows_Load(object sender, EventArgs e)
         {
-            chkShowInTaskBar.Checked = ApplicationSettingsService.Instance.Settings.ShowImageViewFormsInTaskBar;
+            chkShowInTaskBar.Checked = _applicationSettingsService.Settings.ShowImageViewFormsInTaskBar;
         }
 
         public void SubscribeToList(List<FormImageView> providers)
@@ -157,14 +159,12 @@ namespace ImageView
 
             const int maxWindowsHorizontal = 3;
             const int maxWindowsVertical = 2;
-            int screenWidthOffset = ApplicationSettingsService.Instance.Settings.ScreenWidthOffset;
+            int screenWidthOffset = _applicationSettingsService.Settings.ScreenWidthOffset;
             var windowPosision = new Point(myScreen.WorkingArea.Left - 5, myScreen.WorkingArea.Top);
 
             foreach (object form in listBoxActiveWindows.SelectedItems)
             {
-                var imageWindowListItem = form as ImageWindowListItem;
-
-                if (imageWindowListItem != null)
+                if (form is ImageWindowListItem imageWindowListItem)
                 {
                     imageWindowListItem.WindowRef.DesktopBounds = GetWindowSizeFromScreen(myScreen, maxWindowsHorizontal,
                         maxWindowsVertical, screenWidthOffset, windowPosision);
@@ -226,7 +226,7 @@ namespace ImageView
         private void chkShowInTaskBar_CheckedChanged(object sender, EventArgs e)
         {
             bool showInTaskbar = chkShowInTaskBar.Checked;
-            ApplicationSettingsService.Instance.Settings.ShowImageViewFormsInTaskBar = showInTaskbar;
+            _applicationSettingsService.Settings.ShowImageViewFormsInTaskBar = showInTaskbar;
             foreach (object form in listBoxActiveWindows.Items)
             {
                 var imageWindowListItem = form as ImageWindowListItem;

@@ -6,8 +6,10 @@ namespace ImageView.UserControls
 {
     public partial class ThumbnailSettings : UserControl
     {
-        public ThumbnailSettings()
+        private readonly ApplicationSettingsService _applicationSettingsService;
+        public ThumbnailSettings(ApplicationSettingsService applicationSettingsService)
         {
+            _applicationSettingsService = applicationSettingsService;
             InitializeComponent();
         }
 
@@ -17,8 +19,8 @@ namespace ImageView.UserControls
             if (parentForm == null)
                 return;
 
-            ApplicationSettingsService.Instance.Settings.ThumbnailSize = GetSelectedThumbnailSize();
-            ApplicationSettingsService.Instance.Settings.MaxThumbnails = trackBarThumbnailCount.Value;
+            _applicationSettingsService.Settings.ThumbnailSize = GetSelectedThumbnailSize();
+            _applicationSettingsService.Settings.MaxThumbnails = trackBarThumbnailCount.Value;
             parentForm.DialogResult = DialogResult.OK;
             parentForm.Close();
         }
@@ -49,8 +51,8 @@ namespace ImageView.UserControls
 
         private void ThumbnailSettings_Load(object sender, EventArgs e)
         {
-            int thumbnailsize = ApplicationSettingsService.Instance.Settings.ThumbnailSize;
-            int maxThumbnails = ApplicationSettingsService.Instance.Settings.MaxThumbnails;
+            int thumbnailsize = _applicationSettingsService.Settings.ThumbnailSize;
+            int maxThumbnails = _applicationSettingsService.Settings.MaxThumbnails;
 
             if (thumbnailsize == 64)
                 rb64.Checked = true;

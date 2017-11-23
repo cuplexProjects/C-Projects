@@ -9,14 +9,20 @@ namespace ImageView
 {
     public partial class FormSettings : Form
     {
-        public FormSettings()
+        private readonly BookmarkService _bookmarkService;
+        private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly ImageCacheService _imageCacheService;
+        public FormSettings(BookmarkService bookmarkService, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
         {
+            _bookmarkService = bookmarkService;
+            _applicationSettingsService = applicationSettingsService;
+            _imageCacheService = imageCacheService;
             InitializeComponent();
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
+            ImageViewApplicationSettings settings = _applicationSettingsService.Settings;
             chkAutoRandomize.Checked = settings.AutoRandomizeCollection;
             chkPasswordProtectBookmarks.Checked = settings.PasswordProtectBookmarks;
             chkShowSwitchImgButtons.Checked = settings.ShowSwitchImageButtons;
@@ -75,7 +81,7 @@ namespace ImageView
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            ImageViewApplicationSettings settings = ApplicationSettingsService.Instance.Settings;
+            ImageViewApplicationSettings settings = _applicationSettingsService.Settings;
             settings.AutoRandomizeCollection = chkAutoRandomize.Checked;
 
             if (rbImgTransformNone.Checked)
@@ -93,9 +99,9 @@ namespace ImageView
             //if (rbImgTransformSlideUp.Checked)
             //    settings.NextImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideUp;
 
-            ApplicationSettingsService.Instance.Settings.ShowSwitchImageButtons = chkShowSwitchImgButtons.Checked;
-            ApplicationSettingsService.Instance.Settings.EnableAutoLoadFunctionFromMenu = chkEnableAutoload.Checked;
-            ApplicationSettingsService.Instance.Settings.ShowNextPrevControlsOnEnterWindow = rbOverWindow.Checked;
+            _applicationSettingsService.Settings.ShowSwitchImageButtons = chkShowSwitchImgButtons.Checked;
+            _applicationSettingsService.Settings.EnableAutoLoadFunctionFromMenu = chkEnableAutoload.Checked;
+            _applicationSettingsService.Settings.ShowNextPrevControlsOnEnterWindow = rbOverWindow.Checked;
 
             if (rbImgTransformFadeIn.Checked)
                 settings.NextImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.FadeIn;
@@ -104,10 +110,10 @@ namespace ImageView
             settings.ScreenMinXOffset = Convert.ToInt32(numericScreenMinOffset.Value);
             settings.ScreenWidthOffset = Convert.ToInt32(numericScreenWidthOffset.Value);
 
-            ApplicationSettingsService.Instance.Settings.ImageCacheSize = trackBarCacheSize.Value*1048576;
-            ImageCacheService.Instance.CacheSize = ApplicationSettingsService.Instance.Settings.ImageCacheSize;
+            _applicationSettingsService.Settings.ImageCacheSize = trackBarCacheSize.Value*1048576;
+            _imageCacheService.CacheSize = _applicationSettingsService.Settings.ImageCacheSize;
 
-            ApplicationSettingsService.Instance.SaveSettings();
+            _applicationSettingsService.SaveSettings();
             Close();
         }
 
@@ -133,9 +139,9 @@ namespace ImageView
                             return;
                         }
 
-                        ApplicationSettingsService.Instance.Settings.EnablePasswordProtectBookmarks(formSetPassword.VerifiedPassword);
-                        ApplicationSettingsService.Instance.SaveSettings();
-                        ServiceLocator.GetBookmarkService().SaveBookmarks();
+                        _applicationSettingsService.Settings.EnablePasswordProtectBookmarks(formSetPassword.VerifiedPassword);
+                        _applicationSettingsService.SaveSettings();
+                        _bookmarkService.SaveBookmarks();
                     }
                     else
                         chkPasswordProtectBookmarks.Checked = false;
@@ -145,13 +151,13 @@ namespace ImageView
                 using (
                     var formgetPassword = new FormGetPassword
                     {
-                        PasswordDerivedString = ApplicationSettingsService.Instance.Settings.PasswordDerivedString
+                        PasswordDerivedString = _applicationSettingsService.Settings.PasswordDerivedString
                     })
                 {
                     if (formgetPassword.ShowDialog() == DialogResult.OK && formgetPassword.PasswordVerified)
                     {
-                        ApplicationSettingsService.Instance.Settings.DisablePasswordProtectBookmarks();
-                        ApplicationSettingsService.Instance.SaveSettings();
+                        _applicationSettingsService.Settings.DisablePasswordProtectBookmarks();
+                        _applicationSettingsService.SaveSettings();
 
                         // Check bookmark status
                         //if (BookmarkService.Instance.BookmarkManager == null)
@@ -165,12 +171,12 @@ namespace ImageView
 
         private void UpdateCacheStats()
         {
-            int cacheSize = ImageCacheService.Instance.CacheSize/1048576;
-            long cacheUsage = ImageCacheService.Instance.GetCacheUsage()/1048576;
+            int cacheSize = _imageCacheService.CacheSize/1048576;
+            long cacheUsage = _imageCacheService.GetCacheUsage()/1048576;
             const int maxSize = ImageCacheService.MaxCacheSize/1048576;
             const int minSize = ImageCacheService.MinCacheSize/1048576;
 
-            lblCacheItems.Text = ImageCacheService.Instance.CachedItems.ToString();
+            lblCacheItems.Text = _imageCacheService.CachedItems.ToString();
             lblUsedSpace.Text = cacheUsage + Resources.FormSettings_UpdateCacheSizeLabel__MB;
             lblFreeSpace.Text = cacheSize - cacheUsage + Resources.FormSettings_UpdateCacheSizeLabel__MB;
             pbarPercentUsed.Value = Convert.ToInt32((double)cacheUsage/ cacheSize * 100);

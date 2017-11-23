@@ -8,6 +8,7 @@ using GeneralToolkitLib.Events;
 using GeneralToolkitLib.Log;
 using GeneralToolkitLib.WindowsApi;
 using ImageView.Events;
+using ImageView.Managers;
 using ImageView.Models;
 using ImageView.Models.Interface;
 using ImageView.Properties;
@@ -17,7 +18,7 @@ namespace ImageView
 {
     public partial class FormImageView : Form, IObservable<ImageViewFormInfoBase>, ImageViewFormWindow
     {
-        private const float ZOOM_MIN = 0.0095f;
+        private const float ZoomMin = 0.0095f;
         private const int ChangeImagePanelWidth = 50; 
         private readonly ImageLoaderService _imageLoaderService;
         private readonly List<IObserver<ImageViewFormInfoBase>> _observers;
@@ -40,8 +41,11 @@ namespace ImageView
         private int _starty;
         private bool _switchImgButtonsEnabled;
         private float _zoom = -1;
+        private readonly FormAddBookmark _formAddBookmark;
+        private readonly BookmarkManager _bookmarkManager;
+        private readonly ApplicationSettingsService _applicationSettingsService;
 
-        public FormImageView(int id)
+        public FormImageView(int id, FormAddBookmark formAddBookmark, BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService)
         {
             InitializeComponent();
             _imageViewFormInfo = new ImageViewFormImageInfo(this, null, 0);
@@ -49,10 +53,13 @@ namespace ImageView
             _imageLoaderService = ImageLoaderService.Instance;
             pictureBox.Paint += pictureBox_Paint;
             FormId = id;
-            _switchImgButtonsEnabled = ApplicationSettingsService.Instance.Settings.ShowSwitchImageButtons;
+            _formAddBookmark = formAddBookmark;
+            _bookmarkManager = bookmarkManager;
+            _applicationSettingsService = applicationSettingsService;
+            _switchImgButtonsEnabled = _applicationSettingsService.Settings.ShowSwitchImageButtons;
             if (_switchImgButtonsEnabled)
             {
-                _showSwitchImgOnMouseOverWindow = ApplicationSettingsService.Instance.Settings.ShowNextPrevControlsOnEnterWindow;
+                _showSwitchImgOnMouseOverWindow = _applicationSettingsService.Settings.ShowNextPrevControlsOnEnterWindow;
                 _mouseHoverInfo = new MouseHoverInfo();
             }
         }
@@ -73,9 +80,9 @@ namespace ImageView
 
         public void ReloadSettings()
         {
-            _switchImgButtonsEnabled = ApplicationSettingsService.Instance.Settings.ShowSwitchImageButtons;
+            _switchImgButtonsEnabled = _applicationSettingsService.Settings.ShowSwitchImageButtons;
             _showSwitchImgOnMouseOverWindow =
-                ApplicationSettingsService.Instance.Settings.ShowNextPrevControlsOnEnterWindow;
+                _applicationSettingsService.Settings.ShowNextPrevControlsOnEnterWindow;
             _mouseHoverInfo = _switchImgButtonsEnabled ? new MouseHoverInfo() : null;
         }
 
@@ -93,7 +100,7 @@ namespace ImageView
 
         private void FormImageView_Load(object sender, EventArgs e)
         {
-            ShowInTaskbar = ApplicationSettingsService.Instance.Settings.ShowImageViewFormsInTaskBar;
+            ShowInTaskbar = _applicationSettingsService.Settings.ShowImageViewFormsInTaskBar;
             SetImageReferenceCollection();
             if (!ImageSourceDataAvailable) return;
 
@@ -103,7 +110,7 @@ namespace ImageView
 
         private void SetImageReferenceCollection()
         {
-            bool randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
+            bool randomizeImageCollection = _applicationSettingsService.Settings.AutoRandomizeCollection;
             if (!_imageLoaderService.IsRunningImport && _imageLoaderService.ImageReferenceList != null)
             {
                 _imageReferenceCollection =
@@ -315,7 +322,7 @@ namespace ImageView
                 _zoom += 0.1F + _zoom*.05f;
 
             else if (e.Delta < 0)
-                _zoom = Math.Max(_zoom - 0.1F - _zoom*.05f, ZOOM_MIN);
+                _zoom = Math.Max(_zoom - 0.1F - _zoom*.05f, ZoomMin);
 
             MouseEventArgs mouse = e;
             Point mousePosNow = mouse.Location;
@@ -332,8 +339,8 @@ namespace ImageView
             _imgx = newimagex - oldimagex + _imgx; // Where to move image to keep focus on one point
             _imgy = newimagey - oldimagey + _imgy;
 
-            if (_zoom < ZOOM_MIN)
-                _zoom = ZOOM_MIN;
+            if (_zoom < ZoomMin)
+                _zoom = ZoomMin;
 
             pictureBox.Refresh();
         }
@@ -510,7 +517,7 @@ namespace ImageView
 
             public bool OverLeftPanel
             {
-                get { return _overLeftButton; }
+                get => _overLeftButton;
                 set
                 {
                     if (_overLeftButton != value)
@@ -522,7 +529,7 @@ namespace ImageView
 
             public bool OverRightPanel
             {
-                get => _overRightButton;
+                private get => _overRightButton;
                 set
                 {
                     if (_overRightButton != value)
@@ -553,7 +560,7 @@ namespace ImageView
 
         private void bookmarkImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (ServiceLocator.GetBookmarkService().BookmarkManager == null)
+            if (_bookmarkManager == null)
             {
                 MessageBox.Show(Resources.Please_unlock_bookmarks_first);
                 return;
@@ -564,8 +571,8 @@ namespace ImageView
             }
         
             var starupPosition = Location;
-            var formAddBookmark = new FormAddBookmark(starupPosition, _imageReferenceCollection.CurrentImage);
-            formAddBookmark.ShowDialog(this);
+            _formAddBookmark.Init(starupPosition, _imageReferenceCollection.CurrentImage);
+            _formAddBookmark.ShowDialog(this);
         }
     }
 }

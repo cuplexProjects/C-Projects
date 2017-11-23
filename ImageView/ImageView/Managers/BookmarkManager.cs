@@ -17,7 +17,7 @@ namespace ImageView.Managers
         private bool _isLoadedFromFile;
         public event BookmarkUpdatedEventHandler OnBookmarksUpdate;
 
-        private BookmarkManager()
+        public BookmarkManager()
         {
             _bookmarkContainer = new BookmarkContainer
             {
@@ -41,12 +41,6 @@ namespace ImageView.Managers
         public bool IsModified => _isModified;
 
         public bool LoadedFromFile => _isLoadedFromFile;
-
-        public static BookmarkManager CreateNew()
-        {
-            var bookmarkManager = new BookmarkManager();
-            return bookmarkManager;
-        }
 
         private void BookmarkUpdated(BookmarkUpdatedEventArgs e)
         {
@@ -151,9 +145,9 @@ namespace ImageView.Managers
             }
         }
 
-        private void ReindexSortOrder(bool ReIndexFolders, bool ReIndexBookmarks)
+        private void ReindexSortOrder(bool reIndexFolders, bool reIndexBookmarks)
         {
-            if (ReIndexFolders)
+            if (reIndexFolders)
             {
                 var folderList = _bookmarkContainer.RootFolder.BookmarkFolders.OrderBy(f => f.SortOrder).ToList();
                 for (int i = 0; i < folderList.Count; i++)
@@ -164,7 +158,7 @@ namespace ImageView.Managers
                 _bookmarkContainer.RootFolder.BookmarkFolders.Sort((f1, f2) => f1.SortOrder.CompareTo(f2.SortOrder));
             }
 
-            if (ReIndexBookmarks)
+            if (reIndexBookmarks)
             {
                 var bookmarkList = _bookmarkContainer.RootFolder.Bookmarks.OrderBy(f => f.SortOrder).ToList();
                 for (int i = 0; i < bookmarkList.Count; i++)

@@ -25,11 +25,15 @@ namespace ImageView
         private List<Control> _pictureBoxList;
         private ThumbnailScanDirectory _thumbnailScan;
         private int _thumbnailSize;
+        private readonly FormAddBookmark _formAddBookmark;
+        private readonly ApplicationSettingsService _applicationSettingsService;
 
-        public FormThumbnailView()
+        public FormThumbnailView(FormAddBookmark formAddBookmark, ApplicationSettingsService applicationSettingsService)
         {
-            _thumbnailSize = ValidateThumbnailSize(ApplicationSettingsService.Instance.Settings.ThumbnailSize);
-            _maxThumbnails = ApplicationSettingsService.Instance.Settings.MaxThumbnails;
+            _formAddBookmark = formAddBookmark;
+            _applicationSettingsService = applicationSettingsService;
+            _thumbnailSize = ValidateThumbnailSize(_applicationSettingsService.Settings.ThumbnailSize);
+            _maxThumbnails = _applicationSettingsService.Settings.MaxThumbnails;
             string dataPath = GlobalSettings.GetUserDataDirectoryPath();
             _thumbnailService = new ThumbnailService(dataPath);
             _thumbnailService.LoadThumbnailDatabase();
@@ -41,7 +45,7 @@ namespace ImageView
             if (DesignMode)
                 return;
 
-            ImageViewApplicationSettings appSettings = ApplicationSettingsService.Instance.Settings;
+            ImageViewApplicationSettings appSettings = _applicationSettingsService.Settings;
             RestoreFormState.SetFormSizeAndPosition(this, appSettings.ThumbnailFormSize, appSettings.ThumbnailFormLocation, Screen.PrimaryScreen.WorkingArea);
             Closing += FormThumbnailView_Closing;
             SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
@@ -50,10 +54,10 @@ namespace ImageView
 
         private void FormThumbnailView_Closing(object sender, CancelEventArgs e)
         {
-            ImageViewApplicationSettings appSettings = ApplicationSettingsService.Instance.Settings;
+            ImageViewApplicationSettings appSettings = _applicationSettingsService.Settings;
             appSettings.ThumbnailFormLocation = Location;
             appSettings.ThumbnailFormSize = Size;
-            ApplicationSettingsService.Instance.SaveSettings();
+            _applicationSettingsService.SaveSettings();
         }
 
         private async void btnGenerate_Click(object sender, EventArgs e)
@@ -106,7 +110,7 @@ namespace ImageView
         private List<Control> GenerateThumbnails()
         {
             var pictureBoxes = new List<Control>();
-            bool randomizeImageCollection = ApplicationSettingsService.Instance.Settings.AutoRandomizeCollection;
+            bool randomizeImageCollection = _applicationSettingsService.Settings.AutoRandomizeCollection;
             ImageLoaderService imgLoaderService = ImageLoaderService.Instance;
             var imgRefList = imgLoaderService.GenerateThumbnailList(randomizeImageCollection);
             int items = 0;
@@ -154,12 +158,12 @@ namespace ImageView
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            Form frmSettings = FormFactory.CreateSettingsForm(new ThumbnailSettings());
+            Form frmSettings = FormFactory.CreateSettingsForm(new ThumbnailSettings(_applicationSettingsService));
             if (frmSettings.ShowDialog(this) == DialogResult.OK)
             {
-                _maxThumbnails = ApplicationSettingsService.Instance.Settings.MaxThumbnails;
-                _thumbnailSize = ValidateThumbnailSize(ApplicationSettingsService.Instance.Settings.ThumbnailSize);
-                ApplicationSettingsService.Instance.SaveSettings();
+                _maxThumbnails = _applicationSettingsService.Settings.MaxThumbnails;
+                _thumbnailSize = ValidateThumbnailSize(_applicationSettingsService.Settings.ThumbnailSize);
+                _applicationSettingsService.SaveSettings();
             }
         }
 
@@ -259,8 +263,8 @@ namespace ImageView
                 Directory = fi.DirectoryName
             };
 
-            var addBookmark = new FormAddBookmark(contextMenuFullSizeImg.Location, imgRef);
-            addBookmark.ShowDialog(this);
+            _formAddBookmark.Init(contextMenuFullSizeImg.Location, imgRef);
+            _formAddBookmark.ShowDialog(this);
         }
 
         private void menuItemCopyPath_Click(object sender, EventArgs e)

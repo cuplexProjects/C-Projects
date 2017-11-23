@@ -14,17 +14,19 @@ namespace ImageView.Services
 
         private readonly PasswordStorage _passwordStorage;
         private readonly string _protectedMemoryStorageKey;
-        private BookmarkManager _bookmarkManager;
+        private readonly BookmarkManager _bookmarkManager;
+        private readonly ApplicationSettingsService _applicationSettingsService;
 
-        public BookmarkService()
+        public BookmarkService(BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService)
         {
+            _bookmarkManager = bookmarkManager;
+            _applicationSettingsService = applicationSettingsService;
             _protectedMemoryStorageKey = new SecureRandomGenerator().GetAlphaNumericString(256);
             _directory = GlobalSettings.GetUserDataDirectoryPath();
 
             _passwordStorage = new PasswordStorage();
             _passwordStorage.Set(_protectedMemoryStorageKey, GetDefaultPassword());
 
-            _bookmarkManager = BookmarkManager.CreateNew();
             
             //if (!ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
             //    OpenBookmarks(GetDefaultPassword());
@@ -34,7 +36,6 @@ namespace ImageView.Services
 
         public void Dispose()
         {
-            _bookmarkManager = null;
             _passwordStorage?.Dispose();
             GC.Collect();
         }
@@ -67,12 +68,12 @@ namespace ImageView.Services
 
         private string GetDefaultPassword()
         {
-            string defaultKey = ApplicationSettingsService.Instance.Settings.DefaultKey;
+            string defaultKey = _applicationSettingsService.Settings.DefaultKey;
 
             if (defaultKey != null && defaultKey.Length == 256) return defaultKey;
             defaultKey = new SecureRandomGenerator().GetAlphaNumericString(256);
-            ApplicationSettingsService.Instance.Settings.DefaultKey = defaultKey;
-            ApplicationSettingsService.Instance.SaveSettings();
+            _applicationSettingsService.Settings.DefaultKey = defaultKey;
+            _applicationSettingsService.SaveSettings();
 
             return defaultKey;
         }

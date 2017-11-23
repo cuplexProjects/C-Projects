@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Autofac;
 using GeneralToolkitLib.ConfigHelper;
 using GeneralToolkitLib.Log;
+using ImageView.Services;
+
+//using ImageView.Configuration;
 
 namespace ImageView
 {
@@ -10,6 +14,7 @@ namespace ImageView
     {
         [DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
+        private static IContainer Container { get; set; }
 
 
         /// <summary>
@@ -18,6 +23,7 @@ namespace ImageView
         [STAThread]
         private static void Main()
         {
+            InitializeAutofac();
             //Set log path
 #if DEBUG
             GlobalSettings.Initialize(Application.ProductName, false);
@@ -33,8 +39,21 @@ namespace ImageView
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(true);
-            Application.Run(new FormMain());
+            using (var scope = Container.BeginLifetimeScope())
+            {
+                FormMain frmMain = scope.Resolve<FormMain>();
+                Application.Run(frmMain);
+                ApplicationSettingsService settingsService = scope.Resolve<ApplicationSettingsService>();
+                settingsService.SaveSettings();
+            }
+
+            //Application.Run(new FormMain());
             LogWriter.LogMessage("Application ended", LogWriter.LogLevel.Info);
+        }
+
+        private static void InitializeAutofac()
+        {
+            Container = AutofacConfig.CreateContainer();
         }
     }
 }

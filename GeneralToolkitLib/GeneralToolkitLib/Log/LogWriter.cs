@@ -8,7 +8,7 @@ namespace GeneralToolkitLib.Log
 {
     public static class LogWriter
     {
-        private static readonly Object ThreadLock = new object();
+        private static readonly object ThreadLock = new object();
         private static readonly string BasePath;
         private const string ErrorLogPrefix = "error_";
         private const string StandardLogPrefix = "info_";
