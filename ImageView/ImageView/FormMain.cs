@@ -406,6 +406,7 @@ namespace ImageView
                 _formState.Restore(this);
                 menuStrip1.Visible = true;
                 BackColor = Color.WhiteSmoke;
+                Cursor.Show();
             }
             else
             {
@@ -414,6 +415,7 @@ namespace ImageView
                 menuStrip1.Visible = false;
 
                 BackColor = Color.Black;
+                Cursor.Hide();
             }
             _fullScreen = !_fullScreen;
         }
