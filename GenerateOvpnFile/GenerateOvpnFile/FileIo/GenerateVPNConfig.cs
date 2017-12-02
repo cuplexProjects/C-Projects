@@ -38,11 +38,11 @@ namespace GenerateOvpnFile.FileIo
                     sb.AppendLine("remote-cert-tls server");
 
                 sb.AppendLine("<ca>");
-                sb.AppendLine(ovpnConn.CACert_FileData);
+                sb.AppendLine(ovpnConn.CaCertFileData);
                 sb.AppendLine("</ca>");
 
                 sb.AppendLine("<cert>");
-                sb.AppendLine(ovpnConn.UserCert_FileData);
+                sb.AppendLine(ovpnConn.UserCertFileData);
                 sb.AppendLine("</cert>");
 
                 sb.AppendLine("<key>");

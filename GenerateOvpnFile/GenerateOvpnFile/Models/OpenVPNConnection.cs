@@ -13,8 +13,8 @@ namespace GenerateOvpnFile.Models
         public string Cipher { get; set; }
         public string Hostname { get; set; }
         public int ServerPort { get; set; }
-        public string CACert_FileData { get; set; }
-        public string UserCert_FileData { get; set; }
+        public string CaCertFileData { get; set; }
+        public string UserCertFileData { get; set; }
         public string UserCertPrivateKeyData { get; set; }
         public string TaKeyData { get; set; }
     }

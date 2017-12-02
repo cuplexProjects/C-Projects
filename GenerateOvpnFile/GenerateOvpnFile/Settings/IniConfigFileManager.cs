@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Text.RegularExpressions;
 using GenerateOvpnFile.Misc;
 
-namespace GeneralToolkitLib.ConfigHelper
+namespace GenerateOvpnFile.Settings
 {
     public class IniConfigFileManager
     {
@@ -69,8 +68,7 @@ namespace GeneralToolkitLib.ConfigHelper
             }
             finally
             {
-                if (fs != null)
-                    fs.Close();
+                fs?.Close();
             }
 
             return readSuccessfull;
@@ -142,23 +140,5 @@ namespace GeneralToolkitLib.ConfigHelper
             ConfigItems = new IniConfigItemCollection();
         }
         public IniConfigItemCollection ConfigItems { get; private set; }
-    }
-
-    public class IniConfigItemCollection : NameValueCollection
-    {
-        public new string this[string name]
-        {
-            get
-            {
-                if (this.Get(name) == null)
-                    this.Set(name, "");
-
-                return this.Get(name);
-            }
-            set
-            {
-                this.Set(name, value);
-            }
-        }
     }
 }

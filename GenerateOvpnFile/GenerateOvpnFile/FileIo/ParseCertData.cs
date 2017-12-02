@@ -34,8 +34,7 @@ namespace GenerateOvpnFile.FileIo
             }
             finally
             {
-                if(fileStream != null)
-                    fileStream.Close();
+                fileStream?.Close();
             }
 
             return fileData;

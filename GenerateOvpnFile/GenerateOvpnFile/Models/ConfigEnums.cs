@@ -7,7 +7,7 @@ namespace GenerateOvpnFile.Models
     {
         public static readonly string[] CipherAlgorithms =
         {
-            "Default", "None", "AES-128-CBC", "AES-192-CBC", "AES-256-CBC", "BF-CBC", "CAST5-CBC", "CAMELLIA-128-CBC", "CAMELLIA-192-CBC",
+            "None", "AES-128-CBC", "AES-192-CBC", "AES-256-CBC", "BF-CBC", "CAST5-CBC", "CAMELLIA-128-CBC", "CAMELLIA-192-CBC",
             "CAMELLIA-256-CBC", "DES-CBC", "DES-EDE-CBC", "DES-EDE3-CBC", "DESX-CBC", "IDEA-CBC", "RC2-40-CBC", "RC2-64-CBC", "RC2-CBC", "RC5-CBC", "SEED-CBC",
         };
 
