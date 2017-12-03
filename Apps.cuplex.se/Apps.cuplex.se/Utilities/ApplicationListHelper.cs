@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Mvc;
 using Apps.cuplex.se.Models;
 using Serilog;
-using WebGrease.Css.Extensions;
 
 namespace Apps.cuplex.se.Utilities
 {
@@ -31,7 +28,7 @@ namespace Apps.cuplex.se.Utilities
                     var fileinfoList = files.Select(x => new FileInfo(x)).ToList();
 
                     // get Latest msi
-                    var selectedMsi = fileinfoList.OrderBy(x => x.CreationTime).FirstOrDefault(x => x.Name.EndsWith(".msi"));
+                    var selectedMsi = fileinfoList.OrderByDescending(x => x.CreationTime).FirstOrDefault(x => x.Name.EndsWith(".msi"));
 
                     if (selectedMsi == null)
                         continue;
