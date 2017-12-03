@@ -36,5 +36,7 @@ namespace ImageView.DataContracts
 
         [DataMember(Name = "LastAccessTime", Order = 10)]
         public DateTime LastAccessTime { get; set; }
+
+        public string SizeFormated => GeneralToolkitLib.Converters.GeneralConverters.FormatFileSizeToString(Size);
     }
 }
