@@ -152,7 +152,10 @@ namespace ImageView
             TreeNode selectedNode = bookmarksTree.SelectedNode;
 
             if (!(selectedNode.Tag is BookmarkFolder selectedBookmarkfolder)) return false;
-            bookmarksDataGridView.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
+            bookmarkBindingSource.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
+        
+            //bookmarksDataGridView.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
+            bookmarksDataGridView.Update();
             bookmarksDataGridView.Refresh();
 
             return true;
@@ -571,6 +574,66 @@ namespace ImageView
             FolderRemoved,
             FolderAdded,
             FolderRenamed
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = ".dat|BookmarkFiles";
+            openFileDialog1.FileName = "bookmarks.dat";
+            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                string filename = openFileDialog1.FileName;
+
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool result =_bookmarkService.SaveBookmarks();
+            if (result)
+            {
+                MessageBox.Show("Bookmarks saved", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Unable to save bookmarks", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter= ".dat|BookmarkFiles";
+            saveFileDialog1.FileName = "bookmarks.dat";
+
+            Form paswordForm = new Form();
+            var userControl = new SelectPassword();
+            paswordForm.Controls.Add(userControl);
+            paswordForm.StartPosition = FormStartPosition.CenterParent;
+            paswordForm.ShowInTaskbar = false;
+            paswordForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+            paswordForm.Size = userControl.Size;
+
+            var result = paswordForm.ShowDialog(this);
+            string password = userControl.SelectedPassword;
+
+            if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                string filename = saveFileDialog1.FileName;
+
+
+            }
+        }
+
+        private void removeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _bookmarkManager.RemoveDuplicates();
+            ReLoadBookmarks();
+            MessageBox.Show(this, "Duplicate bookmarks pointing to the same file where removed", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void bookmarkBindingSource_CurrentChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

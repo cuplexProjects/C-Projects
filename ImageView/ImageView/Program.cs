@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Autofac;
 using GeneralToolkitLib.ConfigHelper;
 using GeneralToolkitLib.Log;
+using ImageView.Configuration;
 using ImageView.Services;
 
 //using ImageView.Configuration;

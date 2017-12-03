@@ -87,10 +87,11 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>72D9CC5F66024887867ECFE445ED937C1684B966</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>287F80DFC26B414919B90BD1A8B18190C2E02224</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>GenerateOvpnFile_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

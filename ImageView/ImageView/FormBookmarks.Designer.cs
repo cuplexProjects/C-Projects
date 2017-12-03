@@ -46,24 +46,28 @@ namespace ImageView
             this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
             this.bookmarksDataGridView = new System.Windows.Forms.DataGridView();
             this.mainWinMenu = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tryToFixBrokenLinksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setDefaultDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeDuplicatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.showLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripBookmarks = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bookmarkBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.bookmarkFolderBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.boookmarkNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.completePathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sizeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.creationTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastWriteTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastAccessTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bookmarkBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.directoryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -77,8 +81,8 @@ namespace ImageView
             ((System.ComponentModel.ISupportInitialize)(this.bookmarksDataGridView)).BeginInit();
             this.mainWinMenu.SuspendLayout();
             this.contextMenuStripBookmarks.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarkFolderBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -166,31 +170,31 @@ namespace ImageView
             this.toolStripSeparator2,
             this.renameFolderMenuItem});
             this.contextMenuStripFolders.Name = "contextMenuStripFolders";
-            this.contextMenuStripFolders.Size = new System.Drawing.Size(185, 88);
+            this.contextMenuStripFolders.Size = new System.Drawing.Size(179, 82);
             // 
             // addFolderToolStripMenuItem
             // 
             this.addFolderToolStripMenuItem.Name = "addFolderToolStripMenuItem";
-            this.addFolderToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.addFolderToolStripMenuItem.Size = new System.Drawing.Size(178, 24);
             this.addFolderToolStripMenuItem.Text = "Add Folder";
             this.addFolderToolStripMenuItem.Click += new System.EventHandler(this.addFolderToolStripMenuItem_Click);
             // 
             // deleteFolderToolStripMenuItem
             // 
             this.deleteFolderToolStripMenuItem.Name = "deleteFolderToolStripMenuItem";
-            this.deleteFolderToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.deleteFolderToolStripMenuItem.Size = new System.Drawing.Size(178, 24);
             this.deleteFolderToolStripMenuItem.Text = "Delete Folder";
             this.deleteFolderToolStripMenuItem.Click += new System.EventHandler(this.deleteFolderToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(175, 6);
             // 
             // renameFolderMenuItem
             // 
             this.renameFolderMenuItem.Name = "renameFolderMenuItem";
-            this.renameFolderMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.renameFolderMenuItem.Size = new System.Drawing.Size(178, 24);
             this.renameFolderMenuItem.Text = "Rename Folder";
             this.renameFolderMenuItem.Click += new System.EventHandler(this.renameFolderMenuItem_Click);
             // 
@@ -208,7 +212,6 @@ namespace ImageView
             // 
             // bookmarksDataGridView
             // 
-            this.bookmarksDataGridView.AllowUserToAddRows = false;
             this.bookmarksDataGridView.AllowUserToOrderColumns = true;
             this.bookmarksDataGridView.AllowUserToResizeRows = false;
             this.bookmarksDataGridView.AutoGenerateColumns = false;
@@ -216,13 +219,11 @@ namespace ImageView
             this.bookmarksDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.bookmarksDataGridView.ColumnHeadersHeight = 25;
             this.bookmarksDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.boookmarkNameDataGridViewTextBoxColumn,
-            this.fileNameDataGridViewTextBoxColumn,
-            this.completePathDataGridViewTextBoxColumn,
-            this.sizeDataGridViewTextBoxColumn,
-            this.creationTimeDataGridViewTextBoxColumn,
-            this.lastWriteTimeDataGridViewTextBoxColumn,
-            this.lastAccessTimeDataGridViewTextBoxColumn});
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.directoryDataGridViewTextBoxColumn,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4});
             this.bookmarksDataGridView.DataSource = this.bookmarkBindingSource;
             this.bookmarksDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bookmarksDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
@@ -255,6 +256,7 @@ namespace ImageView
             // 
             this.mainWinMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.mainWinMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
             this.toolsToolStripMenuItem});
             this.mainWinMenu.Location = new System.Drawing.Point(0, 0);
             this.mainWinMenu.Name = "mainWinMenu";
@@ -262,11 +264,49 @@ namespace ImageView
             this.mainWinMenu.TabIndex = 1;
             this.mainWinMenu.Text = "menuStrip1";
             // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(135, 26);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(132, 6);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(135, 26);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(135, 26);
+            this.saveAsToolStripMenuItem.Text = "Save As";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tryToFixBrokenLinksToolStripMenuItem,
             this.setDefaultDriveToolStripMenuItem,
+            this.removeDuplicatesToolStripMenuItem,
             this.toolStripSeparator1,
             this.showLogToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
@@ -276,27 +316,34 @@ namespace ImageView
             // tryToFixBrokenLinksToolStripMenuItem
             // 
             this.tryToFixBrokenLinksToolStripMenuItem.Name = "tryToFixBrokenLinksToolStripMenuItem";
-            this.tryToFixBrokenLinksToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
+            this.tryToFixBrokenLinksToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.tryToFixBrokenLinksToolStripMenuItem.Text = "Fix Broken Links";
             this.tryToFixBrokenLinksToolStripMenuItem.Click += new System.EventHandler(this.tryToFixBrokenLinksToolStripMenuItem_Click);
             // 
             // setDefaultDriveToolStripMenuItem
             // 
             this.setDefaultDriveToolStripMenuItem.Name = "setDefaultDriveToolStripMenuItem";
-            this.setDefaultDriveToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
+            this.setDefaultDriveToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.setDefaultDriveToolStripMenuItem.Text = "Set Default Drive";
             this.setDefaultDriveToolStripMenuItem.Click += new System.EventHandler(this.setDefaultDriveToolStripMenuItem_Click);
+            // 
+            // removeDuplicatesToolStripMenuItem
+            // 
+            this.removeDuplicatesToolStripMenuItem.Name = "removeDuplicatesToolStripMenuItem";
+            this.removeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
+            this.removeDuplicatesToolStripMenuItem.Text = "Remove Duplicates";
+            this.removeDuplicatesToolStripMenuItem.Click += new System.EventHandler(this.removeDuplicatesToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(194, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(209, 6);
             // 
             // showLogToolStripMenuItem
             // 
             this.showLogToolStripMenuItem.Enabled = false;
             this.showLogToolStripMenuItem.Name = "showLogToolStripMenuItem";
-            this.showLogToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
+            this.showLogToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.showLogToolStripMenuItem.Text = "Show Log";
             this.showLogToolStripMenuItem.Click += new System.EventHandler(this.showLogToolStripMenuItem_Click);
             // 
@@ -308,91 +355,71 @@ namespace ImageView
             this.editToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.contextMenuStripBookmarks.Name = "contextMenuStripBookmarks";
-            this.contextMenuStripBookmarks.Size = new System.Drawing.Size(139, 82);
+            this.contextMenuStripBookmarks.Size = new System.Drawing.Size(133, 76);
             // 
             // renameToolStripMenuItem
             // 
             this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-            this.renameToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
+            this.renameToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
             this.renameToolStripMenuItem.Text = "Rename";
             this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // bookmarkBindingSource
             // 
             this.bookmarkBindingSource.DataSource = typeof(ImageView.DataContracts.Bookmark);
+            this.bookmarkBindingSource.CurrentChanged += new System.EventHandler(this.bookmarkBindingSource_CurrentChanged);
             // 
-            // bookmarkFolderBindingSource
+            // dataGridViewTextBoxColumn1
             // 
-            this.bookmarkFolderBindingSource.DataSource = typeof(ImageView.DataContracts.BookmarkFolder);
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "BoookmarkName";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             // 
-            // boookmarkNameDataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn2
             // 
-            this.boookmarkNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.boookmarkNameDataGridViewTextBoxColumn.DataPropertyName = "BoookmarkName";
-            this.boookmarkNameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.boookmarkNameDataGridViewTextBoxColumn.Name = "boookmarkNameDataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "FileName";
+            this.dataGridViewTextBoxColumn2.HeaderText = "FileName";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             // 
-            // fileNameDataGridViewTextBoxColumn
+            // directoryDataGridViewTextBoxColumn
             // 
-            this.fileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.fileNameDataGridViewTextBoxColumn.DataPropertyName = "FileName";
-            this.fileNameDataGridViewTextBoxColumn.FillWeight = 80F;
-            this.fileNameDataGridViewTextBoxColumn.HeaderText = "File Name";
-            this.fileNameDataGridViewTextBoxColumn.Name = "fileNameDataGridViewTextBoxColumn";
+            this.directoryDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.directoryDataGridViewTextBoxColumn.DataPropertyName = "Directory";
+            this.directoryDataGridViewTextBoxColumn.HeaderText = "Directory";
+            this.directoryDataGridViewTextBoxColumn.Name = "directoryDataGridViewTextBoxColumn";
+            this.directoryDataGridViewTextBoxColumn.Width = 94;
             // 
-            // completePathDataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn3
             // 
-            this.completePathDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.completePathDataGridViewTextBoxColumn.DataPropertyName = "CompletePath";
-            this.completePathDataGridViewTextBoxColumn.FillWeight = 65F;
-            this.completePathDataGridViewTextBoxColumn.HeaderText = "Complete Path";
-            this.completePathDataGridViewTextBoxColumn.Name = "completePathDataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "CompletePath";
+            this.dataGridViewTextBoxColumn3.HeaderText = "CompletePath";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Width = 125;
             // 
-            // sizeDataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn4
             // 
-            this.sizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.sizeDataGridViewTextBoxColumn.DataPropertyName = "Size";
-            this.sizeDataGridViewTextBoxColumn.FillWeight = 30F;
-            this.sizeDataGridViewTextBoxColumn.HeaderText = "Size";
-            this.sizeDataGridViewTextBoxColumn.Name = "sizeDataGridViewTextBoxColumn";
-            // 
-            // creationTimeDataGridViewTextBoxColumn
-            // 
-            this.creationTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.creationTimeDataGridViewTextBoxColumn.DataPropertyName = "CreationTime";
-            this.creationTimeDataGridViewTextBoxColumn.FillWeight = 25F;
-            this.creationTimeDataGridViewTextBoxColumn.HeaderText = "Creation Time";
-            this.creationTimeDataGridViewTextBoxColumn.Name = "creationTimeDataGridViewTextBoxColumn";
-            // 
-            // lastWriteTimeDataGridViewTextBoxColumn
-            // 
-            this.lastWriteTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.lastWriteTimeDataGridViewTextBoxColumn.DataPropertyName = "LastWriteTime";
-            this.lastWriteTimeDataGridViewTextBoxColumn.FillWeight = 25F;
-            this.lastWriteTimeDataGridViewTextBoxColumn.HeaderText = "Last Write Time";
-            this.lastWriteTimeDataGridViewTextBoxColumn.Name = "lastWriteTimeDataGridViewTextBoxColumn";
-            // 
-            // lastAccessTimeDataGridViewTextBoxColumn
-            // 
-            this.lastAccessTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.lastAccessTimeDataGridViewTextBoxColumn.DataPropertyName = "LastAccessTime";
-            this.lastAccessTimeDataGridViewTextBoxColumn.FillWeight = 25F;
-            this.lastAccessTimeDataGridViewTextBoxColumn.HeaderText = "Last Access Time";
-            this.lastAccessTimeDataGridViewTextBoxColumn.Name = "lastAccessTimeDataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "Size";
+            this.dataGridViewTextBoxColumn4.HeaderText = "Size";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.Width = 61;
             // 
             // FormBookmarks
             // 
@@ -423,8 +450,8 @@ namespace ImageView
             this.mainWinMenu.ResumeLayout(false);
             this.mainWinMenu.PerformLayout();
             this.contextMenuStripBookmarks.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarkFolderBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -463,5 +490,16 @@ namespace ImageView
         private System.Windows.Forms.DataGridViewTextBoxColumn creationTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn lastWriteTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn lastAccessTimeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem removeDuplicatesToolStripMenuItem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn directoryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
     }
 }

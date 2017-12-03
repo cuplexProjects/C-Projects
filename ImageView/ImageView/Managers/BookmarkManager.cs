@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage;
@@ -32,7 +33,7 @@ namespace ImageView.Managers
                     BookmarkFolders = new List<BookmarkFolder>()
                 }
             };
-            
+
             RootFolder = _bookmarkContainer.RootFolder;
         }
 
@@ -52,6 +53,17 @@ namespace ImageView.Managers
         {
             try
             {
+                //Make a copy of the original file
+                if (File.Exists(filename))
+                {
+                    const string copyFilename = "BookmarksCopy.dat";
+                    if (File.Exists(copyFilename))
+                    {
+                        File.Delete(copyFilename);
+                    }
+                    File.Copy(filename, copyFilename);
+                }
+
                 var settings = new StorageManagerSettings(false, Environment.ProcessorCount, true, password);
                 var storageManager = new StorageManager(settings);
                 bool successful = storageManager.SerializeObjectToFile(_bookmarkContainer, filename, null);
@@ -85,7 +97,7 @@ namespace ImageView.Managers
                     _bookmarkContainer = bookmarkContainer;
                     RootFolder = _bookmarkContainer.RootFolder;
                     _isModified = false;
-                   
+
                     return true;
                 }
             }
@@ -393,6 +405,28 @@ namespace ImageView.Managers
             }
 
             return null;
+        }
+
+        public void RemoveDuplicates()
+        {
+            var bookmarkFilenames = _bookmarkContainer.RootFolder.Bookmarks.Select(x => x.FileName).ToList();
+  
+            var removeList = new List<Bookmark>();
+
+            foreach (string filename in bookmarkFilenames)
+            {
+                var selection = _bookmarkContainer.RootFolder.Bookmarks.Where(x => x.FileName == filename).ToList();
+                if (selection.Count > 1)
+                {
+                    selection.RemoveAt(0);
+                    removeList.AddRange(selection);
+                }
+            }
+
+            foreach (var bookmark in removeList)
+            {
+                DeleteBookmark(bookmark);
+            }
         }
     }
 }

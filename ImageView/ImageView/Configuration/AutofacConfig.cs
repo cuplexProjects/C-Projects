@@ -3,7 +3,7 @@ using GeneralToolkitLib.Storage.Memory;
 using ImageView.Managers;
 using ImageView.Services;
 
-namespace ImageView
+namespace ImageView.Configuration
 {
     public static class AutofacConfig
     {
