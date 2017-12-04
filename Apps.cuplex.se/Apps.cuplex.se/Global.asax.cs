@@ -4,6 +4,7 @@ using System.Web.Routing;
 using Apps.cuplex.se.Utilities;
 using Autofac;
 using Autofac.Integration.Mvc;
+using Serilog;
 
 namespace Apps.cuplex.se
 {

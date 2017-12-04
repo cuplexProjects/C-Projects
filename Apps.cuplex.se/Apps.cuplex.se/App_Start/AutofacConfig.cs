@@ -14,11 +14,5 @@ namespace Apps.cuplex.se
 
             return container;
         }
-
-        public static void Initialize()
-        {
-            var container = AutofacConfig.CreateContainer();
-            //container.BeginLifetimeScope()
-        }
     }
 }

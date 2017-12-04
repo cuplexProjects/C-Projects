@@ -45,7 +45,9 @@ namespace Apps.cuplex.se.Utilities
                         Name = appName,
                         Version = version,
                         DownloadUrl = new Uri(downloadUrl),
-                        Filename = selectedMsi.Name
+                        Filename = selectedMsi.Name,
+                        FileDate = selectedMsi.CreationTime,
+                        FileSize = selectedMsi.Length
                     });
                 }
 

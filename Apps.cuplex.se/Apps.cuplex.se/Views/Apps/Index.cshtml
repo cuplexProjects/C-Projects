@@ -1,4 +1,5 @@
-﻿@model Apps.cuplex.se.Models.AppsListViewModel
+﻿@using Apps.cuplex.se.Utilities
+@model Apps.cuplex.se.Models.AppsListViewModel
 
 
 <h2>@ViewBag.Title</h2>
@@ -13,6 +14,8 @@
             <tr>
                 <th>Application Name</th>
                 <th>Version</th>
+                <th>Date</th>
+                <th>Size</th>
                 <th>Download url</th>
             </tr>
             </thead>
@@ -23,6 +26,8 @@
                     <tr>
                         <td>@appViewModel.Name</td>
                         <td>@appViewModel.Version</td>
+                        <td>@appViewModel.FileDate.ToString("d")</td>
+                        <td>@Converters.GetFriendlyFileSize( appViewModel.FileSize,2)</td>
                         <td><a class="btn" href="@appViewModel.DownloadUrl">@appViewModel.Filename</a></td>
                     </tr>
                 }
