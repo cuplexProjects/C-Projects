@@ -16,6 +16,7 @@ using ImageView.Models;
 using ImageView.Properties;
 using ImageView.Services;
 using ImageView.Utility;
+using Timer = System.Threading.Timer;
 
 namespace ImageView
 {
@@ -39,6 +40,7 @@ namespace ImageView
         private readonly FormSettings _formSettings;
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly ImageCacheService _imageCacheService;
+        private bool _cursorVisible = true;
 
         public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings,  ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
         {
@@ -414,6 +416,7 @@ namespace ImageView
                 _formState.Restore(this);
                 menuStrip1.Visible = true;
                 BackColor = Color.WhiteSmoke;
+                _cursorVisible = true;
                 Cursor.Show();
             }
             else
@@ -423,7 +426,9 @@ namespace ImageView
                 menuStrip1.Visible = false;
 
                 BackColor = Color.Black;
+                _cursorVisible = false;
                 Cursor.Hide();
+                //HideCursorInFullScreen().Start();
             }
             _fullScreen = !_fullScreen;
         }
@@ -787,6 +792,72 @@ namespace ImageView
         {
             var formThumbnailView = new FormThumbnailView(_formAddBookmark, _applicationSettingsService);
             formThumbnailView.Show(this);
+            formThumbnailView.FormClosed += FormThumbnailView_FormClosed;
         }
+
+        private void FormThumbnailView_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (sender is Form form)
+            {
+                form.Dispose();
+            }
+            GC.Collect();
+        }
+
+        private void openInDefaultApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ImageSourceDataAvailable)
+            {
+                string currentFile = _imageReferenceCollection.CurrentImage.CompletePath;
+                try
+                {
+                    Process.Start(currentFile);
+                }
+                catch (Exception ex)
+                {
+                    LogWriter.LogError("Error in MainForm open image in default app", ex);
+                }
+            }
+        }
+
+        private void imageDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //private Task HideCursorInFullScreen()
+        //{
+        //    Task t = new Task(() =>
+        //    {
+        //        while (_fullScreen)
+        //        {
+        //            var cursorPos = Cursor.Position;
+        //            Thread.Sleep(1000);
+        //            if (cursorPos == Cursor.Position && _cursorVisible)
+        //            {
+        //                _cursorVisible = false;
+        //                Cursor.Hide();
+        //            }
+        //        }
+
+
+        //    });
+
+        //    return t;
+        //}
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        //private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    if (_fullScreen && !_cursorVisible)
+        //    {
+        //        _cursorVisible = true;
+        //        Cursor.Show();
+        //    }
+        //}
     }
 }

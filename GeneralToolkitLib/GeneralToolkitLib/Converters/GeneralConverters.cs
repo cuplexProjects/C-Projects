@@ -11,7 +11,7 @@ namespace GeneralToolkitLib.Converters
     {
         public static int GetSecondsFromDateTime(DateTime date)
         {
-            return date.Hour*3600 + date.Minute*60 + date.Second;
+            return date.Hour * 3600 + date.Minute * 60 + date.Second;
         }
 
         public static string GetFileNameFromPath(string path)
@@ -51,21 +51,15 @@ namespace GeneralToolkitLib.Converters
             return "";
         }
 
-        public static string FormatFileSizeToString(long fileSize)
+        public static string FormatFileSizeToString(long byteCount, int decimales = 1)
         {
-            var fileSizeType = StaticLongFileSizes.FileSizeTypesStrings;
-            int iCnt = 0;
-            decimal dblRes = Convert.ToDecimal(fileSize);
-            while (dblRes > 1024)
-            {
-                iCnt++;
-                dblRes = dblRes/1024;
-            }
-            dblRes = Math.Round(dblRes, 2);
-            if (iCnt < fileSizeType.Length)
-                return dblRes.ToString(CultureInfo.InvariantCulture) + " " + fileSizeType[iCnt];
-
-            return dblRes.ToString();
+            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
+            if (byteCount == 0)
+                return "0" + suf[0];
+            long bytes = Math.Abs(byteCount);
+            int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
+            double num = Math.Round(bytes / Math.Pow(1024, place), decimales);
+            return (Math.Sign(byteCount) * num).ToString(CultureInfo.InvariantCulture) + " " + suf[place];
         }
 
         public static byte[] StringToByteArray(string inputString)
@@ -85,7 +79,7 @@ namespace GeneralToolkitLib.Converters
         public static byte[] HexStringToByteArray(string hex)
         {
             return Enumerable.Range(0, hex.Length)
-                .Where(x => x%2 == 0)
+                .Where(x => x % 2 == 0)
                 .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                 .ToArray();
         }
@@ -97,7 +91,7 @@ namespace GeneralToolkitLib.Converters
 
             using (RandomNumberGenerator rndGen = RandomNumberGenerator.Create())
             {
-                var buffer = new byte[length/2];
+                var buffer = new byte[length / 2];
                 rndGen.GetBytes(buffer);
                 return ByteArrayToHexString(buffer);
             }
@@ -151,14 +145,14 @@ namespace GeneralToolkitLib.Converters
 
         public static byte[] GetByteArrayFromString(string str)
         {
-            var bytes = new byte[str.Length*sizeof(char)];
+            var bytes = new byte[str.Length * sizeof(char)];
             Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
             return bytes;
         }
 
         public static string GetStringFromByteArray(byte[] bytes)
         {
-            var chars = new char[bytes.Length/sizeof(char)];
+            var chars = new char[bytes.Length / sizeof(char)];
             Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
             return new string(chars);
         }
@@ -171,7 +165,7 @@ namespace GeneralToolkitLib.Converters
 
         private struct StaticLongFileSizes
         {
-            public static readonly string[] FileSizeTypesStrings = {"b", "kB", "Mb", "Gb", "Tb", "Pbyte"};
+            public static readonly string[] FileSizeTypesStrings = { "b", "kB", "Mb", "Gb", "Tb", "Pbyte" };
         }
 
         public static class FileSizeToStringFormater
@@ -185,11 +179,11 @@ namespace GeneralToolkitLib.Converters
                 PetaByte = 0x10000000000
             }
 
-            private static readonly string[] FileSizeTypesStrings = {" B", " KB", " MB", " GB", " TB", " PByte"};
+            private static readonly string[] FileSizeTypesStrings = { " B", " KB", " MB", " GB", " TB", " PByte" };
 
             public static string ConvertFileSizeToString(long fileSize)
             {
-                if (fileSize > (long) FileSizeSteps.KiloByte)
+                if (fileSize > (long)FileSizeSteps.KiloByte)
                 {
                     int arrayPos = 0;
                     do
@@ -204,7 +198,7 @@ namespace GeneralToolkitLib.Converters
 
             public static string ConvertFileSizeToString(long fileSize, int decimals)
             {
-                if (fileSize > (long) FileSizeSteps.KiloByte)
+                if (fileSize > (long)FileSizeSteps.KiloByte)
                 {
                     if (decimals > 8 || decimals < 0)
                         decimals = 8;
@@ -213,7 +207,7 @@ namespace GeneralToolkitLib.Converters
                     int arrayPos = 0;
                     do
                     {
-                        decData = decData/1024d;
+                        decData = decData / 1024d;
                         arrayPos++;
                     } while (decData > 0x400);
 

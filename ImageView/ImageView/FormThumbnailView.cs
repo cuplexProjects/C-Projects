@@ -78,6 +78,7 @@ namespace ImageView
                     _pictureBoxList = GenerateThumbnails();
                     if (!IsDisposed)
                         Invoke(new EventHandler(UpdatePictureBoxList));
+                    GC.Collect();
                 });
             }
             catch (Exception ex)
@@ -139,13 +140,10 @@ namespace ImageView
 
         private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            var pictureBox = sender as PictureBox;
-
-            if (pictureBox == null || e.Button != MouseButtons.Left)
+            if (!(sender is PictureBox pictureBox) || e.Button != MouseButtons.Left)
                 return;
 
-            string filename = pictureBox.Tag as string;
-            if (filename != null)
+            if (pictureBox.Tag is string filename)
             {
                 Image fullScaleIMage = Image.FromFile(filename);
                 _maximizedImgFilename = filename;

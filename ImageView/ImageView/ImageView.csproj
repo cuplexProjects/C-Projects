@@ -169,11 +169,18 @@
     <Compile Include="FormEditBookmark.Designer.cs">
       <DependentUpon>FormEditBookmark.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormImageDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormImageDetails.Designer.cs">
+      <DependentUpon>FormImageDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Managers\ThumbnailManager.cs" />
     <Compile Include="Models\CachedImage.cs" />
     <Compile Include="Managers\BookmarkManager.cs" />
     <Compile Include="DataContracts\ImageReference.cs" />
     <Compile Include="Models\FileEntry.cs" />
+    <Compile Include="Models\ImageInformationModel.cs" />
     <Compile Include="Models\ImageReferenceCollection.cs" />
     <Compile Include="Models\Interface\ImageViewFormWindow.cs" />
     <Compile Include="Events\ImageViewFormImageInfo.cs" />
@@ -369,6 +376,9 @@
     <EmbeddedResource Include="FormEditBookmark.resx">
       <DependentUpon>FormEditBookmark.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormImageDetails.resx">
+      <DependentUpon>FormImageDetails.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormInputText.resx">
       <DependentUpon>FormInputText.cs</DependentUpon>
     </EmbeddedResource>
@@ -444,13 +454,8 @@
     </EmbeddedResource>
     <None Include="ImageViewCertificateSignFile.pfx" />
     <None Include="packages.config" />
-    <None Include="Properties\DataSources\ImageReferenceElement.datasource" />
     <None Include="Properties\DataSources\ImageView.DataContracts.Bookmark.datasource" />
-    <None Include="Properties\DataSources\ImageView.DataModels.Bookmark.datasource" />
-    <None Include="Properties\DataSources\ImageView.DataModels.BookmarkFolder.datasource" />
-    <None Include="Properties\DataSources\ImageView.DataModels.BookmarkTree.datasource" />
-    <None Include="Properties\DataSources\ImageView.DataModels.BookmarkTreeNode.datasource" />
-    <None Include="Properties\DataSources\LoadImageReference.datasource" />
+    <None Include="Properties\DataSources\ImageView.Models.ImageInformationModel.datasource" />
     <None Include="Properties\app.manifest">
       <SubType>Designer</SubType>
     </None>

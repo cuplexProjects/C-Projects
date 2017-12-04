@@ -5,6 +5,6 @@
     Renaming the file extension or editing the content of this file may   
     cause the file to be unrecognizable by the program.
 -->
-<GenericObjectDataSource DisplayName="ImageReferenceElement" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>ImageView.ImageReferenceElement, ImageView, Version=1.0.0.1, Culture=neutral, PublicKeyToken=null</TypeInfo>
+<GenericObjectDataSource DisplayName="ImageInformationModel" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+   <TypeInfo>ImageView.Models.ImageInformationModel, ImageViewer, Version=1.7.3.0, Culture=neutral, PublicKeyToken=bd969705680acdc5</TypeInfo>
 </GenericObjectDataSource>

@@ -242,6 +242,9 @@ namespace ImageView.Managers
             int filesToScan = files.Length;
             int scannedFiles = 0;
 
+            if (_abortScan)
+                return 0;
+
             foreach (string fullPath in files)
             {
                 string fileName = GeneralConverters.GetFileNameFromPath(fullPath);
