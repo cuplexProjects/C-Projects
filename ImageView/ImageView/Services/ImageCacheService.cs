@@ -8,17 +8,17 @@ namespace ImageView.Services
 {
     public class ImageCacheService : IDisposable
     {
-        private const int DefaultCacheSize = 16777216;
-        public const int MinCacheSize = 4194304;
-        public const int MaxCacheSize = 268435456;
+        private const long DefaultCacheSize = 16777216;
+        public const long MinCacheSize = 5242880;
+        public const long MaxCacheSize = 268435456;
         private Dictionary<string, CachedImage> _cachedImages;
-        private int _cacheSize;
+        private long _cacheSize;
         private readonly ApplicationSettingsService _applicationSettingsService;
 
         public ImageCacheService(ApplicationSettingsService applicationSettingsService)
         {
             _applicationSettingsService = applicationSettingsService;
-            int cacheSizeFromSetings = _applicationSettingsService.Settings.ImageCacheSize;
+            long cacheSizeFromSetings = _applicationSettingsService.Settings.ImageCacheSize;
             _cacheSize = DefaultCacheSize;
             _cachedImages = new Dictionary<string, CachedImage>();
 
@@ -33,9 +33,9 @@ namespace ImageView.Services
             }
         }
 
-        public int CacheSize
+        public long CacheSize
         {
-            get { return _cacheSize; }
+            get => _cacheSize;
             set
             {
                 if (value < MinCacheSize)

@@ -224,6 +224,7 @@ namespace ImageView
             }
 
             LoadNewImageFile(imgRef.CompletePath);
+            AddNextImageToCache(_imageReferenceCollection.PeekNextImage().CompletePath);
         }
 
         private void timerSlideShow_Tick(object sender, EventArgs e)
@@ -308,6 +309,11 @@ namespace ImageView
             {
                 LogWriter.LogError($"FormMain.LoadNewImageFile(string imagePath) Error when trying to load file: {imagePath} : {ex.Message}", ex);
             }
+        }
+
+        private void AddNextImageToCache(string imagePath)
+        {
+            _imageCacheService.GetImage(imagePath);
         }
 
         private void SetImageReferenceCollection()
@@ -629,6 +635,10 @@ namespace ImageView
 
             if (ImageSourceDataAvailable)
             {
+                if (_fullScreen)
+                {
+                    Cursor.Show();
+                }
                 var starupPosition = new Point(Location.X, Location.Y);
                 starupPosition.X += addBookmarkToolStripMenuItem.Width;
                 starupPosition.Y += addBookmarkToolStripMenuItem.Height + (Height - ClientSize.Height);
@@ -637,6 +647,10 @@ namespace ImageView
                 {
                     _formAddBookmark.Init(starupPosition, _imageReferenceCollection.CurrentImage);
                     _formAddBookmark.ShowDialog(this);
+                    if (_fullScreen)
+                    {
+                        Cursor.Hide();
+                    }
                 }
             }
         }

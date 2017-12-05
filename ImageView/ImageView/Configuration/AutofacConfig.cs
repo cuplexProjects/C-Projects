@@ -26,7 +26,7 @@ namespace ImageView.Configuration
             builder.RegisterType<FormAddBookmark>();
             builder.RegisterType<FormThumbnailView>();
             builder.RegisterType<FormBookmarks>();
-            builder.RegisterType<ImageCacheService>();
+            builder.RegisterType<ImageCacheService>().SingleInstance();
            
 
             var container = builder.Build();

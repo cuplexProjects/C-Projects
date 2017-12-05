@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.progressBarHash = new System.Windows.Forms.ProgressBar();
@@ -90,7 +91,7 @@
             this.txtSHA256.Location = new System.Drawing.Point(101, 79);
             this.txtSHA256.Name = "txtSHA256";
             this.txtSHA256.ReadOnly = true;
-            this.txtSHA256.Size = new System.Drawing.Size(351, 23);
+            this.txtSHA256.Size = new System.Drawing.Size(351, 27);
             this.txtSHA256.TabIndex = 8;
             this.txtSHA256.Click += new System.EventHandler(this.txtPath_Click);
             // 
@@ -99,7 +100,7 @@
             this.txtCRC32.Location = new System.Drawing.Point(101, 50);
             this.txtCRC32.Name = "txtCRC32";
             this.txtCRC32.ReadOnly = true;
-            this.txtCRC32.Size = new System.Drawing.Size(351, 23);
+            this.txtCRC32.Size = new System.Drawing.Size(351, 27);
             this.txtCRC32.TabIndex = 7;
             this.txtCRC32.Click += new System.EventHandler(this.txtPath_Click);
             // 
@@ -109,7 +110,7 @@
             this.radioButtonMD5.Checked = true;
             this.radioButtonMD5.Location = new System.Drawing.Point(12, 22);
             this.radioButtonMD5.Name = "radioButtonMD5";
-            this.radioButtonMD5.Size = new System.Drawing.Size(50, 19);
+            this.radioButtonMD5.Size = new System.Drawing.Size(62, 24);
             this.radioButtonMD5.TabIndex = 1;
             this.radioButtonMD5.TabStop = true;
             this.radioButtonMD5.Text = "MD5";
@@ -120,7 +121,7 @@
             this.radioButtonCRC32.AutoSize = true;
             this.radioButtonCRC32.Location = new System.Drawing.Point(12, 51);
             this.radioButtonCRC32.Name = "radioButtonCRC32";
-            this.radioButtonCRC32.Size = new System.Drawing.Size(60, 19);
+            this.radioButtonCRC32.Size = new System.Drawing.Size(73, 24);
             this.radioButtonCRC32.TabIndex = 5;
             this.radioButtonCRC32.Text = "CRC32";
             this.radioButtonCRC32.UseVisualStyleBackColor = true;
@@ -130,7 +131,7 @@
             this.radioButtonSha256.AutoSize = true;
             this.radioButtonSha256.Location = new System.Drawing.Point(12, 80);
             this.radioButtonSha256.Name = "radioButtonSha256";
-            this.radioButtonSha256.Size = new System.Drawing.Size(66, 19);
+            this.radioButtonSha256.Size = new System.Drawing.Size(83, 24);
             this.radioButtonSha256.TabIndex = 6;
             this.radioButtonSha256.Text = "SHA256";
             this.radioButtonSha256.UseVisualStyleBackColor = true;
@@ -151,7 +152,7 @@
             this.txtMD5.Location = new System.Drawing.Point(101, 21);
             this.txtMD5.Name = "txtMD5";
             this.txtMD5.ReadOnly = true;
-            this.txtMD5.Size = new System.Drawing.Size(351, 23);
+            this.txtMD5.Size = new System.Drawing.Size(351, 27);
             this.txtMD5.TabIndex = 3;
             this.txtMD5.Click += new System.EventHandler(this.txtPath_Click);
             // 
@@ -173,7 +174,7 @@
             this.txtInputFile.Location = new System.Drawing.Point(49, 22);
             this.txtInputFile.MaxLength = 1024;
             this.txtInputFile.Name = "txtInputFile";
-            this.txtInputFile.Size = new System.Drawing.Size(374, 23);
+            this.txtInputFile.Size = new System.Drawing.Size(374, 27);
             this.txtInputFile.TabIndex = 4;
             this.txtInputFile.DragDrop += new System.Windows.Forms.DragEventHandler(this.txtInputFile_DragDrop);
             this.txtInputFile.DragEnter += new System.Windows.Forms.DragEventHandler(this.txtInputFile_DragEnter);
@@ -186,7 +187,7 @@
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(15, 23);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(30, 17);
+            this.label1.Size = new System.Drawing.Size(39, 23);
             this.label1.TabIndex = 0;
             this.label1.Text = "File:";
             // 
@@ -202,12 +203,13 @@
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 221);
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
             this.Padding = new System.Windows.Forms.Padding(5, 5, 4, 5);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

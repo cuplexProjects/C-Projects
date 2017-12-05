@@ -19,7 +19,7 @@ namespace ImageView.Models
 
         private int ImageListPointer
         {
-            get { return _imageListPointer; }
+            get => _imageListPointer;
             set
             {
                 if (value < 0)
@@ -38,6 +38,17 @@ namespace ImageView.Models
             return CurrentImage;
         }
 
+        public ImageReferenceElement PeekNextImage()
+        {
+            var index = ImageListPointer + 1;
+            if (index > _randomImagePosList.Count)
+            {
+                index = 0;
+            }
+
+            return ImageLoaderService.Instance.ImageReferenceList[_randomImagePosList[index]]; ;
+        }
+
         public ImageReferenceElement GetPreviousImage()
         {
             ImageListPointer = ImageListPointer - 1;
@@ -48,7 +59,7 @@ namespace ImageView.Models
         public ImageReferenceElement SetCurrentImage(string fileName)
         {
             ImageReferenceElement imageReferenceElement = new ImageReferenceElement();
-            FileInfo fi=new FileInfo(fileName);
+            FileInfo fi = new FileInfo(fileName);
             imageReferenceElement.Size = fi.Length;
             imageReferenceElement.CompletePath = fileName;
             imageReferenceElement.CreationTime = fi.CreationTime;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using GeneralToolkitLib.Converters;
 using ImageView.DataContracts;
 using ImageView.InputForms;
 using ImageView.Properties;
@@ -171,25 +172,25 @@ namespace ImageView
 
         private void UpdateCacheStats()
         {
-            int cacheSize = _imageCacheService.CacheSize/1048576;
-            long cacheUsage = _imageCacheService.GetCacheUsage()/1048576;
-            const int maxSize = ImageCacheService.MaxCacheSize/1048576;
-            const int minSize = ImageCacheService.MinCacheSize/1048576;
+            long cacheSize = _imageCacheService.CacheSize;
+            long cacheUsage = _imageCacheService.GetCacheUsage();
+            const long maxSize = ImageCacheService.MaxCacheSize;
+            const long minSize = ImageCacheService.MinCacheSize;
 
             lblCacheItems.Text = _imageCacheService.CachedItems.ToString();
-            lblUsedSpace.Text = cacheUsage + Resources.FormSettings_UpdateCacheSizeLabel__MB;
-            lblFreeSpace.Text = cacheSize - cacheUsage + Resources.FormSettings_UpdateCacheSizeLabel__MB;
+            lblUsedSpace.Text = GeneralConverters.FormatFileSizeToString(cacheUsage, 2);
+            lblFreeSpace.Text = GeneralConverters.FormatFileSizeToString(cacheSize - cacheUsage);
             pbarPercentUsed.Value = Convert.ToInt32((double)cacheUsage/ cacheSize * 100);
           
-            trackBarCacheSize.Minimum = minSize;
-            trackBarCacheSize.Maximum = maxSize;
-            trackBarCacheSize.Value = cacheSize;
+            trackBarCacheSize.Minimum = Convert.ToInt32(minSize/ 1048576);
+            trackBarCacheSize.Maximum = Convert.ToInt32(maxSize / 1048576);
+            trackBarCacheSize.Value = Convert.ToInt32(cacheSize / 1048576);
             UpdateCacheSizeLabel();
         }
 
         private void UpdateCacheSizeLabel()
         {
-            lblCacheSize.Text = trackBarCacheSize.Value + Resources.FormSettings_UpdateCacheSizeLabel__MB;
+            lblCacheSize.Text = GeneralConverters.FormatFileSizeToString(trackBarCacheSize.Value* 1048576);
         }
 
         private void trackBarFadeTime_Scroll(object sender, EventArgs e)

@@ -112,7 +112,7 @@ namespace ImageView.DataContracts
         public bool ShowNextPrevControlsOnEnterWindow { get; set; }
 
         [DataMember(Name = "ImageCacheSize", Order = 22)]
-        public int ImageCacheSize { get; set; }
+        public long ImageCacheSize { get; set; }
 
         [DataMember(Name = "DefaultKey", Order = 23)]
         public string DefaultKey { get; set; }

@@ -382,6 +382,7 @@ namespace ImageView
             if (!(selectedRow?.DataBoundItem is Bookmark bookmark)) return;
             
             _bookmarkManager.DeleteBookmark(bookmark);
+            ReLoadBookmarks();
         }
 
         private bool VolumeExists(string volumeLabel)
@@ -389,7 +390,7 @@ namespace ImageView
             if (string.IsNullOrEmpty(volumeLabel))
                 return false;
 
-            return _volumeInfoArray.Any(x => x.ToLower() == volumeLabel.ToLower());
+            return _volumeInfoArray.Any(x => String.Equals(x, volumeLabel, StringComparison.CurrentCultureIgnoreCase));
         }
 
         private void tryToFixBrokenLinksToolStripMenuItem_Click(object sender, EventArgs e)
@@ -605,23 +606,27 @@ namespace ImageView
             saveFileDialog1.Filter= ".dat|BookmarkFiles";
             saveFileDialog1.FileName = "bookmarks.dat";
 
-            Form paswordForm = new Form();
             var userControl = new SelectPassword();
+            Form paswordForm = FormFactory.CreateModalForm(userControl);
+            
             paswordForm.Controls.Add(userControl);
             paswordForm.StartPosition = FormStartPosition.CenterParent;
             paswordForm.ShowInTaskbar = false;
             paswordForm.FormBorderStyle = FormBorderStyle.FixedSingle;
-            paswordForm.Size = userControl.Size;
 
-            var result = paswordForm.ShowDialog(this);
-            string password = userControl.SelectedPassword;
 
-            if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+            if (paswordForm.ShowDialog(this) == DialogResult.OK)
             {
-                string filename = saveFileDialog1.FileName;
+                string password = userControl.SelectedPassword;
 
-
+                if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+                {
+                    string filename = saveFileDialog1.FileName;
+                    _bookmarkManager.SaveToFile(filename, password);
+                    MessageBox.Show("Save was sussessful", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
+            
         }
 
         private void removeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
