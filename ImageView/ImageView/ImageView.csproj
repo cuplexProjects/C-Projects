@@ -312,6 +312,12 @@
     <Compile Include="Services\ServiceLocator.cs" />
     <Compile Include="Services\ThumbnailService.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
+    <Compile Include="UserControls\GetPassword.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\GetPassword.Designer.cs">
+      <DependentUpon>GetPassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ListItemDivider.cs" />
     <Compile Include="UserControls\CustomPanel.cs">
       <SubType>Form</SubType>
@@ -436,6 +442,9 @@
     </Compile>
     <EmbeddedResource Include="UserControls\CustomPanel.resx">
       <DependentUpon>CustomPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\GetPassword.resx">
+      <DependentUpon>GetPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\RenameBookmark.resx">
       <DependentUpon>RenameBookmark.cs</DependentUpon>

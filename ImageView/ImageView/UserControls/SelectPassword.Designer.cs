@@ -34,8 +34,8 @@
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.txtPasswordConfirm = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnCancel = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,17 +70,19 @@
             // txtPassword
             // 
             this.txtPassword.Location = new System.Drawing.Point(158, 36);
+            this.txtPassword.MaxLength = 128;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(261, 22);
+            this.txtPassword.Size = new System.Drawing.Size(260, 22);
             this.txtPassword.TabIndex = 3;
             // 
             // txtPasswordConfirm
             // 
             this.txtPasswordConfirm.Location = new System.Drawing.Point(158, 77);
+            this.txtPasswordConfirm.MaxLength = 128;
             this.txtPasswordConfirm.Name = "txtPasswordConfirm";
             this.txtPasswordConfirm.PasswordChar = '*';
-            this.txtPasswordConfirm.Size = new System.Drawing.Size(261, 22);
+            this.txtPasswordConfirm.Size = new System.Drawing.Size(260, 22);
             this.txtPasswordConfirm.TabIndex = 4;
             // 
             // groupBox1
@@ -99,6 +101,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Set Password";
             // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.Location = new System.Drawing.Point(23, 131);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(0, 17);
+            this.lblStatus.TabIndex = 6;
+            // 
             // btnCancel
             // 
             this.btnCancel.Location = new System.Drawing.Point(213, 122);
@@ -108,15 +119,6 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(23, 131);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(0, 17);
-            this.lblStatus.TabIndex = 6;
             // 
             // SelectPassword
             // 

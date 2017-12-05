@@ -46,6 +46,7 @@ namespace ImageView.Events
         CreatedBookmark,
         CreatedBookmarkFolder,
         DeletedBookmark,
-        DeletedBookmarkFolder
+        DeletedBookmarkFolder,
+        LoadedNewDataSource,
     }
 }

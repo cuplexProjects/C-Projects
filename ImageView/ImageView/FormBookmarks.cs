@@ -67,7 +67,7 @@ namespace ImageView
         {
             if (DesignMode)
                 return;
-            
+
             bookmarksDataGridView.RowPrePaint += bookmarksDataGridView_RowPrePaint;
             bookmarksDataGridView.RowPostPaint += bookmarksDataGridView_RowPostPaint;
             _bookmarkManager.OnBookmarksUpdate += Instance_OnBookmarksUpdate;
@@ -153,7 +153,7 @@ namespace ImageView
 
             if (!(selectedNode.Tag is BookmarkFolder selectedBookmarkfolder)) return false;
             bookmarkBindingSource.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
-        
+
             //bookmarksDataGridView.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
             bookmarksDataGridView.Update();
             bookmarksDataGridView.Refresh();
@@ -244,7 +244,7 @@ namespace ImageView
                             _gridViewGradientBackgroundColorStop, LinearGradientMode.Vertical))
                     {
                         e.Graphics.FillRectangle(backbrush, rowBounds);
-                        var p = new Pen(backbrush, 1) {Color = _gridViewSelectionBorderColor};
+                        var p = new Pen(backbrush, 1) { Color = _gridViewSelectionBorderColor };
                         e.Graphics.DrawRectangle(p, rowBounds);
                     }
                 }
@@ -321,7 +321,7 @@ namespace ImageView
         {
             if (bookmarksTree.SelectedNode == null)
                 return;
-           
+
             var inputFormData = new FormInputRow.InputFormData
             {
                 GroupBoxText = "Bookmark folder name",
@@ -380,7 +380,7 @@ namespace ImageView
         {
             DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
             if (!(selectedRow?.DataBoundItem is Bookmark bookmark)) return;
-            
+
             _bookmarkManager.DeleteBookmark(bookmark);
             ReLoadBookmarks();
         }
@@ -549,11 +549,11 @@ namespace ImageView
 
                     // Create a rectangle using the DragSize, with the mouse position being
                     // at the center of the rectangle.
-                    _dragBoxFromMouseDown = new Rectangle(new Point(e.X - dragSize.Width/2, e.Y - dragSize.Height/2), dragSize);
+                    _dragBoxFromMouseDown = new Rectangle(new Point(e.X - dragSize.Width / 2, e.Y - dragSize.Height / 2), dragSize);
                 }
             }
             else
-            // Reset the rectangle if the mouse is not over an item in the ListBox.
+                // Reset the rectangle if the mouse is not over an item in the ListBox.
                 _dragBoxFromMouseDown = Rectangle.Empty;
         }
 
@@ -577,20 +577,9 @@ namespace ImageView
             FolderRenamed
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            openFileDialog1.Filter = ".dat|BookmarkFiles";
-            openFileDialog1.FileName = "bookmarks.dat";
-            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                string filename = openFileDialog1.FileName;
-
-            }
-        }
-
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool result =_bookmarkService.SaveBookmarks();
+            bool result = _bookmarkService.SaveBookmarks();
             if (result)
             {
                 MessageBox.Show("Bookmarks saved", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -603,12 +592,12 @@ namespace ImageView
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.Filter= ".dat|BookmarkFiles";
+            saveFileDialog1.Filter = "(BookmarkFiles *.dat)|*.dat";
             saveFileDialog1.FileName = "bookmarks.dat";
 
             var userControl = new SelectPassword();
             Form paswordForm = FormFactory.CreateModalForm(userControl);
-            
+
             paswordForm.Controls.Add(userControl);
             paswordForm.StartPosition = FormStartPosition.CenterParent;
             paswordForm.ShowInTaskbar = false;
@@ -626,7 +615,7 @@ namespace ImageView
                     MessageBox.Show("Save was sussessful", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            
+
         }
 
         private void removeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -636,9 +625,91 @@ namespace ImageView
             MessageBox.Show(this, "Duplicate bookmarks pointing to the same file where removed", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        private void openAndIncludeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filename = SelectBookmarksFile();
+
+            if (string.IsNullOrEmpty(filename))
+            {
+                return;
+            }
+            string password = SelectBookmarksFilePassword();
+            if (string.IsNullOrEmpty(password))
+            {
+                return;
+            }
+
+            if (_bookmarkManager.LoadFromFileAndAppendBookmarks(filename, password))
+            {
+                _bookmarkManager.BookmarkDatasourceUpdated();
+                MessageBox.Show("Bookmarksfile was loaded and appended to current bookmarks", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Unable to load file, incorrect password?", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void openAndReplaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filename = SelectBookmarksFile();
+
+            if (string.IsNullOrEmpty(filename))
+            {
+                return;
+            }
+            string password = SelectBookmarksFilePassword();
+            if (string.IsNullOrEmpty(password))
+            {
+                return;
+            }
+
+            if (_bookmarkManager.LoadFromFile(filename, password))
+            {
+                _bookmarkManager.BookmarkDatasourceUpdated();
+                MessageBox.Show("Bookmarksfile was loaded succesfully", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Unable to load file, incorrect password?", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+
+        }
+
+        private string SelectBookmarksFile()
+        {
+            openFileDialog1.Filter = "(BookmarkFiles *.dat)|*.dat";
+            openFileDialog1.FileName = "bookmarks.dat";
+
+            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                return openFileDialog1.FileName;
+            }
+
+            return null;
+        }
+
+        private string SelectBookmarksFilePassword()
+        {
+            var uc = new GetPassword();
+            var paswordForm = FormFactory.CreateModalForm(uc);
+            paswordForm.StartPosition = FormStartPosition.CenterParent;
+            paswordForm.ShowInTaskbar = false;
+            paswordForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+
+            if (paswordForm.ShowDialog(this) == DialogResult.OK)
+            {
+                return uc.SelectedPassword;
+            }
+
+            return null;
+        }
+
         private void bookmarkBindingSource_CurrentChanged(object sender, EventArgs e)
         {
 
         }
+
     }
 }

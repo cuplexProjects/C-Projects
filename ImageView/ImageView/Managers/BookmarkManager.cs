@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
@@ -56,7 +57,7 @@ namespace ImageView.Managers
                 //Make a copy of the original file
                 if (File.Exists(filename))
                 {
-                    const string copyFilename = "BookmarksCopy.dat";
+                    string copyFilename = GeneralConverters.GetDirectoryNameFromPath(filename, true) + "BookmarksCopy.dat";
                     if (File.Exists(copyFilename))
                     {
                         File.Delete(copyFilename);
@@ -97,6 +98,43 @@ namespace ImageView.Managers
                     _bookmarkContainer = bookmarkContainer;
                     RootFolder = _bookmarkContainer.RootFolder;
                     _isModified = false;
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.LogError("BookmarkManager.LoadFromFile(string filename, string password) : " + ex.Message, ex);
+            }
+
+            return false;
+        }
+
+        public bool LoadFromFileAndAppendBookmarks(string filename, string password)
+        {
+            try
+            {
+                _isLoadedFromFile = true;
+
+                var settings = new StorageManagerSettings(false, Environment.ProcessorCount, true, password);
+                var storageManager = new StorageManager(settings);
+                var bookmarkContainer = storageManager.DeserializeObjectFromFile<BookmarkContainer>(filename, null);
+
+                if (ValidateBookmarkContainer(bookmarkContainer))
+                {
+                    if (_bookmarkContainer == null)
+                    {
+                        _bookmarkContainer = bookmarkContainer;
+                    }
+                    else
+                    {
+                        RecursiveAdd(_bookmarkContainer.RootFolder, bookmarkContainer.RootFolder);
+                    }
+
+
+                    RootFolder = _bookmarkContainer.RootFolder;
+                    _isModified = false;
+
+                    //BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.CreatedBookmark, typeof(Bookmark)));
 
                     return true;
                 }
@@ -107,6 +145,37 @@ namespace ImageView.Managers
             }
 
             return false;
+        }
+
+        private void RecursiveAdd(BookmarkFolder source, BookmarkFolder appendFrom)
+        {
+            foreach (var bookmark in appendFrom.Bookmarks)
+            {
+                if (!source.Bookmarks.Any(x => x.CompletePath == bookmark.CompletePath && x.Size == bookmark.Size))
+                {
+                    source.Bookmarks.Add(bookmark);
+                }
+            }
+
+            foreach (var folder in appendFrom.BookmarkFolders)
+            {
+                if (source.BookmarkFolders.All(x => x.Name != folder.Name))
+                {
+                    source.BookmarkFolders.Add(folder);
+                }
+
+                if (folder.BookmarkFolders.Any())
+                {
+                    foreach (var subFolder in folder.BookmarkFolders)
+                    {
+                        var sFolder = source.BookmarkFolders.FirstOrDefault(x => x.Name == folder.Name);
+                        if (sFolder != null)
+                        {
+                            RecursiveAdd(sFolder, subFolder);
+                        }
+                    }
+                }
+            }
         }
 
         private bool ValidateBookmarkContainer(BookmarkContainer bookmarkContainer)
@@ -410,7 +479,7 @@ namespace ImageView.Managers
         public void RemoveDuplicates()
         {
             var bookmarkFilenames = _bookmarkContainer.RootFolder.Bookmarks.Select(x => x.FileName).ToList();
-  
+
             var removeList = new List<Bookmark>();
 
             foreach (string filename in bookmarkFilenames)
@@ -427,6 +496,11 @@ namespace ImageView.Managers
             {
                 DeleteBookmark(bookmark);
             }
+        }
+
+        public void BookmarkDatasourceUpdated()
+        {
+            BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.LoadedNewDataSource, typeof(Bookmark)));
         }
     }
 }

@@ -41,6 +41,7 @@ namespace ImageView
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly ImageCacheService _imageCacheService;
         private bool _cursorVisible = true;
+        private FormBookmarks _formBookmarks;
 
         public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings,  ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
         {
@@ -657,9 +658,23 @@ namespace ImageView
 
         private void openBookmarksToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            var  formBookmarks= new FormBookmarks(_bookmarkService,_bookmarkService.BookmarkManager,_applicationSettingsService);
-            formBookmarks.Show();
-            formBookmarks.Focus();
+            if (_formBookmarks == null)
+            {
+                _formBookmarks = new FormBookmarks(_bookmarkService, _bookmarkService.BookmarkManager, _applicationSettingsService);
+                _formBookmarks.Show();
+                _formBookmarks.Focus();
+                _formBookmarks.Closed += (o, args) =>
+                {
+                    _formBookmarks = null;
+                    GC.Collect();
+                };
+            }
+            else
+            {
+                _formBookmarks.Show();
+                _formBookmarks.Focus();
+            }
+              
         }
 
         private void newWindowToolStripMenuItem_Click(object sender, EventArgs e)
