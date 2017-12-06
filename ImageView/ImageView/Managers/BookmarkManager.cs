@@ -130,12 +130,8 @@ namespace ImageView.Managers
                         RecursiveAdd(_bookmarkContainer.RootFolder, bookmarkContainer.RootFolder);
                     }
 
-
                     RootFolder = _bookmarkContainer.RootFolder;
                     _isModified = false;
-
-                    //BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.CreatedBookmark, typeof(Bookmark)));
-
                     return true;
                 }
             }

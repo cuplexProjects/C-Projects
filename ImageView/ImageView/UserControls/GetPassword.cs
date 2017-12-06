@@ -14,7 +14,7 @@ namespace ImageView.UserControls
         private void btnOk_Click(object sender, EventArgs e)
         {
             SelectedPassword = txtPassword.Text;
-            var parentForm = this.ParentForm;
+            var parentForm = ParentForm;
             if (parentForm != null)
             {
                 parentForm.DialogResult = DialogResult.OK;
@@ -23,10 +23,23 @@ namespace ImageView.UserControls
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            var parentForm = this.ParentForm;
+            var parentForm = ParentForm;
             if (parentForm != null)
             {
                 parentForm.DialogResult = DialogResult.Cancel;
+            }
+        }
+
+        private void txtPassword_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter)
+            {
+                SelectedPassword = txtPassword.Text;
+                var parentForm = ParentForm;
+                if (parentForm != null)
+                {
+                    parentForm.DialogResult = DialogResult.OK;
+                }
             }
         }
     }

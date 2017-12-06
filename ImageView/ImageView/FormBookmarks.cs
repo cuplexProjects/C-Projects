@@ -32,7 +32,6 @@ namespace ImageView
         private TreeViewDataContext _treeViewDataContext;
         private int _brokenLinks;
         private string _defaultDrive = "c:\\";
-
         private Rectangle _dragBoxFromMouseDown;
         private int _fixedLinks;
         private object _valueFromMouseDown;
@@ -69,7 +68,6 @@ namespace ImageView
                 return;
 
             bookmarksDataGridView.RowPrePaint += bookmarksDataGridView_RowPrePaint;
-            bookmarksDataGridView.RowPostPaint += bookmarksDataGridView_RowPostPaint;
             _bookmarkManager.OnBookmarksUpdate += Instance_OnBookmarksUpdate;
             bookmarksTree.AfterSelect += BookmarksTree_AfterSelect;
             InitBookmarksDataGridViev();
@@ -112,71 +110,7 @@ namespace ImageView
             }
         }
 
-        private void BookmarksTree_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            ReLoadBookmarks();
-        }
-
-        private void Instance_OnBookmarksUpdate(object sender, BookmarkUpdatedEventArgs e)
-        {
-            if (bookmarksDataGridView.SelectedRows.Count > 0)
-            {
-                DataGridViewSelectedRowCollection selectedItems = bookmarksDataGridView.SelectedRows;
-                var selectionList = new List<int>();
-                for (int i = 0; i < selectedItems.Count; i++)
-                {
-                    selectionList.Add(selectedItems[i].Index);
-                }
-
-                ReLoadBookmarks(selectionList);
-                return;
-            }
-
-            ReLoadBookmarks();
-        }
-
-        private void ReLoadBookmarks(IEnumerable<int> selectedIndexList)
-        {
-            if (!ReLoadBookmarks()) return;
-            foreach (int index in selectedIndexList)
-            {
-                if (index >= bookmarksDataGridView.Rows.Count)
-                    break;
-
-                bookmarksDataGridView.Rows[index].Selected = true;
-            }
-        }
-
-        private bool ReLoadBookmarks()
-        {
-            TreeNode selectedNode = bookmarksTree.SelectedNode;
-
-            if (!(selectedNode.Tag is BookmarkFolder selectedBookmarkfolder)) return false;
-            bookmarkBindingSource.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
-
-            //bookmarksDataGridView.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
-            bookmarksDataGridView.Update();
-            bookmarksDataGridView.Refresh();
-
-            return true;
-        }
-
-        private void AlterTreeViewState(TreeViewFolderStateChange stateChange, BookmarkFolder folder)
-        {
-            if (stateChange == TreeViewFolderStateChange.FolderAdded)
-            {
-                _treeViewDataContext.ExpandNode(folder);
-            }
-            else if (stateChange == TreeViewFolderStateChange.FolderRenamed)
-            {
-                InitBookmarksDataSource();
-                _treeViewDataContext.ExpandNode(folder);
-            }
-            else
-            {
-                _treeViewDataContext.ExpandNode(bookmarksTree.TopNode.Tag as BookmarkFolder);
-            }
-        }
+        #region Init
 
         private void InitBookmarksDataSource()
         {
@@ -203,6 +137,41 @@ namespace ImageView
             bookmarksDataGridView.CellBorderStyle = DataGridViewCellBorderStyle.None;
             bookmarksDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
+
+        private void Instance_OnBookmarksUpdate(object sender, BookmarkUpdatedEventArgs e)
+        {
+            ReLoadBookmarks();
+        }
+
+        #endregion
+
+        #region BookmarkTreeViewEvents
+
+        private void BookmarksTree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            ReLoadBookmarks();
+        }
+
+        private void AlterTreeViewState(TreeViewFolderStateChange stateChange, BookmarkFolder folder)
+        {
+            if (stateChange == TreeViewFolderStateChange.FolderAdded)
+            {
+                _treeViewDataContext.ExpandNode(folder);
+            }
+            else if (stateChange == TreeViewFolderStateChange.FolderRenamed)
+            {
+                InitBookmarksDataSource();
+                _treeViewDataContext.ExpandNode(folder);
+            }
+            else
+            {
+                _treeViewDataContext.ExpandNode(bookmarksTree.TopNode.Tag as BookmarkFolder);
+            }
+        }
+
+        #endregion
+
+        #region bookmarksDataGridViewEvents
 
         // Paints the content that spans multiple columns and the focus rectangle.
         private void bookmarksDataGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
@@ -244,7 +213,7 @@ namespace ImageView
                             _gridViewGradientBackgroundColorStop, LinearGradientMode.Vertical))
                     {
                         e.Graphics.FillRectangle(backbrush, rowBounds);
-                        var p = new Pen(backbrush, 1) { Color = _gridViewSelectionBorderColor };
+                        var p = new Pen(backbrush, 1) {Color = _gridViewSelectionBorderColor};
                         e.Graphics.DrawRectangle(p, rowBounds);
                     }
                 }
@@ -255,22 +224,279 @@ namespace ImageView
             }
         }
 
+        #endregion
+
+        #region MenuEventHandlers
+
+        private void showLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var formLogWindow = new FormLogWindow();
+            formLogWindow.SetLogText(_logStringBuilder.ToString());
+            formLogWindow.ShowDialog(this);
+        }
+
+        private void setDefaultDriveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var formSetDefaultDrive = new FormSetDefaultDrive();
+            if (formSetDefaultDrive.ShowDialog(this) == DialogResult.OK)
+                _defaultDrive = formSetDefaultDrive.SelectedDrive;
+        }
+
+        private void renameFolderMenuItem_Click(object sender, EventArgs e)
+        {
+            if (bookmarksTree.SelectedNode?.Tag is BookmarkFolder bookmarkFolder)
+            {
+                var ucRenameFolder = new RenameBookmarkFolder();
+                ucRenameFolder.InitControl(bookmarkFolder.Name, bookmarkFolder.Bookmarks.Count);
+                Form renameForm = FormFactory.CreateModalForm(ucRenameFolder);
+
+                if (renameForm.ShowDialog(this) == DialogResult.OK)
+                {
+                    string newName = ucRenameFolder.GetNewFolderName();
+                    bookmarkFolder.Name = newName;
+                    AlterTreeViewState(TreeViewFolderStateChange.FolderRenamed, bookmarkFolder);
+                }
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool result = _bookmarkService.SaveBookmarks();
+            if (result)
+            {
+                MessageBox.Show("Bookmarks saved", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Unable to save bookmarks", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "(BookmarkFiles *.dat)|*.dat";
+            saveFileDialog1.FileName = "bookmarks.dat";
+
+            var userControl = new SelectPassword();
+            Form paswordForm = FormFactory.CreateModalForm(userControl);
+
+            paswordForm.Controls.Add(userControl);
+            paswordForm.StartPosition = FormStartPosition.CenterParent;
+            paswordForm.ShowInTaskbar = false;
+            paswordForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+
+
+            if (paswordForm.ShowDialog(this) == DialogResult.OK)
+            {
+                string password = userControl.SelectedPassword;
+
+                if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+                {
+                    string filename = saveFileDialog1.FileName;
+                    _bookmarkManager.SaveToFile(filename, password);
+                    MessageBox.Show("Save was sussessful", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void removeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _bookmarkManager.RemoveDuplicates();
+            ReLoadBookmarks();
+            MessageBox.Show(this, "Duplicate bookmarks pointing to the same file where removed", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void openAndIncludeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filename = SelectBookmarksFile();
+
+            if (string.IsNullOrEmpty(filename))
+            {
+                return;
+            }
+            string password = SelectBookmarksFilePassword();
+            if (string.IsNullOrEmpty(password))
+            {
+                return;
+            }
+
+            if (_bookmarkManager.LoadFromFileAndAppendBookmarks(filename, password))
+            {
+                _bookmarkManager.BookmarkDatasourceUpdated();
+                MessageBox.Show("Bookmarksfile was loaded and appended to current bookmarks", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Unable to load file, incorrect password?", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void openAndReplaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filename = SelectBookmarksFile();
+
+            if (string.IsNullOrEmpty(filename))
+            {
+                return;
+            }
+            string password = SelectBookmarksFilePassword();
+            if (string.IsNullOrEmpty(password))
+            {
+                return;
+            }
+
+            if (_bookmarkManager.LoadFromFile(filename, password))
+            {
+                _bookmarkManager.BookmarkDatasourceUpdated();
+                MessageBox.Show("Bookmarksfile was loaded succesfully", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Unable to load file, incorrect password?", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void deleteFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!(bookmarksTree.SelectedNode?.Tag is BookmarkFolder treeNode))
+                return;
+
+            if (
+                MessageBox.Show(this, Resources.Are_you_sure_you_want_to_delete_this_folder_, Resources.Remove_folder_,
+                    MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                _bookmarkManager.DeleteBookmarkFolder(treeNode);
+                AlterTreeViewState(TreeViewFolderStateChange.FolderRemoved, treeNode);
+            }
+        }
+
+        private void renameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
+            if (!(selectedRow?.DataBoundItem is Bookmark bookmark)) return;
+
+            var editBookmark = new FormEditBookmark();
+            editBookmark.InitForRename(bookmark.BoookmarkName, bookmark.FileName);
+            if (editBookmark.ShowDialog(this) == DialogResult.OK)
+            {
+                string name = editBookmark.GetNewName();
+                bookmark.BoookmarkName = name;
+                ReLoadBookmarks();
+            }
+        }
+
+        private void addFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (bookmarksTree.SelectedNode == null)
+                return;
+
+            var inputFormData = new FormInputRow.InputFormData
+            {
+                GroupBoxText = "Bookmark folder name",
+                LabelText = "Name:",
+                WindowText = "Add new bookmark folder"
+            };
+            var formInputRow = new FormInputRow(inputFormData);
+
+            if (formInputRow.ShowDialog(this) == DialogResult.OK)
+            {
+                string folderName = formInputRow.UserInputText;
+                TreeNode selectedNode = bookmarksTree.SelectedNode;
+
+                if (selectedNode.Tag is BookmarkFolder selectedBookmarkfolder)
+                {
+                    BookmarkFolder newFolder = _bookmarkManager.AddBookmarkFolder(selectedBookmarkfolder.Id, folderName);
+                    AlterTreeViewState(TreeViewFolderStateChange.FolderAdded, newFolder);
+                }
+            }
+        }
+
+        private void tryToFixBrokenLinksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_bookmarkManager == null)
+                return;
+
+            showLogToolStripMenuItem.Enabled = true;
+            _logStringBuilder.Clear();
+            _brokenLinks = 0;
+            _fixedLinks = 0;
+
+            BookmarkFolder bookmarkFolder = _bookmarkManager.RootFolder;
+            UpdateBrokenLinksOnBookmarks(bookmarkFolder.Bookmarks);
+            UpdateBrokenLinksOnThreeNodes(bookmarkFolder.BookmarkFolders);
+
+            _logStringBuilder.AppendLine($"Found {_brokenLinks} broken linkes and fixed {_fixedLinks} links.");
+
+            if (_fixedLinks > 0)
+                _bookmarkService.SaveBookmarks();
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeleteSelectedBookmark();
+        }
+
+        #endregion
+
+
+        private bool ReLoadBookmarks()
+        {
+            TreeNode selectedNode = bookmarksTree.SelectedNode;
+
+            if (!(selectedNode.Tag is BookmarkFolder selectedBookmarkfolder)) return false;
+            bookmarkBindingSource.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
+            bookmarksDataGridView.Update();
+            bookmarksDataGridView.Refresh();
+
+            return true;
+        }
+
+        private void DeleteSelectedBookmark(bool showConfirmDialog = false)
+        {
+            if (bookmarksDataGridView.CurrentRow == null)
+            {
+                return;
+            }
+
+            if (showConfirmDialog && MessageBox.Show(this, Resources.Are_you_sure_you_want_to_delete_this_bookmark_, Resources.Delete, MessageBoxButtons.YesNo) != DialogResult.Yes)
+            {
+                return;
+            }
+
+            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
+            if (!(selectedRow.DataBoundItem is Bookmark bookmark)) return;
+
+            int selectedIndex = bookmarksDataGridView.CurrentRow.Index;
+            if (selectedIndex > 0)
+            {
+                bookmarksDataGridView.Rows[selectedIndex].Selected = false;
+                bookmarksDataGridView.Rows[selectedIndex - 1].Selected = true;
+            }
+            else if (bookmarksDataGridView.Rows.Count > 1)
+            {
+                bookmarksDataGridView.Rows[0].Selected = true;
+            }
+
+            _bookmarkManager.DeleteBookmark(bookmark);
+        }
+
         private void bookmarksDataGridView_KeyDown(object sender, KeyEventArgs e)
         {
             if (bookmarksDataGridView.SelectedRows.Count != 1) return;
-            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
-            BookmarkManager bookmarkManager = _bookmarkManager;
 
             if (e.KeyData == Keys.Enter)
             {
                 e.Handled = true;
                 LoadImageFromSelectedRow();
             }
-            if (e.KeyData != Keys.Delete || selectedRow == null || MessageBox.Show(this, Resources.Are_you_sure_you_want_to_delete_this_bookmark_, Resources.Delete, MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-
-            if (!(selectedRow.DataBoundItem is Bookmark bookmark)) return;
-            bookmarkManager.DeleteBookmark(bookmark);
-            bookmarksDataGridView.DataSource = bookmarkManager.RootFolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
+            if (e.KeyData == Keys.Delete)
+            {
+                DeleteSelectedBookmark(true);
+            }
         }
 
         private void LoadImageFromSelectedRow()
@@ -317,73 +543,6 @@ namespace ImageView
                 contextMenuStripBookmarks.Show(bookmarksDataGridView, new Point(e.X, e.Y));
         }
 
-        private void addFolderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (bookmarksTree.SelectedNode == null)
-                return;
-
-            var inputFormData = new FormInputRow.InputFormData
-            {
-                GroupBoxText = "Bookmark folder name",
-                LabelText = "Name:",
-                WindowText = "Add new bookmark folder"
-            };
-            var formInputRow = new FormInputRow(inputFormData);
-
-            if (formInputRow.ShowDialog(this) == DialogResult.OK)
-            {
-                string folderName = formInputRow.UserInputText;
-                TreeNode selectedNode = bookmarksTree.SelectedNode;
-
-                if (selectedNode.Tag is BookmarkFolder selectedBookmarkfolder)
-                {
-                    BookmarkFolder newFolder = _bookmarkManager.AddBookmarkFolder(selectedBookmarkfolder.Id, folderName);
-                    AlterTreeViewState(TreeViewFolderStateChange.FolderAdded, newFolder);
-                }
-            }
-        }
-
-        private void deleteFolderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!(bookmarksTree.SelectedNode?.Tag is BookmarkFolder treeNode))
-                return;
-
-            if (
-                MessageBox.Show(this, Resources.Are_you_sure_you_want_to_delete_this_folder_, Resources.Remove_folder_,
-                    MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                _bookmarkManager.DeleteBookmarkFolder(treeNode);
-                AlterTreeViewState(TreeViewFolderStateChange.FolderRemoved, treeNode);
-            }
-        }
-
-        private void renameToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
-            if (!(selectedRow?.DataBoundItem is Bookmark bookmark)) return;
-
-            var editBookmark = new FormEditBookmark();
-            editBookmark.InitForRename(bookmark.BoookmarkName, bookmark.FileName);
-            if (editBookmark.ShowDialog(this) == DialogResult.OK)
-            {
-                string name = editBookmark.GetNewName();
-                bookmark.BoookmarkName = name;
-                ReLoadBookmarks();
-            }
-        }
-
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DataGridViewRow selectedRow = bookmarksDataGridView.CurrentRow;
-            if (!(selectedRow?.DataBoundItem is Bookmark bookmark)) return;
-
-            _bookmarkManager.DeleteBookmark(bookmark);
-            ReLoadBookmarks();
-        }
 
         private bool VolumeExists(string volumeLabel)
         {
@@ -393,27 +552,8 @@ namespace ImageView
             return _volumeInfoArray.Any(x => String.Equals(x, volumeLabel, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        private void tryToFixBrokenLinksToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_bookmarkManager == null)
-                return;
 
-            showLogToolStripMenuItem.Enabled = true;
-            _logStringBuilder.Clear();
-            _brokenLinks = 0;
-            _fixedLinks = 0;
-
-            BookmarkFolder bookmarkFolder = _bookmarkManager.RootFolder;
-            UpdateBrokenLinksOnBookmarks(bookmarkFolder.Bookmarks);
-            UpdateBrokenLinksOnThreeNodes(bookmarkFolder.BookmarkFolders);
-
-            _logStringBuilder.AppendLine($"Found {_brokenLinks} broken linkes and fixed {_fixedLinks} links.");
-
-            if (_fixedLinks > 0)
-                _bookmarkService.SaveBookmarks();
-        }
-
-        private void UpdateBrokenLinksOnThreeNodes(List<BookmarkFolder> bookmarkTreeNodes)
+        private void UpdateBrokenLinksOnThreeNodes(IReadOnlyCollection<BookmarkFolder> bookmarkTreeNodes)
         {
             if (bookmarkTreeNodes == null)
                 return;
@@ -425,7 +565,7 @@ namespace ImageView
             }
         }
 
-        private void UpdateBrokenLinksOnBookmarks(List<Bookmark> bookmarks)
+        private void UpdateBrokenLinksOnBookmarks(IReadOnlyCollection<Bookmark> bookmarks)
         {
             if (bookmarks == null)
                 return;
@@ -466,37 +606,6 @@ namespace ImageView
             bookmark.LastAccessTime = fileInfo.LastAccessTime;
 
             return true;
-        }
-
-        private void showLogToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var formLogWindow = new FormLogWindow();
-            formLogWindow.SetLogText(_logStringBuilder.ToString());
-            formLogWindow.ShowDialog(this);
-        }
-
-        private void setDefaultDriveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var formSetDefaultDrive = new FormSetDefaultDrive();
-            if (formSetDefaultDrive.ShowDialog(this) == DialogResult.OK)
-                _defaultDrive = formSetDefaultDrive.SelectedDrive;
-        }
-
-        private void renameFolderMenuItem_Click(object sender, EventArgs e)
-        {
-            if (bookmarksTree.SelectedNode?.Tag is BookmarkFolder bookmarkFolder)
-            {
-                var ucRenameFolder = new RenameBookmarkFolder();
-                ucRenameFolder.InitControl(bookmarkFolder.Name, bookmarkFolder.Bookmarks.Count);
-                Form renameForm = FormFactory.CreateModalForm(ucRenameFolder);
-
-                if (renameForm.ShowDialog(this) == DialogResult.OK)
-                {
-                    string newName = ucRenameFolder.GetNewFolderName();
-                    bookmarkFolder.Name = newName;
-                    AlterTreeViewState(TreeViewFolderStateChange.FolderRenamed, bookmarkFolder);
-                }
-            }
         }
 
         private void bookmarksTree_DragDrop(object sender, DragEventArgs e)
@@ -577,106 +686,6 @@ namespace ImageView
             FolderRenamed
         }
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            bool result = _bookmarkService.SaveBookmarks();
-            if (result)
-            {
-                MessageBox.Show("Bookmarks saved", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("Unable to save bookmarks", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            saveFileDialog1.Filter = "(BookmarkFiles *.dat)|*.dat";
-            saveFileDialog1.FileName = "bookmarks.dat";
-
-            var userControl = new SelectPassword();
-            Form paswordForm = FormFactory.CreateModalForm(userControl);
-
-            paswordForm.Controls.Add(userControl);
-            paswordForm.StartPosition = FormStartPosition.CenterParent;
-            paswordForm.ShowInTaskbar = false;
-            paswordForm.FormBorderStyle = FormBorderStyle.FixedSingle;
-
-
-            if (paswordForm.ShowDialog(this) == DialogResult.OK)
-            {
-                string password = userControl.SelectedPassword;
-
-                if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                {
-                    string filename = saveFileDialog1.FileName;
-                    _bookmarkManager.SaveToFile(filename, password);
-                    MessageBox.Show("Save was sussessful", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-
-        }
-
-        private void removeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _bookmarkManager.RemoveDuplicates();
-            ReLoadBookmarks();
-            MessageBox.Show(this, "Duplicate bookmarks pointing to the same file where removed", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void openAndIncludeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string filename = SelectBookmarksFile();
-
-            if (string.IsNullOrEmpty(filename))
-            {
-                return;
-            }
-            string password = SelectBookmarksFilePassword();
-            if (string.IsNullOrEmpty(password))
-            {
-                return;
-            }
-
-            if (_bookmarkManager.LoadFromFileAndAppendBookmarks(filename, password))
-            {
-                _bookmarkManager.BookmarkDatasourceUpdated();
-                MessageBox.Show("Bookmarksfile was loaded and appended to current bookmarks", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("Unable to load file, incorrect password?", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
-        private void openAndReplaceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string filename = SelectBookmarksFile();
-
-            if (string.IsNullOrEmpty(filename))
-            {
-                return;
-            }
-            string password = SelectBookmarksFilePassword();
-            if (string.IsNullOrEmpty(password))
-            {
-                return;
-            }
-
-            if (_bookmarkManager.LoadFromFile(filename, password))
-            {
-                _bookmarkManager.BookmarkDatasourceUpdated();
-                MessageBox.Show("Bookmarksfile was loaded succesfully", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("Unable to load file, incorrect password?", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-
-
-        }
-
         private string SelectBookmarksFile()
         {
             openFileDialog1.Filter = "(BookmarkFiles *.dat)|*.dat";
@@ -705,11 +714,5 @@ namespace ImageView
 
             return null;
         }
-
-        private void bookmarkBindingSource_CurrentChanged(object sender, EventArgs e)
-        {
-
-        }
-
     }
 }

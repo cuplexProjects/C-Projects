@@ -53,6 +53,8 @@ namespace ImageView
             this.mainWinMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openAndIncludeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openAndReplaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,8 +69,6 @@ namespace ImageView
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bookmarkFolderBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.openAndIncludeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openAndReplaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -287,7 +287,6 @@ namespace ImageView
             // bookmarkBindingSource
             // 
             this.bookmarkBindingSource.DataSource = typeof(ImageView.DataContracts.Bookmark);
-            this.bookmarkBindingSource.CurrentChanged += new System.EventHandler(this.bookmarkBindingSource_CurrentChanged);
             // 
             // mainWinMenu
             // 
@@ -318,25 +317,39 @@ namespace ImageView
             this.openAndIncludeToolStripMenuItem,
             this.openAndReplaceToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(135, 26);
             this.openToolStripMenuItem.Text = "Open";
+            // 
+            // openAndIncludeToolStripMenuItem
+            // 
+            this.openAndIncludeToolStripMenuItem.Name = "openAndIncludeToolStripMenuItem";
+            this.openAndIncludeToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
+            this.openAndIncludeToolStripMenuItem.Text = "Append To Current Bookmarks";
+            this.openAndIncludeToolStripMenuItem.Click += new System.EventHandler(this.openAndIncludeToolStripMenuItem_Click);
+            // 
+            // openAndReplaceToolStripMenuItem
+            // 
+            this.openAndReplaceToolStripMenuItem.Name = "openAndReplaceToolStripMenuItem";
+            this.openAndReplaceToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
+            this.openAndReplaceToolStripMenuItem.Text = "Replace Current Bookmarks";
+            this.openAndReplaceToolStripMenuItem.Click += new System.EventHandler(this.openAndReplaceToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(178, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(132, 6);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(135, 26);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(135, 26);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -416,20 +429,6 @@ namespace ImageView
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // openAndIncludeToolStripMenuItem
-            // 
-            this.openAndIncludeToolStripMenuItem.Name = "openAndIncludeToolStripMenuItem";
-            this.openAndIncludeToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
-            this.openAndIncludeToolStripMenuItem.Text = "Append To Current Bookmarks";
-            this.openAndIncludeToolStripMenuItem.Click += new System.EventHandler(this.openAndIncludeToolStripMenuItem_Click);
-            // 
-            // openAndReplaceToolStripMenuItem
-            // 
-            this.openAndReplaceToolStripMenuItem.Name = "openAndReplaceToolStripMenuItem";
-            this.openAndReplaceToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
-            this.openAndReplaceToolStripMenuItem.Text = "Replace Current Bookmarks";
-            this.openAndReplaceToolStripMenuItem.Click += new System.EventHandler(this.openAndReplaceToolStripMenuItem_Click);
             // 
             // FormBookmarks
             // 
