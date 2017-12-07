@@ -9,13 +9,10 @@ namespace GeneralToolkitLib.Storage.Registry
 
         public override object Data
         {
-            get { return this._data; }
-            set { this._data = value as string; }
+            get { return _data; }
+            set { _data = value as string; }
         }
 
-        public override RegistryValueKind DataType
-        {
-            get { return RegistryValueKind.String; }
-        }
+        public override RegistryValueKind DataType => RegistryValueKind.String;
     }
 }

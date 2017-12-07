@@ -3,9 +3,9 @@ using Microsoft.Win32;
 
 namespace GeneralToolkitLib.Storage.Registry
 {
-    public class RegistryDataTypeDWORD : RegistryDataTypes
+    public class RegistryDataTypeQWORD : RegistryDataTypes
     {
-        private Int32 _data;
+        private Int64 _data;
         public override string KeyName { get; set; }
 
         public override object Data
@@ -13,11 +13,11 @@ namespace GeneralToolkitLib.Storage.Registry
             get { return _data; }
             set
             {
-                if (value is Int32)
-                    _data = (Int32) value;
+                if (value is Int64)
+                    _data = (Int64)value;
             }
         }
 
-        public override RegistryValueKind DataType => RegistryValueKind.DWord;
+        public override RegistryValueKind DataType => RegistryValueKind.QWord;
     }
 }

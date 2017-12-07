@@ -23,7 +23,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <TargetCulture>en-US</TargetCulture>
+    <ProductName>ImageViewer</ProductName>
+    <PublisherName>Martin Dahl</PublisherName>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.8.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -264,6 +267,7 @@
     </Compile>
     <Compile Include="Models\Interface\IRepository.cs" />
     <Compile Include="Models\ThumbnailScanProgress.cs" />
+    <Compile Include="ServiceInterfaces\IApplicationSettingsService.cs" />
     <Compile Include="Services\ApplicationSettingsService.cs" />
     <Compile Include="FileBrowser.cs">
       <SubType>Form</SubType>
@@ -487,6 +491,11 @@
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

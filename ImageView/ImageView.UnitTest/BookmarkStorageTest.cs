@@ -6,8 +6,11 @@ using GeneralToolkitLib.ConfigHelper;
 using ImageView.DataContracts;
 using ImageView.Managers;
 using ImageView.Models;
+using ImageView.ServiceInterfaces;
 using ImageView.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
+using NSubstitute.ClearExtensions;
 
 namespace ImageView.UnitTest
 {
@@ -16,7 +19,8 @@ namespace ImageView.UnitTest
     public class BookmarkStorageTest
     {
         private static ImageReferenceElement _imageReference;
-        private BookmarkService bookmarkService;
+        private BookmarkService _bookmarkService;
+        private IApplicationSettingsService _applicationSettingsService;
 
         [ClassInitialize]
         public static void BookmarkStorageInitialize(TestContext testContext)
@@ -32,6 +36,9 @@ namespace ImageView.UnitTest
                 LastWriteTime = DateTime.Now.Date
             };
             _imageReference.CompletePath = _imageReference.Directory + _imageReference.FileName;
+
+
+            var appSettings= new ImageViewApplicationSettings();
 
         }
 
@@ -49,9 +56,15 @@ namespace ImageView.UnitTest
         [TestInitialize]
         public void MyTestInitialize()
         {
-            var appsettings = new ApplicationSettingsService();
-            bookmarkService = new BookmarkService(new BookmarkManager(), appsettings);
-            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
+            var appSettings = new ImageViewApplicationSettings {DefaultKey = "EkNxG2vH27y4xezfzyEJpHGenOtgLJ1x"};
+
+            _applicationSettingsService = Substitute.For<IApplicationSettingsService>();
+            _applicationSettingsService.Settings.Returns(appSettings);
+           
+           
+            var bookmarkManager = new BookmarkManager();
+            _bookmarkService = new BookmarkService(bookmarkManager, _applicationSettingsService);
+            
             Assert.IsFalse(bookmarkManager.IsModified, "BookmarkManager can not be modified before test begins");
             Assert.IsTrue(bookmarkManager.RootFolder.Bookmarks.Count==0, "Test must start with empty bookmark list");
             Assert.IsTrue(bookmarkManager.RootFolder.BookmarkFolders.Count == 0, "Test must start with empty bookmark folder list");
@@ -61,23 +74,23 @@ namespace ImageView.UnitTest
         [TestCleanup]
         public void MyTestCleanup()
         {
-            bookmarkService.Dispose();
+            _bookmarkService.Dispose();
         }
 
         [TestMethod]
         public void AddBookmarkAndReloadFromFile()
         {
-            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
+            BookmarkManager bookmarkManager = _bookmarkService.BookmarkManager;
             BookmarkFolder rootFolder = bookmarkManager.RootFolder;
             Assert.AreEqual("Root", rootFolder.Name, "Invaild Root folder name");
-            ApplicationSettingsService applicationSettingsService= new ApplicationSettingsService();
+ 
 
             bookmarkManager.AddBookmark(rootFolder.Id, "TestImageBookmark", _imageReference);
-            bool saveSuccessful = bookmarkService.SaveBookmarks();
+            bool saveSuccessful = _bookmarkService.SaveBookmarks();
             Assert.IsTrue(saveSuccessful, "Saving bookmarks data file failed!");
-            bookmarkService = new BookmarkService(new BookmarkManager(), applicationSettingsService);
-            bookmarkService.OpenBookmarks();
-            bookmarkManager = bookmarkService.BookmarkManager;
+            _bookmarkService = new BookmarkService(new BookmarkManager(), _applicationSettingsService);
+            _bookmarkService.OpenBookmarks();
+            bookmarkManager = _bookmarkService.BookmarkManager;
 
             var bookmark = bookmarkManager.RootFolder.Bookmarks.ToList().FirstOrDefault();
             bool areEqual = CompareBookmarkToImgRef(bookmark, _imageReference);
@@ -88,7 +101,7 @@ namespace ImageView.UnitTest
         [TestMethod]
         public void AddBookmarkFolder()
         {
-            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
+            BookmarkManager bookmarkManager = _bookmarkService.BookmarkManager;
             BookmarkFolder rootFolder = bookmarkManager.RootFolder;
             var folder = bookmarkManager.AddBookmarkFolder(rootFolder.Id, "TestFolder");
             Assert.IsNotNull(folder, "Failed to add Folder");
@@ -103,7 +116,7 @@ namespace ImageView.UnitTest
         [TestMethod]
         public void InsertBookmarkFolder()
         {
-            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
+            BookmarkManager bookmarkManager = _bookmarkService.BookmarkManager;
             BookmarkFolder rootFolder = bookmarkManager.RootFolder;
             BookmarkFolder folder = bookmarkManager.AddBookmarkFolder(rootFolder.Id, "Folder1");
             Assert.IsNotNull(folder, "Failed to add Folder");
@@ -126,7 +139,7 @@ namespace ImageView.UnitTest
         [TestMethod]
         public void InsertBookmark()
         {
-            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
+            BookmarkManager bookmarkManager = _bookmarkService.BookmarkManager;
             BookmarkFolder rootFolder = bookmarkManager.RootFolder;
             var bookmark1 = bookmarkManager.AddBookmark(rootFolder.Id, "Bookmark1", _imageReference);
             Assert.IsNotNull(bookmark1, "Failed to add Bookmark1");
@@ -143,7 +156,7 @@ namespace ImageView.UnitTest
         [TestMethod]
         public void TestDeleteBookmarkFolderById()
         {
-            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
+            BookmarkManager bookmarkManager = _bookmarkService.BookmarkManager;
             BookmarkFolder rootFolder = bookmarkManager.RootFolder;
             BookmarkFolder bookmarkFolder = bookmarkManager.AddBookmarkFolder(rootFolder.Id, "Folder1");
             string id = bookmarkFolder.Id;
@@ -164,7 +177,7 @@ namespace ImageView.UnitTest
         [TestMethod]
         public void TestDeleteBookmarkByFilename()
         {
-            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
+            BookmarkManager bookmarkManager = _bookmarkService.BookmarkManager;
             BookmarkFolder rootFolder = bookmarkManager.RootFolder;
             var bookmark1 = bookmarkManager.AddBookmark(rootFolder.Id, "Bookmark1", _imageReference);
             Assert.IsTrue(bookmarkManager.DeleteBookmarkByFilename(bookmark1.ParentFolderId, bookmark1.FileName), "Failed to delete bookmark!");
@@ -174,13 +187,13 @@ namespace ImageView.UnitTest
         [TestMethod]
         public void TestIsModified()
         {
-            BookmarkManager bookmarkManager = bookmarkService.BookmarkManager;
+            BookmarkManager bookmarkManager = _bookmarkService.BookmarkManager;
             BookmarkFolder rootFolder = bookmarkManager.RootFolder;
 
             Assert.IsFalse(bookmarkManager.IsModified,"BookmarkManager should not be modified");
             bookmarkManager.AddBookmark(rootFolder.Id, "Bookmark1", _imageReference);
             Assert.IsTrue(bookmarkManager.IsModified, "BookmarkManager should be modified");
-            bookmarkService.SaveBookmarks();
+            _bookmarkService.SaveBookmarks();
             Assert.IsFalse(bookmarkManager.IsModified, "BookmarkManager should not be modified");
         }
 

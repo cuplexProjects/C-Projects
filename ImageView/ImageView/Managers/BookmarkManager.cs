@@ -9,15 +9,13 @@ using GeneralToolkitLib.Storage.Models;
 using ImageView.DataContracts;
 using ImageView.Events;
 using ImageView.Models;
+using Serilog;
 
 namespace ImageView.Managers
 {
     public class BookmarkManager
     {
         private BookmarkContainer _bookmarkContainer;
-        private bool _isModified;
-        private bool _isLoadedFromFile;
-        public event BookmarkUpdatedEventHandler OnBookmarksUpdate;
 
         public BookmarkManager()
         {
@@ -40,13 +38,15 @@ namespace ImageView.Managers
 
         public BookmarkFolder RootFolder { get; private set; }
 
-        public bool IsModified => _isModified;
+        public bool IsModified { get; private set; }
 
-        public bool LoadedFromFile => _isLoadedFromFile;
+        public bool LoadedFromFile { get; private set; }
+
+        public event BookmarkUpdatedEventHandler OnBookmarksUpdate;
 
         private void BookmarkUpdated(BookmarkUpdatedEventArgs e)
         {
-            _isModified = true;
+            IsModified = true;
             OnBookmarksUpdate?.Invoke(this, e);
         }
 
@@ -71,7 +71,7 @@ namespace ImageView.Managers
 
                 if (successful)
                 {
-                    _isModified = false;
+                    IsModified = false;
                 }
 
                 return successful;
@@ -87,19 +87,29 @@ namespace ImageView.Managers
         {
             try
             {
-                _isLoadedFromFile = true;
+                LoadedFromFile = true;
 
                 var settings = new StorageManagerSettings(false, Environment.ProcessorCount, true, password);
                 var storageManager = new StorageManager(settings);
                 var bookmarkContainer = storageManager.DeserializeObjectFromFile<BookmarkContainer>(filename, null);
 
-                if (ValidateBookmarkContainer(bookmarkContainer))
+                if (bookmarkContainer?.RootFolder == null || string.IsNullOrEmpty(bookmarkContainer.ContainerId))
                 {
-                    _bookmarkContainer = bookmarkContainer;
-                    RootFolder = _bookmarkContainer.RootFolder;
-                    _isModified = false;
-                    return true;
+                    return false;
                 }
+
+                int changesMade = PrepareContainer(bookmarkContainer);
+                _bookmarkContainer = bookmarkContainer;
+                RootFolder = _bookmarkContainer.RootFolder;
+                if (changesMade > 0)
+                {
+                    Log.Information("Loaded Bookmaeksfile which had {changesMade} number of issues like faulty links. Resaving fixed file", changesMade);
+                    SaveToFile(filename, password);
+                }
+
+                IsModified = false;
+
+                return true;
             }
             catch (Exception ex)
             {
@@ -113,27 +123,33 @@ namespace ImageView.Managers
         {
             try
             {
-                _isLoadedFromFile = true;
+                LoadedFromFile = true;
 
                 var settings = new StorageManagerSettings(false, Environment.ProcessorCount, true, password);
                 var storageManager = new StorageManager(settings);
                 var bookmarkContainer = storageManager.DeserializeObjectFromFile<BookmarkContainer>(filename, null);
 
-                if (ValidateBookmarkContainer(bookmarkContainer))
+                //storageManager.DeserializeObjectFromFile throws exception if the password is Incorrect and deserialization fails
+                //just in case bookmarkContainer is null
+                if (bookmarkContainer?.RootFolder == null || string.IsNullOrEmpty(bookmarkContainer.ContainerId))
                 {
-                    if (_bookmarkContainer == null)
-                    {
-                        _bookmarkContainer = bookmarkContainer;
-                    }
-                    else
-                    {
-                        RecursiveAdd(_bookmarkContainer.RootFolder, bookmarkContainer.RootFolder);
-                    }
-
-                    RootFolder = _bookmarkContainer.RootFolder;
-                    _isModified = false;
-                    return true;
+                    throw new Exception("LoadFromFileAndAppendBookmarks failed, bookmarkContainer was null");
                 }
+
+                PrepareContainer(bookmarkContainer);
+
+                if (_bookmarkContainer == null)
+                {
+                    _bookmarkContainer = bookmarkContainer;
+                }
+                else
+                {
+                    RecursiveAdd(_bookmarkContainer.RootFolder, bookmarkContainer.RootFolder);
+                }
+
+                RootFolder = _bookmarkContainer.RootFolder;
+                IsModified = false;
+                return true;
             }
             catch (Exception ex)
             {
@@ -143,12 +159,83 @@ namespace ImageView.Managers
             return false;
         }
 
+        private int PrepareContainer(BookmarkContainer bookmarkContainer)
+        {
+            int changes = 0;
+            var rootFolder = bookmarkContainer.RootFolder;
+            rootFolder.SortOrder = 0;
+
+            if (string.IsNullOrEmpty(bookmarkContainer.ContainerId))
+            {
+                bookmarkContainer.ContainerId = Guid.NewGuid().ToString();
+                changes++;
+            }
+
+            if (string.IsNullOrEmpty(rootFolder.Id))
+            {
+                rootFolder.Id = Guid.NewGuid().ToString();
+                changes++;
+            }
+
+            if (rootFolder.BookmarkFolders == null)
+            {
+                rootFolder.BookmarkFolders = new List<BookmarkFolder>();
+            }
+
+            return RecursiveValidationOnContainer(rootFolder, null) + changes;
+        }
+
+        private int RecursiveValidationOnContainer(BookmarkFolder folder, string parentId)
+        {
+            int changes = 0;
+            if (folder.Bookmarks == null)
+            {
+                folder.Bookmarks = new List<Bookmark>();
+            }
+
+            if (folder.ParentFolderId != parentId)
+            {
+                folder.ParentFolderId = parentId;
+                changes++;
+            }
+
+            string folderId = folder.Id;
+            foreach (var bookmark in folder.Bookmarks)
+            {
+                if (bookmark.ParentFolderId != folderId)
+                {
+                    bookmark.ParentFolderId = folderId;
+                    changes++;
+                }
+            }
+
+            if (folder.BookmarkFolders == null)
+            {
+                folder.BookmarkFolders = new List<BookmarkFolder>();
+            }
+
+            foreach (var bookmarkFolder in folder.BookmarkFolders)
+            {
+                if (bookmarkFolder.ParentFolderId != folder.Id)
+                {
+                    bookmarkFolder.ParentFolderId = folder.Id;
+                    changes++;
+                }
+
+                changes += RecursiveValidationOnContainer(bookmarkFolder, folder.Id);
+            }
+
+            return changes;
+        }
+
+
         private void RecursiveAdd(BookmarkFolder source, BookmarkFolder appendFrom)
         {
             foreach (var bookmark in appendFrom.Bookmarks)
             {
                 if (!source.Bookmarks.Any(x => x.CompletePath == bookmark.CompletePath && x.Size == bookmark.Size))
                 {
+                    bookmark.ParentFolderId = source.Id;
                     source.Bookmarks.Add(bookmark);
                 }
             }
@@ -157,6 +244,7 @@ namespace ImageView.Managers
             {
                 if (source.BookmarkFolders.All(x => x.Name != folder.Name))
                 {
+                    folder.ParentFolderId = source.Id;
                     source.BookmarkFolders.Add(folder);
                 }
 
@@ -170,54 +258,6 @@ namespace ImageView.Managers
                             RecursiveAdd(sFolder, subFolder);
                         }
                     }
-                }
-            }
-        }
-
-        private bool ValidateBookmarkContainer(BookmarkContainer bookmarkContainer)
-        {
-            if (bookmarkContainer?.RootFolder == null || bookmarkContainer.ContainerId == null)
-                return false;
-
-            BookmarkFolder rootFolder = bookmarkContainer.RootFolder;
-            CreateEmptyLists(rootFolder);
-            CreateParentFolderRefs(rootFolder);
-
-            return true;
-        }
-
-        private void CreateParentFolderRefs(BookmarkFolder rootFolder)
-        {
-            foreach (Bookmark bookmark in rootFolder.Bookmarks)
-            {
-                if (bookmark.ParentFolderId == null)
-                    bookmark.ParentFolderId = rootFolder.Id;
-            }
-
-            if (rootFolder.BookmarkFolders != null)
-            {
-                foreach (BookmarkFolder folder in rootFolder.BookmarkFolders)
-                {
-                    CreateParentFolderRefs(folder);
-                }
-            }
-        }
-
-        private void CreateEmptyLists(BookmarkFolder rootFolder)
-        {
-            if (rootFolder.Bookmarks == null)
-                rootFolder.Bookmarks = new List<Bookmark>();
-
-            if (rootFolder.Id == null)
-                rootFolder.Id = Guid.NewGuid().ToString();
-
-            if (rootFolder.BookmarkFolders == null)
-                rootFolder.BookmarkFolders = new List<BookmarkFolder>();
-            else
-            {
-                foreach (BookmarkFolder folder in rootFolder.BookmarkFolders)
-                {
-                    CreateEmptyLists(folder);
                 }
             }
         }
@@ -365,7 +405,7 @@ namespace ImageView.Managers
             BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmark.ParentFolderId);
             BookmarkFolder destinationFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, destinationFolderId);
 
-            if (parentFolder == null | destinationFolder == null || parentFolder == destinationFolder)
+            if ((parentFolder == null) | (destinationFolder == null) || parentFolder == destinationFolder)
                 return false;
 
             parentFolder.Bookmarks.Remove(bookmark);

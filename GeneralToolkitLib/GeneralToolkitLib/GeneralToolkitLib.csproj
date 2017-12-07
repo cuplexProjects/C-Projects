@@ -189,6 +189,7 @@
     <Compile Include="Storage\Models\ArchiveFileHeader.cs" />
     <Compile Include="Storage\Models\CompressionFileHeader.cs" />
     <Compile Include="Storage\Models\ProgressMemoryStream.cs" />
+    <Compile Include="Storage\Registry\RegistryDataTypeQWORD.cs" />
     <Compile Include="Storage\StorageManagerBase.cs" />
     <Compile Include="Storage\Models\StorageManagerSettings.cs" />
     <Compile Include="UserControls\ProgressWaitControl.cs">

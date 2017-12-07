@@ -4,10 +4,12 @@ using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage.Registry;
 using ImageView.DataContracts;
 using ImageView.Properties;
+using ImageView.ServiceInterfaces;
 
 namespace ImageView.Services
 {
-    public class ApplicationSettingsService
+
+    public class ApplicationSettingsService : IApplicationSettingsService
     {
         private readonly RegistryAccess _registryService;
 
@@ -37,7 +39,6 @@ namespace ImageView.Services
 
        
         public ImageViewApplicationSettings Settings { get; private set; }
-
         public event EventHandler OnSettingsChanged;
         public event EventHandler OnRegistryAccessDenied;
 

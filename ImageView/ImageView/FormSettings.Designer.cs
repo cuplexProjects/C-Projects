@@ -968,14 +968,14 @@
             this.trackBarCacheSize.LargeChange = 32;
             this.trackBarCacheSize.Location = new System.Drawing.Point(173, 124);
             this.trackBarCacheSize.Maximum = 256;
-            this.trackBarCacheSize.Minimum = 1;
+            this.trackBarCacheSize.Minimum = 5;
             this.trackBarCacheSize.Name = "trackBarCacheSize";
             this.trackBarCacheSize.Size = new System.Drawing.Size(383, 56);
-            this.trackBarCacheSize.SmallChange = 16;
+            this.trackBarCacheSize.SmallChange = 10;
             this.trackBarCacheSize.TabIndex = 7;
             this.trackBarCacheSize.TickFrequency = 16;
-            this.trackBarCacheSize.Value = 1;
-            this.trackBarCacheSize.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            this.trackBarCacheSize.Value = 5;
+            this.trackBarCacheSize.Scroll += new System.EventHandler(this.trackBarCacheSize_Scroll);
             // 
             // pbarPercentUsed
             // 

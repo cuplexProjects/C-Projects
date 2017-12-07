@@ -4,6 +4,7 @@ using GeneralToolkitLib.ConfigHelper;
 using GeneralToolkitLib.Storage.Memory;
 using GeneralToolkitLib.Utility.RandomGenerator;
 using ImageView.Managers;
+using ImageView.ServiceInterfaces;
 
 namespace ImageView.Services
 {
@@ -15,9 +16,9 @@ namespace ImageView.Services
         private readonly PasswordStorage _passwordStorage;
         private readonly string _protectedMemoryStorageKey;
         private readonly BookmarkManager _bookmarkManager;
-        private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly IApplicationSettingsService _applicationSettingsService;
 
-        public BookmarkService(BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService)
+        public BookmarkService(BookmarkManager bookmarkManager, IApplicationSettingsService applicationSettingsService)
         {
             _bookmarkManager = bookmarkManager;
             _applicationSettingsService = applicationSettingsService;
@@ -26,10 +27,6 @@ namespace ImageView.Services
 
             _passwordStorage = new PasswordStorage();
             _passwordStorage.Set(_protectedMemoryStorageKey, GetDefaultPassword());
-
-            
-            //if (!ApplicationSettingsService.Instance.Settings.PasswordProtectBookmarks)
-            //    OpenBookmarks(GetDefaultPassword());
         }
 
         public BookmarkManager BookmarkManager => _bookmarkManager;

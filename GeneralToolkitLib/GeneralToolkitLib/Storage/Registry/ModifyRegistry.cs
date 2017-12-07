@@ -104,6 +104,12 @@ namespace GeneralToolkitLib.Storage.Registry
                         if (tmp != null)
                             propertyInfo.SetValue(retVal, (int) tmp);
                     }
+                    else if (propertyInfo.PropertyType == typeof(long))
+                    {
+                        object tmp = Read(propertyName);
+                        if (tmp != null)
+                            propertyInfo.SetValue(retVal, (long)tmp);
+                    }
                     else if (propertyInfo.PropertyType.BaseType == typeof (Enum))
                     {
                         object tmp = Read(propertyName);
@@ -160,6 +166,8 @@ namespace GeneralToolkitLib.Storage.Registry
                         registryData = new RegistryDataTypeString {KeyName = propertyName, Data = propertyInfo.GetValue(objToSave)};
                     else if (propertyInfo.PropertyType == typeof (int))
                         registryData = new RegistryDataTypeDWORD {KeyName = propertyName, Data = propertyInfo.GetValue(objToSave)};
+                    else if (propertyInfo.PropertyType == typeof(long))
+                        registryData = new RegistryDataTypeQWORD{ KeyName = propertyName, Data = propertyInfo.GetValue(objToSave) };
                     else if (propertyInfo.PropertyType == typeof (bool))
                         registryData = new RegistryDataTypeString {KeyName = propertyName, Data = (bool) propertyInfo.GetValue(objToSave) ? "true" : "false"};
                     else if (propertyInfo.PropertyType.BaseType == typeof (Enum))

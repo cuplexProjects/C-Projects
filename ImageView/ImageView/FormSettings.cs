@@ -3,21 +3,24 @@ using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
 using ImageView.DataContracts;
 using ImageView.InputForms;
-using ImageView.Properties;
 using ImageView.Services;
 
 namespace ImageView
 {
     public partial class FormSettings : Form
     {
-        private readonly BookmarkService _bookmarkService;
+        private const int TrackbarDivider = 1048576;
         private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly BookmarkService _bookmarkService;
         private readonly ImageCacheService _imageCacheService;
+        private long _selectedCacheSize;
+
         public FormSettings(BookmarkService bookmarkService, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
         {
             _bookmarkService = bookmarkService;
             _applicationSettingsService = applicationSettingsService;
             _imageCacheService = imageCacheService;
+            _selectedCacheSize = _imageCacheService.CacheSize;
             InitializeComponent();
         }
 
@@ -111,8 +114,8 @@ namespace ImageView
             settings.ScreenMinXOffset = Convert.ToInt32(numericScreenMinOffset.Value);
             settings.ScreenWidthOffset = Convert.ToInt32(numericScreenWidthOffset.Value);
 
-            _applicationSettingsService.Settings.ImageCacheSize = trackBarCacheSize.Value*1048576;
-            _imageCacheService.CacheSize = _applicationSettingsService.Settings.ImageCacheSize;
+            _applicationSettingsService.Settings.ImageCacheSize = _selectedCacheSize;
+            _imageCacheService.CacheSize = _selectedCacheSize;
 
             _applicationSettingsService.SaveSettings();
             Close();
@@ -172,7 +175,7 @@ namespace ImageView
 
         private void UpdateCacheStats()
         {
-            long cacheSize = _imageCacheService.CacheSize;
+            long cacheSize = _selectedCacheSize;
             long cacheUsage = _imageCacheService.GetCacheUsage();
             const long maxSize = ImageCacheService.MaxCacheSize;
             const long minSize = ImageCacheService.MinCacheSize;
@@ -180,17 +183,17 @@ namespace ImageView
             lblCacheItems.Text = _imageCacheService.CachedItems.ToString();
             lblUsedSpace.Text = GeneralConverters.FormatFileSizeToString(cacheUsage, 2);
             lblFreeSpace.Text = GeneralConverters.FormatFileSizeToString(cacheSize - cacheUsage);
-            pbarPercentUsed.Value = Convert.ToInt32((double)cacheUsage/ cacheSize * 100);
-          
-            trackBarCacheSize.Minimum = Convert.ToInt32(minSize/ 1048576);
-            trackBarCacheSize.Maximum = Convert.ToInt32(maxSize / 1048576);
-            trackBarCacheSize.Value = Convert.ToInt32(cacheSize / 1048576);
+            pbarPercentUsed.Value = Convert.ToInt32((double) cacheUsage / cacheSize * 100);
+
+            trackBarCacheSize.Minimum = Convert.ToInt32(minSize / TrackbarDivider);
+            trackBarCacheSize.Maximum = Convert.ToInt32(maxSize / TrackbarDivider);
+            trackBarCacheSize.Value = Convert.ToInt32(cacheSize / TrackbarDivider);
             UpdateCacheSizeLabel();
         }
 
         private void UpdateCacheSizeLabel()
         {
-            lblCacheSize.Text = GeneralConverters.FormatFileSizeToString(trackBarCacheSize.Value* 1048576);
+            lblCacheSize.Text = GeneralConverters.FormatFileSizeToString(trackBarCacheSize.Value * TrackbarDivider, 0);
         }
 
         private void trackBarFadeTime_Scroll(object sender, EventArgs e)
@@ -198,9 +201,10 @@ namespace ImageView
             lblFadeTime.Text = trackBarFadeTime.Value + " ms";
         }
 
-        private void trackBar1_Scroll(object sender, EventArgs e)
+        private void trackBarCacheSize_Scroll(object sender, EventArgs e)
         {
             UpdateCacheSizeLabel();
+            _selectedCacheSize = trackBarCacheSize.Value * TrackbarDivider;
         }
     }
 }
