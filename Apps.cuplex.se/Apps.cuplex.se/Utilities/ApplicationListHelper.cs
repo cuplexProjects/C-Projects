@@ -29,26 +29,54 @@ namespace Apps.cuplex.se.Utilities
 
                     // get Latest msi
                     var selectedMsi = fileinfoList.OrderByDescending(x => x.CreationTime).FirstOrDefault(x => x.Name.EndsWith(".msi"));
+                    var selectedExe = fileinfoList.OrderByDescending(x => x.CreationTime).FirstOrDefault(x => x.Name.EndsWith(".exe"));
 
-                    if (selectedMsi == null)
-                        continue;
-
-                    string version = Regex.Match(selectedMsi.Name, @"[\d|\.].*", RegexOptions.IgnoreCase).Value.Replace(".msi","");
-                    string appName = selectedMsi.Name.Replace(version, "").Replace(".msi", "").Replace("-","");
-                    var request =  HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority +
-                                   HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/";
-
-                    string dirName = directory.Split('\\').Last();
-                    var downloadUrl = $"{request}/Downloads/{dirName}/{selectedMsi.Name}";
-                    list.Add(new AppViewModel
+                    if (selectedMsi != null)
                     {
-                        Name = appName,
-                        Version = version,
-                        DownloadUrl = new Uri(downloadUrl),
-                        Filename = selectedMsi.Name,
-                        FileDate = selectedMsi.CreationTime,
-                        FileSize = selectedMsi.Length
-                    });
+                        string version = Regex.Match(selectedMsi.Name, @"[\d|\.].*", RegexOptions.IgnoreCase).Value.Replace(".msi", "");
+                        string appName = selectedMsi.Name.Replace(version, "").Replace(".msi", "").Replace("-", "");
+                        if (HttpContext.Current.Request.ApplicationPath != null)
+                        {
+                            var request = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority +
+                                          HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/";
+
+                            string dirName = directory.Split('\\').Last();
+                            var downloadUrl = $"{request}/Downloads/{dirName}/{selectedMsi.Name}";
+                            list.Add(new AppViewModel
+                            {
+                                Name = appName,
+                                Version = version,
+                                DownloadUrl = new Uri(downloadUrl),
+                                Filename = selectedMsi.Name,
+                                FileDate = selectedMsi.CreationTime,
+                                FileSize = selectedMsi.Length
+                            });
+                        }
+                    }
+
+                    if (selectedExe != null)
+                    {
+                        string version = Regex.Match(selectedExe.Name, @"[\d|\.].*", RegexOptions.IgnoreCase).Value.Replace(".exe", "");
+                        string appName = selectedExe.Name.Replace(version, "").Replace(".exe", "").Replace("-", "");
+                        if (HttpContext.Current.Request.ApplicationPath == null)
+                        {
+                            continue;
+                        }
+                        var request = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority +
+                                      HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/";
+
+                        string dirName = directory.Split('\\').Last();
+                        var downloadUrl = $"{request}/Downloads/{dirName}/{selectedExe.Name}";
+                        list.Add(new AppViewModel
+                        {
+                            Name = appName,
+                            Version = version,
+                            DownloadUrl = new Uri(downloadUrl),
+                            Filename = selectedExe.Name,
+                            FileDate = selectedExe.CreationTime,
+                            FileSize = selectedExe.Length
+                        });
+                    }
                 }
 
             }
