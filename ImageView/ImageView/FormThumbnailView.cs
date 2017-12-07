@@ -27,11 +27,13 @@ namespace ImageView
         private int _thumbnailSize;
         private readonly FormAddBookmark _formAddBookmark;
         private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly ImageCacheService _imageCacheService;
 
-        public FormThumbnailView(FormAddBookmark formAddBookmark, ApplicationSettingsService applicationSettingsService)
+        public FormThumbnailView(FormAddBookmark formAddBookmark, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
         {
             _formAddBookmark = formAddBookmark;
             _applicationSettingsService = applicationSettingsService;
+            _imageCacheService = imageCacheService;
             _thumbnailSize = ValidateThumbnailSize(_applicationSettingsService.Settings.ThumbnailSize);
             _maxThumbnails = _applicationSettingsService.Settings.MaxThumbnails;
             string dataPath = GlobalSettings.GetUserDataDirectoryPath();
@@ -145,7 +147,8 @@ namespace ImageView
 
             if (pictureBox.Tag is string filename)
             {
-                Image fullScaleIMage = Image.FromFile(filename);
+                //Image fullScaleIMage = Image.FromFile(filename);
+                Image fullScaleIMage = _imageCacheService.GetImage(filename);
                 _maximizedImgFilename = filename;
                 picBoxMaximized.Image = fullScaleIMage;
             }

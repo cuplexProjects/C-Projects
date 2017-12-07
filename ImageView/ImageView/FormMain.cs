@@ -16,7 +16,6 @@ using ImageView.Models;
 using ImageView.Properties;
 using ImageView.Services;
 using ImageView.Utility;
-using Timer = System.Threading.Timer;
 
 namespace ImageView
 {
@@ -40,6 +39,7 @@ namespace ImageView
         private readonly FormSettings _formSettings;
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly ImageCacheService _imageCacheService;
+        private FormThumbnailView _formThumbnailView;
         private bool _cursorVisible = true;
         private FormBookmarks _formBookmarks;
 
@@ -819,9 +819,16 @@ namespace ImageView
 
         private void openThumbnailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formThumbnailView = new FormThumbnailView(_formAddBookmark, _applicationSettingsService);
-            formThumbnailView.Show(this);
-            formThumbnailView.FormClosed += FormThumbnailView_FormClosed;
+            if (_formThumbnailView == null)
+            {
+                _formThumbnailView = new FormThumbnailView(_formAddBookmark, _applicationSettingsService, _imageCacheService);
+                _formThumbnailView.Show();
+                _formThumbnailView.FormClosed += FormThumbnailView_FormClosed;
+            }
+            else
+            {
+                _formThumbnailView.Focus();
+            }
         }
 
         private void FormThumbnailView_FormClosed(object sender, FormClosedEventArgs e)
@@ -830,6 +837,7 @@ namespace ImageView
             {
                 form.Dispose();
             }
+            _formThumbnailView = null;
             GC.Collect();
         }
 
