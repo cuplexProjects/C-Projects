@@ -116,6 +116,7 @@ namespace ImageView
             TreeNode selectedNode = bookmarksTree.SelectedNode;
 
             if (!(selectedNode.Tag is BookmarkFolder selectedBookmarkfolder)) return false;
+            _bookmarkManager.VerifyIntegrityOfBookmarFolder(selectedBookmarkfolder);
             bookmarkBindingSource.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
             bookmarksDataGridView.Update();
             bookmarksDataGridView.Refresh();
@@ -178,6 +179,10 @@ namespace ImageView
 
             if (selectedRow?.DataBoundItem is Bookmark bookmark)
                 pictureBoxPreview.ImageLocation = bookmark.CompletePath;
+            else
+            {
+                ReLoadBookmarks();
+            }
         }
 
 
@@ -363,7 +368,7 @@ namespace ImageView
             if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
             {
                 // If the mouse moves outside the rectangle, start the drag.
-                if (_dragBoxFromMouseDown != Rectangle.Empty && !_dragBoxFromMouseDown.Contains(e.X, e.Y))
+                if (_dragBoxFromMouseDown != Rectangle.Empty && !_dragBoxFromMouseDown.Contains(e.X, e.Y) && _valueFromMouseDown != null)
                 {
                     // Proceed with the drag and drop, passing in the list item.                    
                     bookmarksDataGridView.DoDragDrop(_valueFromMouseDown, DragDropEffects.Move);
@@ -491,7 +496,7 @@ namespace ImageView
                             _gridViewGradientBackgroundColorStop, LinearGradientMode.Vertical))
                     {
                         e.Graphics.FillRectangle(backbrush, rowBounds);
-                        var p = new Pen(backbrush, 1) {Color = _gridViewSelectionBorderColor};
+                        var p = new Pen(backbrush, 1) { Color = _gridViewSelectionBorderColor };
                         e.Graphics.DrawRectangle(p, rowBounds);
                     }
                 }

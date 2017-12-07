@@ -538,5 +538,36 @@ namespace ImageView.Managers
         {
             BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.LoadedNewDataSource, typeof(Bookmark)));
         }
+
+        public void VerifyIntegrityOfBookmarFolder(BookmarkFolder bookmarkfolder)
+        {
+            try
+            {
+                var deleteQueue = new Queue<Bookmark>();
+                foreach (var bookmark in bookmarkfolder.Bookmarks)
+                {
+                    if (bookmark.ParentFolderId != bookmarkfolder.Id)
+                    {
+                        bookmark.ParentFolderId = bookmarkfolder.Id;
+                    }
+
+                    if (string.IsNullOrEmpty(bookmark.FileName) || bookmark.Size==0 || string.IsNullOrEmpty(bookmark.CompletePath))
+                    {
+                        deleteQueue.Enqueue(bookmark);
+                    }
+                }
+
+                while (deleteQueue.Count>0)
+                {
+                    var bookmark = deleteQueue.Dequeue();
+                    DeleteBookmark(bookmark);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "VerifyIntegrityOfBookmarFolder exception");
+            }
+     
+        }
     }
 }
