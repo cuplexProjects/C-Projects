@@ -5,14 +5,15 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using GeneralToolkitLib.Events;
-using GeneralToolkitLib.Log;
 using GeneralToolkitLib.WindowsApi;
 using ImageView.Events;
+using ImageView.Interfaces;
 using ImageView.Managers;
 using ImageView.Models;
 using ImageView.Models.Interface;
 using ImageView.Properties;
 using ImageView.Services;
+using Serilog;
 
 namespace ImageView
 {
@@ -44,8 +45,9 @@ namespace ImageView
         private readonly FormAddBookmark _formAddBookmark;
         private readonly BookmarkManager _bookmarkManager;
         private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly ImageCacheService _imageCache;
 
-        public FormImageView(int id, FormAddBookmark formAddBookmark, BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService)
+        public FormImageView(int id, FormAddBookmark formAddBookmark, BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCache)
         {
             InitializeComponent();
             _imageViewFormInfo = new ImageViewFormImageInfo(this, null, 0);
@@ -56,6 +58,7 @@ namespace ImageView
             _formAddBookmark = formAddBookmark;
             _bookmarkManager = bookmarkManager;
             _applicationSettingsService = applicationSettingsService;
+            _imageCache = imageCache;
             _switchImgButtonsEnabled = _applicationSettingsService.Settings.ShowSwitchImageButtons;
             if (_switchImgButtonsEnabled)
             {
@@ -123,7 +126,8 @@ namespace ImageView
         {
             try
             {
-                _currentImage = Image.FromFile(imageReference.CompletePath);
+                //_currentImage = Image.FromFile(imageReference.CompletePath);
+                _currentImage = _imageCache.GetImage(imageReference.CompletePath);
 
                 _imgx = 0;
                 _imgy = 0;
@@ -140,11 +144,11 @@ namespace ImageView
                     observer.OnNext(_imageViewFormInfo);
                 }
 
-                LogWriter.LogMessage("New Image loaded in ImageViewForm FormId=" + FormId, LogWriter.LogLevel.Trace);
+                Log.Verbose("New Image loaded in ImageViewForm FormId = " + FormId);
             }
             catch (Exception ex)
             {
-                LogWriter.LogError(imageReference != null
+                Log.Error(ex,imageReference != null
                     ? $"FormMain.LoadNewImageFile(string imagePath) Error when trying to load file: {imageReference.CompletePath} : {ex.Message}"
                     : "imgRef was null in FormImageView.LoadNewImageFile()", ex);
             }
@@ -158,7 +162,7 @@ namespace ImageView
                 observer.OnNext(_imageViewFormInfo);
             }
 
-            LogWriter.LogMessage("ImageView Form with id=" + FormId + " closed", LogWriter.LogLevel.Trace);
+            Log.Verbose("ImageView Form with id=" + FormId + " closed");
         }
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
@@ -424,7 +428,7 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Exception in image scale transform", ex);
+                Log.Error(ex,"Exception in image scale transform");
             }
         }
 

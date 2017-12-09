@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
-using GeneralToolkitLib.Log;
 using ImageView.DataBinding;
 using ImageView.DataContracts;
 using ImageView.Events;
@@ -18,6 +17,7 @@ using ImageView.Properties;
 using ImageView.Services;
 using ImageView.UserControls;
 using ImageView.Utility;
+using Serilog;
 
 namespace ImageView
 {
@@ -58,7 +58,7 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("FormBookmarks() Constructor", ex);
+                Log.Error(ex, "FormBookmarks() Constructor");
             }
         }
 
@@ -167,7 +167,7 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in LoadImageFromSelectedRow()", ex);
+                Log.Error(ex,"Error in LoadImageFromSelectedRow()");
             }
         }
 
@@ -237,7 +237,7 @@ namespace ImageView
             }
             catch (Exception exception)
             {
-                LogWriter.LogError("Exception in FindFilePath() rootDirectory=" + rootDirectory, exception);
+                Log.Error(exception, "Exception in FindFilePath() rootDirectory=" + rootDirectory);
             }
 
             FileInfo fileInfo =
@@ -503,7 +503,7 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Exception in bookmarksDataGridView_RowPrePaint()", ex);
+                Log.Error(ex,"Exception in bookmarksDataGridView_RowPrePaint()", ex);
             }
         }
 

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
-using GeneralToolkitLib.Log;
+using Serilog;
 
 namespace ImageView
 {
@@ -32,7 +32,7 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in FormSetDefaultDrive_Load()", ex);
+                Log.Error(ex, "Error in FormSetDefaultDrive_Load()");
             }
 
             foreach (DriveInfo availableDriveInfo in availableDriveInfos)

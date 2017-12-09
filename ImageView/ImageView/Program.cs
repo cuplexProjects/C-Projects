@@ -2,12 +2,9 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Autofac;
-using GeneralToolkitLib.ConfigHelper;
-using GeneralToolkitLib.Log;
 using ImageView.Configuration;
 using ImageView.Services;
-
-//using ImageView.Configuration;
+using Serilog;
 
 namespace ImageView
 {
@@ -25,15 +22,6 @@ namespace ImageView
         private static void Main()
         {
             InitializeAutofac();
-            //Set log path
-#if DEBUG
-            GlobalSettings.Initialize(Application.ProductName, false);
-            LogWriter.SetMinimumLogLevel(LogWriter.LogLevel.Trace);
-            LogWriter.LogMessage("Application started", LogWriter.LogLevel.Info);
-#else
-            GlobalSettings.Initialize(Application.ProductName, true);
-            LogWriter.SetMinimumLogLevel(LogWriter.LogLevel.Warning);
-#endif
 
             if (Environment.OSVersion.Version.Major >= 6)
                 SetProcessDPIAware();
@@ -42,14 +30,17 @@ namespace ImageView
             Application.SetCompatibleTextRenderingDefault(true);
             using (var scope = Container.BeginLifetimeScope())
             {
+                ApplicationSettingsService settingsService = scope.Resolve<ApplicationSettingsService>();
+                settingsService.LoadSettings();
+
                 FormMain frmMain = scope.Resolve<FormMain>();
                 Application.Run(frmMain);
-                ApplicationSettingsService settingsService = scope.Resolve<ApplicationSettingsService>();
+                
                 settingsService.SaveSettings();
             }
 
             //Application.Run(new FormMain());
-            LogWriter.LogMessage("Application ended", LogWriter.LogLevel.Info);
+            Log.Information("Application ended");
         }
 
         private static void InitializeAutofac()

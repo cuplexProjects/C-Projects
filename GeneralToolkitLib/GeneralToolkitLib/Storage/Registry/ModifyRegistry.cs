@@ -7,17 +7,17 @@ using System.Runtime.Serialization;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
-using GeneralToolkitLib.Log;
 using GeneralToolkitLib.WindowsApi;
 using Microsoft.Win32;
+using Serilog;
 
 namespace GeneralToolkitLib.Storage.Registry
 {
-    public class RegistryAccess
+    public class RegistryAccess : IRegistryAccess
     {
         public RegistryAccess(string productName)
         {
-            ProductName = productName;
+            ProductName = productName.Replace(" ", "");
             if (string.IsNullOrWhiteSpace(productName))
                 throw new ArgumentException("Invalid argument. productName cant be null or whitespace.", nameof(productName));
 
@@ -27,7 +27,7 @@ namespace GeneralToolkitLib.Storage.Registry
         public RegistryAccess(string companyName, string productName)
         {
             CompanyName = companyName;
-            ProductName = productName;
+            ProductName = productName.Replace(" ","");
 
             if (string.IsNullOrWhiteSpace(companyName))
                 throw new ArgumentException("Invalid argument. CompanyName cant be null or whitespace.", nameof(companyName));
@@ -89,20 +89,20 @@ namespace GeneralToolkitLib.Storage.Registry
             try
             {
                 var retVal = new T();
-                Type objType = typeof (T);
+                Type objType = typeof(T);
                 var properties = objType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
                 foreach (PropertyInfo propertyInfo in properties)
                 {
                     string propertyName = propertyInfo.Name;
-                    if (propertyInfo.PropertyType == typeof (string))
+                    if (propertyInfo.PropertyType == typeof(string))
                         propertyInfo.SetValue(retVal, Read(propertyName) as string);
-                    else if (propertyInfo.PropertyType == typeof (bool))
+                    else if (propertyInfo.PropertyType == typeof(bool))
                         propertyInfo.SetValue(retVal, Read(propertyName) as string == "true");
-                    else if (propertyInfo.PropertyType == typeof (int))
+                    else if (propertyInfo.PropertyType == typeof(int))
                     {
                         object tmp = Read(propertyName);
                         if (tmp != null)
-                            propertyInfo.SetValue(retVal, (int) tmp);
+                            propertyInfo.SetValue(retVal, (int)tmp);
                     }
                     else if (propertyInfo.PropertyType == typeof(long))
                     {
@@ -110,16 +110,16 @@ namespace GeneralToolkitLib.Storage.Registry
                         if (tmp != null)
                             propertyInfo.SetValue(retVal, (long)tmp);
                     }
-                    else if (propertyInfo.PropertyType.BaseType == typeof (Enum))
+                    else if (propertyInfo.PropertyType.BaseType == typeof(Enum))
                     {
                         object tmp = Read(propertyName);
                         if (tmp != null)
                         {
-                            int enValue = (int) tmp;
+                            int enValue = (int)tmp;
                             propertyInfo.SetValue(retVal, enValue);
                         }
                     }
-                    else if (propertyInfo.PropertyType == typeof (Size) || propertyInfo.PropertyType == typeof (Point))
+                    else if (propertyInfo.PropertyType == typeof(Size) || propertyInfo.PropertyType == typeof(Point))
                     {
                         try
                         {
@@ -127,17 +127,17 @@ namespace GeneralToolkitLib.Storage.Registry
                         }
                         catch (Exception ex)
                         {
-                            LogWriter.LogError("ReadObjectFromRegistry Exception", ex);
+                            Log.Error(ex, "ReadObjectFromRegistry Exception");
                         }
                     }
-                    else if (propertyInfo.PropertyType.BaseType == typeof (object))
+                    else if (propertyInfo.PropertyType.BaseType == typeof(object))
                         if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.IsClass)
                         {
-                            if (!typeof (IEnumerable).IsAssignableFrom(propertyInfo.PropertyType)) continue;
+                            if (!typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType)) continue;
                             object regValObj = Read(propertyName);
 
                             if (!(regValObj is string)) continue;
-                            var strArr = (regValObj as string).Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+                            var strArr = (regValObj as string).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                             var regDataVal = strArr.ToList();
                             propertyInfo.SetValue(retVal, regDataVal);
                         }
@@ -147,7 +147,7 @@ namespace GeneralToolkitLib.Storage.Registry
             }
             catch (Exception e)
             {
-                LogWriter.LogError("SaveObjectToRegistry", e);
+                Log.Error(e, "SaveObjectToRegistry");
                 return default(T);
             }
         }
@@ -162,30 +162,30 @@ namespace GeneralToolkitLib.Storage.Registry
                 {
                     string propertyName = propertyInfo.Name;
                     RegistryDataTypes registryData = null;
-                    if (propertyInfo.PropertyType == typeof (string))
-                        registryData = new RegistryDataTypeString {KeyName = propertyName, Data = propertyInfo.GetValue(objToSave)};
-                    else if (propertyInfo.PropertyType == typeof (int))
-                        registryData = new RegistryDataTypeDWORD {KeyName = propertyName, Data = propertyInfo.GetValue(objToSave)};
+                    if (propertyInfo.PropertyType == typeof(string))
+                        registryData = new RegistryDataTypeString { KeyName = propertyName, Data = propertyInfo.GetValue(objToSave) };
+                    else if (propertyInfo.PropertyType == typeof(int))
+                        registryData = new RegistryDataTypeDWORD { KeyName = propertyName, Data = propertyInfo.GetValue(objToSave) };
                     else if (propertyInfo.PropertyType == typeof(long))
-                        registryData = new RegistryDataTypeQWORD{ KeyName = propertyName, Data = propertyInfo.GetValue(objToSave) };
-                    else if (propertyInfo.PropertyType == typeof (bool))
-                        registryData = new RegistryDataTypeString {KeyName = propertyName, Data = (bool) propertyInfo.GetValue(objToSave) ? "true" : "false"};
-                    else if (propertyInfo.PropertyType.BaseType == typeof (Enum))
-                        registryData = new RegistryDataTypeDWORD {KeyName = propertyName, Data = (int) propertyInfo.GetValue(objToSave)};
-                    else if (propertyInfo.PropertyType == typeof (Size) || propertyInfo.PropertyType == typeof (Point))
+                        registryData = new RegistryDataTypeQWORD { KeyName = propertyName, Data = propertyInfo.GetValue(objToSave) };
+                    else if (propertyInfo.PropertyType == typeof(bool))
+                        registryData = new RegistryDataTypeString { KeyName = propertyName, Data = (bool)propertyInfo.GetValue(objToSave) ? "true" : "false" };
+                    else if (propertyInfo.PropertyType.BaseType == typeof(Enum))
+                        registryData = new RegistryDataTypeDWORD { KeyName = propertyName, Data = (int)propertyInfo.GetValue(objToSave) };
+                    else if (propertyInfo.PropertyType == typeof(Size) || propertyInfo.PropertyType == typeof(Point))
                     {
                         try
                         {
-                            registryData = new RegistryDataTypeString {KeyName = propertyName, Data = SerializeStructToString(propertyInfo.GetValue(objToSave))};
+                            registryData = new RegistryDataTypeString { KeyName = propertyName, Data = SerializeStructToString(propertyInfo.GetValue(objToSave)) };
                         }
                         catch (Exception ex)
                         {
-                            LogWriter.LogError("SaveObjectToRegistry Exception", ex);
+                            Log.Error(ex, "SaveObjectToRegistry Exception");
                         }
                     }
-                    else if (propertyInfo.PropertyType.BaseType == typeof (object))
+                    else if (propertyInfo.PropertyType.BaseType == typeof(object))
                         if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.IsClass)
-                            if (typeof (IEnumerable).IsAssignableFrom(propertyInfo.PropertyType))
+                            if (typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType))
                             {
                                 var sb = new StringBuilder();
                                 var collection = propertyInfo.GetValue(objToSave) as IEnumerable;
@@ -195,16 +195,16 @@ namespace GeneralToolkitLib.Storage.Registry
                                     {
                                         sb.AppendLine(obj.ToString());
                                     }
-                                    registryData = new RegistryDataTypeString {KeyName = propertyName, Data = sb.ToString()};
+                                    registryData = new RegistryDataTypeString { KeyName = propertyName, Data = sb.ToString() };
                                 }
                             }
                     if (registryData != null)
                         Write(registryData);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                LogWriter.LogError("SaveObjectToRegistry", e);
+                Log.Error(ex, "SaveObjectToRegistry");
             }
         }
 
@@ -267,9 +267,9 @@ namespace GeneralToolkitLib.Storage.Registry
             {
                 return sk1.GetValue(keyName);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                LogWriter.LogError("Reading registry " + keyName, e);
+                Log.Error(ex, "Reading registry " + keyName);
                 return null;
             }
         }
@@ -288,7 +288,7 @@ namespace GeneralToolkitLib.Storage.Registry
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Writing registry" + registryDataEntry.KeyName, ex);
+                Log.Error(ex, "Writing registry" + registryDataEntry.KeyName, ex);
                 return false;
             }
         }
@@ -305,9 +305,9 @@ namespace GeneralToolkitLib.Storage.Registry
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                LogWriter.LogError("Deleting SubKey", e);
+                Log.Error(ex, "Deleting SubKey");
                 return false;
             }
         }
@@ -330,9 +330,9 @@ namespace GeneralToolkitLib.Storage.Registry
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                LogWriter.LogError("Deleting SubKey " + SubKey, e);
+                Log.Error(ex, "Deleting SubKey " + SubKey);
                 return false;
             }
         }
@@ -354,9 +354,9 @@ namespace GeneralToolkitLib.Storage.Registry
                     return sk1.SubKeyCount;
                 return 0;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                LogWriter.LogError("Retriving subkeys of " + SubKey, e);
+                Log.Error(ex, "Retriving subkeys of " + SubKey);
                 return 0;
             }
         }
@@ -378,9 +378,9 @@ namespace GeneralToolkitLib.Storage.Registry
                     return sk1.ValueCount;
                 return 0;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                LogWriter.LogError("Retriving keys of " + SubKey, e);
+                Log.Error(ex, "Retriving keys of " + SubKey);
                 return 0;
             }
         }

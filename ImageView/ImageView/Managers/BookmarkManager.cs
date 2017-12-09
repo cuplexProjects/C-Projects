@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using GeneralToolkitLib.Converters;
-using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
 using ImageView.DataContracts;
@@ -13,7 +12,7 @@ using Serilog;
 
 namespace ImageView.Managers
 {
-    public class BookmarkManager
+    public class BookmarkManager : ManagerBase
     {
         private BookmarkContainer _bookmarkContainer;
 
@@ -78,7 +77,7 @@ namespace ImageView.Managers
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("BookmarkManager.SaveToFile(string filename, string password) : " + ex.Message, ex);
+                Log.Error(ex,"BookmarkManager.SaveToFile(string filename, string password) : " + ex.Message, ex);
                 return false;
             }
         }
@@ -113,7 +112,7 @@ namespace ImageView.Managers
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("BookmarkManager.LoadFromFile(string filename, string password) : " + ex.Message, ex);
+                Log.Error(ex,"BookmarkManager.LoadFromFile(string filename, string password) : " + ex.Message, ex);
             }
 
             return false;
@@ -153,7 +152,7 @@ namespace ImageView.Managers
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("BookmarkManager.LoadFromFile(string filename, string password) : " + ex.Message, ex);
+                Log.Error(ex, "BookmarkManager.LoadFromFile(string filename, string password) : " + ex.Message);
             }
 
             return false;

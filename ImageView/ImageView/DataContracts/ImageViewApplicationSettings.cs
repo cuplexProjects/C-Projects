@@ -29,11 +29,10 @@ namespace ImageView.DataContracts
             Far = 3
         }
 
-
         // Instansiate with default settings
         public ImageViewApplicationSettings()
         {
-            AlwaysOntop = true;
+            AlwaysOntop = false;
             AutoRandomizeCollection = true;
             LastUsedSearchPaths = new List<string>();
             ShowImageViewFormsInTaskBar = true;
@@ -44,7 +43,7 @@ namespace ImageView.DataContracts
             PasswordProtectBookmarks = false;
             PasswordDerivedString = "";
             ShowNextPrevControlsOnEnterWindow = true;
-            ThumbnailSize = 128;
+            ThumbnailSize = 256;
             MaxThumbnails = 256;
         }
 

@@ -6,7 +6,7 @@ using GeneralToolkitLib.ConfigHelper;
 using ImageView.DataContracts;
 using ImageView.Managers;
 using ImageView.Models;
-using ImageView.ServiceInterfaces;
+
 using ImageView.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
@@ -20,7 +20,7 @@ namespace ImageView.UnitTest
     {
         private static ImageReferenceElement _imageReference;
         private BookmarkService _bookmarkService;
-        private IApplicationSettingsService _applicationSettingsService;
+        private ApplicationSettingsService _applicationSettingsService;
 
         [ClassInitialize]
         public static void BookmarkStorageInitialize(TestContext testContext)
@@ -58,7 +58,7 @@ namespace ImageView.UnitTest
         {
             var appSettings = new ImageViewApplicationSettings {DefaultKey = "EkNxG2vH27y4xezfzyEJpHGenOtgLJ1x"};
 
-            _applicationSettingsService = Substitute.For<IApplicationSettingsService>();
+            _applicationSettingsService = Substitute.For<ApplicationSettingsService>();
             _applicationSettingsService.Settings.Returns(appSettings);
            
            

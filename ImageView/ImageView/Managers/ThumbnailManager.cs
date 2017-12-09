@@ -6,16 +6,17 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using GeneralToolkitLib.Converters;
-using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
 using ImageView.DataContracts;
 using ImageView.Models;
 using ImageView.Utility;
+using Serilog;
+using Serilog.Context;
 
 namespace ImageView.Managers
 {
-    public class ThumbnailManager : IDisposable
+    public class ThumbnailManager : ManagerBase, IDisposable
     {
         private const string DatabaseFilename = "thumbs.db";
         private const string DatabaseImgDataFilename = "thumbs.ibd";
@@ -79,7 +80,7 @@ namespace ImageView.Managers
             _fileManager.CloseStream();
             SaveThumbnailDatabase();
 
-            progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = scannedFiles, ScannedFiles = scannedFiles, IsComplete = true});
+            progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = scannedFiles, ScannedFiles = scannedFiles, IsComplete = true });
             _isRunningThumbnailScan = false;
         }
 
@@ -110,7 +111,7 @@ namespace ImageView.Managers
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("ThumbnailManager.SaveToFile(string filename, string password) : " + ex.Message, ex);
+                Log.Error(ex, "ThumbnailManager.SaveToFile(string filename, string password) : " + ex.Message, ex);
                 return false;
             }
         }
@@ -144,7 +145,7 @@ namespace ImageView.Managers
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("ThumbnailManager.LoadFromFile(string filename, string password) : " + ex.Message, ex);
+                Log.Error(ex, "ThumbnailManager.LoadFromFile(string filename, string password) : " + ex.Message, ex);
             }
 
             return false;
@@ -160,14 +161,20 @@ namespace ImageView.Managers
                 }
                 catch (Exception)
                 {
-                    LogWriter.LogMessage("Failed to load file: " + fullPath + "\nThe file might me corrupt.", LogWriter.LogLevel.Error);
+                    Log.Information("Failed to load file: " + fullPath + "\nThe file might me corrupt.");
                     throw;
                 }
             }
 
             if (ThumbnailIsCached(fullPath))
             {
-                return LoadImageFromCache(fullPath);
+                var imgFromCache = LoadImageFromCache(fullPath);
+                if (imgFromCache != null)
+                {
+                    return imgFromCache;
+                }
+
+                // Possibly a corrupt database
             }
 
             Image img = LoadImageFromFile(fullPath);
@@ -260,7 +267,7 @@ namespace ImageView.Managers
                 }
                 catch (Exception exception)
                 {
-                    LogWriter.LogError("Error loading file: " + fullPath, exception);
+                    Log.Error(exception, "Error loading file: " + fullPath);
                 }
 
                 if (img == null)
@@ -286,7 +293,7 @@ namespace ImageView.Managers
 
                 // Update progress
                 scannedFiles++;
-                progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = filesToScan, ScannedFiles = scannedFiles});
+                progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = filesToScan, ScannedFiles = scannedFiles });
             }
 
             return scannedFiles;
@@ -295,7 +302,37 @@ namespace ImageView.Managers
         private bool ValidateThumbnailDatabase(ThumbnailDatabase thumbnailDatabase)
         {
             if (thumbnailDatabase.ThumbnailEntries == null)
+            {
                 thumbnailDatabase.ThumbnailEntries = new List<ThumbnailEntry>();
+                return true;
+            }
+
+            int itemsRemovedTotal = 0;
+
+            //Check for duplicates
+            var query = (from t in thumbnailDatabase.ThumbnailEntries
+                group t by new {EntryFilePath = t.Directory + t.FileName}
+                into g
+                select new {FilePath = g.Key, Count = g.Count()}).ToList();
+
+            var duplicateKeys = query.Where(x => x.Count > 1).Select(x => x.FilePath.EntryFilePath).ToList();
+
+            foreach (string duplicateKey in duplicateKeys)
+            {
+                var removeItemsList = thumbnailDatabase.ThumbnailEntries.Where(x => x.Directory + x.FileName == duplicateKey).ToList();
+
+                itemsRemovedTotal += removeItemsList.Count - 1;
+                removeItemsList.RemoveAt(0);
+                foreach (var removableItem in removeItemsList)
+                {
+                    thumbnailDatabase.ThumbnailEntries.Remove(removableItem);
+                }
+            }
+
+            if (itemsRemovedTotal > 0)
+            {
+                Log.Information("Removed {itemsRemovedTotal} duplicate items from the thumbnailcache", itemsRemovedTotal);
+            }
 
             return true;
         }
@@ -316,9 +353,9 @@ namespace ImageView.Managers
             {
                 if (width > MaxSize)
                 {
-                    double factor = (double) width/MaxSize;
+                    double factor = (double)width / MaxSize;
                     width = MaxSize;
-                    height = Convert.ToInt32(Math.Ceiling(height/factor));
+                    height = Convert.ToInt32(Math.Ceiling(height / factor));
                 }
                 else
                 {
@@ -329,9 +366,9 @@ namespace ImageView.Managers
             {
                 if (height > MaxSize)
                 {
-                    double factor = (double) height/MaxSize;
+                    double factor = (double)height / MaxSize;
                     height = MaxSize;
-                    width = Convert.ToInt32(Math.Ceiling(width/factor));
+                    width = Convert.ToInt32(Math.Ceiling(width / factor));
                 }
                 else
                 {
@@ -345,8 +382,18 @@ namespace ImageView.Managers
         private Image LoadImageFromCache(string filename)
         {
             ThumbnailEntry thumbnail = _fileDictionary[filename];
-
-            return _fileManager.ReadImage(Convert.ToInt32(thumbnail.FilePosition), thumbnail.Length);
+            try
+            {
+                return _fileManager.ReadImage(Convert.ToInt32(thumbnail.FilePosition), thumbnail.Length);
+            }
+            catch (Exception ex)
+            {
+                using (LogContext.PushProperty("Data", thumbnail))
+                {
+                    Log.Error(ex, "LoadImageFromCache failed");
+                }
+            }
+            return null;
         }
 
         private void AddImageToCache(Image img, string path, string fileName)
@@ -368,8 +415,13 @@ namespace ImageView.Managers
             thumbnail.Length = fileEntry.Length;
 
             _thumbnailDatabase.ThumbnailEntries.Add(thumbnail);
-            _fileDictionary.Add(path + fileName, thumbnail);
-            IsModified = true;
+
+            // In case of index db corruption
+            if (!_fileDictionary.ContainsKey(path + fileName))
+            {
+                _fileDictionary.Add(path + fileName, thumbnail);
+                IsModified = true;
+            }
         }
 
         private class FileManager : IDisposable
@@ -459,7 +511,7 @@ namespace ImageView.Managers
                 }
                 catch (Exception exception)
                 {
-                    LogWriter.LogError("Error in RecreateDatabase()", exception);
+                    Log.Error(exception, "Error in RecreateDatabase()");
                 }
                 finally
                 {

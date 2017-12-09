@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using GeneralToolkitLib.Log;
+using Serilog;
 
 namespace ImageView.Storage
 {
@@ -34,7 +34,7 @@ namespace ImageView.Storage
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Errorr in DirectoryData.UserHasReadAccessToDirectory - " + ex.Message, ex);
+                Log.Error(ex, "Errorr in DirectoryData.UserHasReadAccessToDirectory {directoryInfo}", directoryInfo);
             }
             return false;
         }

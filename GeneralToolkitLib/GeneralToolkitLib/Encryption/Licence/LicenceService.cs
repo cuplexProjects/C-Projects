@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using GeneralToolkitLib.Encryption.Licence.DataConverters;
 using GeneralToolkitLib.Encryption.Licence.DataModels;
 using GeneralToolkitLib.Encryption.Licence.StaticData;
-using GeneralToolkitLib.Log;
+using Serilog;
 
 namespace GeneralToolkitLib.Encryption.Licence
 {
@@ -131,12 +131,11 @@ namespace GeneralToolkitLib.Encryption.Licence
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("LoadLicenceFromFile", ex);
+                Log.Error(ex, "LoadLicenceFromFile");
             }
             finally
             {
-                if (fs != null)
-                    fs.Close();
+                fs?.Close();
             }
 
             return false;

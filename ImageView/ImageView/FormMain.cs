@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
-using GeneralToolkitLib.Log;
 using GeneralToolkitLib.WindowsApi;
 using ImageView.DataContracts;
 using ImageView.Events;
@@ -16,6 +15,7 @@ using ImageView.Models;
 using ImageView.Properties;
 using ImageView.Services;
 using ImageView.Utility;
+using Serilog;
 
 namespace ImageView
 {
@@ -40,10 +40,9 @@ namespace ImageView
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly ImageCacheService _imageCacheService;
         private FormThumbnailView _formThumbnailView;
-        private bool _cursorVisible = true;
         private FormBookmarks _formBookmarks;
 
-        public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings,  ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
+        public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
         {
             _formAddBookmark = formAddBookmark;
             _bookmarkService = bookmarkService;
@@ -66,7 +65,7 @@ namespace ImageView
             }
 
             DoubleBuffered = true;
-            _applicationSettingsService.OnSettingsChanged += Instance_OnSettingsChanged;
+            _applicationSettingsService.OnSettingsSaved += Instance_OnSettingsSaved;
             _applicationSettingsService.OnRegistryAccessDenied += Instance_OnRegistryAccessDenied;
             ImageLoaderService.Instance.OnImportComplete += Instance_OnImportComplete;
             ImageLoaderService.Instance.OnImageWasDeleted += Instance_OnImageWasDeleted;
@@ -143,7 +142,6 @@ namespace ImageView
             _bookmarkService.SaveBookmarks();
             _applicationSettingsService.Settings.SetMainFormPosition(Bounds);
             _applicationSettingsService.SaveSettings();
-            ServiceLocator.Clear();
         }
 
         private void imageViewForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -261,7 +259,7 @@ namespace ImageView
             SetImageReferenceCollection();
         }
 
-        private void Instance_OnSettingsChanged(object sender, EventArgs e)
+        private void Instance_OnSettingsSaved(object sender, EventArgs e)
         {
             SyncUserControlStateWithAppSettings();
         }
@@ -308,7 +306,7 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                LogWriter.LogError($"FormMain.LoadNewImageFile(string imagePath) Error when trying to load file: {imagePath} : {ex.Message}", ex);
+                Log.Error(ex, "FormMain.LoadNewImageFile(string imagePath) Error when trying to load file: {imagePath} : {Message}", imagePath, ex.Message);
             }
         }
 
@@ -343,7 +341,7 @@ namespace ImageView
                 {
                     long elapsedTime = stopwatch.ElapsedMilliseconds;
 
-                    float factor = stopwatch.ElapsedMilliseconds / (float) animationTime;
+                    float factor = stopwatch.ElapsedMilliseconds / (float)animationTime;
                     Image transitionImage;
                     switch (animation)
                     {
@@ -383,7 +381,7 @@ namespace ImageView
                     }
                     catch (Exception ex)
                     {
-                        LogWriter.LogError(Resources.Failed_to_set_transition_image_over_current_image_, ex);
+                        Log.Error(ex, Resources.Failed_to_set_transition_image_over_current_image_);
                         MessageBox.Show(Resources.Failed_to_set_transition_image_over_current_image_,
                             Resources.Error_loading_new_image, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -403,7 +401,7 @@ namespace ImageView
                     }
                 }
                 stopwatch.Stop();
-                LogWriter.LogMessage("Image transition finished after " + stopwatch.ElapsedMilliseconds + " ms", LogWriter.LogLevel.Trace);
+                Log.Verbose("Image transition finished after " + stopwatch.ElapsedMilliseconds + " ms");
                 Invoke(new EventHandler(OnImageLoadComplete), this, new EventArgs());
             });
 
@@ -423,7 +421,6 @@ namespace ImageView
                 _formState.Restore(this);
                 menuStrip1.Visible = true;
                 BackColor = Color.WhiteSmoke;
-                _cursorVisible = true;
                 Cursor.Show();
             }
             else
@@ -433,7 +430,6 @@ namespace ImageView
                 menuStrip1.Visible = false;
 
                 BackColor = Color.Black;
-                _cursorVisible = false;
                 Cursor.Hide();
                 //HideCursorInFullScreen().Start();
             }
@@ -447,7 +443,7 @@ namespace ImageView
             formLoad.SetBasePath(_applicationSettingsService.Settings.LastFolderLocation);
             formLoad.ShowDialog(this);
         }
-        
+
         private void AutoArrangeOnSingleScreen()
         {
             if (_imageViewFormList.Count == 0)
@@ -674,12 +670,12 @@ namespace ImageView
                 _formBookmarks.Show();
                 _formBookmarks.Focus();
             }
-              
+
         }
 
         private void newWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var imageViewForm = new FormImageView(_imageViewFormIdCnt++, _formAddBookmark,_bookmarkService.BookmarkManager, _applicationSettingsService);
+            var imageViewForm = new FormImageView(_imageViewFormIdCnt++, _formAddBookmark, _bookmarkService.BookmarkManager, _applicationSettingsService, _imageCacheService);
             _imageViewFormList.Add(imageViewForm);
             imageViewForm.FormClosed += imageViewForm_FormClosed;
             imageViewForm.Show();
@@ -815,9 +811,7 @@ namespace ImageView
             }
         }
 
-        #endregion
-
-        private void openThumbnailsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void openThumbnailsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (_formThumbnailView == null)
             {
@@ -830,6 +824,8 @@ namespace ImageView
                 _formThumbnailView.Focus();
             }
         }
+
+        #endregion
 
         private void FormThumbnailView_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -852,7 +848,7 @@ namespace ImageView
                 }
                 catch (Exception ex)
                 {
-                    LogWriter.LogError("Error in MainForm open image in default app", ex);
+                    Log.Error(ex, "Error in MainForm open image in default app");
                 }
             }
         }
@@ -885,8 +881,10 @@ namespace ImageView
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            
+
         }
+
+
 
         //private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         //{

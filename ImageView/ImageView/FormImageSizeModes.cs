@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using GeneralToolkitLib.Log;
 using ImageView.Services;
+using Serilog;
 
 namespace ImageView
 {
@@ -27,7 +27,7 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Invalid image Size mode in app settings. Actual value:" + sizeMode, ex);
+                Log.Error(ex, "Invalid image Size mode in app settings. Actual value:{sizeMode}", sizeMode);
                 _applicationSettingsService.Settings.PrimaryImageSizeMode = 0;
             }
         }

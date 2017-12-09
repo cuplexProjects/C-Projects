@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using GeneralToolkitLib.Encryption.Licence.DataModels;
-using GeneralToolkitLib.Log;
+using Serilog;
 
 namespace GeneralToolkitLib.Encryption.Licence.DataConverters
 {
@@ -18,7 +18,7 @@ namespace GeneralToolkitLib.Encryption.Licence.DataConverters
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("DeserializeLicenceDataFromString()", ex);
+               Log.Error(ex,"DeserializeLicenceDataFromString()");
             }
             return null;
         }
@@ -34,7 +34,7 @@ namespace GeneralToolkitLib.Encryption.Licence.DataConverters
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("DeserializeRegistrationDataFromString()", ex);
+               Log.Error(ex,"DeserializeRegistrationDataFromString()");
             }
             return null;
         }

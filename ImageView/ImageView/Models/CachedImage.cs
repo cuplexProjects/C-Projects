@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using GeneralToolkitLib.Log;
+using Serilog;
 
 namespace ImageView.Models
 {
@@ -33,7 +33,7 @@ namespace ImageView.Models
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error Loading image", ex);
+                Log.Error(ex, "Error Loading image");
             }
             return ImageObject != null;
         }

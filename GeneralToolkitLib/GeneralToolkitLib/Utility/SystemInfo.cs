@@ -2,7 +2,8 @@
 using System.Linq;
 using System.Management;
 using System.Text;
-using GeneralToolkitLib.Log;
+using Serilog;
+
 
 namespace GeneralToolkitLib.Utility
 {
@@ -65,7 +66,7 @@ namespace GeneralToolkitLib.Utility
                 }
                 catch (Exception e)
                 {
-                    LogWriter.LogError("SystemInfo.RunQuery()", e);
+                    Log.Error(e,"SystemInfo.RunQuery()");
                 }
             }
             return "";

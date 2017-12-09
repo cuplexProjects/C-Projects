@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using GeneralToolkitLib.Log;
+using Serilog;
 using SHA256 = GeneralToolkitLib.Hashing.SHA256;
 
 namespace GeneralToolkitLib.Encryption
@@ -56,7 +56,7 @@ namespace GeneralToolkitLib.Encryption
 
                 if (progress != null)
                 {
-                    progressHandler = new CryptoProgressHandler {EncodedBytes = 0, TotalBytes = ms.Length, Text = "Starting ecryption"};
+                    progressHandler = new CryptoProgressHandler { EncodedBytes = 0, TotalBytes = ms.Length, Text = "Starting ecryption" };
                     progress.Report(progressHandler);
                 }
 
@@ -75,7 +75,7 @@ namespace GeneralToolkitLib.Encryption
                     ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
                     // Create the streams used for encryption.
-                    int bufferSize = (int) Math.Min(MAX_BUFFER_SIZE, ms.Length);
+                    int bufferSize = (int)Math.Min(MAX_BUFFER_SIZE, ms.Length);
                     var buffer = new byte[bufferSize];
                     ms.Position = 0;
 
@@ -97,13 +97,13 @@ namespace GeneralToolkitLib.Encryption
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in EncryptionManager.EncryptAndSaveFile", ex);
+                Log.Error(ex, "Error in EncryptionManager.EncryptAndSaveFile");
                 return false;
             }
             finally
             {
                 fs?.Close();
-                progress?.Report(new CryptoProgressHandler {EncodedBytes = ms.Length, TotalBytes = ms.Length, Text = "Encryption completed"});
+                progress?.Report(new CryptoProgressHandler { EncodedBytes = ms.Length, TotalBytes = ms.Length, Text = "Encryption completed" });
             }
 
             return true;
@@ -131,7 +131,7 @@ namespace GeneralToolkitLib.Encryption
 
                 if (progress != null)
                 {
-                    progressHandler = new CryptoProgressHandler {EncodedBytes = 0, TotalBytes = fs.Length, Text = "Starting decryption"};
+                    progressHandler = new CryptoProgressHandler { EncodedBytes = 0, TotalBytes = fs.Length, Text = "Starting decryption" };
                     progress.Report(progressHandler);
                 }
 
@@ -151,7 +151,7 @@ namespace GeneralToolkitLib.Encryption
                     ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
                     // Create the streams used for decryption.
-                    int bufferSize = Math.Min(MAX_BUFFER_SIZE, (int) fs.Length);
+                    int bufferSize = Math.Min(MAX_BUFFER_SIZE, (int)fs.Length);
                     var plainTextBytes = new byte[bufferSize];
 
                     using (var csDecrypt = new CryptoStream(fs, decryptor, CryptoStreamMode.Read))
@@ -169,14 +169,14 @@ namespace GeneralToolkitLib.Encryption
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in EncryptionManager.EncryptAndSaveFile", ex);
+                Log.Error(ex, "Error in EncryptionManager.EncryptAndSaveFile");
                 return null;
             }
             finally
             {
                 fs?.Close();
 
-                progress?.Report(new CryptoProgressHandler {EncodedBytes = ms.Length, TotalBytes = ms.Length, Text = "Decryption completed"});
+                progress?.Report(new CryptoProgressHandler { EncodedBytes = ms.Length, TotalBytes = ms.Length, Text = "Decryption completed" });
             }
 
             return ms;
@@ -186,7 +186,7 @@ namespace GeneralToolkitLib.Encryption
         {
             var msDecrypted = new MemoryStream();
             var msEncrypted = new MemoryStream(data);
-            
+
             // Create an AesCryptoServiceProvider object 
             using (Aes aesAlg = Aes.Create())
             {
@@ -204,7 +204,7 @@ namespace GeneralToolkitLib.Encryption
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
                 // Create the streams used for decryption.
-                int bufferSize = Math.Min(MAX_BUFFER_SIZE, (int) msEncrypted.Length);
+                int bufferSize = Math.Min(MAX_BUFFER_SIZE, (int)msEncrypted.Length);
                 var plainTextBytes = new byte[bufferSize];
 
                 using (var csDecrypt = new CryptoStream(msEncrypted, decryptor, CryptoStreamMode.Read))
@@ -241,7 +241,7 @@ namespace GeneralToolkitLib.Encryption
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
                 // Create the streams used for encryption.
-                int bufferSize = (int) Math.Min(MAX_BUFFER_SIZE, ms.Length);
+                int bufferSize = (int)Math.Min(MAX_BUFFER_SIZE, ms.Length);
                 var buffer = new byte[bufferSize];
                 ms.Position = 0;
 
@@ -284,7 +284,7 @@ namespace GeneralToolkitLib.Encryption
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
                 // Create the streams used for encryption.
-                int bufferSize = (int) Math.Min(MAX_BUFFER_SIZE, ms.Length);
+                int bufferSize = (int)Math.Min(MAX_BUFFER_SIZE, ms.Length);
                 var buffer = new byte[bufferSize];
                 ms.Position = 0;
 
@@ -390,7 +390,7 @@ namespace GeneralToolkitLib.Encryption
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in EncryptionManager.DecodeString", ex);
+                Log.Error(ex, "Error in EncryptionManager.DecodeString");
                 return null;
             }
         }

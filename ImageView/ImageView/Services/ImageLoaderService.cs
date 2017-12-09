@@ -7,8 +7,8 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading;
-using GeneralToolkitLib.Log;
 using ImageView.Models;
+using Serilog;
 
 namespace ImageView.Services
 {
@@ -21,7 +21,7 @@ namespace ImageView.Services
         Complete
     }
 
-    public class ImageLoaderService
+    public class ImageLoaderService : ServiceBase
     {
         public delegate void ProgressUpdateEventHandler(object sender, ProgressEventArgs e);
 
@@ -94,7 +94,7 @@ namespace ImageView.Services
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("class ImageLoaderService.DoImageImport()\n" + ex.Message, ex);
+                Log.Error(ex, "ImageLoaderService.DoImageImport()");
                 IsRunningImport = false;
             }
         }
@@ -115,8 +115,7 @@ namespace ImageView.Services
             }
             catch (Exception ex)
             {
-                LogWriter.LogError(
-                    "class ImageLoaderService.GetNumberOfFilesMatchingRegexp(string basePath)\n" + ex.Message, ex);
+                Log.Error(ex, "ImageLoaderService.GetNumberOfFilesMatchingRegexp for {basePath}", basePath);
             }
 
             return noFiles;
@@ -209,7 +208,7 @@ namespace ImageView.Services
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("class ImageLoaderService.PermanentlyRemoveFile()\n" + ex.Message, ex);
+                Log.Error(ex, "ImageLoaderService.PermanentlyRemoveFile {imgRefElement}", imgRefElement);
             }
             return removedItems > 0;
         }

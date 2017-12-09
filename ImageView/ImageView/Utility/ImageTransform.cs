@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using GeneralToolkitLib.Log;
+using Serilog;
 
 namespace ImageView.Utility
 {
@@ -218,7 +218,7 @@ namespace ImageView.Utility
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in ImageTransform.BlendImages() opacity=" + opacity, ex);
+                Log.Error(ex, "Error in ImageTransform.BlendImages() opacity={opacity}", opacity);
                 return null;
             }
         }
@@ -253,7 +253,7 @@ namespace ImageView.Utility
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in ImageTransform.SetImageOpacity() opacity=" + opacity, ex);
+                Log.Error(ex, "Error in ImageTransform.SetImageOpacity() opacity={opacity}", opacity);
                 return null;
             }
         }

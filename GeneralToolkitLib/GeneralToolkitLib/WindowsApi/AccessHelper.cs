@@ -3,7 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using GeneralToolkitLib.Log;
+using Serilog;
+
 
 namespace GeneralToolkitLib.WindowsApi
 {
@@ -33,11 +34,11 @@ namespace GeneralToolkitLib.WindowsApi
             }
             catch (UnauthorizedAccessException accessException)
             {
-                LogWriter.LogMessage(accessException.Message,LogWriter.LogLevel.Info);
+                Log.Information(accessException.Message);
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in DirectoryData.UserHasReadAccessToDirectory - ", ex);
+                Log.Error(ex,"Error in DirectoryData.UserHasReadAccessToDirectory - ");
             }
             return false;
         }

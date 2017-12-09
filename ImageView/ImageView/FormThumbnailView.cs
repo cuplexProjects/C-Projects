@@ -6,14 +6,14 @@ using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GeneralToolkitLib.ConfigHelper;
-using GeneralToolkitLib.Log;
+using ImageView.Configuration;
 using ImageView.DataContracts;
 using ImageView.Models;
 using ImageView.Properties;
 using ImageView.Services;
 using ImageView.UserControls;
 using ImageView.Utility;
+using Serilog;
 
 namespace ImageView
 {
@@ -36,7 +36,7 @@ namespace ImageView
             _imageCacheService = imageCacheService;
             _thumbnailSize = ValidateThumbnailSize(_applicationSettingsService.Settings.ThumbnailSize);
             _maxThumbnails = _applicationSettingsService.Settings.MaxThumbnails;
-            string dataPath = GlobalSettings.GetUserDataDirectoryPath();
+            string dataPath = ApplicationBuildConfig.UserDataPath;
             _thumbnailService = new ThumbnailService(dataPath);
             _thumbnailService.LoadThumbnailDatabase();
             InitializeComponent();
@@ -86,7 +86,7 @@ namespace ImageView
             catch (Exception ex)
             {
                 MessageBox.Show(this, ex.Message, Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LogWriter.LogError("Error in generate thumbnails", ex);
+                Log.Error(ex, "Error in generate thumbnails");
             }
         }
 

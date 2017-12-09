@@ -492,13 +492,6 @@ namespace ImageView
         private System.Windows.Forms.ToolStripMenuItem renameFolderMenuItem;
         private System.Windows.Forms.BindingSource bookmarkFolderBindingSource;
         private System.Windows.Forms.BindingSource bookmarkBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn boookmarkNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fileNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn completePathDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sizeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn creationTimeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastWriteTimeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastAccessTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;

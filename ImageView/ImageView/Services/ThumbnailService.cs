@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading.Tasks;
-using GeneralToolkitLib.Log;
 using ImageView.Managers;
 using ImageView.Models;
+using Serilog;
 
 namespace ImageView.Services
 {
-    public class ThumbnailService : IDisposable
+    public class ThumbnailService : ServiceBase, IDisposable
     {
         private readonly ThumbnailManager _thumbnailManager;
 
@@ -43,7 +43,7 @@ namespace ImageView.Services
             catch (Exception ex)
             {
                 _thumbnailManager.CloseFileHandle();
-                LogWriter.LogError("Exception in ScanDirectoryAsync()", ex);
+                Log.Error(ex, "Exception in ScanDirectoryAsync()");
             }
         }
 
@@ -66,7 +66,7 @@ namespace ImageView.Services
             catch (Exception exception)
             {
                 _thumbnailManager.CloseFileHandle();
-                LogWriter.LogError("Error in OptimizeDatabaseAsync()", exception);
+                Log.Error(exception, "Error in OptimizeDatabaseAsync()");
             }
         }
 

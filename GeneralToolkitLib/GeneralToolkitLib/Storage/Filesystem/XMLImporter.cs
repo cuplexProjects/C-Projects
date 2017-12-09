@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Xml;
-using GeneralToolkitLib.Log;
+using Serilog;
 
 namespace GeneralToolkitLib.Storage.Filesystem
 {
@@ -39,7 +39,7 @@ namespace GeneralToolkitLib.Storage.Filesystem
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("LoadXMLFile()", ex);
+                Log.Error(ex,"LoadXMLFile()");
             }
 
             return true;

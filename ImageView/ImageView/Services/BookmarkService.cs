@@ -1,29 +1,28 @@
 ﻿using System;
 using System.IO;
-using GeneralToolkitLib.ConfigHelper;
 using GeneralToolkitLib.Storage.Memory;
 using GeneralToolkitLib.Utility.RandomGenerator;
+using ImageView.Configuration;
 using ImageView.Managers;
-using ImageView.ServiceInterfaces;
+using Serilog;
 
 namespace ImageView.Services
 {
-    public class BookmarkService : IDisposable
+    public class BookmarkService : ServiceBase, IDisposable
     {
         private const string BookmarkFileName = "ImageViewBookmarks.dat";
-        private readonly string _directory;
-
         private readonly PasswordStorage _passwordStorage;
         private readonly string _protectedMemoryStorageKey;
         private readonly BookmarkManager _bookmarkManager;
-        private readonly IApplicationSettingsService _applicationSettingsService;
+        private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly string _directory;
 
-        public BookmarkService(BookmarkManager bookmarkManager, IApplicationSettingsService applicationSettingsService)
+        public BookmarkService(BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService)
         {
             _bookmarkManager = bookmarkManager;
             _applicationSettingsService = applicationSettingsService;
             _protectedMemoryStorageKey = new SecureRandomGenerator().GetAlphaNumericString(256);
-            _directory = GlobalSettings.GetUserDataDirectoryPath();
+            _directory = ApplicationBuildConfig.UserDataPath;
 
             _passwordStorage = new PasswordStorage();
             _passwordStorage.Set(_protectedMemoryStorageKey, GetDefaultPassword());
@@ -65,14 +64,24 @@ namespace ImageView.Services
 
         private string GetDefaultPassword()
         {
-            string defaultKey = _applicationSettingsService.Settings.DefaultKey;
+            try
+            {
+                string defaultKey = _applicationSettingsService.Settings.DefaultKey;
 
-            if (defaultKey != null && defaultKey.Length == 256) return defaultKey;
-            defaultKey = new SecureRandomGenerator().GetAlphaNumericString(256);
-            _applicationSettingsService.Settings.DefaultKey = defaultKey;
-            _applicationSettingsService.SaveSettings();
+                if (defaultKey != null && defaultKey.Length == 256) return defaultKey;
+                defaultKey = new SecureRandomGenerator().GetAlphaNumericString(256);
+                _applicationSettingsService.Settings.DefaultKey = defaultKey;
+                _applicationSettingsService.SaveSettings();
 
-            return defaultKey;
+                return defaultKey;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "GetDefaultPassword");
+                return "CodeRed";
+
+            }
+            
         }
     }
 }

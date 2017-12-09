@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Windows.Forms;
-using GeneralToolkitLib.Log;
+using Serilog;
 
 #endregion
 
@@ -47,7 +47,7 @@ namespace GeneralToolkitLib.WindowsApi.UserAccountControl
                 if (DisplayMessagBoxes)
                     MessageBox.Show(ex.Message, "An error occurred in IsUserInAdminGroup", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                LogWriter.LogError("Error when calling IsUserInAdminGroup", ex);
+                Log.Error(ex, "Error when calling IsUserInAdminGroup");
             }
 
             try
@@ -59,7 +59,7 @@ namespace GeneralToolkitLib.WindowsApi.UserAccountControl
                 if (DisplayMessagBoxes)
                     MessageBox.Show(ex.Message, "An error occurred in IsRunAsAdmin", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                LogWriter.LogError("Error when calling IsRunAsAdmin", ex);
+                Log.Error(ex,"Error when calling IsRunAsAdmin");
             }
 
 
@@ -85,7 +85,7 @@ namespace GeneralToolkitLib.WindowsApi.UserAccountControl
                     if (DisplayMessagBoxes)
                         MessageBox.Show(ex.Message, "An error occurred in IsProcessElevated", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                    LogWriter.LogError("Error when calling NativeMethods.SendMessage", ex);
+                    Log.Error(ex,"Error when calling NativeMethods.SendMessage");
                 }
 
                 try
@@ -119,7 +119,7 @@ namespace GeneralToolkitLib.WindowsApi.UserAccountControl
                     if (DisplayMessagBoxes)
                         MessageBox.Show(ex.Message, "An error occurred in GetProcessIntegrityLevel", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                    LogWriter.LogError("Error when calling GetProcessIntegrityLevel()", ex);
+                    Log.Error(ex,"Error when calling GetProcessIntegrityLevel()");
                 }
             }
         }
@@ -153,8 +153,7 @@ namespace GeneralToolkitLib.WindowsApi.UserAccountControl
             }
             if (DisplayMessagBoxes)
                 MessageBox.Show("The process is running as administrator", "UAC");
-
-            LogWriter.LogMessage("The process is running as administrator", LogWriter.LogLevel.Info);
+            Log.Information("The process is running as administrator");
         }
 
         #region Helper Functions for Admin Privileges and Elevation Status

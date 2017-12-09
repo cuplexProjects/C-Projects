@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 using GeneralToolkitLib.Compression.SevenZip;
 using GeneralToolkitLib.Compression.SevenZip.Compress.LZMA;
 using GeneralToolkitLib.Encryption;
-using GeneralToolkitLib.Log;
+
 using GeneralToolkitLib.Storage.Models;
 using ProtoBuf;
+using Serilog;
 
 namespace GeneralToolkitLib.Storage
 {
@@ -155,7 +156,7 @@ namespace GeneralToolkitLib.Storage
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in StorageManager.SerializeAndCompressObjectToFile()", ex);
+                Log.Error(ex,"Error in StorageManager.SerializeAndCompressObjectToFile()");
                 return false;
             }
             finally
@@ -194,7 +195,7 @@ namespace GeneralToolkitLib.Storage
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in StorageManager.DeSerializeAndDecompressObjectFromEncryptedFile()", ex);
+                Log.Error(ex,"Error in StorageManager.DeSerializeAndDecompressObjectFromEncryptedFile()");
             }
             finally
             {
@@ -238,7 +239,7 @@ namespace GeneralToolkitLib.Storage
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in StorageManager.DeSerializeAndDecompressObjectFromFile()", ex);
+                Log.Error(ex,"Error in StorageManager.DeSerializeAndDecompressObjectFromFile()");
             }
             finally
             {

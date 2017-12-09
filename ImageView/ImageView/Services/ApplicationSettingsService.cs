@@ -1,26 +1,39 @@
 ﻿using System;
 using System.Windows.Forms;
-using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage.Registry;
+using ImageView.Configuration;
 using ImageView.DataContracts;
+using ImageView.Interfaces;
+using ImageView.Library.EventHandlers;
 using ImageView.Properties;
-using ImageView.ServiceInterfaces;
+using ImageView.Storage;
+using JetBrains.Annotations;
+using Serilog;
 
 namespace ImageView.Services
 {
 
-    public class ApplicationSettingsService : IApplicationSettingsService
+    [UsedImplicitly]
+    public class ApplicationSettingsService : ServiceBase, IExceptionEventHandler
     {
-        private readonly RegistryAccess _registryService;
+        private readonly IRegistryAccess _registryService;
 
         public ApplicationSettingsService()
         {
             try
             {
-                _registryService = new RegistryAccess(Application.CompanyName, Application.ProductName)
+                // In debug mode use the local storage reg access clone
+                if (ApplicationBuildConfig.DebugMode)
                 {
-                    ShowError = true
-                };
+                    _registryService=new LocalStorageRegistryAccess(Application.CompanyName, Application.ProductName);
+                }
+                else
+                {
+                    _registryService = new RegistryAccess(Application.CompanyName, Application.ProductName)
+                    {
+                        ShowError = true
+                    };
+                }
             }
             catch (Exception ex)
             {
@@ -29,18 +42,18 @@ namespace ImageView.Services
                     throw;
                 }
 
-                LogWriter.LogError("Fatal error encountered when accessing the registry settings", ex);
-                MessageBox.Show(ex.Message,
-                    Resources.Fatal_error_encountered_when_accessing_the_registry_settings_please_restart_,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Log.Error(ex, "Fatal error encountered when accessing the registry settings");
+                MessageBox.Show(ex.Message, Resources.Fatal_error_encountered_when_accessing_the_registry_settings_please_restart_, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             Settings = new ImageViewApplicationSettings();
         }
 
-       
+
         public ImageViewApplicationSettings Settings { get; private set; }
-        public event EventHandler OnSettingsChanged;
+        public event EventHandler OnSettingsLoaded;
+        public event EventHandler OnSettingsSaved;
         public event EventHandler OnRegistryAccessDenied;
+        public event ExceptionEventHandler OnUnexpectedException;
 
         public bool LoadSettings()
         {
@@ -50,20 +63,30 @@ namespace ImageView.Services
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Exception in ApplicationSettingsService()", ex);
+                Log.Error(ex, "ApplicationSettingsService->LoadSettings");
                 OnRegistryAccessDenied?.Invoke(this, new EventArgs());
+                OnUnexpectedException?.Invoke(this, new ExceptionEventArgs(ex) { SourceClass = GetType(), TargetClass = _registryService.GetType(), FunctionName = "LoadSettings" });
                 return false;
             }
             Settings = _registryService.ReadObjectFromRegistry<ImageViewApplicationSettings>();
+            OnSettingsLoaded?.Invoke(this, EventArgs.Empty);
             return true;
         }
 
         public void SaveSettings()
         {
-            Settings.RemoveDuplicateEntriesWithIgnoreCase();
-            _registryService.SaveObjectToRegistry(Settings);
+            try
+            {
+                Settings.RemoveDuplicateEntriesWithIgnoreCase();
+                _registryService.SaveObjectToRegistry(Settings);
 
-            OnSettingsChanged?.Invoke(this, new EventArgs());
+                OnSettingsSaved?.Invoke(this, new EventArgs());
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "SaveSettings threw en exception on");
+            }
+            ;
         }
     }
 }

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using GeneralToolkitLib.Converters;
-using GeneralToolkitLib.Log;
+using Serilog;
 
 namespace GeneralToolkitLib.ConfigHelper
 {
@@ -67,12 +67,11 @@ namespace GeneralToolkitLib.ConfigHelper
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("LoadConfigFile()", ex);
+                Log.Error(ex, "IniConfigFileManager->LoadConfigFile");
             }
             finally
             {
-                if (fs != null)
-                    fs.Close();
+                fs?.Close();
             }
 
             return readSuccessfull;
@@ -113,14 +112,11 @@ namespace GeneralToolkitLib.ConfigHelper
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("SaveConfigFile", ex);
+                Log.Error(ex, "IniConfigFileManager->SaveConfigFile");
             }
         }
 
-        public IniConfigFile ConfigurationData
-        {
-            get { return _iniFileData; }
-        }
+        public IniConfigFile ConfigurationData => _iniFileData;
     }
 
     [Serializable]

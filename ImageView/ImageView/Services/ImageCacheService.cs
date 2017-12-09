@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using ImageView.Models;
+using JetBrains.Annotations;
 
 namespace ImageView.Services
 {
-    public class ImageCacheService : IDisposable
+    [UsedImplicitly]
+    public class ImageCacheService : ServiceBase, IDisposable
     {
         private const long DefaultCacheSize = 16777216;
         public const long MinCacheSize = 5242880;
         public const long MaxCacheSize = 268435456;
         private Dictionary<string, CachedImage> _cachedImages;
         private long _cacheSize;
-        private readonly ApplicationSettingsService _applicationSettingsService;
 
         public ImageCacheService(ApplicationSettingsService applicationSettingsService)
         {
-            _applicationSettingsService = applicationSettingsService;
-            long cacheSizeFromSetings = _applicationSettingsService.Settings.ImageCacheSize;
+            long cacheSizeFromSetings = applicationSettingsService.Settings.ImageCacheSize;
             _cacheSize = DefaultCacheSize;
+
             _cachedImages = new Dictionary<string, CachedImage>();
 
             if (cacheSizeFromSetings >= MinCacheSize && cacheSizeFromSetings <= MaxCacheSize)
@@ -28,9 +29,20 @@ namespace ImageView.Services
             }
             else
             {
-                _applicationSettingsService.Settings.ImageCacheSize = CacheSize;
-                _applicationSettingsService.SaveSettings();
+                applicationSettingsService.Settings.ImageCacheSize = CacheSize;
+                applicationSettingsService.SaveSettings();
             }
+
+            applicationSettingsService.OnSettingsSaved += _applicationSettingsService_OnSettingsChanged;
+        }
+
+        private void _applicationSettingsService_OnSettingsChanged(object sender, EventArgs e)
+        {
+            if (sender is ApplicationSettingsService appSettingsService)
+            {
+                CacheSize = appSettingsService.Settings.ImageCacheSize;
+            }
+
         }
 
         public long CacheSize
