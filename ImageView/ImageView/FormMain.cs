@@ -18,6 +18,7 @@ using ImageView.Properties;
 using ImageView.Services;
 using ImageView.Utility;
 using Serilog;
+using IContainer = Autofac.IContainer;
 
 namespace ImageView
 {
@@ -43,22 +44,26 @@ namespace ImageView
         private readonly ImageCacheService _imageCacheService;
         private FormThumbnailView _formThumbnailView;
         private FormBookmarks _formBookmarks;
-   
+        private readonly ImageLoaderService _imageLoaderService;
+        private readonly ILifetimeScope _scope;
 
-        public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
+
+        public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService, ImageLoaderService imageLoaderService, ILifetimeScope scope)
         {
             _formAddBookmark = formAddBookmark;
             _bookmarkService = bookmarkService;
             _formSettings = formSettings;
             _applicationSettingsService = applicationSettingsService;
             _imageCacheService = imageCacheService;
+            _imageLoaderService = imageLoaderService;
+            _scope = scope;
             InitializeComponent();
             _imageViewFormList = new List<FormImageView>();
             _windowTitle = "Image Viewer - " + Application.ProductVersion;
         }
 
 
-        private bool ImageSourceDataAvailable => _dataReady && ImageLoaderService.Instance.ImageReferenceList != null;
+        private bool ImageSourceDataAvailable => _dataReady && _imageLoaderService.ImageReferenceList != null;
 
         private void FormMain_Load(object sender, EventArgs e)
         {
@@ -70,8 +75,8 @@ namespace ImageView
             DoubleBuffered = true;
             _applicationSettingsService.OnSettingsSaved += Instance_OnSettingsSaved;
             _applicationSettingsService.OnRegistryAccessDenied += Instance_OnRegistryAccessDenied;
-            ImageLoaderService.Instance.OnImportComplete += Instance_OnImportComplete;
-            ImageLoaderService.Instance.OnImageWasDeleted += Instance_OnImageWasDeleted;
+            _imageLoaderService.OnImportComplete += Instance_OnImportComplete;
+            _imageLoaderService.OnImageWasDeleted += Instance_OnImageWasDeleted;
 
             if (!_applicationSettingsService.LoadSettings())
             {
@@ -321,10 +326,10 @@ namespace ImageView
         private void SetImageReferenceCollection()
         {
             bool randomizeImageCollection = _applicationSettingsService.Settings.AutoRandomizeCollection;
-            if (!ImageLoaderService.Instance.IsRunningImport && ImageLoaderService.Instance.ImageReferenceList != null)
+            if (!_imageLoaderService.IsRunningImport && _imageLoaderService.ImageReferenceList != null)
             {
-                _imageReferenceCollection = ImageLoaderService.Instance.GenerateImageReferenceCollection(randomizeImageCollection);
-                if (ImageLoaderService.Instance.ImageReferenceList.Count > 0)
+                _imageReferenceCollection = _imageLoaderService.GenerateImageReferenceCollection(randomizeImageCollection);
+                if (_imageLoaderService.ImageReferenceList.Count > 0)
                 {
                     _dataReady = true;
                 }
@@ -442,7 +447,7 @@ namespace ImageView
 
         private void autoLoadPreviousFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formLoad = new FormLoad();
+            var formLoad = new FormLoad(_imageLoaderService);
             formLoad.SetBasePath(_applicationSettingsService.Settings.LastFolderLocation);
             formLoad.ShowDialog(this);
         }
@@ -554,7 +559,7 @@ namespace ImageView
 
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var fileBrowser = new FileBrowser(_applicationSettingsService);
+            var fileBrowser = new FileBrowser(_applicationSettingsService, _imageLoaderService);
             fileBrowser.ShowDialog(this);
         }
 
@@ -678,7 +683,7 @@ namespace ImageView
 
         private void newWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var imageViewForm = new FormImageView(_imageViewFormIdCnt++, _formAddBookmark, _bookmarkService.BookmarkManager, _applicationSettingsService, _imageCacheService);
+            var imageViewForm = new FormImageView(_imageViewFormIdCnt++, _formAddBookmark, _bookmarkService.BookmarkManager, _applicationSettingsService, _imageCacheService, _imageLoaderService);
             _imageViewFormList.Add(imageViewForm);
             imageViewForm.FormClosed += imageViewForm_FormClosed;
             imageViewForm.Show();
@@ -804,12 +809,12 @@ namespace ImageView
                 {
                     return;
                 }
-                _imageReferenceCollection = new ImageReferenceCollection(new List<int>());
+                _imageReferenceCollection = new ImageReferenceCollection(new List<int>(),_imageLoaderService);
                 var currentImage = _imageReferenceCollection.SetCurrentImage(openFileDialog1.FileName);
                 _dataReady = true;
-                if (ImageLoaderService.Instance.ImageReferenceList == null)
+                if (_imageLoaderService.ImageReferenceList == null)
                 {
-                    ImageLoaderService.Instance.CreateFromOpenSingleImage(currentImage);
+                    _imageLoaderService.CreateFromOpenSingleImage(currentImage);
                 }
             }
         }
@@ -818,7 +823,8 @@ namespace ImageView
         {
             if (_formThumbnailView == null)
             {
-                _formThumbnailView = new FormThumbnailView(_formAddBookmark, _applicationSettingsService, _imageCacheService);
+                //_formThumbnailView = new FormThumbnailView(_formAddBookmark, _applicationSettingsService, _imageCacheService,);
+                _formThumbnailView = _scope.Resolve<FormThumbnailView>();
                 _formThumbnailView.Show();
                 _formThumbnailView.FormClosed += FormThumbnailView_FormClosed;
             }
@@ -830,7 +836,8 @@ namespace ImageView
 
         private void thumbnailDBSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var thumbnailservice = new ThumbnailService(ApplicationBuildConfig.UserDataPath);
+
+            var thumbnailservice = _scope.Resolve<ThumbnailService>();
             var form = new FormThumbnailSettings(thumbnailservice);
             form.ShowDialog(this);
         }

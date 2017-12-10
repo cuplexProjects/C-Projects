@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using GeneralToolkitLib.Storage.Registry;
 using ImageView.Configuration;
@@ -12,11 +13,12 @@ using Serilog;
 
 namespace ImageView.Services
 {
-
     [UsedImplicitly]
     public class ApplicationSettingsService : ServiceBase, IExceptionEventHandler
     {
         private readonly IRegistryAccess _registryService;
+        public static string CompanyName => Application.CompanyName;
+        public string ProductName { get; } = Application.ProductName;
 
         public ApplicationSettingsService()
         {
@@ -25,11 +27,11 @@ namespace ImageView.Services
                 // In debug mode use the local storage reg access clone
                 if (ApplicationBuildConfig.DebugMode)
                 {
-                    _registryService=new LocalStorageRegistryAccess(Application.CompanyName, Application.ProductName);
+                    _registryService = new LocalStorageRegistryAccess(CompanyName, ProductName);
                 }
                 else
                 {
-                    _registryService = new RegistryAccess(Application.CompanyName, Application.ProductName)
+                    _registryService = new RegistryAccess(CompanyName, ProductName)
                     {
                         ShowError = true
                     };

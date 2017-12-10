@@ -17,10 +17,12 @@ namespace ImageView
         private string _selectedPath;
         private bool enableLoadFormOnEnterKey = true;
         private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly ImageLoaderService _imageLoaderService;
 
-        public FileBrowser(ApplicationSettingsService applicationSettingsService)
+        public FileBrowser(ApplicationSettingsService applicationSettingsService, ImageLoaderService imageLoaderService)
         {
             _applicationSettingsService = applicationSettingsService;
+            _imageLoaderService = imageLoaderService;
             InitializeComponent();
         }
 
@@ -131,7 +133,7 @@ namespace ImageView
             if (!PathCollection.Contains(SelectedPath))
                 PathCollection.Add(SelectedPath);
 
-            var formLoad = new FormLoad();
+            var formLoad = new FormLoad(_imageLoaderService);
             formLoad.SetBasePath(SelectedPath);
             formLoad.ShowDialog(this);
 
@@ -141,14 +143,14 @@ namespace ImageView
                 _applicationSettingsService.SaveSettings();
             }
 
-            if (ImageLoaderService.Instance.ImageReferenceList != null)
+            if (_imageLoaderService.ImageReferenceList != null)
                 dataGridViewLoadedImages.DataSource = GetSortableBindingSource();
             DelayOperation.DelayAction(delegate { enableLoadFormOnEnterKey = true; }, 2000);
         }
 
         private SortableBindingList<ImageReferenceElement> GetSortableBindingSource()
         {
-            return new SortableBindingList<ImageReferenceElement>(ImageLoaderService.Instance.ImageReferenceList);
+            return new SortableBindingList<ImageReferenceElement>(_imageLoaderService.ImageReferenceList);
         }
 
         private void dataGridViewLoadedImages_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -166,7 +168,7 @@ namespace ImageView
 
         private void btnRefreshList_Click(object sender, EventArgs e)
         {
-            if (ImageLoaderService.Instance.ImageReferenceList != null)
+            if (_imageLoaderService.ImageReferenceList != null)
                 dataGridViewLoadedImages.DataSource = GetSortableBindingSource();
         }
 
@@ -182,7 +184,7 @@ namespace ImageView
                 {
                     var imgRefElement = row.DataBoundItem as ImageReferenceElement;
                     if (imgRefElement != null)
-                        ImageLoaderService.Instance.PermanentlyRemoveFile(imgRefElement);
+                        _imageLoaderService.PermanentlyRemoveFile(imgRefElement);
                 }
                 dataGridViewLoadedImages.DataSource = GetSortableBindingSource();
             }

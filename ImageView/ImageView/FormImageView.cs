@@ -47,18 +47,18 @@ namespace ImageView
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly ImageCacheService _imageCache;
 
-        public FormImageView(int id, FormAddBookmark formAddBookmark, BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCache)
+        public FormImageView(int id, FormAddBookmark formAddBookmark, BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCache, ImageLoaderService imageLoaderService)
         {
             InitializeComponent();
             _imageViewFormInfo = new ImageViewFormImageInfo(this, null, 0);
             _observers = new List<IObserver<ImageViewFormInfoBase>>();
-            _imageLoaderService = ImageLoaderService.Instance;
             pictureBox.Paint += pictureBox_Paint;
             FormId = id;
             _formAddBookmark = formAddBookmark;
             _bookmarkManager = bookmarkManager;
             _applicationSettingsService = applicationSettingsService;
             _imageCache = imageCache;
+            _imageLoaderService = imageLoaderService;
             _switchImgButtonsEnabled = _applicationSettingsService.Settings.ShowSwitchImageButtons;
             if (_switchImgButtonsEnabled)
             {

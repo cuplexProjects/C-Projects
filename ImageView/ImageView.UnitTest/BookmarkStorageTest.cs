@@ -6,11 +6,9 @@ using GeneralToolkitLib.ConfigHelper;
 using ImageView.DataContracts;
 using ImageView.Managers;
 using ImageView.Models;
-
 using ImageView.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
-using NSubstitute.ClearExtensions;
 
 namespace ImageView.UnitTest
 {
@@ -20,7 +18,6 @@ namespace ImageView.UnitTest
     {
         private static ImageReferenceElement _imageReference;
         private BookmarkService _bookmarkService;
-        private ApplicationSettingsService _applicationSettingsService;
 
         [ClassInitialize]
         public static void BookmarkStorageInitialize(TestContext testContext)
@@ -56,14 +53,10 @@ namespace ImageView.UnitTest
         [TestInitialize]
         public void MyTestInitialize()
         {
-            var appSettings = new ImageViewApplicationSettings {DefaultKey = "EkNxG2vH27y4xezfzyEJpHGenOtgLJ1x"};
+            var settingsService = GetApplicationSettingsService();
 
-            _applicationSettingsService = Substitute.For<ApplicationSettingsService>();
-            _applicationSettingsService.Settings.Returns(appSettings);
-           
-           
             var bookmarkManager = new BookmarkManager();
-            _bookmarkService = new BookmarkService(bookmarkManager, _applicationSettingsService);
+            _bookmarkService = new BookmarkService(bookmarkManager, settingsService);
             
             Assert.IsFalse(bookmarkManager.IsModified, "BookmarkManager can not be modified before test begins");
             Assert.IsTrue(bookmarkManager.RootFolder.Bookmarks.Count==0, "Test must start with empty bookmark list");
@@ -83,12 +76,12 @@ namespace ImageView.UnitTest
             BookmarkManager bookmarkManager = _bookmarkService.BookmarkManager;
             BookmarkFolder rootFolder = bookmarkManager.RootFolder;
             Assert.AreEqual("Root", rootFolder.Name, "Invaild Root folder name");
- 
+            var settingsService = GetApplicationSettingsService();
 
             bookmarkManager.AddBookmark(rootFolder.Id, "TestImageBookmark", _imageReference);
             bool saveSuccessful = _bookmarkService.SaveBookmarks();
             Assert.IsTrue(saveSuccessful, "Saving bookmarks data file failed!");
-            _bookmarkService = new BookmarkService(new BookmarkManager(), _applicationSettingsService);
+            _bookmarkService = new BookmarkService(new BookmarkManager(), settingsService);
             _bookmarkService.OpenBookmarks();
             bookmarkManager = _bookmarkService.BookmarkManager;
 
@@ -195,6 +188,17 @@ namespace ImageView.UnitTest
             Assert.IsTrue(bookmarkManager.IsModified, "BookmarkManager should be modified");
             _bookmarkService.SaveBookmarks();
             Assert.IsFalse(bookmarkManager.IsModified, "BookmarkManager should not be modified");
+        }
+
+        private ApplicationSettingsService GetApplicationSettingsService()
+        {
+            var appSettings = new ImageViewApplicationSettings { DefaultKey = "EkNxG2vH27y4xezfzyEJpHGenOtgLJ1x" };
+            var settingsService = Substitute.For<ApplicationSettingsService>();
+            ApplicationSettingsService.CompanyName.Returns("Cuplex");
+            settingsService.ProductName.Returns("ImageViewer");
+            settingsService.Settings.Returns(appSettings);
+
+            return settingsService;
         }
 
         private bool CompareBookmarkToImgRef(Bookmark bookmark, ImageReferenceElement imageReference)

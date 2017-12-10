@@ -18,13 +18,13 @@ namespace ImageView.Library.AutofacModules
                 .AssignableTo<ManagerBase>()
                 .AsSelf()
                 .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+                .SingleInstance();
 
             builder.RegisterAssemblyTypes(typeof(ServiceBase).Assembly)
                 .AssignableTo<ServiceBase>()
                 .AsSelf()
                 .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+                .SingleInstance();
 
             var assembly = Assembly.GetExecutingAssembly();
             builder.RegisterAssemblyTypes(assembly)

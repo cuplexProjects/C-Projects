@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using ImageView.Configuration;
 using ImageView.Managers;
 using ImageView.Models;
 using Serilog;
@@ -11,13 +12,14 @@ namespace ImageView.Services
     {
         private readonly ThumbnailManager _thumbnailManager;
 
-        public ThumbnailService(string databaseDirectory)
+        public ThumbnailService(ThumbnailManager thumbnailManager)
         {
+            _thumbnailManager = thumbnailManager;
+            string databaseDirectory = ApplicationBuildConfig.UserDataPath;
             BasePath = databaseDirectory;
-            _thumbnailManager = ThumbnailManager.CreateNew(BasePath);
         }
 
-        public string BasePath { get; }
+        public string BasePath { get; private set; }
 
         public void Dispose()
         {

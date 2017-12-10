@@ -8,7 +8,7 @@ namespace ImageView.Configuration
     public static class ApplicationBuildConfig
     {
         //private static readonly string LogFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}_log.txt";
-        
+
         private static string _userDataPath;
 
         public static string ApplicationLogFilePath(bool rollingFile)
@@ -37,7 +37,7 @@ namespace ImageView.Configuration
                 return GetAssemblyPath(Assembly.GetExecutingAssembly().Location);
             }
 
-            return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + Assembly.GetEntryAssembly().GetName() + "\\";
+            return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + Assembly.GetEntryAssembly().GetName().Name.Replace(" ", "") + "\\";
         }
 
         /// <summary>

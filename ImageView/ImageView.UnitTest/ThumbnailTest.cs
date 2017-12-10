@@ -1,9 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
+using ImageView.Configuration;
+using ImageView.Managers;
 using ImageView.Services;
 using ImageView.UnitTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 
 namespace ImageView.UnitTest
 {
@@ -13,6 +18,7 @@ namespace ImageView.UnitTest
     {
         private const string TestDirectory = @"c:\temp\thumbnailTest\";
         private static readonly string[] testImages = { "testImg.jpg", "testImg2.jpg", "testImg3.jpg" };
+        private static IApplicationBuildConfig _applicationBuildConfig;
 
         [ClassInitialize]
         public static void TestClassInit(TestContext testContext)
@@ -38,6 +44,9 @@ namespace ImageView.UnitTest
             img = Resources.anonymus_small;
             img.Save(TestDirectory + testImages[2]);
 
+            _applicationBuildConfig = Substitute.For<IApplicationBuildConfig>();
+            _applicationBuildConfig.UserDataPath.Returns(TestDirectory);
+            _applicationBuildConfig.DebugMode.Returns(true);
         }
 
         [ClassCleanup]
@@ -70,11 +79,11 @@ namespace ImageView.UnitTest
         [TestMethod]
         public void ThumbnailScanDirectory()
         {
-            ThumbnailService thumbnailService = new ThumbnailService(TestDirectory);
+            ThumbnailService thumbnailService = GetThumbnailService();
             thumbnailService.ScanDirectory(TestDirectory, false);
 
             Image thumbNailImage = thumbnailService.GetThumbnail(TestDirectory + testImages[0]);
-            Assert.IsNotNull(thumbNailImage,"Thumbnail image 1 was null");
+            Assert.IsNotNull(thumbNailImage, "Thumbnail image 1 was null");
 
             thumbNailImage = thumbnailService.GetThumbnail(TestDirectory + testImages[1]);
             Assert.IsNotNull(thumbNailImage, "Thumbnail image 2 was null");
@@ -88,11 +97,12 @@ namespace ImageView.UnitTest
         [TestMethod]
         public void ThumbnailLoadDatabase()
         {
-            ThumbnailService thumbnailService = new ThumbnailService(TestDirectory);
+            ThumbnailService thumbnailService = GetThumbnailService();
+
             CreateThumbnailDatabase(thumbnailService);
             bool result = thumbnailService.LoadThumbnailDatabase();
 
-            Assert.IsTrue(result,"Load thumbnail database failed");
+            Assert.IsTrue(result, "Load thumbnail database failed");
             Assert.AreEqual(thumbnailService.GetNumberOfCachedThumbnails(), 3, "Database did not contain 3 items");
 
             thumbnailService.Dispose();
@@ -101,8 +111,7 @@ namespace ImageView.UnitTest
         [TestMethod]
         public void ThumbnailOptimizeDatabaseAfterFileRemoval()
         {
-            ThumbnailService thumbnailService = new ThumbnailService(TestDirectory);
-            thumbnailService.ScanDirectory(TestDirectory, false);
+            ThumbnailService thumbnailService = GetThumbnailService();
 
             // Verify that there are testImages.Length thumbnails created
             Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == testImages.Length, "The thumbnail cache did not contain thhe right amount of images");
@@ -114,7 +123,7 @@ namespace ImageView.UnitTest
             thumbnailService.OptimizeDatabase();
 
             // Verify that one thumbnail was removed
-            Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == testImages.Length-1, "The thumbnail service did not remove a cached item");
+            Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == testImages.Length - 1, "The thumbnail service did not remove a cached item");
 
             thumbnailService.Dispose();
         }
@@ -122,17 +131,16 @@ namespace ImageView.UnitTest
         [TestMethod]
         public void ThumbnailOptimizeDatabaseAfterFileUpdated()
         {
-            ThumbnailService thumbnailService = new ThumbnailService(TestDirectory);
-            thumbnailService.ScanDirectory(TestDirectory, false);
+            ThumbnailService thumbnailService = GetThumbnailService();
 
             // Verify that there are testImages.Length thumbnails created
             Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == testImages.Length, "The thumbnail cache did not contain thhe right amount of images");
 
             //Modify the first file
             FileStream fs = File.OpenWrite(TestDirectory + testImages[0]);
-            byte[] buffer=new byte[1];
+            byte[] buffer = new byte[1];
             buffer[0] = 0xff;
-            fs.Write(buffer,0,1);
+            fs.Write(buffer, 0, 1);
             fs.Flush(true);
             fs.Close();
 
@@ -149,6 +157,16 @@ namespace ImageView.UnitTest
         {
             thumbnailService.ScanDirectory(TestDirectory, false);
             thumbnailService.SaveThumbnailDatabase();
+        }
+
+        private ThumbnailService GetThumbnailService()
+        {
+            FileManager fileManager = new FileManager(TestDirectory+ "thumbs.ibd");
+            ThumbnailManager thumbnailManager = new ThumbnailManager(fileManager);
+            ThumbnailService thumbnailService = new ThumbnailService(thumbnailManager);
+            thumbnailService.BasePath.Returns(_applicationBuildConfig.UserDataPath);
+            thumbnailService.ScanDirectory(TestDirectory, false);
+            return thumbnailService;
         }
     }
 }

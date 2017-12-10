@@ -30,11 +30,6 @@ namespace ImageView.Services
 
         public BookmarkManager BookmarkManager => _bookmarkManager;
 
-        public void Dispose()
-        {
-            _passwordStorage?.Dispose();
-            GC.Collect();
-        }
 
         public bool OpenBookmarks()
         {
@@ -82,6 +77,11 @@ namespace ImageView.Services
 
             }
             
+        }
+
+        public void Dispose()
+        {
+            _passwordStorage?.Dispose();
         }
     }
 }

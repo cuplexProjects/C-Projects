@@ -20,6 +20,7 @@ namespace ImageView
     public partial class FormThumbnailView : Form
     {
         private readonly ThumbnailService _thumbnailService;
+        private readonly ImageLoaderService _imageLoaderService;
         private string _maximizedImgFilename;
         private int _maxThumbnails;
         private List<Control> _pictureBoxList;
@@ -29,15 +30,15 @@ namespace ImageView
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly ImageCacheService _imageCacheService;
 
-        public FormThumbnailView(FormAddBookmark formAddBookmark, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
+        public FormThumbnailView(FormAddBookmark formAddBookmark, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService, ThumbnailService thumbnailService, ImageLoaderService imageLoaderService)
         {
             _formAddBookmark = formAddBookmark;
             _applicationSettingsService = applicationSettingsService;
             _imageCacheService = imageCacheService;
+            _thumbnailService = thumbnailService;
+            _imageLoaderService = imageLoaderService;
             _thumbnailSize = ValidateThumbnailSize(_applicationSettingsService.Settings.ThumbnailSize);
             _maxThumbnails = _applicationSettingsService.Settings.MaxThumbnails;
-            string dataPath = ApplicationBuildConfig.UserDataPath;
-            _thumbnailService = new ThumbnailService(dataPath);
             _thumbnailService.LoadThumbnailDatabase();
             InitializeComponent();
         }
@@ -65,7 +66,7 @@ namespace ImageView
 
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
-            if (ImageLoaderService.Instance.ImageReferenceList == null)
+            if (_imageLoaderService.ImageReferenceList == null)
                 return;
 
             HideMaximizedView();
@@ -115,8 +116,7 @@ namespace ImageView
         {
             var pictureBoxes = new List<Control>();
             bool randomizeImageCollection = _applicationSettingsService.Settings.AutoRandomizeCollection;
-            ImageLoaderService imgLoaderService = ImageLoaderService.Instance;
-            var imgRefList = imgLoaderService.GenerateThumbnailList(randomizeImageCollection);
+            var imgRefList = _imageLoaderService.GenerateThumbnailList(randomizeImageCollection);
             int items = 0;
             foreach (ImageReferenceElement element in imgRefList)
             {
@@ -218,12 +218,16 @@ namespace ImageView
 
         private void FormThumbnailView_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Task.Run(() =>
+            flowLayoutPanel1.Controls.Clear();
+            if (_pictureBoxList != null)
             {
-                _thumbnailService.SaveThumbnailDatabase();
-                _thumbnailService.Dispose();
-                GC.Collect();
-            });
+                foreach (var control in _pictureBoxList)
+                {
+                    control.Dispose();
+                }
+            }
+            _pictureBoxList = null;
+            GC.Collect();
         }
 
         private void picBoxMaximized_MouseClick(object sender, MouseEventArgs e)

@@ -8,9 +8,11 @@ namespace ImageView
     public partial class FormLoad : Form
     {
         private string _baseSearchPath;
+        private readonly ImageLoaderService _imageLoaderService;
 
-        public FormLoad()
+        public FormLoad(ImageLoaderService imageLoaderService)
         {
+            _imageLoaderService = imageLoaderService;
             InitializeComponent();
             _baseSearchPath = null;
         }
@@ -26,8 +28,8 @@ namespace ImageView
             lblStatus.Text = "Ready";
             lblBasePath.Text = _baseSearchPath;
             btnCancel.Enabled = false;
-            ImageLoaderService.Instance.OnProgressUpdate += Instance_OnProgressUpdate;
-            ImageLoaderService.Instance.OnImportComplete += Instance_OnImportComplete;
+            _imageLoaderService.OnProgressUpdate += Instance_OnProgressUpdate;
+            _imageLoaderService.OnImportComplete += Instance_OnImportComplete;
         }
 
         private void FormLoad_Shown(object sender, EventArgs e)
@@ -80,26 +82,26 @@ namespace ImageView
 
             btnCancel.Enabled = true;
             progressBar1.Value = 0;
-            if (ImageLoaderService.Instance.StartImageImport(_baseSearchPath))
+            if (_imageLoaderService.StartImageImport(_baseSearchPath))
                 btnStart.Enabled = false;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            ImageLoaderService.Instance.StopImport();
+            _imageLoaderService.StopImport();
             btnStart.Enabled = true;
             lblStatus.Text = "Canceled";
         }
 
         private void FormLoad_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.CloseReason == CloseReason.UserClosing && ImageLoaderService.Instance.IsRunningImport)
+            if (e.CloseReason == CloseReason.UserClosing && _imageLoaderService.IsRunningImport)
             {
                 e.Cancel = true;
                 MessageBox.Show("Cancel the import before closing this form");
             }
-            else if (e.CloseReason != CloseReason.UserClosing && ImageLoaderService.Instance.IsRunningImport)
-                ImageLoaderService.Instance.StopImport();
+            else if (e.CloseReason != CloseReason.UserClosing && _imageLoaderService.IsRunningImport)
+                _imageLoaderService.StopImport();
         }
 
         private delegate void UpdateProgressDelegate(

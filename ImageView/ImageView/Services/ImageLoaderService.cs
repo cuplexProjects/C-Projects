@@ -8,6 +8,7 @@ using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading;
 using ImageView.Models;
+using JetBrains.Annotations;
 using Serilog;
 
 namespace ImageView.Services
@@ -21,12 +22,12 @@ namespace ImageView.Services
         Complete
     }
 
-    public class ImageLoaderService : ServiceBase
+    [UsedImplicitly]
+    public class ImageLoaderService : ServiceBase, IDisposable
     {
         public delegate void ProgressUpdateEventHandler(object sender, ProgressEventArgs e);
 
         private const string ImageSearchPatterb = @"^[a-zA-Z0-9_]((.+\.jpg$)|(.+\.png$)|(.+\.jpeg$)|(.+\.gif$))";
-        private static ImageLoaderService _instance;
         private readonly Regex _fileNameRegExp;
         private readonly RandomNumberGenerator _randomNumberGenerator;
         private readonly object _threadLock;
@@ -40,7 +41,7 @@ namespace ImageView.Services
         private int _totalNumberOfFiles;
         private Thread _workerThread;
 
-        private ImageLoaderService()
+        public ImageLoaderService()
         {
             _fileNameRegExp = new Regex(ImageSearchPatterb, RegexOptions.IgnoreCase);
             _threadLock = new object();
@@ -49,8 +50,6 @@ namespace ImageView.Services
 
             _winId = WindowsIdentity.GetCurrent();
         }
-
-        public static ImageLoaderService Instance => _instance ?? (_instance = new ImageLoaderService());
 
         public int ProgressInterval
         {
@@ -248,13 +247,13 @@ namespace ImageView.Services
                     randomImagePosList.Add(i);
             }
 
-            var imageReferenceCollection = new ImageReferenceCollection(randomImagePosList);
+            var imageReferenceCollection = new ImageReferenceCollection(randomImagePosList,this);
             return imageReferenceCollection;
         }
 
         public List<ImageReferenceElement> GenerateThumbnailList(bool randomOrder)
         {
-            List<ImageReferenceElement> imgRefList = new List<ImageReferenceElement>();
+            var imgRefList = new List<ImageReferenceElement>();
             if (randomOrder)
             {
                 var randomImagePosList = GetRandomImagePositionList();
@@ -277,8 +276,13 @@ namespace ImageView.Services
      
         public void CreateFromOpenSingleImage(ImageReferenceElement currentImage)
         {
-            _imageReferenceList=new List<ImageReferenceElement>();
-            _imageReferenceList.Add(currentImage);
+            _imageReferenceList = new List<ImageReferenceElement> {currentImage};
+        }
+
+        public void Dispose()
+        {
+            _randomNumberGenerator?.Dispose();
+            _winId?.Dispose();
         }
     }
 

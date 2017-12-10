@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
+using ImageView.Configuration;
 using ImageView.DataContracts;
 using ImageView.Models;
 using ImageView.Utility;
@@ -26,12 +27,14 @@ namespace ImageView.Managers
         private readonly Regex _fileNameRegExp;
         private bool _abortScan;
         private Dictionary<string, ThumbnailEntry> _fileDictionary;
-        private FileManager _fileManager;
         private bool _isRunningThumbnailScan;
         private ThumbnailDatabase _thumbnailDatabase;
+        private readonly FileManager _fileManager;
 
-        private ThumbnailManager(string dataStoragePath)
+        public ThumbnailManager(FileManager fileManager)
         {
+            _fileManager = fileManager;
+            string dataStoragePath = ApplicationBuildConfig.UserDataPath;
             _fileDictionary = new Dictionary<string, ThumbnailEntry>();
             _thumbnailDatabase = new ThumbnailDatabase
             {
@@ -40,7 +43,7 @@ namespace ImageView.Managers
                 DataStroragePath = dataStoragePath,
                 ThumbnailEntries = new List<ThumbnailEntry>()
             };
-            _fileManager = new FileManager(dataStoragePath + DatabaseImgDataFilename);
+            //_fileManager = new FileManager(dataStoragePath + DatabaseImgDataFilename);
             _fileNameRegExp = new Regex(ImageSearchPatterb, RegexOptions.IgnoreCase);
         }
 
@@ -48,16 +51,11 @@ namespace ImageView.Managers
 
         public void Dispose()
         {
-            _fileManager.Dispose();
-            _fileManager = null;
+            //_fileManager?.Dispose();
+            //_fileManager = null;
 
-            _fileDictionary = null;
-            _thumbnailDatabase = null;
-        }
-
-        public static ThumbnailManager CreateNew(string dataStoragePath)
-        {
-            return new ThumbnailManager(dataStoragePath);
+            //_fileDictionary = null;
+            //_thumbnailDatabase = null;
         }
 
         public void StartThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
@@ -94,8 +92,8 @@ namespace ImageView.Managers
         {
             try
             {
-                if (_fileManager.IsLocked)
-                    return false;
+                //if (_fileManager.IsLocked)
+                //    return false;
 
                 string filename = _thumbnailDatabase.DataStroragePath + DatabaseFilename;
                 var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, DatabaseKey);
@@ -111,7 +109,7 @@ namespace ImageView.Managers
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "ThumbnailManager.SaveToFile(string filename, string password) : " + ex.Message, ex);
+                Log.Error(ex, "ThumbnailManager.SaveThumbnailDatabase() : " + ex.Message, ex);
                 return false;
             }
         }
@@ -421,178 +419,6 @@ namespace ImageView.Managers
             {
                 _fileDictionary.Add(path + fileName, thumbnail);
                 IsModified = true;
-            }
-        }
-
-        private class FileManager : IDisposable
-        {
-            private readonly Dictionary<string, bool> _directoryAccessDictionary;
-            private readonly string _fileName;
-            private FileStream _fileStream;
-
-            public FileManager(string fileName)
-            {
-                _fileName = fileName;
-                _directoryAccessDictionary = new Dictionary<string, bool>();
-            }
-
-            public bool IsLocked { get; private set; }
-
-            public void Dispose()
-            {
-                CloseStream();
-            }
-
-            public Image ReadImage(int position, int length)
-            {
-                if (_fileStream == null)
-                    _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-
-                _fileStream.Position = position;
-                var buffer = new byte[length];
-                _fileStream.Read(buffer, 0, length);
-
-                var ms = new MemoryStream(buffer);
-                Image img = Image.FromStream(ms);
-                return img;
-            }
-
-            public FileEntry WriteImage(Image img)
-            {
-                if (_fileStream == null)
-                    _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-
-                _fileStream.Position = _fileStream.Length;
-                long position = _fileStream.Position;
-                img.Save(_fileStream, ImageFormat.Jpeg);
-
-                var fileEntry = new FileEntry
-                {
-                    Position = position,
-                    Length = Convert.ToInt32(_fileStream.Position - position)
-                };
-
-                return fileEntry;
-            }
-
-            public void RecreateDatabase(IEnumerable<ThumbnailEntry> thumbnailEntries)
-            {
-                if (_fileStream == null)
-                    _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                else
-                {
-                    SaveToDisk();
-                }
-
-                string tempFileName = GeneralConverters.GetDirectoryNameFromPath(_fileName) + TemporaryDatabaseFilename;
-
-                FileStream temporaryDatabaseFile = null;
-                try
-                {
-                    if (File.Exists(tempFileName))
-                        File.Delete(tempFileName);
-
-                    temporaryDatabaseFile = File.OpenWrite(tempFileName);
-                    foreach (ThumbnailEntry entry in thumbnailEntries)
-                    {
-                        var buffer = new byte[entry.Length];
-                        _fileStream.Position = entry.FilePosition;
-                        _fileStream.Read(buffer, 0, entry.Length);
-
-                        entry.FilePosition = temporaryDatabaseFile.Position;
-                        temporaryDatabaseFile.Write(buffer, 0, entry.Length);
-                    }
-
-                    CloseStream();
-                    temporaryDatabaseFile.Close();
-                    temporaryDatabaseFile = null;
-                    File.Delete(_fileName);
-                    File.Move(tempFileName, _fileName);
-                }
-                catch (Exception exception)
-                {
-                    Log.Error(exception, "Error in RecreateDatabase()");
-                }
-                finally
-                {
-                    temporaryDatabaseFile?.Close();
-                    _fileStream?.Close();
-                    _fileStream = null;
-                }
-            }
-
-            public void SaveToDisk()
-            {
-                _fileStream?.Flush(true);
-            }
-
-            public void CloseStream()
-            {
-                if (_fileStream != null)
-                {
-                    _fileStream.Flush(true);
-                    _fileStream.Close();
-                    _fileStream = null;
-                }
-            }
-
-            /// <summary>
-            ///     Verifies that the file does excist and that the physical file has not been written to after the thumbnail was
-            ///     created.
-            ///     Assumes access to the directory
-            /// </summary>
-            /// <param name="thumbnailEntry"></param>
-            /// <returns>True if the thumbnail is up to date and the original file exists</returns>
-            public static bool IsUpToDate(ThumbnailEntry thumbnailEntry)
-            {
-                var fileInfo = new FileInfo(thumbnailEntry.Directory + thumbnailEntry.FileName);
-                return fileInfo.Exists && fileInfo.LastWriteTime == thumbnailEntry.SourceImageDate;
-            }
-
-            public void ClearDirectoryAccessCache()
-            {
-                _directoryAccessDictionary.Clear();
-            }
-
-            public bool HasAccessToDirectory(string directory)
-            {
-                if (_directoryAccessDictionary.ContainsKey(directory))
-                    return _directoryAccessDictionary[directory];
-
-                string volume = GeneralConverters.GetVolumeLabelFromPath(directory);
-                var drives = DriveInfo.GetDrives().ToList();
-
-                if (drives.Any(d => d.IsReady && d.Name.Equals(volume, StringComparison.CurrentCultureIgnoreCase)))
-                {
-                    try
-                    {
-                        var directoryInfo = new DirectoryInfo(directory);
-                        directoryInfo.EnumerateFiles();
-                        _directoryAccessDictionary.Add(directory, true);
-                        return true;
-                    }
-                    catch (Exception)
-                    {
-                        // ignored
-                    }
-                }
-
-                _directoryAccessDictionary.Add(directory, false);
-                return false;
-            }
-
-            public bool LockDatabase()
-            {
-                if (IsLocked)
-                    return false;
-
-                IsLocked = true;
-                return true;
-            }
-
-            public void UnlockDatabase()
-            {
-                IsLocked = false;
             }
         }
     }

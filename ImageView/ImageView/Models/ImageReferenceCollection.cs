@@ -8,11 +8,13 @@ namespace ImageView.Models
     public class ImageReferenceCollection
     {
         private readonly List<int> _randomImagePosList;
+        private readonly ImageLoaderService _imageLoaderService;
         private int _imageListPointer;
 
-        public ImageReferenceCollection(List<int> randomImagePosList)
+        public ImageReferenceCollection(List<int> randomImagePosList, ImageLoaderService imageLoaderService)
         {
             _randomImagePosList = randomImagePosList;
+            _imageLoaderService = imageLoaderService;
         }
 
         public ImageReferenceElement CurrentImage { get; private set; }
@@ -34,7 +36,7 @@ namespace ImageView.Models
         public ImageReferenceElement GetNextImage()
         {
             ImageListPointer = ImageListPointer + 1;
-            CurrentImage = ImageLoaderService.Instance.ImageReferenceList[_randomImagePosList[ImageListPointer]];
+            CurrentImage =_imageLoaderService.ImageReferenceList[_randomImagePosList[ImageListPointer]];
             return CurrentImage;
         }
 
@@ -46,13 +48,13 @@ namespace ImageView.Models
                 index = 0;
             }
 
-            return ImageLoaderService.Instance.ImageReferenceList[_randomImagePosList[index]]; ;
+            return _imageLoaderService.ImageReferenceList[_randomImagePosList[index]]; ;
         }
 
         public ImageReferenceElement GetPreviousImage()
         {
             ImageListPointer = ImageListPointer - 1;
-            CurrentImage = ImageLoaderService.Instance.ImageReferenceList[_randomImagePosList[ImageListPointer]];
+            CurrentImage =_imageLoaderService.ImageReferenceList[_randomImagePosList[ImageListPointer]];
             return CurrentImage;
         }
 
