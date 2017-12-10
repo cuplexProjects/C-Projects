@@ -60,6 +60,7 @@ namespace ImageView
             appSettings.ThumbnailFormLocation = Location;
             appSettings.ThumbnailFormSize = Size;
             _applicationSettingsService.SaveSettings();
+            Controls.Clear();
         }
 
         private async void btnGenerate_Click(object sender, EventArgs e)

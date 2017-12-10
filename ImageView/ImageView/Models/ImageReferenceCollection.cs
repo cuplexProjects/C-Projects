@@ -41,7 +41,7 @@ namespace ImageView.Models
         public ImageReferenceElement PeekNextImage()
         {
             var index = ImageListPointer + 1;
-            if (index > _randomImagePosList.Count)
+            if (index >= _randomImagePosList.Count)
             {
                 index = 0;
             }

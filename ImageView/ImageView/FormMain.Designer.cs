@@ -87,6 +87,8 @@
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.thumbnailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openThumbnailsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.thumbnailDBSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -512,7 +514,6 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             this.pictureBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             // 
             // toolStripSeparator12
             // 
@@ -522,18 +523,32 @@
             // thumbnailsToolStripMenuItem
             // 
             this.thumbnailsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openThumbnailsToolStripMenuItem1});
+            this.openThumbnailsToolStripMenuItem1,
+            this.toolStripSeparator13,
+            this.thumbnailDBSettingsToolStripMenuItem});
             this.thumbnailsToolStripMenuItem.Name = "thumbnailsToolStripMenuItem";
             this.thumbnailsToolStripMenuItem.Size = new System.Drawing.Size(97, 24);
-            this.thumbnailsToolStripMenuItem.Text = "Thumbnails";
+            this.thumbnailsToolStripMenuItem.Text = "&Thumbnails";
             // 
             // openThumbnailsToolStripMenuItem1
             // 
             this.openThumbnailsToolStripMenuItem1.Name = "openThumbnailsToolStripMenuItem1";
             this.openThumbnailsToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.openThumbnailsToolStripMenuItem1.Size = new System.Drawing.Size(250, 26);
+            this.openThumbnailsToolStripMenuItem1.Size = new System.Drawing.Size(255, 26);
             this.openThumbnailsToolStripMenuItem1.Text = "Open Thumbnails";
             this.openThumbnailsToolStripMenuItem1.Click += new System.EventHandler(this.openThumbnailsToolStripMenuItem1_Click);
+            // 
+            // thumbnailDBSettingsToolStripMenuItem
+            // 
+            this.thumbnailDBSettingsToolStripMenuItem.Name = "thumbnailDBSettingsToolStripMenuItem";
+            this.thumbnailDBSettingsToolStripMenuItem.Size = new System.Drawing.Size(255, 26);
+            this.thumbnailDBSettingsToolStripMenuItem.Text = "Thumbnail Cache Settings";
+            this.thumbnailDBSettingsToolStripMenuItem.Click += new System.EventHandler(this.thumbnailDBSettingsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            this.toolStripSeparator13.Size = new System.Drawing.Size(252, 6);
             // 
             // FormMain
             // 
@@ -621,6 +636,8 @@
         private System.Windows.Forms.ToolStripMenuItem thumbnailsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openThumbnailsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+        private System.Windows.Forms.ToolStripMenuItem thumbnailDBSettingsToolStripMenuItem;
     }
 }
 

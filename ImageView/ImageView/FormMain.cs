@@ -7,8 +7,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Autofac;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.WindowsApi;
+using ImageView.Configuration;
 using ImageView.DataContracts;
 using ImageView.Events;
 using ImageView.Models;
@@ -41,6 +43,7 @@ namespace ImageView
         private readonly ImageCacheService _imageCacheService;
         private FormThumbnailView _formThumbnailView;
         private FormBookmarks _formBookmarks;
+   
 
         public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
         {
@@ -825,6 +828,13 @@ namespace ImageView
             }
         }
 
+        private void thumbnailDBSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var thumbnailservice = new ThumbnailService(ApplicationBuildConfig.UserDataPath);
+            var form = new FormThumbnailSettings(thumbnailservice);
+            form.ShowDialog(this);
+        }
+
         #endregion
 
         private void FormThumbnailView_FormClosed(object sender, FormClosedEventArgs e)
@@ -857,42 +867,5 @@ namespace ImageView
         {
 
         }
-
-        //private Task HideCursorInFullScreen()
-        //{
-        //    Task t = new Task(() =>
-        //    {
-        //        while (_fullScreen)
-        //        {
-        //            var cursorPos = Cursor.Position;
-        //            Thread.Sleep(1000);
-        //            if (cursorPos == Cursor.Position && _cursorVisible)
-        //            {
-        //                _cursorVisible = false;
-        //                Cursor.Hide();
-        //            }
-        //        }
-
-
-        //    });
-
-        //    return t;
-        //}
-
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
-        {
-
-        }
-
-
-
-        //private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    if (_fullScreen && !_cursorVisible)
-        //    {
-        //        _cursorVisible = true;
-        //        Cursor.Show();
-        //    }
-        //}
     }
 }
