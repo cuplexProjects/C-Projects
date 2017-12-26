@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using GeneralToolkitLib.Storage.Registry;
 using ImageView.Configuration;

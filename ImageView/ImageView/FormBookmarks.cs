@@ -584,9 +584,9 @@ namespace ImageView
 
         private void removeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _bookmarkManager.RemoveDuplicates();
+            int removedItems =_bookmarkManager.RemoveDuplicates();
             ReLoadBookmarks();
-            MessageBox.Show(this, "Duplicate bookmarks pointing to the same file where removed", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, $"{removedItems} Duplicate bookmarks pointing to the same file where removed", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void openAndIncludeToolStripMenuItem_Click(object sender, EventArgs e)

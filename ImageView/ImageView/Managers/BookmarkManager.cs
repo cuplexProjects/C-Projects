@@ -77,7 +77,7 @@ namespace ImageView.Managers
             }
             catch (Exception ex)
             {
-                Log.Error(ex,"BookmarkManager.SaveToFile(string filename, string password) : " + ex.Message, ex);
+                Log.Error(ex, "BookmarkManager.SaveToFile(string filename, string password) : " + ex.Message, ex);
                 return false;
             }
         }
@@ -112,7 +112,7 @@ namespace ImageView.Managers
             }
             catch (Exception ex)
             {
-                Log.Error(ex,"BookmarkManager.LoadFromFile(string filename, string password) : " + ex.Message, ex);
+                Log.Error(ex, "BookmarkManager.LoadFromFile(string filename, string password) : " + ex.Message, ex);
             }
 
             return false;
@@ -511,26 +511,53 @@ namespace ImageView.Managers
             return null;
         }
 
-        public void RemoveDuplicates()
+        public int RemoveDuplicates()
         {
-            var bookmarkFilenames = _bookmarkContainer.RootFolder.Bookmarks.Select(x => x.FileName).ToList();
+            return RemoveDuplicates(_bookmarkContainer.RootFolder);
+        }
 
-            var removeList = new List<Bookmark>();
+        // Remove duplicate complete filename bookmark, prioritize tree depth
+        private int RemoveDuplicates(BookmarkFolder rootFolder)
+        {
+            var allBookmarks = GetAllBookmarksIncludingSubfolders(rootFolder).OrderBy(x => x.CompletePath);
+            var removeQueue = new Queue<Bookmark>();
 
-            foreach (string filename in bookmarkFilenames)
+            foreach (var duplicateGroup in allBookmarks.GroupBy(x => x.CompletePath))
             {
-                var selection = _bookmarkContainer.RootFolder.Bookmarks.Where(x => x.FileName == filename).ToList();
-                if (selection.Count > 1)
+                if (duplicateGroup.Count() > 1)
                 {
-                    selection.RemoveAt(0);
-                    removeList.AddRange(selection);
+                    var duplicateList = duplicateGroup.OrderBy(x => x.ParentFolderId).ToList();
+
+                    var itemToKeep = duplicateList.FirstOrDefault(x => x.ParentFolderId != rootFolder.Id) ?? duplicateList.First();
+                    duplicateList.Remove(itemToKeep);
+
+                    foreach (var bookmark in duplicateList)
+                    {
+                        removeQueue.Enqueue(bookmark);
+                    }
                 }
             }
 
-            foreach (var bookmark in removeList)
+            int removedItems = removeQueue.Count;
+            while (removeQueue.Count > 0)
             {
-                DeleteBookmark(bookmark);
+                DeleteBookmark(removeQueue.Dequeue());
             }
+
+            return removedItems;
+        }
+
+        private IEnumerable<Bookmark> GetAllBookmarksIncludingSubfolders(BookmarkFolder rootFolder)
+        {
+            var bookmarks = new List<Bookmark>(rootFolder.Bookmarks);
+
+            foreach (var folder in rootFolder.BookmarkFolders)
+            {
+                bookmarks.AddRange(GetAllBookmarksIncludingSubfolders(folder));
+            }
+
+
+            return bookmarks;
         }
 
         public void BookmarkDatasourceUpdated()
@@ -550,13 +577,13 @@ namespace ImageView.Managers
                         bookmark.ParentFolderId = bookmarkfolder.Id;
                     }
 
-                    if (string.IsNullOrEmpty(bookmark.FileName) || bookmark.Size==0 || string.IsNullOrEmpty(bookmark.CompletePath))
+                    if (string.IsNullOrEmpty(bookmark.FileName) || bookmark.Size == 0 || string.IsNullOrEmpty(bookmark.CompletePath))
                     {
                         deleteQueue.Enqueue(bookmark);
                     }
                 }
 
-                while (deleteQueue.Count>0)
+                while (deleteQueue.Count > 0)
                 {
                     var bookmark = deleteQueue.Dequeue();
                     DeleteBookmark(bookmark);
@@ -566,7 +593,7 @@ namespace ImageView.Managers
             {
                 Log.Error(ex, "VerifyIntegrityOfBookmarFolder exception");
             }
-     
+
         }
     }
 }

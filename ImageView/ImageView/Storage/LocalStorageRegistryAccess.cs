@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
 using GeneralToolkitLib.Storage.Registry;
 using ImageView.Configuration;
-using ImageView.DataContracts;
 using Serilog;
 
 namespace ImageView.Storage

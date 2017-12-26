@@ -242,6 +242,11 @@
             A theme in the syle of the original <i>Serilog.Sinks.Literate</i>.
             </summary>
         </member>
+        <member name="P:Serilog.Sinks.SystemConsole.Themes.SystemConsoleTheme.Colored">
+            <summary>
+            A theme based on the original Serilog "colored console" sink.
+            </summary>
+        </member>
         <member name="M:Serilog.Sinks.SystemConsole.Themes.SystemConsoleTheme.#ctor(System.Collections.Generic.IReadOnlyDictionary{Serilog.Sinks.SystemConsole.Themes.ConsoleThemeStyle,Serilog.Sinks.SystemConsole.Themes.SystemConsoleThemeStyle})">
             <summary>
             Construct a theme given a set of styles.

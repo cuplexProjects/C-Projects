@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,8 +19,6 @@ namespace ImageView.Managers
     public class ThumbnailManager : ManagerBase, IDisposable
     {
         private const string DatabaseFilename = "thumbs.db";
-        private const string DatabaseImgDataFilename = "thumbs.ibd";
-        private const string TemporaryDatabaseFilename = "temp.ibd";
         private const string DatabaseKey = "2C1D350D-B0E5-4181-8D60-CAE050132DC1";
         private const string ImageSearchPatterb = @"^[a-zA-Z0-9_]((.+\.jpg$)|(.+\.png$)|(.+\.jpeg$)|(.+\.gif$))";
         private readonly Regex _fileNameRegExp;
@@ -43,7 +40,7 @@ namespace ImageView.Managers
                 DataStroragePath = dataStoragePath,
                 ThumbnailEntries = new List<ThumbnailEntry>()
             };
-            //_fileManager = new FileManager(dataStoragePath + DatabaseImgDataFilename);
+
             _fileNameRegExp = new Regex(ImageSearchPatterb, RegexOptions.IgnoreCase);
         }
 
@@ -51,11 +48,9 @@ namespace ImageView.Managers
 
         public void Dispose()
         {
-            //_fileManager?.Dispose();
-            //_fileManager = null;
-
-            //_fileDictionary = null;
-            //_thumbnailDatabase = null;
+            _fileDictionary = null;
+            _thumbnailDatabase = null;
+            GC.Collect();
         }
 
         public void StartThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
