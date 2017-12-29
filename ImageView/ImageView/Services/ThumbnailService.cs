@@ -84,12 +84,50 @@ namespace ImageView.Services
 
         public int GetNumberOfCachedThumbnails()
         {
+            if (!_thumbnailManager.IsLoaded)
+            {
+                _thumbnailManager.LoadThumbnailDatabase();
+            }
+           
             return _thumbnailManager.GetNumberOfCachedThumbnails();
         }
 
         public Image GetThumbnail(string filename)
         {
             return _thumbnailManager.GetThumbnail(filename);
+        }
+
+        public long GetThumbnailDbSize()
+        {
+            return _thumbnailManager.GetThumbnailDbFileSize();
+        }
+
+        public bool RemoveAllNonAccessableFilesAndSaveDb()
+        {
+            try
+            {
+                if (_thumbnailManager.RemoveAllMissingFilesAndRecreateDb())
+                {
+                    OptimizeDatabase();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "RemoveAllNonAccessableFilesAndSaveDb Exception");
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Truncates the size of the cache in Mb.
+        /// </summary>
+        /// <param name="maxSize">The maximum size.</param>
+        public void TruncateCacheSize(long maxSize)
+        {
+            _thumbnailManager.ReduceCachSize(maxSize);
+            OptimizeDatabase();
+            SaveThumbnailDatabase();
         }
     }
 }

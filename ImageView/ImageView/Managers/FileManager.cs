@@ -194,5 +194,14 @@ namespace ImageView.Managers
         {
             IsLocked = false;
         }
+
+        public long GetDbSize()
+        {
+            if (!File.Exists(_fileName))
+                return 0;
+
+            FileInfo fileInfo = new FileInfo(_fileName);
+            return fileInfo.Length;
+        }
     }
 }

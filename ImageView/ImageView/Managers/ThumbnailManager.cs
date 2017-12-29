@@ -45,6 +45,7 @@ namespace ImageView.Managers
         }
 
         public bool IsModified { get; private set; }
+        public bool IsLoaded { get; private set; }
 
         public void Dispose()
         {
@@ -90,7 +91,7 @@ namespace ImageView.Managers
                 //if (_fileManager.IsLocked)
                 //    return false;
 
-                string filename = _thumbnailDatabase.DataStroragePath + DatabaseFilename;
+                string filename = Path.Combine(_thumbnailDatabase.DataStroragePath, DatabaseFilename);
                 var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, DatabaseKey);
                 var storageManager = new StorageManager(settings);
                 bool successful = storageManager.SerializeObjectToFile(_thumbnailDatabase, filename, null);
@@ -99,6 +100,9 @@ namespace ImageView.Managers
                 {
                     IsModified = false;
                 }
+
+                // Also Save the raw db file
+                _fileManager.CloseStream();
 
                 return successful;
             }
@@ -116,7 +120,9 @@ namespace ImageView.Managers
                 if (_fileManager.IsLocked)
                     return false;
 
-                string filename = _thumbnailDatabase.DataStroragePath + DatabaseFilename;
+                IsLoaded = true;
+
+                string filename = Path.Combine(_thumbnailDatabase.DataStroragePath, DatabaseFilename);
                 if (!File.Exists(filename))
                 {
                     return false;
@@ -188,8 +194,8 @@ namespace ImageView.Managers
                 thumbnailsToRemove.Enqueue(entry);
             }
 
-            if (thumbnailsToRemove.Count == 0)
-                return;
+            //if (thumbnailsToRemove.Count == 0)
+            //    return;
 
             if (_fileManager.LockDatabase())
             {
@@ -214,6 +220,7 @@ namespace ImageView.Managers
         public void CloseFileHandle()
         {
             _fileManager.CloseStream();
+            IsLoaded = false;
         }
 
         private List<string> GetSubdirectoryList(string path)
@@ -304,9 +311,9 @@ namespace ImageView.Managers
 
             //Check for duplicates
             var query = (from t in thumbnailDatabase.ThumbnailEntries
-                group t by new {EntryFilePath = t.Directory + t.FileName}
+                         group t by new { EntryFilePath = t.Directory + t.FileName }
                 into g
-                select new {FilePath = g.Key, Count = g.Count()}).ToList();
+                         select new { FilePath = g.Key, Count = g.Count() }).ToList();
 
             var duplicateKeys = query.Where(x => x.Count > 1).Select(x => x.FilePath.EntryFilePath).ToList();
 
@@ -337,17 +344,17 @@ namespace ImageView.Managers
 
         private Image LoadImageFromFile(string filename)
         {
-            const int MaxSize = 512;
+            const int maxSize = 512;
             Image img = Image.FromFile(filename);
             int width = img.Width;
             int height = img.Height;
 
             if (width >= height)
             {
-                if (width > MaxSize)
+                if (width > maxSize)
                 {
-                    double factor = (double)width / MaxSize;
-                    width = MaxSize;
+                    double factor = (double)width / maxSize;
+                    width = maxSize;
                     height = Convert.ToInt32(Math.Ceiling(height / factor));
                 }
                 else
@@ -357,10 +364,10 @@ namespace ImageView.Managers
             }
             else
             {
-                if (height > MaxSize)
+                if (height > maxSize)
                 {
-                    double factor = (double)height / MaxSize;
-                    height = MaxSize;
+                    double factor = (double)height / maxSize;
+                    height = maxSize;
                     width = Convert.ToInt32(Math.Ceiling(width / factor));
                 }
                 else
@@ -416,5 +423,101 @@ namespace ImageView.Managers
                 IsModified = true;
             }
         }
+
+        public long GetThumbnailDbFileSize()
+        {
+            return _fileManager.GetDbSize();
+        }
+
+        public bool RemoveAllMissingFilesAndRecreateDb()
+        {
+            bool canLockDatabase = false;
+            try
+            {
+                Queue<ThumbnailEntry> deleteQueue = new Queue<ThumbnailEntry>();
+
+                canLockDatabase = _fileManager.LockDatabase();
+                if (!canLockDatabase)
+                    return false;
+
+                foreach (var entryKey in _fileDictionary.Keys)
+                {
+                    var entry = _fileDictionary[entryKey];
+                    if (!File.Exists(Path.Combine(entry.Directory, entry.FileName)))
+                    {
+                        deleteQueue.Enqueue(entry);
+                    }
+                }
+
+                if (deleteQueue.Count == 0)
+                    return false;
+
+                while (deleteQueue.Count > 0)
+                {
+                    var item = deleteQueue.Dequeue();
+                    _fileDictionary.Remove(Path.Combine(item.Directory, item.FileName));
+                }
+
+                IsModified = true;
+                return true;
+
+            }
+            finally
+            {
+                if (canLockDatabase)
+                {
+                    _fileManager.UnlockDatabase();
+                }
+            }
+        }
+
+        public bool ReduceCachSize(long maxFileSize)
+        {
+            bool canLockDatabase = false;
+            bool removedItems = false;
+
+            try
+            {
+                Queue<ThumbnailEntry> deleteQueue = new Queue<ThumbnailEntry>();
+                canLockDatabase = _fileManager.LockDatabase();
+                if (!canLockDatabase)
+                    return false;
+
+                if (_fileManager.GetDbSize() > maxFileSize)
+                {
+                    var cachedEntries = _fileDictionary.Values.OrderByDescending(x => x.Length).ToList();
+                    long diff = _fileManager.GetDbSize() - maxFileSize;
+
+                    int index = 0;
+                    while (diff > 0)
+                    {
+                        var entry = cachedEntries[index++];
+                        diff = diff - entry.Length;
+                        deleteQueue.Enqueue(entry);
+                    }
+
+                    while (deleteQueue.Count > 0)
+                    {
+                        var item = deleteQueue.Dequeue();
+                        _fileDictionary.Remove(Path.Combine(item.Directory, item.FileName));
+                    }
+
+                    IsModified = true;
+                    _fileManager.RecreateDatabase(_fileDictionary.Values);
+
+                }
+            }
+            finally
+            {
+                if (canLockDatabase)
+                {
+                    _fileManager.UnlockDatabase();
+                }
+
+            }
+            return removedItems;
+        }
+
+
     }
 }

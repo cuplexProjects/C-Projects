@@ -41,7 +41,7 @@ namespace Apps.cuplex.se.Utilities
                                           HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/";
 
                             string dirName = directory.Split('\\').Last();
-                            var downloadUrl = $"{request}/Downloads/{dirName}/{selectedMsi.Name}";
+                            var downloadUrl = $"{request}Downloads/{dirName}/{selectedMsi.Name}";
                             list.Add(new AppViewModel
                             {
                                 Name = appName,

@@ -82,6 +82,7 @@ namespace ImageView
                     _pictureBoxList = GenerateThumbnails();
                     if (!IsDisposed)
                         Invoke(new EventHandler(UpdatePictureBoxList));
+                    _thumbnailService.SaveThumbnailDatabase();
                     GC.Collect();
                 });
             }
@@ -218,6 +219,7 @@ namespace ImageView
 
         private void FormThumbnailView_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _thumbnailService.SaveThumbnailDatabase();
             flowLayoutPanel1.Controls.Clear();
             if (_pictureBoxList != null)
             {
