@@ -212,6 +212,7 @@
     <Compile Include="Managers\FileManager.cs" />
     <Compile Include="Managers\ManagerBase.cs" />
     <Compile Include="Managers\ThumbnailManager.cs" />
+    <Compile Include="Models\ApplicationVersion.cs" />
     <Compile Include="Models\CachedImage.cs" />
     <Compile Include="Managers\BookmarkManager.cs" />
     <Compile Include="DataContracts\ImageReference.cs" />
@@ -297,6 +298,11 @@
     </Compile>
     <Compile Include="Models\Interface\IRepository.cs" />
     <Compile Include="Models\ThumbnailScanProgress.cs" />
+    <Compile Include="Properties\Settings1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Services\ApplicationSettingsService.cs" />
     <Compile Include="FileBrowser.cs">
       <SubType>Form</SubType>
@@ -348,6 +354,7 @@
     <Compile Include="DataContracts\ImageViewApplicationSettings.cs" />
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\ThumbnailService.cs" />
+    <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
     <Compile Include="Storage\LocalStorageRegistryAccess.cs" />
     <Compile Include="UserControls\GetPassword.cs">

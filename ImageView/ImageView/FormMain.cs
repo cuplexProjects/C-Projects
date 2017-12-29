@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -553,8 +555,42 @@ namespace ImageView
             }
         }
 
-        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            try
+            {
+                var isLatest = await IsLatestVersion();
+                if (isLatest)
+                {
+                    MessageBox.Show("This is the latest version available", "Update check", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (MessageBox.Show("There is a newer version available, do you want to update?", "Update", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                {
+                    await DownloadAndRunLatestVersionInstaller();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Exception while checking for updates");
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task<bool> IsLatestVersion()
+        {
+            var updateService = _scope.Resolve<UpdateService>();
+            var latestVersion = await updateService.GetLatestVersion();
+            var curentVersion = ApplicationVersion.Parse(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
+            return curentVersion.CompareTo(latestVersion) >= 0;
+        }
+
+        private async Task DownloadAndRunLatestVersionInstaller()
+        {
+            var updateService = _scope.Resolve<UpdateService>();
+            string path = await updateService.DownloadLatestVersion();
+            Process.Start(path);
         }
 
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
@@ -809,7 +845,7 @@ namespace ImageView
                 {
                     return;
                 }
-                _imageReferenceCollection = new ImageReferenceCollection(new List<int>(),_imageLoaderService);
+                _imageReferenceCollection = new ImageReferenceCollection(new List<int>(), _imageLoaderService);
                 var currentImage = _imageReferenceCollection.SetCurrentImage(openFileDialog1.FileName);
                 _dataReady = true;
                 if (_imageLoaderService.ImageReferenceList == null)

@@ -556,7 +556,6 @@ namespace ImageView.Managers
                 bookmarks.AddRange(GetAllBookmarksIncludingSubfolders(folder));
             }
 
-
             return bookmarks;
         }
 

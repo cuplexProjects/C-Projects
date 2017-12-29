@@ -45,6 +45,9 @@ namespace ImageView.DataContracts
             ShowNextPrevControlsOnEnterWindow = true;
             ThumbnailSize = 256;
             MaxThumbnails = 256;
+
+            // 128 Mb
+            ImageCacheSize = 134217728;
         }
 
         [DataMember(Name = "ShowImageViewFormsInTaskBar", Order = 1)]
