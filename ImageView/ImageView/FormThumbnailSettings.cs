@@ -11,7 +11,19 @@ namespace ImageView
         public FormThumbnailSettings(ThumbnailService thumbnailService)
         {
             _thumbnailService = thumbnailService;
+            thumbnailService.StartedThumbnailScan += ThumbnailService_StartedThumbnailScan;
+            thumbnailService.CompletedThumbnailScan += ThumbnailService_CompletedThumbnailScan;
             InitializeComponent();
+        }
+
+        private void ThumbnailService_CompletedThumbnailScan(object sender, EventArgs e)
+        {
+            btnUpdateCurrentUsage.Enabled = true;
+        }
+
+        private void ThumbnailService_StartedThumbnailScan(object sender, EventArgs e)
+        {
+            btnUpdateCurrentUsage.Enabled = false;
         }
 
         private void FormThumbnailSettings_Load(object sender, EventArgs e)
@@ -32,6 +44,7 @@ namespace ImageView
             btnRunDefragmentJob.Enabled = false;
             _thumbnailService.OptimizeDatabase();
             btnRunDefragmentJob.Enabled = true;
+            UpdateInformationLabels();
         }
 
         private void btnClearDatabase_Click(object sender, EventArgs e)
@@ -61,15 +74,32 @@ namespace ImageView
             {
                 lblInfo.Text = "No missing files where found.";
             }
+            UpdateInformationLabels();
         }
 
         private void btnReduceCachSize_Click(object sender, EventArgs e)
         {
             int maxSize = Convert.ToInt32(numericSize.Value);
             long truncatedSize = maxSize * 1048576;
-            _thumbnailService.TruncateCacheSize(truncatedSize);
+            bool result = _thumbnailService.TruncateCacheSize(truncatedSize);
+
+            MessageBox.Show(result ? "The thumbnail database was successfully truncated" : "Failed to truncate the database because the db is locked. Please try again in a minute", "Completed", MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
 
             UpdateInformationLabels();
+        }
+
+        private void btnUpdateCurrentUsage_Click(object sender, EventArgs e)
+        {
+            if (!_thumbnailService.IsRunningScan)
+            {
+                UpdateInformationLabels();
+            }
+            else
+            {
+                MessageBox.Show("Can not update info values while a scan is running", "Scan is running", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+               
         }
     }
 }

@@ -11,6 +11,27 @@ namespace ImageView.Services
     public class ThumbnailService : ServiceBase, IDisposable
     {
         private readonly ThumbnailManager _thumbnailManager;
+        private bool _isRunningScan;
+        public event EventHandler StartedThumbnailScan;
+        public event EventHandler CompletedThumbnailScan;
+
+        public bool IsRunningScan
+        {
+            get => _isRunningScan;
+            private set
+            {
+                if (_isRunningScan && !value)
+                {
+                    CompletedThumbnailScan?.Invoke(this, new EventArgs());
+                }
+                else
+                {
+                    StartedThumbnailScan?.Invoke(this, new EventArgs());
+                }
+
+                _isRunningScan = value;
+            }
+        }
 
         public ThumbnailService(ThumbnailManager thumbnailManager)
         {
@@ -26,10 +47,18 @@ namespace ImageView.Services
             _thumbnailManager.Dispose();
         }
 
+
+
         public void ScanDirectory(string path, bool scanSubdirectories)
         {
+            if (IsRunningScan)
+            {
+                return;
+            }
+            IsRunningScan = true;
             _thumbnailManager.StartThumbnailScan(path, null, scanSubdirectories);
             _thumbnailManager.SaveThumbnailDatabase();
+            IsRunningScan = false;
         }
 
         public async void ScanDirectoryAsync(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
@@ -38,8 +67,14 @@ namespace ImageView.Services
             {
                 await Task.Run(() =>
                 {
+                    if (IsRunningScan)
+                    {
+                        return;
+                    }
+                    IsRunningScan = true;
                     _thumbnailManager.StartThumbnailScan(path, progress, scanSubdirectories);
                     _thumbnailManager.SaveThumbnailDatabase();
+                    IsRunningScan = false;
                 });
             }
             catch (Exception ex)
@@ -88,7 +123,7 @@ namespace ImageView.Services
             {
                 _thumbnailManager.LoadThumbnailDatabase();
             }
-           
+
             return _thumbnailManager.GetNumberOfCachedThumbnails();
         }
 
@@ -123,11 +158,12 @@ namespace ImageView.Services
         /// Truncates the size of the cache in Mb.
         /// </summary>
         /// <param name="maxSize">The maximum size.</param>
-        public void TruncateCacheSize(long maxSize)
+        public bool TruncateCacheSize(long maxSize)
         {
-            _thumbnailManager.ReduceCachSize(maxSize);
-            OptimizeDatabase();
+            bool result = _thumbnailManager.ReduceCachSize(maxSize);
             SaveThumbnailDatabase();
+
+            return result;
         }
     }
 }

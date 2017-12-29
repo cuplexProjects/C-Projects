@@ -607,6 +607,7 @@ namespace ImageView
             {
                 _bookmarkManager.BookmarkDatasourceUpdated();
                 MessageBox.Show("Bookmarksfile was loaded and appended to current bookmarks", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ReLoadBookmarks();
             }
             else
             {

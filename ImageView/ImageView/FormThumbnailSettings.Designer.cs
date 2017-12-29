@@ -32,30 +32,31 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormThumbnailSettings));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblCurrentDbSize = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.lblCachedItems = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnClearDatabase = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericSize = new System.Windows.Forms.NumericUpDown();
             this.btnReduceCachSize = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnRunDefragmentJob = new System.Windows.Forms.Button();
-            this.numericSize = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.btnRemoveFilesNotFound = new System.Windows.Forms.Button();
+            this.btnClearDatabase = new System.Windows.Forms.Button();
+            this.btnRunDefragmentJob = new System.Windows.Forms.Button();
             this.toolTipOptimize = new System.Windows.Forms.ToolTip(this.components);
             this.lblInfo = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.btnUpdateCurrentUsage = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericSize)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -87,16 +88,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(413, 65);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 34);
-            this.label4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(137, 17);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Cached Thumbnails:";
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -116,6 +107,16 @@
             this.lblCurrentDbSize.Size = new System.Drawing.Size(20, 17);
             this.lblCurrentDbSize.TabIndex = 1;
             this.lblCurrentDbSize.Text = "...";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 34);
+            this.label4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(137, 17);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Cached Thumbnails:";
             // 
             // lblCachedItems
             // 
@@ -148,17 +149,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tools";
             // 
-            // btnClearDatabase
-            // 
-            this.btnClearDatabase.Enabled = false;
-            this.btnClearDatabase.Location = new System.Drawing.Point(281, 22);
-            this.btnClearDatabase.Name = "btnClearDatabase";
-            this.btnClearDatabase.Size = new System.Drawing.Size(120, 34);
-            this.btnClearDatabase.TabIndex = 2;
-            this.btnClearDatabase.Text = "Clear Database";
-            this.btnClearDatabase.UseVisualStyleBackColor = true;
-            this.btnClearDatabase.Click += new System.EventHandler(this.btnClearDatabase_Click);
-            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.label5);
@@ -173,38 +163,33 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Reduce cached Items";
             // 
-            // btnReduceCachSize
+            // label5
             // 
-            this.btnReduceCachSize.Enabled = false;
-            this.btnReduceCachSize.Location = new System.Drawing.Point(251, 26);
-            this.btnReduceCachSize.Name = "btnReduceCachSize";
-            this.btnReduceCachSize.Size = new System.Drawing.Size(150, 34);
-            this.btnReduceCachSize.TabIndex = 2;
-            this.btnReduceCachSize.Text = "Reduce cache size";
-            this.btnReduceCachSize.UseVisualStyleBackColor = true;
-            this.btnReduceCachSize.Click += new System.EventHandler(this.btnReduceCachSize_Click);
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(10, 35);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(66, 17);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "New Size";
             // 
-            // groupBox3
+            // label3
             // 
-            this.groupBox3.Controls.Add(this.btnRemoveFilesNotFound);
-            this.groupBox3.Controls.Add(this.btnClearDatabase);
-            this.groupBox3.Controls.Add(this.btnRunDefragmentJob);
-            this.groupBox3.Location = new System.Drawing.Point(12, 20);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(407, 67);
-            this.groupBox3.TabIndex = 0;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "General";
+            this.label3.Location = new System.Drawing.Point(13, 76);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(388, 39);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "When shrinking the thumbnail database size the deletion order is by thumbnail siz" +
+    "e ";
+            this.label3.UseCompatibleTextRendering = true;
             // 
-            // btnRunDefragmentJob
+            // label2
             // 
-            this.btnRunDefragmentJob.Location = new System.Drawing.Point(6, 22);
-            this.btnRunDefragmentJob.Name = "btnRunDefragmentJob";
-            this.btnRunDefragmentJob.Size = new System.Drawing.Size(120, 34);
-            this.btnRunDefragmentJob.TabIndex = 2;
-            this.btnRunDefragmentJob.Text = "Defrag";
-            this.btnRunDefragmentJob.UseVisualStyleBackColor = true;
-            this.btnRunDefragmentJob.Click += new System.EventHandler(this.btnRunDefragmentJob_Click);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(187, 38);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(27, 17);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Mb";
             // 
             // numericSize
             // 
@@ -228,24 +213,27 @@
             0,
             0});
             // 
-            // label2
+            // btnReduceCachSize
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(187, 38);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(27, 17);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Mb";
+            this.btnReduceCachSize.Location = new System.Drawing.Point(251, 26);
+            this.btnReduceCachSize.Name = "btnReduceCachSize";
+            this.btnReduceCachSize.Size = new System.Drawing.Size(150, 34);
+            this.btnReduceCachSize.TabIndex = 2;
+            this.btnReduceCachSize.Text = "Reduce cache size";
+            this.btnReduceCachSize.UseVisualStyleBackColor = true;
+            this.btnReduceCachSize.Click += new System.EventHandler(this.btnReduceCachSize_Click);
             // 
-            // label3
+            // groupBox3
             // 
-            this.label3.Location = new System.Drawing.Point(13, 76);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(388, 39);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "When shrinking the thumbnail database size the deletion order is by thumbnail siz" +
-    "e ";
-            this.label3.UseCompatibleTextRendering = true;
+            this.groupBox3.Controls.Add(this.btnRemoveFilesNotFound);
+            this.groupBox3.Controls.Add(this.btnClearDatabase);
+            this.groupBox3.Controls.Add(this.btnRunDefragmentJob);
+            this.groupBox3.Location = new System.Drawing.Point(12, 20);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(407, 67);
+            this.groupBox3.TabIndex = 0;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "General";
             // 
             // btnRemoveFilesNotFound
             // 
@@ -259,6 +247,27 @@
             this.btnRemoveFilesNotFound.UseVisualStyleBackColor = true;
             this.btnRemoveFilesNotFound.Click += new System.EventHandler(this.btnRemoveFilesNotFound_Click);
             // 
+            // btnClearDatabase
+            // 
+            this.btnClearDatabase.Enabled = false;
+            this.btnClearDatabase.Location = new System.Drawing.Point(281, 22);
+            this.btnClearDatabase.Name = "btnClearDatabase";
+            this.btnClearDatabase.Size = new System.Drawing.Size(120, 34);
+            this.btnClearDatabase.TabIndex = 2;
+            this.btnClearDatabase.Text = "Clear Database";
+            this.btnClearDatabase.UseVisualStyleBackColor = true;
+            this.btnClearDatabase.Click += new System.EventHandler(this.btnClearDatabase_Click);
+            // 
+            // btnRunDefragmentJob
+            // 
+            this.btnRunDefragmentJob.Location = new System.Drawing.Point(6, 22);
+            this.btnRunDefragmentJob.Name = "btnRunDefragmentJob";
+            this.btnRunDefragmentJob.Size = new System.Drawing.Size(120, 34);
+            this.btnRunDefragmentJob.TabIndex = 2;
+            this.btnRunDefragmentJob.Text = "Defrag";
+            this.btnRunDefragmentJob.UseVisualStyleBackColor = true;
+            this.btnRunDefragmentJob.Click += new System.EventHandler(this.btnRunDefragmentJob_Click);
+            // 
             // lblInfo
             // 
             this.lblInfo.AutoSize = true;
@@ -268,20 +277,22 @@
             this.lblInfo.TabIndex = 3;
             this.lblInfo.Text = "...";
             // 
-            // label5
+            // btnUpdateCurrentUsage
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 35);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(66, 17);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "New Size";
+            this.btnUpdateCurrentUsage.Location = new System.Drawing.Point(166, 338);
+            this.btnUpdateCurrentUsage.Name = "btnUpdateCurrentUsage";
+            this.btnUpdateCurrentUsage.Size = new System.Drawing.Size(146, 38);
+            this.btnUpdateCurrentUsage.TabIndex = 4;
+            this.btnUpdateCurrentUsage.Text = "Update Information";
+            this.btnUpdateCurrentUsage.UseVisualStyleBackColor = true;
+            this.btnUpdateCurrentUsage.Click += new System.EventHandler(this.btnUpdateCurrentUsage_Click);
             // 
             // FormThumbnailSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(467, 387);
+            this.Controls.Add(this.btnUpdateCurrentUsage);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.groupBox2);
@@ -300,8 +311,8 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericSize)).EndInit();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -329,5 +340,6 @@
         private System.Windows.Forms.ToolTip toolTipOptimize;
         private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnUpdateCurrentUsage;
     }
 }

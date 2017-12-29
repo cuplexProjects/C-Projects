@@ -298,6 +298,7 @@
     </Compile>
     <Compile Include="Models\Interface\IRepository.cs" />
     <Compile Include="Models\ThumbnailScanProgress.cs" />
+    <Compile Include="MoreLinq\MoreEnumerable.DistinctBy.cs" />
     <Compile Include="Properties\Settings1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

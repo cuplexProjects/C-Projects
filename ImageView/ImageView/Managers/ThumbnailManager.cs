@@ -11,6 +11,7 @@ using ImageView.Configuration;
 using ImageView.DataContracts;
 using ImageView.Models;
 using ImageView.Utility;
+using MoreLinq;
 using Serilog;
 using Serilog.Context;
 
@@ -204,6 +205,9 @@ namespace ImageView.Managers
                     ThumbnailEntry entry = thumbnailsToRemove.Dequeue();
                     _thumbnailDatabase.ThumbnailEntries.Remove(entry);
                 }
+
+                //Remove possible duplicates due to data corruption.
+                _thumbnailDatabase.ThumbnailEntries = _thumbnailDatabase.ThumbnailEntries.DistinctBy(x => x.Directory + x.FileName).ToList();
 
                 _fileManager.RecreateDatabase(_thumbnailDatabase.ThumbnailEntries);
                 _fileDictionary = _thumbnailDatabase.ThumbnailEntries.ToDictionary(x => x.Directory + x.FileName, x => x);
@@ -478,34 +482,35 @@ namespace ImageView.Managers
 
             try
             {
-                Queue<ThumbnailEntry> deleteQueue = new Queue<ThumbnailEntry>();
                 canLockDatabase = _fileManager.LockDatabase();
                 if (!canLockDatabase)
                     return false;
 
-                if (_fileManager.GetDbSize() > maxFileSize)
+                var fileEntryList = _fileDictionary.Values.OrderBy(x => x.Date).ToList();
+                long currentSize = fileEntryList.Sum(x => x.Length);
+
+
+                while (currentSize > maxFileSize)
                 {
-                    var cachedEntries = _fileDictionary.Values.OrderByDescending(x => x.Length).ToList();
-                    long diff = _fileManager.GetDbSize() - maxFileSize;
-
-                    int index = 0;
-                    while (diff > 0)
+                    var element = fileEntryList.FirstOrDefault();
+                    if (element != null)
                     {
-                        var entry = cachedEntries[index++];
-                        diff = diff - entry.Length;
-                        deleteQueue.Enqueue(entry);
+                        fileEntryList.Remove(element);
+                        currentSize -= element.Length;
                     }
-
-                    while (deleteQueue.Count > 0)
+                    else
                     {
-                        var item = deleteQueue.Dequeue();
-                        _fileDictionary.Remove(Path.Combine(item.Directory, item.FileName));
+                        break;
                     }
-
-                    IsModified = true;
-                    _fileManager.RecreateDatabase(_fileDictionary.Values);
-
                 }
+
+                _fileDictionary = fileEntryList.ToDictionary(x => x.Directory + x.FileName, x => x);
+                _thumbnailDatabase.ThumbnailEntries.Clear();
+                _thumbnailDatabase.ThumbnailEntries.AddRange(_fileDictionary.Values);
+                _fileManager.RecreateDatabase(_fileDictionary.Values);
+                SaveThumbnailDatabase();
+                IsModified = true;
+                return true;
             }
             finally
             {
