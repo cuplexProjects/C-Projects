@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using ImageView.UserControls;
 
 namespace ImageView.Utility
 {
@@ -30,6 +31,40 @@ namespace ImageView.Utility
             frmModal.MaximizeBox = false;
             frmModal.Width = userControl.Controls[0].Size.Width + 25;
             frmModal.Height = userControl.Controls[0].Size.Height + 55;
+
+            return frmModal;
+        }
+
+        public static Form CreateModalSimpleDialog(UserControl userControl)
+        {
+            Form frmModal = new Form();
+            frmModal.Controls.Add(userControl);
+            frmModal.FormBorderStyle = FormBorderStyle.None;
+            frmModal.StartPosition = FormStartPosition.CenterParent;
+            frmModal.ShowInTaskbar = false;
+            frmModal.ShowIcon = false;
+
+            userControl.BorderStyle = BorderStyle.FixedSingle;
+
+            // Try to find a main raqpping panel
+            Panel mainPanel = null;
+            for (int i = 0; i < userControl.Controls.Count; i++)
+            {
+                if (userControl.Controls[i] is Panel panel)
+                {
+                    mainPanel = panel;
+                    break;
+                }
+            }
+
+            if (mainPanel != null)
+            {
+                mainPanel.Margin = new Padding(5);
+            }
+
+            frmModal.Width = userControl.Controls[0].Size.Width + 10;
+            frmModal.Height = userControl.Controls[0].Size.Height + 10;
+
 
             return frmModal;
         }

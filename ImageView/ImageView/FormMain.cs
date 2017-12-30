@@ -5,52 +5,51 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autofac;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.WindowsApi;
-using ImageView.Configuration;
 using ImageView.DataContracts;
 using ImageView.Events;
 using ImageView.Models;
 using ImageView.Properties;
 using ImageView.Services;
+using ImageView.UserControls;
 using ImageView.Utility;
 using Serilog;
-using IContainer = Autofac.IContainer;
 
 namespace ImageView
 {
     public partial class FormMain : Form
     {
+        private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly BookmarkService _bookmarkService;
+        private readonly FormAddBookmark _formAddBookmark;
+        private readonly FormSettings _formSettings;
         private readonly FormState _formState = new FormState();
+        private readonly ImageCacheService _imageCacheService;
+        private readonly ImageLoaderService _imageLoaderService;
         private readonly List<FormImageView> _imageViewFormList;
         private readonly PictureBox _pictureBoxAnimation = new PictureBox();
+        private readonly ILifetimeScope _scope;
         private readonly string _windowTitle;
         private ImageViewApplicationSettings.ChangeImageAnimation _changeImageAnimation;
         private bool _dataReady;
+        private FormBookmarks _formBookmarks;
         private FormRestartWithAdminPrivileges _formRestartWithAdminPrivileges;
+        private FormThumbnailView _formThumbnailView;
         private FormWindows _formWindows;
         private bool _fullScreen;
         private ImageReferenceCollection _imageReferenceCollection;
         private bool _imageTransitionRunning;
         private int _imageViewFormIdCnt = 1;
         private bool _winKeyDown;
-        private readonly FormAddBookmark _formAddBookmark;
-        private readonly BookmarkService _bookmarkService;
-        private readonly FormSettings _formSettings;
-        private readonly ApplicationSettingsService _applicationSettingsService;
-        private readonly ImageCacheService _imageCacheService;
-        private FormThumbnailView _formThumbnailView;
-        private FormBookmarks _formBookmarks;
-        private readonly ImageLoaderService _imageLoaderService;
-        private readonly ILifetimeScope _scope;
 
 
-        public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService, ImageLoaderService imageLoaderService, ILifetimeScope scope)
+        public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService,
+            ImageLoaderService imageLoaderService, ILifetimeScope scope)
         {
             _formAddBookmark = formAddBookmark;
             _bookmarkService = bookmarkService;
@@ -141,8 +140,26 @@ namespace ImageView
             GC.Collect();
         }
 
+        private bool AllowAplicatonExit()
+        {
+            if (!_applicationSettingsService.Settings.ConfirmApplicationShutdown)
+            {
+                return true;
+            }
+            var confirmExitUserControl = new ConfirmExitUserControl(_applicationSettingsService);
+            var exitDialogForm = FormFactory.CreateModalSimpleDialog(confirmExitUserControl);
+
+            return exitDialogForm.ShowDialog(this) == DialogResult.OK;
+        }
+
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (!AllowAplicatonExit())
+            {
+                e.Cancel = true;
+                return;
+            }
+
             if (!ScreenSaver.ScreenSaverEnabled)
             {
                 ScreenSaver.Enable();
@@ -294,6 +311,9 @@ namespace ImageView
         {
             try
             {
+                pictureBox1.SizeMode = (PictureBoxSizeMode) _applicationSettingsService.Settings.PrimaryImageSizeMode;
+
+
                 if (_applicationSettingsService.Settings.NextImageAnimation == ImageViewApplicationSettings.ChangeImageAnimation.None)
                 {
                     _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.None;
@@ -351,7 +371,7 @@ namespace ImageView
                 {
                     long elapsedTime = stopwatch.ElapsedMilliseconds;
 
-                    float factor = stopwatch.ElapsedMilliseconds / (float)animationTime;
+                    float factor = stopwatch.ElapsedMilliseconds / (float) animationTime;
                     Image transitionImage;
                     switch (animation)
                     {
@@ -529,6 +549,51 @@ namespace ImageView
             }
         }
 
+        private void FormThumbnailView_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (sender is Form form)
+            {
+                form.Dispose();
+            }
+            _formThumbnailView = null;
+            GC.Collect();
+        }
+
+        private void openInDefaultApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenImageInDefaultApp();
+        }
+
+        private void OpenImageInDefaultApp()
+        {
+            if (ImageSourceDataAvailable)
+            {
+                string currentFile = _imageReferenceCollection.CurrentImage.CompletePath;
+                try
+                {
+                    Process.Start(currentFile);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Error in MainForm open image in default app");
+                }
+            }
+        }
+
+        private void imageDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void pictureBox1_LoadCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            pictureBox1.SizeMode = (PictureBoxSizeMode) _applicationSettingsService.Settings.PrimaryImageSizeMode;
+        }
+
+        private void openInDefaultApplicationToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenImageInDefaultApp();
+        }
+
         private delegate void NativeThreadFunctin();
 
         #region Main Menu Functions
@@ -568,7 +633,6 @@ namespace ImageView
                 {
                     await DownloadAndRunLatestVersionInstaller();
                 }
-
             }
             catch (Exception ex)
             {
@@ -714,7 +778,6 @@ namespace ImageView
                 _formBookmarks.Show();
                 _formBookmarks.Focus();
             }
-
         }
 
         private void newWindowToolStripMenuItem_Click(object sender, EventArgs e)
@@ -748,7 +811,7 @@ namespace ImageView
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            Close();
         }
 
         private void autoArrangeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -872,43 +935,11 @@ namespace ImageView
 
         private void thumbnailDBSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             var thumbnailservice = _scope.Resolve<ThumbnailService>();
             var form = new FormThumbnailSettings(thumbnailservice);
             form.ShowDialog(this);
         }
 
         #endregion
-
-        private void FormThumbnailView_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (sender is Form form)
-            {
-                form.Dispose();
-            }
-            _formThumbnailView = null;
-            GC.Collect();
-        }
-
-        private void openInDefaultApplicationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (ImageSourceDataAvailable)
-            {
-                string currentFile = _imageReferenceCollection.CurrentImage.CompletePath;
-                try
-                {
-                    Process.Start(currentFile);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "Error in MainForm open image in default app");
-                }
-            }
-        }
-
-        private void imageDetailsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

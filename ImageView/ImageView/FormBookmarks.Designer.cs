@@ -171,7 +171,7 @@ namespace ImageView
             this.toolStripSeparator2,
             this.renameFolderMenuItem});
             this.contextMenuStripFolders.Name = "contextMenuStripFolders";
-            this.contextMenuStripFolders.Size = new System.Drawing.Size(179, 110);
+            this.contextMenuStripFolders.Size = new System.Drawing.Size(179, 82);
             this.contextMenuStripFolders.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripFolders_Opening);
             // 
             // addFolderToolStripMenuItem

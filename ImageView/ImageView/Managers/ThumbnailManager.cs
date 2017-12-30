@@ -92,7 +92,7 @@ namespace ImageView.Managers
                 //if (_fileManager.IsLocked)
                 //    return false;
 
-                string filename = Path.Combine(_thumbnailDatabase.DataStroragePath, DatabaseFilename);
+                string filename = Path.Combine(ApplicationBuildConfig.UserDataPath, DatabaseFilename);
                 var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, DatabaseKey);
                 var storageManager = new StorageManager(settings);
                 bool successful = storageManager.SerializeObjectToFile(_thumbnailDatabase, filename, null);
@@ -123,7 +123,7 @@ namespace ImageView.Managers
 
                 IsLoaded = true;
 
-                string filename = Path.Combine(_thumbnailDatabase.DataStroragePath, DatabaseFilename);
+                string filename = Path.Combine(ApplicationBuildConfig.UserDataPath, DatabaseFilename);
                 if (!File.Exists(filename))
                 {
                     return false;

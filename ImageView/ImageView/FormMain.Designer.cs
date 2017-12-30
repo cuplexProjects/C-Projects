@@ -41,6 +41,8 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyFilepathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.openInDefaultApplicationToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.vivewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showFullscreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topMostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -168,7 +170,9 @@
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copyFilepathToolStripMenuItem,
-            this.copyFileToolStripMenuItem});
+            this.copyFileToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.openInDefaultApplicationToolStripMenuItem1});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(47, 24);
             this.editToolStripMenuItem.Text = "&Edit";
@@ -176,16 +180,28 @@
             // copyFilepathToolStripMenuItem
             // 
             this.copyFilepathToolStripMenuItem.Name = "copyFilepathToolStripMenuItem";
-            this.copyFilepathToolStripMenuItem.Size = new System.Drawing.Size(175, 26);
+            this.copyFilepathToolStripMenuItem.Size = new System.Drawing.Size(270, 26);
             this.copyFilepathToolStripMenuItem.Text = "Copy Filepath";
             this.copyFilepathToolStripMenuItem.Click += new System.EventHandler(this.copyFilepathToolStripMenuItem_Click);
             // 
             // copyFileToolStripMenuItem
             // 
             this.copyFileToolStripMenuItem.Name = "copyFileToolStripMenuItem";
-            this.copyFileToolStripMenuItem.Size = new System.Drawing.Size(175, 26);
+            this.copyFileToolStripMenuItem.Size = new System.Drawing.Size(270, 26);
             this.copyFileToolStripMenuItem.Text = "Copy File";
             this.copyFileToolStripMenuItem.Click += new System.EventHandler(this.copyFileToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(267, 6);
+            // 
+            // openInDefaultApplicationToolStripMenuItem1
+            // 
+            this.openInDefaultApplicationToolStripMenuItem1.Name = "openInDefaultApplicationToolStripMenuItem1";
+            this.openInDefaultApplicationToolStripMenuItem1.Size = new System.Drawing.Size(270, 26);
+            this.openInDefaultApplicationToolStripMenuItem1.Text = "Open In Default Application";
+            this.openInDefaultApplicationToolStripMenuItem1.Click += new System.EventHandler(this.openInDefaultApplicationToolStripMenuItem1_Click);
             // 
             // vivewToolStripMenuItem
             // 
@@ -532,14 +548,15 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.InitialImage = global::ImageView.Properties.Resources.transparent;
+            this.pictureBox1.InitialImage = null;
             this.pictureBox1.Location = new System.Drawing.Point(0, 28);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(832, 516);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.LoadCompleted += new System.ComponentModel.AsyncCompletedEventHandler(this.pictureBox1_LoadCompleted);
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             this.pictureBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             // 
@@ -630,6 +647,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripMenuItem thumbnailDBSettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem openInDefaultApplicationToolStripMenuItem1;
     }
 }
 

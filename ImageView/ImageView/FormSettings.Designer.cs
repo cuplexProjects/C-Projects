@@ -87,6 +87,7 @@
             this.chkUsePrimaryScreen = new System.Windows.Forms.CheckBox();
             this.lblScreenLayout = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.tabPageColorSettings = new System.Windows.Forms.TabPage();
             this.tabPageCacheSettings = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblCacheSize = new System.Windows.Forms.Label();
@@ -102,6 +103,7 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.imageListSettings = new System.Windows.Forms.ImageList(this.components);
+            this.chkConfirmExit = new System.Windows.Forms.CheckBox();
             this.tabControlSettings.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -161,6 +163,7 @@
             // 
             this.tabControlSettings.Controls.Add(this.tabPageGeneral);
             this.tabControlSettings.Controls.Add(this.tabPageWindowSettings);
+            this.tabControlSettings.Controls.Add(this.tabPageColorSettings);
             this.tabControlSettings.Controls.Add(this.tabPageCacheSettings);
             this.tabControlSettings.ImageList = this.imageListSettings;
             this.tabControlSettings.Location = new System.Drawing.Point(16, 15);
@@ -186,6 +189,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkConfirmExit);
             this.groupBox1.Controls.Add(this.groupBox5);
             this.groupBox1.Controls.Add(this.numericScreenWidthOffset);
             this.groupBox1.Controls.Add(this.numericScreenMinOffset);
@@ -927,6 +931,17 @@
             this.label10.TabIndex = 11;
             this.label10.Text = "Auto arrange";
             // 
+            // tabPageColorSettings
+            // 
+            this.tabPageColorSettings.ImageKey = "Paint.png";
+            this.tabPageColorSettings.Location = new System.Drawing.Point(4, 39);
+            this.tabPageColorSettings.Name = "tabPageColorSettings";
+            this.tabPageColorSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageColorSettings.Size = new System.Drawing.Size(580, 441);
+            this.tabPageColorSettings.TabIndex = 3;
+            this.tabPageColorSettings.Text = "Colors";
+            this.tabPageColorSettings.UseVisualStyleBackColor = true;
+            // 
             // tabPageCacheSettings
             // 
             this.tabPageCacheSettings.Controls.Add(this.panel3);
@@ -1095,6 +1110,18 @@
             this.imageListSettings.Images.SetKeyName(1, "video-display.ico");
             this.imageListSettings.Images.SetKeyName(2, "Configuration-Settings.ico");
             this.imageListSettings.Images.SetKeyName(3, "Configuration Settings.ico");
+            this.imageListSettings.Images.SetKeyName(4, "Paint.png");
+            // 
+            // chkConfirmExit
+            // 
+            this.chkConfirmExit.AutoSize = true;
+            this.chkConfirmExit.Location = new System.Drawing.Point(272, 23);
+            this.chkConfirmExit.Margin = new System.Windows.Forms.Padding(4);
+            this.chkConfirmExit.Name = "chkConfirmExit";
+            this.chkConfirmExit.Size = new System.Drawing.Size(202, 21);
+            this.chkConfirmExit.TabIndex = 13;
+            this.chkConfirmExit.Text = "Show confirm dialog on Exit";
+            this.chkConfirmExit.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -1231,5 +1258,7 @@
         private System.Windows.Forms.Label lblCacheSize;
         private System.Windows.Forms.TrackBar trackBarCacheSize;
         private System.Windows.Forms.ProgressBar pbarPercentUsed;
+        private System.Windows.Forms.TabPage tabPageColorSettings;
+        private System.Windows.Forms.CheckBox chkConfirmExit;
     }
 }

@@ -31,6 +31,7 @@ namespace ImageView
             chkPasswordProtectBookmarks.Checked = settings.PasswordProtectBookmarks;
             chkShowSwitchImgButtons.Checked = settings.ShowSwitchImageButtons;
             chkEnableAutoload.Checked = settings.EnableAutoLoadFunctionFromMenu;
+            chkConfirmExit.Checked = settings.ConfirmApplicationShutdown;
 
             if (settings.ShowNextPrevControlsOnEnterWindow)
             {
@@ -106,6 +107,7 @@ namespace ImageView
             _applicationSettingsService.Settings.ShowSwitchImageButtons = chkShowSwitchImgButtons.Checked;
             _applicationSettingsService.Settings.EnableAutoLoadFunctionFromMenu = chkEnableAutoload.Checked;
             _applicationSettingsService.Settings.ShowNextPrevControlsOnEnterWindow = rbOverWindow.Checked;
+            _applicationSettingsService.Settings.ConfirmApplicationShutdown = chkConfirmExit.Checked;
 
             if (rbImgTransformFadeIn.Checked)
                 settings.NextImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.FadeIn;

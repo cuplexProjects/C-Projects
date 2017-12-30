@@ -353,6 +353,12 @@
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
     <Compile Include="Storage\LocalStorageRegistryAccess.cs" />
+    <Compile Include="UserControls\ConfirmExitUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\ConfirmExitUserControl.Designer.cs">
+      <DependentUpon>ConfirmExitUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\CreateBookmarkFolder.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -487,6 +493,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UserControls\ConfirmExitUserControl.resx">
+      <DependentUpon>ConfirmExitUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\CreateBookmarkFolder.resx">
       <DependentUpon>CreateBookmarkFolder.cs</DependentUpon>
     </EmbeddedResource>
@@ -564,6 +573,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="defaultIcon.ico" />
+    <None Include="Resources\imageViewBackImg.jpg" />
     <None Include="Resources\Arrow-Next-icon.png" />
     <None Include="Resources\Arrow-Back-icon.png" />
     <None Include="Resources\WindowsIcon.png" />

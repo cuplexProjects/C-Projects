@@ -45,6 +45,7 @@ namespace ImageView.DataContracts
             ShowNextPrevControlsOnEnterWindow = true;
             ThumbnailSize = 256;
             MaxThumbnails = 256;
+            ConfirmApplicationShutdown = true;
 
             // 128 Mb
             ImageCacheSize = 134217728;
@@ -130,6 +131,9 @@ namespace ImageView.DataContracts
 
         [DataMember(Name = "ThumbnailFormLocation", Order = 27)]
         public Point ThumbnailFormLocation { get; set; }
+
+        [DataMember(Name = "ConfirmApplicationShutdown", Order = 28)]
+        public bool ConfirmApplicationShutdown { get; set; }
 
         public void RemoveDuplicateEntriesWithIgnoreCase()
         {

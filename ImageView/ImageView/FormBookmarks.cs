@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -104,7 +105,10 @@ namespace ImageView
             {
                 if (!_bookmarkManager.LoadedFromFile)
                 {
-                    _bookmarkService.OpenBookmarks();
+                    if (!_bookmarkService.OpenBookmarks())
+                    {
+                        Log.Error("Load Bookmarks failed");
+                    }
                 }
 
                 InitBookmarksDataSource();
@@ -314,6 +318,26 @@ namespace ImageView
             return null;
         }
 
+        private void contextMenuStripFolders_Opening(object sender, CancelEventArgs e)
+        {
+            if (bookmarksTree.SelectedNode == bookmarksTree.TopNode)
+            {
+                var deleteMenuItem = contextMenuStripFolders.Items.Find("deleteFolderToolStripMenuItem", false).FirstOrDefault();
+                if (deleteMenuItem != null)
+                {
+                    deleteMenuItem.Enabled = false;
+                }
+            }
+            else
+            {
+                var deleteMenuItem = contextMenuStripFolders.Items.Find("deleteFolderToolStripMenuItem", false).FirstOrDefault();
+                if (deleteMenuItem != null)
+                {
+                    deleteMenuItem.Enabled = true;
+                }
+            }
+        }
+
         #region DataGridViewEvents
 
         private void bookmarksDataGridView_SelectionChanged(object sender, EventArgs e)
@@ -491,7 +515,7 @@ namespace ImageView
                             _gridViewGradientBackgroundColorStop, LinearGradientMode.Vertical))
                     {
                         e.Graphics.FillRectangle(backbrush, rowBounds);
-                        var p = new Pen(backbrush, 1) { Color = _gridViewSelectionBorderColor };
+                        var p = new Pen(backbrush, 1) {Color = _gridViewSelectionBorderColor};
                         e.Graphics.DrawRectangle(p, rowBounds);
                     }
                 }
@@ -679,7 +703,7 @@ namespace ImageView
                 LabelText = "Name:",
                 WindowText = "Add new bookmark folder",
                 MinimumCharacters = 1,
-                MaximumCharacters = 50,
+                MaximumCharacters = 50
             };
             var formInputRow = new FormInputRow(inputFormData);
 
@@ -726,25 +750,5 @@ namespace ImageView
         }
 
         #endregion
-
-        private void contextMenuStripFolders_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (bookmarksTree.SelectedNode == bookmarksTree.TopNode)
-            {
-                var deleteMenuItem = contextMenuStripFolders.Items.Find("deleteFolderToolStripMenuItem", false).FirstOrDefault();
-                if (deleteMenuItem != null)
-                {
-                    deleteMenuItem.Enabled = false;
-                }
-            }
-            else
-            {
-                var deleteMenuItem = contextMenuStripFolders.Items.Find("deleteFolderToolStripMenuItem", false).FirstOrDefault();
-                if (deleteMenuItem != null)
-                {
-                    deleteMenuItem.Enabled = true;
-                }
-            }
-        }
     }
 }
