@@ -13,6 +13,7 @@ using ImageView.DataContracts;
 using ImageView.Events;
 using ImageView.InputForms;
 using ImageView.Managers;
+using ImageView.Models.Enums;
 using ImageView.Properties;
 using ImageView.Services;
 using ImageView.UserControls;
@@ -167,7 +168,7 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                Log.Error(ex,"Error in LoadImageFromSelectedRow()");
+                Log.Error(ex, "Error in LoadImageFromSelectedRow()");
             }
         }
 
@@ -287,6 +288,7 @@ namespace ImageView
         {
             openFileDialog1.Filter = "(BookmarkFiles *.dat)|*.dat";
             openFileDialog1.FileName = "bookmarks.dat";
+            openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
             {
@@ -310,13 +312,6 @@ namespace ImageView
             }
 
             return null;
-        }
-
-        private enum TreeViewFolderStateChange
-        {
-            FolderRemoved,
-            FolderAdded,
-            FolderRenamed
         }
 
         #region DataGridViewEvents
@@ -503,7 +498,7 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                Log.Error(ex,"Exception in bookmarksDataGridView_RowPrePaint()", ex);
+                Log.Error(ex, "Exception in bookmarksDataGridView_RowPrePaint()", ex);
             }
         }
 
@@ -559,6 +554,7 @@ namespace ImageView
         {
             saveFileDialog1.Filter = "(BookmarkFiles *.dat)|*.dat";
             saveFileDialog1.FileName = "bookmarks.dat";
+            saveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             var userControl = new SelectPassword();
             Form paswordForm = FormFactory.CreateModalForm(userControl);
@@ -584,7 +580,7 @@ namespace ImageView
 
         private void removeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int removedItems =_bookmarkManager.RemoveDuplicates();
+            int removedItems = _bookmarkManager.RemoveDuplicates();
             ReLoadBookmarks();
             MessageBox.Show(this, $"{removedItems} Duplicate bookmarks pointing to the same file where removed", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -608,6 +604,7 @@ namespace ImageView
                 _bookmarkManager.BookmarkDatasourceUpdated();
                 MessageBox.Show("Bookmarksfile was loaded and appended to current bookmarks", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ReLoadBookmarks();
+                InitBookmarksDataSource();
             }
             else
             {
@@ -632,6 +629,8 @@ namespace ImageView
             if (_bookmarkManager.LoadFromFile(filename, password))
             {
                 _bookmarkManager.BookmarkDatasourceUpdated();
+                ReLoadBookmarks();
+                InitBookmarksDataSource();
                 MessageBox.Show("Bookmarksfile was loaded succesfully", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
@@ -678,7 +677,9 @@ namespace ImageView
             {
                 GroupBoxText = "Bookmark folder name",
                 LabelText = "Name:",
-                WindowText = "Add new bookmark folder"
+                WindowText = "Add new bookmark folder",
+                MinimumCharacters = 1,
+                MaximumCharacters = 50,
             };
             var formInputRow = new FormInputRow(inputFormData);
 
@@ -725,5 +726,25 @@ namespace ImageView
         }
 
         #endregion
+
+        private void contextMenuStripFolders_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (bookmarksTree.SelectedNode == bookmarksTree.TopNode)
+            {
+                var deleteMenuItem = contextMenuStripFolders.Items.Find("deleteFolderToolStripMenuItem", false).FirstOrDefault();
+                if (deleteMenuItem != null)
+                {
+                    deleteMenuItem.Enabled = false;
+                }
+            }
+            else
+            {
+                var deleteMenuItem = contextMenuStripFolders.Items.Find("deleteFolderToolStripMenuItem", false).FirstOrDefault();
+                if (deleteMenuItem != null)
+                {
+                    deleteMenuItem.Enabled = true;
+                }
+            }
+        }
     }
 }

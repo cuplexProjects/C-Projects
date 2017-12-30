@@ -216,6 +216,7 @@
     <Compile Include="Models\CachedImage.cs" />
     <Compile Include="Managers\BookmarkManager.cs" />
     <Compile Include="DataContracts\ImageReference.cs" />
+    <Compile Include="Models\Enums\BookmarkEnums.cs" />
     <Compile Include="Models\FileEntry.cs" />
     <Compile Include="Models\ImageInformationModel.cs" />
     <Compile Include="Models\ImageReferenceCollection.cs" />
@@ -229,12 +230,6 @@
     </Compile>
     <Compile Include="FormAddBookmark.Designer.cs">
       <DependentUpon>FormAddBookmark.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormAddBookmarkWithNewFolder.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormAddBookmarkWithNewFolder.Designer.cs">
-      <DependentUpon>FormAddBookmarkWithNewFolder.cs</DependentUpon>
     </Compile>
     <Compile Include="FormInputText.cs">
       <SubType>Form</SubType>
@@ -358,6 +353,12 @@
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
     <Compile Include="Storage\LocalStorageRegistryAccess.cs" />
+    <Compile Include="UserControls\CreateBookmarkFolder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\CreateBookmarkFolder.Designer.cs">
+      <DependentUpon>CreateBookmarkFolder.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\GetPassword.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -417,9 +418,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAddBookmark.resx">
       <DependentUpon>FormAddBookmark.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormAddBookmarkWithNewFolder.resx">
-      <DependentUpon>FormAddBookmarkWithNewFolder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBookmarks.resx">
       <DependentUpon>FormBookmarks.cs</DependentUpon>
@@ -489,6 +487,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UserControls\CreateBookmarkFolder.resx">
+      <DependentUpon>CreateBookmarkFolder.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\CustomPanel.resx">
       <DependentUpon>CustomPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -513,6 +514,7 @@
     <None Include="ImageViewCertificateSignFile.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\ImageView.DataContracts.Bookmark.datasource" />
+    <None Include="Properties\DataSources\ImageView.DataContracts.BookmarkFolder.datasource" />
     <None Include="Properties\DataSources\ImageView.Models.ImageInformationModel.datasource" />
     <None Include="Properties\app.manifest">
       <SubType>Designer</SubType>

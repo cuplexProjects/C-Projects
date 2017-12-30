@@ -53,9 +53,9 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(289, 80);
+            this.btnCancel.Location = new System.Drawing.Point(279, 81);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 26);
+            this.btnCancel.Size = new System.Drawing.Size(85, 30);
             this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -63,9 +63,9 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(208, 80);
+            this.btnOk.Location = new System.Drawing.Point(188, 81);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(75, 26);
+            this.btnOk.Size = new System.Drawing.Size(85, 30);
             this.btnOk.TabIndex = 5;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -76,7 +76,7 @@
             this.txtInput.Location = new System.Drawing.Point(77, 25);
             this.txtInput.MaxLength = 256;
             this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(287, 22);
+            this.txtInput.Size = new System.Drawing.Size(287, 26);
             this.txtInput.TabIndex = 4;
             this.txtInput.Tag = "";
             // 
@@ -85,14 +85,14 @@
             this.labelInput.AutoSize = true;
             this.labelInput.Location = new System.Drawing.Point(12, 28);
             this.labelInput.Name = "labelInput";
-            this.labelInput.Size = new System.Drawing.Size(38, 13);
+            this.labelInput.Size = new System.Drawing.Size(45, 19);
             this.labelInput.TabIndex = 6;
             this.labelInput.Text = "Input:";
             // 
             // FormInputRow
             // 
             this.AcceptButton = this.btnOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(384, 127);

@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using ImageView.DataContracts;
 using ImageView.Managers;
 using ImageView.Models;
 using ImageView.Services;
+using ImageView.UserControls;
 using ImageView.Utility;
+using JetBrains.Annotations;
 
 namespace ImageView
 {
+    [UsedImplicitly]
     public partial class FormAddBookmark : Form
     {
         private readonly BookmarkManager _bookmarkManager;
@@ -63,13 +67,10 @@ namespace ImageView
 
         private void InitFolderDropdownList()
         {
-            BookmarkFolder rootNode = _bookmarkManager.RootFolder;
-            comboBoxBookmarkFolders.Items.Clear();
-
-            comboBoxBookmarkFolders.Items.Add(rootNode);
-
-            foreach (BookmarkFolder folder in rootNode.BookmarkFolders)
-                comboBoxBookmarkFolders.Items.Add(folder);
+            var bokmarkFoldersToBind = new List<BookmarkFolder> { _bookmarkManager.RootFolder };
+            bokmarkFoldersToBind.AddRange(_bookmarkManager.RootFolder.BookmarkFolders);
+            bokmarkFoldersToBind.Add(new BookmarkFolder { Name = "Chose another folder...", Id = "n/a", SortOrder = bokmarkFoldersToBind.Count });
+            bookmarkFolderBindingSource.DataSource = bokmarkFoldersToBind;
 
             if (comboBoxBookmarkFolders.Items.Count > 0)
                 comboBoxBookmarkFolders.SelectedIndex = 0;
@@ -99,9 +100,7 @@ namespace ImageView
 
         private void btnCreateFolder_Click(object sender, EventArgs e)
         {
-            var formAddBookmarkWithNewFolder = new FormAddBookmarkWithNewFolder(_imageReference, _bookmarkService, _bookmarkManager);
-            formAddBookmarkWithNewFolder.Show();
-            Close();
+            CreateTreeFolder();
         }
 
         private void txtBookmarkName_KeyUp(object sender, KeyEventArgs e)
@@ -118,6 +117,23 @@ namespace ImageView
         {
             txtBookmarkName.Focus();
             txtBookmarkName.SelectAll();
+        }
+
+        private void comboBoxBookmarkFolders_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxBookmarkFolders.SelectedIndex == comboBoxBookmarkFolders.Items.Count - 1)
+            {
+                CreateTreeFolder();
+            }
+        }
+
+        private void CreateTreeFolder()
+        {
+            var createFolderUserControl = new CreateBookmarkFolder(_bookmarkService, _bookmarkManager, _imageReference) {DefaultBookmarkName = _imageReference.FileName};
+            var addFolderForm = FormFactory.CreateModalForm(createFolderUserControl);
+
+            addFolderForm.ShowDialog(this);
+            Close();
         }
     }
 }

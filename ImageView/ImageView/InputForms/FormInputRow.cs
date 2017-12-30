@@ -6,7 +6,6 @@ namespace ImageView.InputForms
     public partial class FormInputRow : Form
     {
         private readonly InputFormData _inputFormData;
-
         public FormInputRow(InputFormData inputFormData)
         {
             _inputFormData = inputFormData;
@@ -29,9 +28,17 @@ namespace ImageView.InputForms
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            UserInputText = txtInput.Text;
-            Close();
-            DialogResult = DialogResult.OK;
+            if (ValidateInput())
+            {
+                UserInputText = txtInput.Text;
+                Close();
+                DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                MessageBox.Show($"The selected name is invalid. Minimum {_inputFormData.MinimumCharacters} characters and maximum {_inputFormData.MaximumCharacters} characters", "Invalid input", MessageBoxButtons.OK,
+                MessageBoxIcon.Exclamation);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -39,11 +46,18 @@ namespace ImageView.InputForms
             Close();
         }
 
+        private bool ValidateInput()
+        {
+            return txtInput.Text.Length >= _inputFormData.MinimumCharacters && txtInput.Text.Length <= _inputFormData.MaximumCharacters;
+        }
+
         public sealed class InputFormData
         {
             public string WindowText { get; set; }
             public string GroupBoxText { get; set; }
             public string LabelText { get; set; }
+            public int MinimumCharacters { get; set; }
+            public int MaximumCharacters { get; set; }
         }
     }
 }

@@ -36,6 +36,7 @@
             this.mainPanel = new ImageView.UserControls.CustomPanel();
             this.btnCreateFolder = new System.Windows.Forms.Button();
             this.comboBoxBookmarkFolders = new System.Windows.Forms.ComboBox();
+            this.bookmarkFolderBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.btnCancel = new System.Windows.Forms.Button();
             this.txtBookmarkName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -44,6 +45,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.mainPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bookmarkFolderBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -55,29 +57,31 @@
             this.toolStripMenuItem3,
             this.newItemToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(218, 62);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(212, 58);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(217, 26);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(211, 24);
             this.toolStripMenuItem1.Text = "toolStripMenuItem1";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(214, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(208, 6);
             // 
             // newItemToolStripMenuItem
             // 
             this.newItemToolStripMenuItem.Name = "newItemToolStripMenuItem";
-            this.newItemToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
+            this.newItemToolStripMenuItem.Size = new System.Drawing.Size(211, 24);
             this.newItemToolStripMenuItem.Text = "New Item";
             // 
             // mainPanel
             // 
             this.mainPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.mainPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mainPanel.BorderWidthInner = 0;
+            this.mainPanel.BorderWidthOuter = 0;
             this.mainPanel.Controls.Add(this.btnCreateFolder);
             this.mainPanel.Controls.Add(this.comboBoxBookmarkFolders);
             this.mainPanel.Controls.Add(this.btnCancel);
@@ -112,12 +116,20 @@
             // 
             // comboBoxBookmarkFolders
             // 
+            this.comboBoxBookmarkFolders.DataSource = this.bookmarkFolderBindingSource;
+            this.comboBoxBookmarkFolders.DisplayMember = "Name";
             this.comboBoxBookmarkFolders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxBookmarkFolders.FormattingEnabled = true;
             this.comboBoxBookmarkFolders.Location = new System.Drawing.Point(103, 71);
             this.comboBoxBookmarkFolders.Name = "comboBoxBookmarkFolders";
             this.comboBoxBookmarkFolders.Size = new System.Drawing.Size(260, 29);
             this.comboBoxBookmarkFolders.TabIndex = 7;
+            this.comboBoxBookmarkFolders.ValueMember = "Id";
+            this.comboBoxBookmarkFolders.SelectedIndexChanged += new System.EventHandler(this.comboBoxBookmarkFolders_SelectedIndexChanged);
+            // 
+            // bookmarkFolderBindingSource
+            // 
+            this.bookmarkFolderBindingSource.DataSource = typeof(ImageView.DataContracts.BookmarkFolder);
             // 
             // btnCancel
             // 
@@ -208,6 +220,7 @@
             this.contextMenuStrip1.ResumeLayout(false);
             this.mainPanel.ResumeLayout(false);
             this.mainPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bookmarkFolderBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -227,5 +240,6 @@
         private System.Windows.Forms.ToolStripMenuItem newItemToolStripMenuItem;
         private System.Windows.Forms.ComboBox comboBoxBookmarkFolders;
         private System.Windows.Forms.Button btnCreateFolder;
+        private System.Windows.Forms.BindingSource bookmarkFolderBindingSource;
     }
 }
