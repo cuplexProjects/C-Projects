@@ -28,7 +28,7 @@ namespace ImageView.Events
 
     public delegate void BookmarkUpdatedEventHandler(object sender, BookmarkUpdatedEventArgs e);
 
-    public class BookmarkUpdatedEventArgs
+    public class BookmarkUpdatedEventArgs : EventArgs
     {
         public BookmarkUpdatedEventArgs(BookmarkActions bookmarkAction, Type bookmarkType)
         {

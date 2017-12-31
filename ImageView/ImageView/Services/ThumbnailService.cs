@@ -8,7 +8,7 @@ using Serilog;
 
 namespace ImageView.Services
 {
-    public class ThumbnailService : ServiceBase, IDisposable
+    public sealed class ThumbnailService : ServiceBase, IDisposable
     {
         private readonly ThumbnailManager _thumbnailManager;
         private bool _isRunningScan;

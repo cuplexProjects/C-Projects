@@ -8,7 +8,7 @@ using Serilog;
 
 namespace ImageView.Services
 {
-    public class BookmarkService : ServiceBase, IDisposable
+    public sealed class BookmarkService : ServiceBase, IDisposable
     {
         private const string BookmarkFileName = "ImageViewBookmarks.dat";
         private readonly PasswordStorage _passwordStorage;
@@ -46,8 +46,10 @@ namespace ImageView.Services
             if (loadSuccessful)
             {
                 _passwordStorage.Set(_protectedMemoryStorageKey, password);
+                Log.Information("Loaded bookmarks from file");
                 return true;
             }
+            Log.Error("Failed to load bookmarks from file");
             return false;
         }
 

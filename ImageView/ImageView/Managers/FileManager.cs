@@ -13,7 +13,7 @@ using Serilog;
 
 namespace ImageView.Managers
 {
-    public class FileManager : ManagerBase, IDisposable
+    public sealed class FileManager : ManagerBase, IDisposable
     {
         private readonly Dictionary<string, bool> _directoryAccessDictionary;
         private readonly string _fileName;

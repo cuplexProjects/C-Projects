@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 namespace ImageView.Services
 {
     [UsedImplicitly]
-    public class ImageCacheService : ServiceBase, IDisposable
+    public sealed class ImageCacheService : ServiceBase, IDisposable
     {
         private const long DefaultCacheSize = 16777216;
         public const long MinCacheSize = 5242880;

@@ -8,6 +8,7 @@ using GeneralToolkitLib.Storage.Models;
 using ImageView.DataContracts;
 using ImageView.Events;
 using ImageView.Models;
+using ImageView.Utility;
 using Serilog;
 
 namespace ImageView.Managers
@@ -53,8 +54,8 @@ namespace ImageView.Managers
         {
             try
             {
-                //Make a copy of the original file
-                if (File.Exists(filename))
+                //Make a copy of the original file if the original file is above 1 kb
+                if (File.Exists(filename) && SystemIOHelper.GetFileSize(filename) > 1024)
                 {
                     string copyFilename = GeneralConverters.GetDirectoryNameFromPath(filename, true) + "BookmarksCopy.dat";
                     if (File.Exists(copyFilename))

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Autofac;
 using AutofacSerilogIntegration;
 using ImageView.Configuration;
@@ -12,12 +11,18 @@ namespace ImageView.Library.AutofacModules
     {
         protected override void Load(ContainerBuilder builder)
         {
+            var logLevel = LogEventLevel.Debug;
+            if (!ApplicationBuildConfig.DebugMode)
+            {
+                logLevel = LogEventLevel.Warning;
+            }
+
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.LiterateConsole(LogEventLevel.Debug, standardErrorFromLevel: LogEventLevel.Error, formatProvider: CultureInfo.InvariantCulture)
                 .WriteTo.RollingFile(ApplicationBuildConfig.ApplicationLogFilePath(true),
                     fileSizeLimitBytes: 1048576,
                     retainedFileCountLimit: 31,
-                    restrictedToMinimumLevel: LogEventLevel.Information,
+                    restrictedToMinimumLevel: logLevel,
                     buffered: false,
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.ff} [{Level}] {Message}{NewLine}{Exception}{Data}")
                 .Enrich.FromLogContext()

@@ -17,7 +17,7 @@ using Serilog.Context;
 
 namespace ImageView.Managers
 {
-    public class ThumbnailManager : ManagerBase, IDisposable
+    public sealed class ThumbnailManager : ManagerBase, IDisposable
     {
         private const string DatabaseFilename = "thumbs.db";
         private const string DatabaseKey = "2C1D350D-B0E5-4181-8D60-CAE050132DC1";
@@ -478,7 +478,6 @@ namespace ImageView.Managers
         public bool ReduceCachSize(long maxFileSize)
         {
             bool canLockDatabase = false;
-            bool removedItems = false;
 
             try
             {
@@ -520,9 +519,6 @@ namespace ImageView.Managers
                 }
 
             }
-            return removedItems;
         }
-
-
     }
 }

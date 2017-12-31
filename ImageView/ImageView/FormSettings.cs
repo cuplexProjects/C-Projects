@@ -208,5 +208,17 @@ namespace ImageView
             UpdateCacheSizeLabel();
             _selectedCacheSize = trackBarCacheSize.Value * TrackbarDivider;
         }
+
+        private void btnUpdateBackgroundColor_Click(object sender, EventArgs e)
+        {
+            colorDialog1.AllowFullOpen = false;
+            colorDialog1.AnyColor = false;
+            colorDialog1.SolidColorOnly = true;
+            if (colorDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                pnlMainWIndowBackgroundColor.BackColor = colorDialog1.Color;
+                lblMainWinBackgrounColor.Text = colorDialog1.Color.Name;
+            }
+        }
     }
 }
