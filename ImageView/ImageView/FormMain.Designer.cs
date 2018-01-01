@@ -90,6 +90,7 @@
             this.timerSlideShow = new System.Windows.Forms.Timer(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.menuItemLoadBookmarkedImages = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -119,6 +120,7 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openBrowserToolStripMenuItem,
             this.menuItemOpenImage,
+            this.menuItemLoadBookmarkedImages,
             this.toolStripSeparator4,
             this.autoLoadPreviousFolderToolStripMenuItem,
             this.toolStripSeparator11,
@@ -130,39 +132,39 @@
             // openBrowserToolStripMenuItem
             // 
             this.openBrowserToolStripMenuItem.Name = "openBrowserToolStripMenuItem";
-            this.openBrowserToolStripMenuItem.Size = new System.Drawing.Size(256, 26);
+            this.openBrowserToolStripMenuItem.Size = new System.Drawing.Size(257, 26);
             this.openBrowserToolStripMenuItem.Text = "&Open File Browser";
             this.openBrowserToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem_Click);
             // 
             // menuItemOpenImage
             // 
             this.menuItemOpenImage.Name = "menuItemOpenImage";
-            this.menuItemOpenImage.Size = new System.Drawing.Size(256, 26);
+            this.menuItemOpenImage.Size = new System.Drawing.Size(257, 26);
             this.menuItemOpenImage.Text = "Open &Image";
             this.menuItemOpenImage.Click += new System.EventHandler(this.menuItemOpenImage_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(253, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(254, 6);
             // 
             // autoLoadPreviousFolderToolStripMenuItem
             // 
             this.autoLoadPreviousFolderToolStripMenuItem.Enabled = false;
             this.autoLoadPreviousFolderToolStripMenuItem.Name = "autoLoadPreviousFolderToolStripMenuItem";
-            this.autoLoadPreviousFolderToolStripMenuItem.Size = new System.Drawing.Size(256, 26);
+            this.autoLoadPreviousFolderToolStripMenuItem.Size = new System.Drawing.Size(257, 26);
             this.autoLoadPreviousFolderToolStripMenuItem.Text = "&Auto Load Previous folder";
             this.autoLoadPreviousFolderToolStripMenuItem.Click += new System.EventHandler(this.autoLoadPreviousFolderToolStripMenuItem_Click);
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(253, 6);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(254, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(256, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(257, 26);
             this.exitToolStripMenuItem.Text = "&Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -560,6 +562,13 @@
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             this.pictureBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             // 
+            // menuItemLoadBookmarkedImages
+            // 
+            this.menuItemLoadBookmarkedImages.Name = "menuItemLoadBookmarkedImages";
+            this.menuItemLoadBookmarkedImages.Size = new System.Drawing.Size(257, 26);
+            this.menuItemLoadBookmarkedImages.Text = "Load Bookmarked images";
+            this.menuItemLoadBookmarkedImages.Click += new System.EventHandler(this.menuItemLoadBookmarkedImages_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -649,6 +658,7 @@
         private System.Windows.Forms.ToolStripMenuItem thumbnailDBSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem openInDefaultApplicationToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem menuItemLoadBookmarkedImages;
     }
 }
 

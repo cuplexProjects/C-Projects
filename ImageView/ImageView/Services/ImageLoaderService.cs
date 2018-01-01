@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using ImageView.Models;
 using JetBrains.Annotations;
 using Serilog;
@@ -39,10 +40,11 @@ namespace ImageView.Services
         private bool _runWorkerThread;
         private int _tickCount;
         private int _totalNumberOfFiles;
-        private Thread _workerThread;
+        private readonly BookmarkService _bookmarkService;
 
-        public ImageLoaderService()
+        public ImageLoaderService(BookmarkService bookmarkService)
         {
+            _bookmarkService = bookmarkService;
             _fileNameRegExp = new Regex(ImageSearchPatterb, RegexOptions.IgnoreCase);
             _threadLock = new object();
             _progressInterval = 100;
@@ -53,7 +55,7 @@ namespace ImageView.Services
 
         public int ProgressInterval
         {
-            get { return _progressInterval; }
+            get => _progressInterval;
             set
             {
                 if (value >= 10 && value <= 2500)
@@ -96,6 +98,55 @@ namespace ImageView.Services
                 Log.Error(ex, "ImageLoaderService.DoImageImport()");
                 IsRunningImport = false;
             }
+        }
+
+        private async Task<bool> DoImageImportFromBookmarkedImages()
+        {
+            try
+            {
+                if (!_bookmarkService.OpenBookmarks())
+                {
+                    return false;
+                }
+
+                IsRunningImport = true;
+                List<ImageReferenceElement> imgReferenceList = null;
+                await Task.Run(() =>
+                {
+                    var bookmarks = _bookmarkService.BookmarkManager.GetAllBookmarksRecursive(_bookmarkService.BookmarkManager.RootFolder);
+
+                    var query = from b in bookmarks
+                        orderby b.LastWriteTime
+                        select new ImageReferenceElement
+                        {
+                            FileName = b.FileName,
+                            Directory = b.Directory,
+                            CompletePath = b.CompletePath,
+                            Size = b.Size,
+                            CreationTime = b.CreationTime,
+                            LastWriteTime = b.LastWriteTime,
+                            LastAccessTime = b.LastAccessTime
+                        };
+
+                     imgReferenceList = query.ToList();
+                });
+
+                // Use thread lock when updating the image refference datasource
+                lock (_threadLock)
+                {
+                    _totalNumberOfFiles = imgReferenceList.Count;
+                    _imageReferenceList = imgReferenceList;
+                }
+                IsRunningImport = false;
+                OnImportComplete?.Invoke(this, new ProgressEventArgs(ProgressStatusEnum.Complete, _imageReferenceList.Count, _totalNumberOfFiles));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "ImageLoaderService.DoImageImportFromBookmarkedImages()");
+                IsRunningImport = false;
+            }
+            return false;
         }
 
         private int GetNumberOfFilesMatchingRegexp(string basePath)
@@ -176,16 +227,29 @@ namespace ImageView.Services
             return imageReferenceList;
         }
 
-        public bool StartImageImport(string path)
+        public async Task<bool>  RunBookmarkImageImport()
+        {
+            if (!IsRunningImport)
+            {
+                return await DoImageImportFromBookmarkedImages();
+            }
+            return false;
+        }
+
+        public async Task<bool> RunImageImport(string path)
         {
             if (!IsRunningImport)
             {
                 _imageBaseDir = path;
-                _workerThread = new Thread(DoImageImport);
-                _runWorkerThread = true;
                 IsRunningImport = true;
                 _filesLoaded = 0;
-                _workerThread.Start();
+
+                await Task.Run(() =>
+                {
+                    _runWorkerThread = true;
+                    DoImageImport();
+                });
+             
                 return true;
             }
             return false;

@@ -598,6 +598,22 @@ namespace ImageView
 
         #region Main Menu Functions
 
+        private async void menuItemLoadBookmarkedImages_Click(object sender, EventArgs e)
+        {
+            bool result = await _imageLoaderService.RunBookmarkImageImport();
+
+            if (result)
+            {
+                MessageBox.Show("Successfuly loaded all bookmarks as source images", "Import complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                Log.Warning("RunBookmarkImageImport returned false");
+                MessageBox.Show("Failed to load bookmarked images as source images", "Import failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+          
+        }
+
         private void topMostToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _applicationSettingsService.Settings.AlwaysOntop = !_applicationSettingsService.Settings.AlwaysOntop;
@@ -941,5 +957,7 @@ namespace ImageView
         }
 
         #endregion
+
+ 
     }
 }

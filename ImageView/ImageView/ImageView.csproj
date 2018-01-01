@@ -356,6 +356,9 @@
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
     <Compile Include="Storage\LocalStorageRegistryAccess.cs" />
+    <Compile Include="UserControls\ColorSelectComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UserControls\ConfirmExitUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -419,6 +422,7 @@
     <Compile Include="Models\SortableBindingList.cs" />
     <Compile Include="Utility\RestoreFormState.cs" />
     <Compile Include="Utility\SystemIOHelper.cs" />
+    <Compile Include="Utility\UIHelper.cs" />
     <Compile Include="Utility\WindowsAPICalls.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>

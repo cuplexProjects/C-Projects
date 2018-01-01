@@ -89,8 +89,11 @@
             this.lblScreenLayout = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.tabPageColorSettings = new System.Windows.Forms.TabPage();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.backgroundColorDropdownList = new ImageView.UserControls.ColorSelectComboBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.lblColorOption1 = new System.Windows.Forms.Label();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.tabPageCacheSettings = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblCacheSize = new System.Windows.Forms.Label();
@@ -106,13 +109,6 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.imageListSettings = new System.Windows.Forms.ImageList(this.components);
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblMainWinBackgrounColor = new System.Windows.Forms.Label();
-            this.btnUpdateBackgroundColor = new System.Windows.Forms.Button();
-            this.pnlMainWIndowBackgroundColor = new System.Windows.Forms.Panel();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
             this.tabControlSettings.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -138,11 +134,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             this.tabPageColorSettings.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.tabPageCacheSettings.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCacheSize)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOk
@@ -966,14 +962,49 @@
             this.tabPageColorSettings.TabIndex = 3;
             this.tabPageColorSettings.Text = "Colors";
             // 
-            // groupBox6
+            // tableLayoutPanel4
             // 
-            this.groupBox6.Location = new System.Drawing.Point(11, 12);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(563, 356);
-            this.groupBox6.TabIndex = 0;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Main Window";
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.80866F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 61.19134F));
+            this.tableLayoutPanel4.Controls.Add(this.backgroundColorDropdownList, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.label19, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.lblColorOption1, 0, 0);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(11, 33);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 3;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(554, 85);
+            this.tableLayoutPanel4.TabIndex = 2;
+            // 
+            // backgroundColorDropdownList
+            // 
+            this.backgroundColorDropdownList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.backgroundColorDropdownList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.backgroundColorDropdownList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.backgroundColorDropdownList.ForeColor = System.Drawing.Color.Transparent;
+            this.backgroundColorDropdownList.FormattingEnabled = true;
+            this.backgroundColorDropdownList.Location = new System.Drawing.Point(217, 3);
+            this.backgroundColorDropdownList.MaxDropDownItems = 10;
+            this.backgroundColorDropdownList.Name = "backgroundColorDropdownList";
+            this.backgroundColorDropdownList.Size = new System.Drawing.Size(334, 23);
+            this.backgroundColorDropdownList.TabIndex = 0;
+            // 
+            // label19
+            // 
+            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(5, 35);
+            this.label19.Margin = new System.Windows.Forms.Padding(5);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(204, 20);
+            this.label19.TabIndex = 4;
+            this.label19.Text = "Initial Image";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblColorOption1
             // 
@@ -984,10 +1015,19 @@
             this.lblColorOption1.Location = new System.Drawing.Point(5, 5);
             this.lblColorOption1.Margin = new System.Windows.Forms.Padding(5);
             this.lblColorOption1.Name = "lblColorOption1";
-            this.lblColorOption1.Size = new System.Drawing.Size(157, 25);
+            this.lblColorOption1.Size = new System.Drawing.Size(204, 20);
             this.lblColorOption1.TabIndex = 0;
             this.lblColorOption1.Text = "Background color";
             this.lblColorOption1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Location = new System.Drawing.Point(11, 12);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(563, 131);
+            this.groupBox6.TabIndex = 0;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Main Window";
             // 
             // tabPageCacheSettings
             // 
@@ -1159,97 +1199,6 @@
             this.imageListSettings.Images.SetKeyName(3, "Configuration Settings.ico");
             this.imageListSettings.Images.SetKeyName(4, "Paint.png");
             // 
-            // colorDialog1
-            // 
-            this.colorDialog1.Color = System.Drawing.Color.Transparent;
-            this.colorDialog1.FullOpen = true;
-            this.colorDialog1.ShowHelp = true;
-            this.colorDialog1.SolidColorOnly = true;
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 4;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.64286F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.35714F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 157F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 116F));
-            this.tableLayoutPanel4.Controls.Add(this.label22, 1, 1);
-            this.tableLayoutPanel4.Controls.Add(this.label19, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.lblMainWinBackgrounColor, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblColorOption1, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnUpdateBackgroundColor, 3, 0);
-            this.tableLayoutPanel4.Controls.Add(this.pnlMainWIndowBackgroundColor, 2, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(11, 33);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 3;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(554, 127);
-            this.tableLayoutPanel4.TabIndex = 2;
-            // 
-            // lblMainWinBackgrounColor
-            // 
-            this.lblMainWinBackgrounColor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblMainWinBackgrounColor.AutoSize = true;
-            this.lblMainWinBackgrounColor.Location = new System.Drawing.Point(172, 5);
-            this.lblMainWinBackgrounColor.Margin = new System.Windows.Forms.Padding(5);
-            this.lblMainWinBackgrounColor.Name = "lblMainWinBackgrounColor";
-            this.lblMainWinBackgrounColor.Size = new System.Drawing.Size(86, 25);
-            this.lblMainWinBackgrounColor.TabIndex = 1;
-            this.lblMainWinBackgrounColor.Text = "Transparent";
-            this.lblMainWinBackgrounColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnUpdateBackgroundColor
-            // 
-            this.btnUpdateBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpdateBackgroundColor.Location = new System.Drawing.Point(440, 3);
-            this.btnUpdateBackgroundColor.Name = "btnUpdateBackgroundColor";
-            this.btnUpdateBackgroundColor.Size = new System.Drawing.Size(111, 28);
-            this.btnUpdateBackgroundColor.TabIndex = 2;
-            this.btnUpdateBackgroundColor.Text = "Update";
-            this.btnUpdateBackgroundColor.UseVisualStyleBackColor = true;
-            this.btnUpdateBackgroundColor.Click += new System.EventHandler(this.btnUpdateBackgroundColor_Click);
-            // 
-            // pnlMainWIndowBackgroundColor
-            // 
-            this.pnlMainWIndowBackgroundColor.BackColor = System.Drawing.Color.Transparent;
-            this.pnlMainWIndowBackgroundColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlMainWIndowBackgroundColor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMainWIndowBackgroundColor.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.pnlMainWIndowBackgroundColor.Location = new System.Drawing.Point(283, 3);
-            this.pnlMainWIndowBackgroundColor.Name = "pnlMainWIndowBackgroundColor";
-            this.pnlMainWIndowBackgroundColor.Size = new System.Drawing.Size(151, 29);
-            this.pnlMainWIndowBackgroundColor.TabIndex = 3;
-            // 
-            // label19
-            // 
-            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(5, 40);
-            this.label19.Margin = new System.Windows.Forms.Padding(5);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(157, 25);
-            this.label19.TabIndex = 4;
-            this.label19.Text = "Initial Image";
-            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label22
-            // 
-            this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(172, 40);
-            this.label22.Margin = new System.Windows.Forms.Padding(5);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(86, 25);
-            this.label22.TabIndex = 5;
-            this.label22.Text = "Transparent";
-            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1302,14 +1251,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             this.tabPageColorSettings.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.tabPageCacheSettings.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCacheSize)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1392,12 +1341,8 @@
         private System.Windows.Forms.CheckBox chkConfirmExit;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label lblColorOption1;
-        private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label lblMainWinBackgrounColor;
-        private System.Windows.Forms.Button btnUpdateBackgroundColor;
-        private System.Windows.Forms.Panel pnlMainWIndowBackgroundColor;
+        private UserControls.ColorSelectComboBox backgroundColorDropdownList;
     }
 }

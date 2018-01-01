@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
 using ImageView.DataContracts;
 using ImageView.InputForms;
 using ImageView.Services;
+using ImageView.Utility;
 
 namespace ImageView
 {
@@ -80,6 +82,11 @@ namespace ImageView
 
             trackBarFadeTime.Value = settings.ImageTransitionTime;
             lblFadeTime.Text = trackBarFadeTime.Value + " ms";
+
+            // Colors
+            backgroundColorDropdownList.DataSource = UIHelper.GetSelectableBackgroundColors();
+            if (backgroundColorDropdownList.Items.Count > 0)
+                backgroundColorDropdownList.SelectedIndex = 0;
 
             UpdateCacheStats();
         }
@@ -185,7 +192,7 @@ namespace ImageView
             lblCacheItems.Text = _imageCacheService.CachedItems.ToString();
             lblUsedSpace.Text = GeneralConverters.FormatFileSizeToString(cacheUsage, 2);
             lblFreeSpace.Text = GeneralConverters.FormatFileSizeToString(cacheSize - cacheUsage);
-            pbarPercentUsed.Value = Convert.ToInt32((double) cacheUsage / cacheSize * 100);
+            pbarPercentUsed.Value = Convert.ToInt32((double)cacheUsage / cacheSize * 100);
 
             trackBarCacheSize.Minimum = Convert.ToInt32(minSize / TrackbarDivider);
             trackBarCacheSize.Maximum = Convert.ToInt32(maxSize / TrackbarDivider);
@@ -207,18 +214,6 @@ namespace ImageView
         {
             UpdateCacheSizeLabel();
             _selectedCacheSize = trackBarCacheSize.Value * TrackbarDivider;
-        }
-
-        private void btnUpdateBackgroundColor_Click(object sender, EventArgs e)
-        {
-            colorDialog1.AllowFullOpen = false;
-            colorDialog1.AnyColor = false;
-            colorDialog1.SolidColorOnly = true;
-            if (colorDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                pnlMainWIndowBackgroundColor.BackColor = colorDialog1.Color;
-                lblMainWinBackgrounColor.Text = colorDialog1.Color.Name;
-            }
         }
     }
 }

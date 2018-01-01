@@ -67,7 +67,7 @@ namespace ImageView
                 progressBar1.Value = Math.Min(progressBar1.Maximum, Convert.ToInt32(imagesLoaded*completionRate));
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private async void btnStart_Click(object sender, EventArgs e)
         {
             if (_baseSearchPath == null)
             {
@@ -82,8 +82,9 @@ namespace ImageView
 
             btnCancel.Enabled = true;
             progressBar1.Value = 0;
-            if (_imageLoaderService.StartImageImport(_baseSearchPath))
-                btnStart.Enabled = false;
+            bool result = await _imageLoaderService.RunImageImport(_baseSearchPath);
+
+             btnStart.Enabled = false;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

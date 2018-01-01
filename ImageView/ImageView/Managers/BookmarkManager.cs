@@ -595,5 +595,17 @@ namespace ImageView.Managers
             }
 
         }
+
+        public IEnumerable<Bookmark> GetAllBookmarksRecursive(BookmarkFolder rootFolder)
+        {
+            var bookmarks = rootFolder.Bookmarks;
+
+            foreach (var bookmarkFolder in rootFolder.BookmarkFolders)
+            {
+                bookmarks.AddRange(GetAllBookmarksRecursive(bookmarkFolder));
+            }
+
+            return bookmarks;
+        }
     }
 }
