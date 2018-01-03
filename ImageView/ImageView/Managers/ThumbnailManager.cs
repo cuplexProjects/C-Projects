@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
@@ -22,12 +24,12 @@ namespace ImageView.Managers
         private const string DatabaseFilename = "thumbs.db";
         private const string DatabaseKey = "2C1D350D-B0E5-4181-8D60-CAE050132DC1";
         private const string ImageSearchPatterb = @"^[a-zA-Z0-9_]((.+\.jpg$)|(.+\.png$)|(.+\.jpeg$)|(.+\.gif$))";
+        private readonly FileManager _fileManager;
         private readonly Regex _fileNameRegExp;
         private bool _abortScan;
         private Dictionary<string, ThumbnailEntry> _fileDictionary;
         private bool _isRunningThumbnailScan;
         private ThumbnailDatabase _thumbnailDatabase;
-        private readonly FileManager _fileManager;
 
         public ThumbnailManager(FileManager fileManager)
         {
@@ -55,7 +57,7 @@ namespace ImageView.Managers
             GC.Collect();
         }
 
-        public void StartThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
+        public async Task StartThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
         {
             if (_isRunningThumbnailScan || _fileManager.IsLocked)
                 return;
@@ -70,13 +72,15 @@ namespace ImageView.Managers
 
             var dirList = scanSubdirectories ? GetSubdirectoryList(path) : new List<string>();
             dirList.Add(path);
-            int scannedFiles = dirList.TakeWhile(directory => !_abortScan).Sum(directory => PerformThumbnailScan(directory, progress));
+            //int scannedFiles = dirList.TakeWhile(directory => !_abortScan).Sum(directory => PerformThumbnailScan(directory, progress));
+            int scannedFiles = await PerformThumbnailScanMultithreaded(dirList, progress);
 
             _fileManager.CloseStream();
             SaveThumbnailDatabase();
 
-            progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = scannedFiles, ScannedFiles = scannedFiles, IsComplete = true });
             _isRunningThumbnailScan = false;
+            progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = scannedFiles, ScannedFiles = scannedFiles, IsComplete = true});
+            
         }
 
         public void StopThumbnailScan()
@@ -241,6 +245,126 @@ namespace ImageView.Managers
             return subdirectoryList;
         }
 
+        private async Task<int> PerformThumbnailScanMultithreaded(List<string> dirList, IProgress<ThumbnailScanProgress> progress)
+        {
+            Queue<string> dirQueue = new Queue<string>(dirList);
+            ConcurrentQueue<ThumbnailData> scannedThumbnailEntries = new ConcurrentQueue<ThumbnailData>();
+
+            int threads = Environment.ProcessorCount;
+            int filesProccessed = 0;
+
+            /*
+             * Direcory list contains main dir and all sub dirs
+             * So work must be divided into two segmentd but only one dedicated thread can list files per directory
+             */
+
+            // Work Scheduler Task
+            return await Task.Run(() =>
+            {
+                while (dirQueue.Count > 0 && !_abortScan)
+                {
+                    var filenames = GetImageFilenamesInDirectory(dirQueue.Dequeue());
+
+                    while (filenames.Count < threads * 4 && dirQueue.Count > 0)
+                    {
+                        filenames.AddRange(GetImageFilenamesInDirectory(dirQueue.Dequeue()));
+                    }
+                    filesProccessed += filenames.Count;
+
+                    ParallelOptions parallelOptions = new ParallelOptions {MaxDegreeOfParallelism = threads};
+                    var cancellationToken = parallelOptions.CancellationToken;
+
+                    Queue<string> filenameQueue = new Queue<string>(filenames);
+
+                    // Create work batch 
+                    Task dataStorageTask = null;
+                    var taskList = new List<Task>();
+                    while (filenameQueue.Count > 0 && !_abortScan)
+                    {
+                        while (taskList.Count < threads)
+                        {
+                            taskList.Add(Task.Factory.StartNew(() => { GetThumbnailEntry(filenameQueue.Dequeue(), scannedThumbnailEntries); }, cancellationToken));
+                        }
+
+                        Task.WaitAny(taskList.ToArray());
+                        taskList.RemoveAll(task => task.IsCompleted);
+
+                        if (dataStorageTask == null || dataStorageTask.IsCompleted)
+                        {
+                            if (scannedThumbnailEntries.Count > 100)
+                            {
+                                dataStorageTask = Task.Factory.StartNew(() => { ProcessThumbnailData(scannedThumbnailEntries); }, cancellationToken);
+                            }
+                        }
+                    }
+                }
+
+                ProcessThumbnailData(scannedThumbnailEntries);
+
+                return filesProccessed;
+            });
+        }
+
+        private void ProcessThumbnailData(ConcurrentQueue<ThumbnailData> thumbnailDatas)
+        {
+            while (thumbnailDatas.Count > 0)
+            {
+                if (thumbnailDatas.TryDequeue(out var data))
+                {
+                    SaveThumbnailData(data);
+                }
+            }
+        }
+
+        private List<string> GetImageFilenamesInDirectory(string path)
+        {
+            var filenameList = new List<string>();
+            var fullPathFilenames = Directory.GetFiles(path);
+
+            foreach (string fullPath in fullPathFilenames)
+            {
+                string fileName = GeneralConverters.GetFileNameFromPath(fullPath);
+                if (!_fileNameRegExp.IsMatch(fileName) || ThumbnailIsCached(fullPath)) continue;
+                filenameList.Add(fullPath);
+            }
+
+            return filenameList;
+        }
+
+        private void GetThumbnailEntry(string fullPath, ConcurrentQueue<ThumbnailData> thumbnailDatas)
+        {
+            string fileName = GeneralConverters.GetFileNameFromPath(fullPath);
+            string directory = GeneralConverters.GetDirectoryNameFromPath(fullPath);
+            Image thumbnailImage = LoadImageFromFile(fullPath);
+            var fileInfo = new FileInfo(fullPath);
+
+            var thumbnail = new ThumbnailEntry
+            {
+                Date = DateTime.Now,
+                SourceImageDate = fileInfo.LastWriteTime,
+                FileName = fileName,
+                Directory = directory,
+                SourceImageLength = fileInfo.Length,
+                UniqueId = Guid.NewGuid()
+            };
+
+            thumbnailDatas.Enqueue(new ThumbnailData {ThumbnailEntry = thumbnail, Image = thumbnailImage});
+        }
+
+        private void SaveThumbnailData(ThumbnailData thumbnailData)
+        {
+            var thumbnail = thumbnailData.ThumbnailEntry;
+            var img = thumbnailData.Image;
+
+            FileEntry fileEntry = _fileManager.WriteImage(img);
+            thumbnail.FilePosition = fileEntry.Position;
+            thumbnail.Length = fileEntry.Length;
+
+            _thumbnailDatabase.ThumbnailEntries.Add(thumbnail);
+            _fileDictionary.Add(Path.Combine(thumbnail.Directory, thumbnail.FileName), thumbnail);
+            IsModified = true;
+        }
+
         private int PerformThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress)
         {
             var files = Directory.GetFiles(path);
@@ -284,7 +408,9 @@ namespace ImageView.Managers
                     Date = DateTime.Now,
                     SourceImageDate = fileInfo.LastWriteTime,
                     FileName = fileName,
-                    Directory = path
+                    Directory = path,
+                    SourceImageLength = fileInfo.Length,
+                    UniqueId = Guid.NewGuid()
                 };
 
                 FileEntry fileEntry = _fileManager.WriteImage(img);
@@ -297,7 +423,7 @@ namespace ImageView.Managers
 
                 // Update progress
                 scannedFiles++;
-                progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = filesToScan, ScannedFiles = scannedFiles });
+                progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = filesToScan, ScannedFiles = scannedFiles});
             }
 
             return scannedFiles;
@@ -305,6 +431,8 @@ namespace ImageView.Managers
 
         private bool ValidateThumbnailDatabase(ThumbnailDatabase thumbnailDatabase)
         {
+            bool UpdateToDisk = false;
+
             if (thumbnailDatabase.ThumbnailEntries == null)
             {
                 thumbnailDatabase.ThumbnailEntries = new List<ThumbnailEntry>();
@@ -315,11 +443,16 @@ namespace ImageView.Managers
 
             //Check for duplicates
             var query = (from t in thumbnailDatabase.ThumbnailEntries
-                         group t by new { EntryFilePath = t.Directory + t.FileName }
+                group t by new {EntryFilePath = t.Directory + t.FileName}
                 into g
-                         select new { FilePath = g.Key, Count = g.Count() }).ToList();
+                select new {FilePath = g.Key, Count = g.Count()}).ToList();
 
             var duplicateKeys = query.Where(x => x.Count > 1).Select(x => x.FilePath.EntryFilePath).ToList();
+
+            if (duplicateKeys.Count > 0)
+            {
+                UpdateToDisk = true;
+            }
 
             foreach (string duplicateKey in duplicateKeys)
             {
@@ -338,6 +471,18 @@ namespace ImageView.Managers
                 Log.Information("Removed {itemsRemovedTotal} duplicate items from the thumbnailcache", itemsRemovedTotal);
             }
 
+            // Verify that every ThumbnailEntry has a set guid 
+            foreach (var thumbnailEntry in thumbnailDatabase.ThumbnailEntries.Where(x => x.UniqueId == Guid.Empty))
+            {
+                thumbnailEntry.UniqueId = Guid.NewGuid();
+                UpdateToDisk = true;
+            }
+
+            if (UpdateToDisk)
+            {
+                SaveThumbnailDatabase();
+            }
+
             return true;
         }
 
@@ -346,6 +491,11 @@ namespace ImageView.Managers
             return _fileDictionary.ContainsKey(filename);
         }
 
+        /// <summary>
+        ///     Loads an image from file and then returns a resized version
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        /// <returns></returns>
         private Image LoadImageFromFile(string filename)
         {
             const int maxSize = 512;
@@ -357,7 +507,7 @@ namespace ImageView.Managers
             {
                 if (width > maxSize)
                 {
-                    double factor = (double)width / maxSize;
+                    double factor = (double) width / maxSize;
                     width = maxSize;
                     height = Convert.ToInt32(Math.Ceiling(height / factor));
                 }
@@ -370,7 +520,7 @@ namespace ImageView.Managers
             {
                 if (height > maxSize)
                 {
-                    double factor = (double)height / maxSize;
+                    double factor = (double) height / maxSize;
                     height = maxSize;
                     width = Convert.ToInt32(Math.Ceiling(width / factor));
                 }
@@ -411,7 +561,9 @@ namespace ImageView.Managers
                 Date = DateTime.Now,
                 SourceImageDate = fileInfo.LastWriteTime,
                 FileName = fileName,
-                Directory = path
+                Directory = path,
+                UniqueId = Guid.NewGuid(),
+                SourceImageLength = fileInfo.Length
             };
 
             FileEntry fileEntry = _fileManager.WriteImage(img);
@@ -464,7 +616,6 @@ namespace ImageView.Managers
 
                 IsModified = true;
                 return true;
-
             }
             finally
             {
@@ -475,6 +626,13 @@ namespace ImageView.Managers
             }
         }
 
+        /// <summary>
+        ///     Reduces the size of the cach. Prioritize removing the smallest original files size images first since they are
+        ///     easiest to proces yet take up equal amount of
+        ///     storage as the large files.
+        /// </summary>
+        /// <param name="maxFileSize">Maximum size of the file.</param>
+        /// <returns></returns>
         public bool ReduceCachSize(long maxFileSize)
         {
             bool canLockDatabase = false;
@@ -485,7 +643,15 @@ namespace ImageView.Managers
                 if (!canLockDatabase)
                     return false;
 
-                var fileEntryList = _fileDictionary.Values.OrderBy(x => x.Date).ToList();
+                // Update SourceImageLength is a new property and needs to be calculated post process when it is zero
+                var filesToProcess = _fileDictionary.Values.Where(x => x.SourceImageLength == 0).Select(x => Path.Combine(x.Directory, x.FileName)).ToList();
+                foreach (string fileName in filesToProcess)
+                {
+                    FileInfo fileInfo = new FileInfo(fileName);
+                    _fileDictionary[fileName].SourceImageLength = fileInfo.Length;
+                }
+
+                var fileEntryList = _fileDictionary.Values.OrderBy(x => x.SourceImageLength).ToList();
                 long currentSize = fileEntryList.Sum(x => x.Length);
 
 
@@ -517,8 +683,13 @@ namespace ImageView.Managers
                 {
                     _fileManager.UnlockDatabase();
                 }
-
             }
+        }
+
+        private class ThumbnailData
+        {
+            public ThumbnailEntry ThumbnailEntry { get; set; }
+            public Image Image { get; set; }
         }
     }
 }

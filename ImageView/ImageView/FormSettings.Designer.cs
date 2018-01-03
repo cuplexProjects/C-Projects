@@ -109,6 +109,8 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.imageListSettings = new System.Windows.Forms.ImageList(this.components);
+            this.BackgroundImageDropdown = new System.Windows.Forms.ComboBox();
+            this.backgroundImageList = new System.Windows.Forms.ImageList(this.components);
             this.tabControlSettings.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -965,18 +967,19 @@
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.80866F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 61.19134F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 46.38989F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 53.61011F));
             this.tableLayoutPanel4.Controls.Add(this.backgroundColorDropdownList, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.label19, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.lblColorOption1, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.BackgroundImageDropdown, 1, 1);
             this.tableLayoutPanel4.Location = new System.Drawing.Point(11, 33);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 3;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(554, 85);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(554, 94);
             this.tableLayoutPanel4.TabIndex = 2;
             // 
             // backgroundColorDropdownList
@@ -986,10 +989,10 @@
             this.backgroundColorDropdownList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.backgroundColorDropdownList.ForeColor = System.Drawing.Color.Transparent;
             this.backgroundColorDropdownList.FormattingEnabled = true;
-            this.backgroundColorDropdownList.Location = new System.Drawing.Point(217, 3);
+            this.backgroundColorDropdownList.Location = new System.Drawing.Point(260, 3);
             this.backgroundColorDropdownList.MaxDropDownItems = 10;
             this.backgroundColorDropdownList.Name = "backgroundColorDropdownList";
-            this.backgroundColorDropdownList.Size = new System.Drawing.Size(334, 23);
+            this.backgroundColorDropdownList.Size = new System.Drawing.Size(291, 23);
             this.backgroundColorDropdownList.TabIndex = 0;
             // 
             // label19
@@ -1001,9 +1004,9 @@
             this.label19.Location = new System.Drawing.Point(5, 35);
             this.label19.Margin = new System.Windows.Forms.Padding(5);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(204, 20);
+            this.label19.Size = new System.Drawing.Size(247, 20);
             this.label19.TabIndex = 4;
-            this.label19.Text = "Initial Image";
+            this.label19.Text = "Initial Background Image";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblColorOption1
@@ -1015,7 +1018,7 @@
             this.lblColorOption1.Location = new System.Drawing.Point(5, 5);
             this.lblColorOption1.Margin = new System.Windows.Forms.Padding(5);
             this.lblColorOption1.Name = "lblColorOption1";
-            this.lblColorOption1.Size = new System.Drawing.Size(204, 20);
+            this.lblColorOption1.Size = new System.Drawing.Size(247, 20);
             this.lblColorOption1.TabIndex = 0;
             this.lblColorOption1.Text = "Background color";
             this.lblColorOption1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1024,7 +1027,7 @@
             // 
             this.groupBox6.Location = new System.Drawing.Point(11, 12);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(563, 131);
+            this.groupBox6.Size = new System.Drawing.Size(563, 353);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Main Window";
@@ -1199,6 +1202,22 @@
             this.imageListSettings.Images.SetKeyName(3, "Configuration Settings.ico");
             this.imageListSettings.Images.SetKeyName(4, "Paint.png");
             // 
+            // BackgroundImageDropdown
+            // 
+            this.BackgroundImageDropdown.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BackgroundImageDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.BackgroundImageDropdown.FormattingEnabled = true;
+            this.BackgroundImageDropdown.Location = new System.Drawing.Point(260, 33);
+            this.BackgroundImageDropdown.Name = "BackgroundImageDropdown";
+            this.BackgroundImageDropdown.Size = new System.Drawing.Size(291, 24);
+            this.BackgroundImageDropdown.TabIndex = 0;
+            // 
+            // backgroundImageList
+            // 
+            this.backgroundImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.backgroundImageList.ImageSize = new System.Drawing.Size(256, 256);
+            this.backgroundImageList.TransparentColor = System.Drawing.Color.Transparent;
+            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1344,5 +1363,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label label19;
         private UserControls.ColorSelectComboBox backgroundColorDropdownList;
+        private System.Windows.Forms.ComboBox BackgroundImageDropdown;
+        private System.Windows.Forms.ImageList backgroundImageList;
     }
 }

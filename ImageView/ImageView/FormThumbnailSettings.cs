@@ -29,7 +29,7 @@ namespace ImageView
         private void FormThumbnailSettings_Load(object sender, EventArgs e)
         {
             UpdateInformationLabels();
-            lblInfo.Text = "";
+            lblInfo.Text = "Progress Information.";
         }
 
         private void UpdateInformationLabels()

@@ -135,6 +135,9 @@ namespace ImageView.DataContracts
         [DataMember(Name = "ConfirmApplicationShutdown", Order = 28)]
         public bool ConfirmApplicationShutdown { get; set; }
 
+        [DataMember(Name = "MainWindowBackgroundColor", Order = 29)]
+        public bool MainWindowBackgroundColor { get; set; }
+
         public void RemoveDuplicateEntriesWithIgnoreCase()
         {
             var deleteStack = new Stack<string>();

@@ -20,6 +20,7 @@ namespace ImageView.UserControls
 
         private void ThumbnailScanDirectory_Load(object sender, EventArgs e)
         {
+            chbIncludeSubdirs.Checked = true;
             UpdateButtonState();
         }
 
@@ -32,12 +33,12 @@ namespace ImageView.UserControls
             }
         }
 
-        private void btnScan_Click(object sender, EventArgs e)
+        private async void btnScan_Click(object sender, EventArgs e)
         {
             _scaningDirectory = true;
             var progress = new Progress<ThumbnailScanProgress>(Handler);
 
-            _thumbnailService.ScanDirectoryAsync(txtFolderPath.Text, progress, chbIncludeSubdirs.Checked);
+            await _thumbnailService.ScanDirectoryAsync(txtFolderPath.Text, progress, chbIncludeSubdirs.Checked);
             UpdateButtonState();
         }
 

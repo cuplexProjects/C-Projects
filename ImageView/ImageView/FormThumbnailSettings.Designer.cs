@@ -130,7 +130,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(327, 338);
+            this.btnClose.Location = new System.Drawing.Point(327, 359);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(120, 38);
             this.btnClose.TabIndex = 1;
@@ -141,10 +141,11 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.groupBox4);
+            this.groupBox2.Controls.Add(this.lblInfo);
             this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Location = new System.Drawing.Point(12, 103);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(435, 229);
+            this.groupBox2.Size = new System.Drawing.Size(435, 250);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tools";
@@ -158,7 +159,7 @@
             this.groupBox4.Controls.Add(this.btnReduceCachSize);
             this.groupBox4.Location = new System.Drawing.Point(12, 93);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(407, 130);
+            this.groupBox4.Size = new System.Drawing.Size(407, 129);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Reduce cached Items";
@@ -176,10 +177,10 @@
             // 
             this.label3.Location = new System.Drawing.Point(13, 76);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(388, 39);
+            this.label3.Size = new System.Drawing.Size(388, 50);
             this.label3.TabIndex = 8;
-            this.label3.Text = "When shrinking the thumbnail database size the deletion order is by thumbnail siz" +
-    "e ";
+            this.label3.Text = "When shrinking the thumbnail database size the deletion order is to remove the sm" +
+    "allest full sized images first since they take the least time to process.";
             this.label3.UseCompatibleTextRendering = true;
             // 
             // label2
@@ -271,7 +272,7 @@
             // lblInfo
             // 
             this.lblInfo.AutoSize = true;
-            this.lblInfo.Location = new System.Drawing.Point(15, 406);
+            this.lblInfo.Location = new System.Drawing.Point(22, 225);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(20, 17);
             this.lblInfo.TabIndex = 3;
@@ -279,7 +280,7 @@
             // 
             // btnUpdateCurrentUsage
             // 
-            this.btnUpdateCurrentUsage.Location = new System.Drawing.Point(166, 338);
+            this.btnUpdateCurrentUsage.Location = new System.Drawing.Point(175, 359);
             this.btnUpdateCurrentUsage.Name = "btnUpdateCurrentUsage";
             this.btnUpdateCurrentUsage.Size = new System.Drawing.Size(146, 38);
             this.btnUpdateCurrentUsage.TabIndex = 4;
@@ -291,9 +292,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 387);
+            this.ClientSize = new System.Drawing.Size(452, 403);
             this.Controls.Add(this.btnUpdateCurrentUsage);
-            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -309,12 +309,12 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericSize)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

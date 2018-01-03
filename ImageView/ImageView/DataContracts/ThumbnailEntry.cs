@@ -7,6 +7,10 @@ namespace ImageView.DataContracts
     [DataContract(Name = "ThumbnailEntry")]
     public class ThumbnailEntry
     {
+        public ThumbnailEntry()
+        {
+            UniqueId = Guid.NewGuid();
+        }
         [DataMember(Name = "FileName", Order = 1)]
         public string FileName { get; set; }
 
@@ -24,5 +28,11 @@ namespace ImageView.DataContracts
 
         [DataMember(Name = "SourceImageDate", Order = 6)]
         public DateTime SourceImageDate { get; set; }
+
+        [DataMember(Name = "SourceImageLength", Order = 7)]
+        public long SourceImageLength { get; set; }
+
+        [DataMember(Name = "UniqueId", Order = 8)]
+        public Guid UniqueId { get; set; }
     }
 }

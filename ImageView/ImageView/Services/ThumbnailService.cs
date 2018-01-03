@@ -47,32 +47,41 @@ namespace ImageView.Services
             _thumbnailManager.Dispose();
         }
 
-
-
-        public void ScanDirectory(string path, bool scanSubdirectories)
+        public async void ScanDirectory(string path, bool scanSubdirectories)
         {
             if (IsRunningScan)
             {
                 return;
             }
             IsRunningScan = true;
-            _thumbnailManager.StartThumbnailScan(path, null, scanSubdirectories);
+            await _thumbnailManager.StartThumbnailScan(path, null, scanSubdirectories);
             _thumbnailManager.SaveThumbnailDatabase();
             IsRunningScan = false;
         }
 
-        public async void ScanDirectoryAsync(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
+        /// <summary>
+        /// Scans the directory asynchronous. Update 2018-01-02 Implemented multithreaded scan which should decrease execution time by a factor of 10
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="progress">The progress.</param>
+        /// <param name="scanSubdirectories">if set to <c>true</c> [scan subdirectories].</param>
+        /// <returns></returns>
+        public async Task ScanDirectoryAsync(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
         {
             try
             {
-                await Task.Run(() =>
+                await Task.Run(async () =>
                 {
                     if (IsRunningScan)
                     {
                         return;
                     }
                     IsRunningScan = true;
-                    _thumbnailManager.StartThumbnailScan(path, progress, scanSubdirectories);
+
+
+                    await _thumbnailManager.StartThumbnailScan(path, progress, scanSubdirectories);
+                    
+
                     _thumbnailManager.SaveThumbnailDatabase();
                     IsRunningScan = false;
                 });
