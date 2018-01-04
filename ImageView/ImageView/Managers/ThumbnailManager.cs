@@ -72,8 +72,10 @@ namespace ImageView.Managers
 
             var dirList = scanSubdirectories ? GetSubdirectoryList(path) : new List<string>();
             dirList.Add(path);
+
             //int scannedFiles = dirList.TakeWhile(directory => !_abortScan).Sum(directory => PerformThumbnailScan(directory, progress));
-            int scannedFiles = await PerformThumbnailScanMultithreaded(dirList, progress);
+            int totalFileCount = GetFileCount(dirList);
+            int scannedFiles = await PerformThumbnailScanMultithreaded(dirList, totalFileCount, progress);
 
             _fileManager.CloseStream();
             SaveThumbnailDatabase();
@@ -81,6 +83,17 @@ namespace ImageView.Managers
             _isRunningThumbnailScan = false;
             progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = scannedFiles, ScannedFiles = scannedFiles, IsComplete = true});
             
+        }
+
+        public int GetFileCount(List<string> dirList)
+        {
+            int fileCount = 0;
+            foreach (string dir in dirList)
+            {
+                fileCount += Directory.GetFiles(dir).Length;
+            }
+
+            return fileCount;
         }
 
         public void StopThumbnailScan()
@@ -245,7 +258,7 @@ namespace ImageView.Managers
             return subdirectoryList;
         }
 
-        private async Task<int> PerformThumbnailScanMultithreaded(List<string> dirList, IProgress<ThumbnailScanProgress> progress)
+        private async Task<int> PerformThumbnailScanMultithreaded(IEnumerable<string> dirList, int totalNumberOfFiles, IProgress<ThumbnailScanProgress> progress)
         {
             Queue<string> dirQueue = new Queue<string>(dirList);
             ConcurrentQueue<ThumbnailData> scannedThumbnailEntries = new ConcurrentQueue<ThumbnailData>();
@@ -264,13 +277,13 @@ namespace ImageView.Managers
                 while (dirQueue.Count > 0 && !_abortScan)
                 {
                     var filenames = GetImageFilenamesInDirectory(dirQueue.Dequeue());
-
+                  
                     while (filenames.Count < threads * 4 && dirQueue.Count > 0)
                     {
                         filenames.AddRange(GetImageFilenamesInDirectory(dirQueue.Dequeue()));
                     }
-                    filesProccessed += filenames.Count;
 
+                    filesProccessed += filenames.Count;
                     ParallelOptions parallelOptions = new ParallelOptions {MaxDegreeOfParallelism = threads};
                     var cancellationToken = parallelOptions.CancellationToken;
 
@@ -297,6 +310,7 @@ namespace ImageView.Managers
                             }
                         }
                     }
+                    progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = totalNumberOfFiles, ScannedFiles = filesProccessed, IsComplete = false });
                 }
 
                 ProcessThumbnailData(scannedThumbnailEntries);

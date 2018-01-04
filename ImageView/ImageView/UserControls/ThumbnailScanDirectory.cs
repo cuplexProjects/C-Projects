@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using GeneralToolkitLib.ConfigHelper;
 using ImageView.Models;
 using ImageView.Services;
 
@@ -16,6 +15,13 @@ namespace ImageView.UserControls
         {
             InitializeComponent();
             _thumbnailService = thumbnailService;
+            _thumbnailService.CompletedThumbnailScan += _thumbnailService_CompletedThumbnailScan;
+        }
+
+        private void _thumbnailService_CompletedThumbnailScan(object sender, EventArgs e)
+        {
+            _scaningDirectory = false;
+            UpdateButtonState();
         }
 
         private void ThumbnailScanDirectory_Load(object sender, EventArgs e)
@@ -36,10 +42,10 @@ namespace ImageView.UserControls
         private async void btnScan_Click(object sender, EventArgs e)
         {
             _scaningDirectory = true;
+            UpdateButtonState();
             var progress = new Progress<ThumbnailScanProgress>(Handler);
 
             await _thumbnailService.ScanDirectoryAsync(txtFolderPath.Text, progress, chbIncludeSubdirs.Checked);
-            UpdateButtonState();
         }
 
         private void Handler(ThumbnailScanProgress thumbnailScanProgress)
@@ -55,7 +61,15 @@ namespace ImageView.UserControls
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            CancelScan();
+            if (_thumbnailService.IsRunningScan)
+            {
+                CancelScan();
+            }
+            else
+            {
+                _scaningDirectory = false;
+            }
+            
             UpdateButtonState();
         }
 
@@ -80,7 +94,6 @@ namespace ImageView.UserControls
         private void CancelScan()
         {
             _thumbnailService.StopThumbnailScan();
-            _thumbnailService.SaveThumbnailDatabase();
         }
 
         public void OnFormClosed()

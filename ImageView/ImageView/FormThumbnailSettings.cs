@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
 using ImageView.Services;
@@ -77,20 +78,20 @@ namespace ImageView
             UpdateInformationLabels();
         }
 
-        private void btnReduceCachSize_Click(object sender, EventArgs e)
+        private async void btnReduceCachSize_Click(object sender, EventArgs e)
         {
             int maxSize = Convert.ToInt32(numericSize.Value);
             long truncatedSize = maxSize * 1048576;
 
             // Verify that the actual thumbnail database file is larger then the target size
-            if (truncatedSize> _thumbnailService.GetThumbnailDbSize())
+            if (truncatedSize > _thumbnailService.GetThumbnailDbSize())
             {
                 MessageBox.Show("The thumbnail database is already smaller then the selected size!", "Unable to truncate", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             btnReduceCachSize.Enabled = false;
-            bool result = _thumbnailService.TruncateCacheSize(truncatedSize);
+            bool result = await Task.Run(() => _thumbnailService.TruncateCacheSize(truncatedSize));
 
             MessageBox.Show(result ? "The thumbnail database was successfully truncated" : "Failed to truncate the database because the db is locked. Please try again in a minute", "Completed", MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
@@ -109,7 +110,7 @@ namespace ImageView
             {
                 MessageBox.Show("Can not update info values while a scan is running", "Scan is running", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-               
+
         }
     }
 }

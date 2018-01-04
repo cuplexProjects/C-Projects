@@ -68,20 +68,18 @@ namespace ImageView.Services
         /// <returns></returns>
         public async Task ScanDirectoryAsync(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
         {
+            if (IsRunningScan)
+            {
+                return;
+            }
+
             try
             {
-                await Task.Run(async () =>
+                await Task.Run( () =>
                 {
-                    if (IsRunningScan)
-                    {
-                        return;
-                    }
                     IsRunningScan = true;
-
-
-                    await _thumbnailManager.StartThumbnailScan(path, progress, scanSubdirectories);
-                    
-
+                    var scanTask= _thumbnailManager.StartThumbnailScan(path, progress, scanSubdirectories);
+                    Task.WaitAll(scanTask);
                     _thumbnailManager.SaveThumbnailDatabase();
                     IsRunningScan = false;
                 });
@@ -90,6 +88,7 @@ namespace ImageView.Services
             {
                 _thumbnailManager.CloseFileHandle();
                 Log.Error(ex, "Exception in ScanDirectoryAsync()");
+                IsRunningScan = false;
             }
         }
 
