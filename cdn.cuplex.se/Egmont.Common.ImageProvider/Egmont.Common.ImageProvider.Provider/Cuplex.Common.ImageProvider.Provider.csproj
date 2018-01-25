@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cuplex.Common.ImageProvider</RootNamespace>
     <AssemblyName>Cuplex.Common.ImageProvider</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrightnessCornerInfo.cs" />
+    <Compile Include="Configuration\GeneralApplicationConfig.cs" />
     <Compile Include="Configuration\ImageProviderConfigSection.cs" />
     <Compile Include="Configuration\ImageProviderPath.cs" />
     <Compile Include="Configuration\PathCollection.cs" />

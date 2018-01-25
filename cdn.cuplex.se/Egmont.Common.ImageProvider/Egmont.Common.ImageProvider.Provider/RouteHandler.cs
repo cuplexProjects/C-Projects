@@ -15,6 +15,7 @@ namespace Cuplex.Common.ImageProvider
 	internal class RouteHandler : IRouteHandler, IHttpHandler
 	{
 		private readonly ImageProviderPath _imageProviderPath;
+	    private readonly GeneralApplicationConfig _applicationConfig;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RouteHandler"/> class.
@@ -23,7 +24,9 @@ namespace Cuplex.Common.ImageProvider
 		public RouteHandler(ImageProviderPath imageProviderPath)
 		{
 			_imageProviderPath = imageProviderPath;
-		}
+		    _applicationConfig= new GeneralApplicationConfig();
+
+        }
 
 		#region Implementation of IRouteHandler
 
@@ -63,7 +66,19 @@ namespace Cuplex.Common.ImageProvider
 				}
 			}
 
-			var originalFile = path.Substring(0, path.LastIndexOf(path.Contains("__") ? "__" : ".", StringComparison.Ordinal)) + Path.GetExtension(path);
+			string originalFile;
+
+		    if (_applicationConfig.EnableFluentImage)
+		    {
+                originalFile = path.Substring(0, path.LastIndexOf(path.Contains("__") ? "__" : ".", StringComparison.Ordinal)) + Path.GetExtension(path);
+
+            }
+		    else
+		    {
+		        originalFile = path;
+
+		    }
+           
 			var originalPath = Path.Combine(_imageProviderPath.OriginalPath, originalFile).Replace('/', '\\');
 			var originalFileInfo = new FileInfo(originalPath);
 
@@ -93,7 +108,7 @@ namespace Cuplex.Common.ImageProvider
 			// Does the original file exist?
 			if (originalFileInfo.Exists)
 			{
-				if (path.Contains("__"))
+				if (_applicationConfig.EnableFluentImage &&  path.Contains("__"))
 				{
 					// Process the original image according to the requested image parameters.
 					var result = ImageProcessor.ProcessImage(localPath, originalPath);
