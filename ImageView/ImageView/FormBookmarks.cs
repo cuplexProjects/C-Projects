@@ -40,6 +40,7 @@ namespace ImageView
         private int _fixedLinks;
         private TreeViewDataContext _treeViewDataContext;
         private object _valueFromMouseDown;
+        private bool _showOverlayPreview = false;
 
         public FormBookmarks(BookmarkService bookmarkService, BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService)
         {
@@ -515,7 +516,7 @@ namespace ImageView
                             _gridViewGradientBackgroundColorStop, LinearGradientMode.Vertical))
                     {
                         e.Graphics.FillRectangle(backbrush, rowBounds);
-                        var p = new Pen(backbrush, 1) {Color = _gridViewSelectionBorderColor};
+                        var p = new Pen(backbrush, 1) { Color = _gridViewSelectionBorderColor };
                         e.Graphics.DrawRectangle(p, rowBounds);
                     }
                 }
@@ -749,6 +750,26 @@ namespace ImageView
             DeleteSelectedBookmark();
         }
 
+        private void showOverlayPreviewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _showOverlayPreview = !_showOverlayPreview;
+            showOverlayPreviewToolStripMenuItem.Checked = _showOverlayPreview;
+        }
+
+        private void maximizePreviewAreaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            splitContainer1.SplitterDistance = Convert.ToInt32(splitContainer1.Width * 0.75);
+            splitContainer2.SplitterDistance = Convert.ToInt32(splitContainer2.Height * 0.25);
+        }
+
+        private void restorePreviewAreaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            splitContainer1.SplitterDistance = Convert.ToInt32(splitContainer1.Width * 0.25);
+            splitContainer2.SplitterDistance = Convert.ToInt32(splitContainer2.Height * 0.5);
+        }
+
         #endregion
+
+
     }
 }

@@ -263,7 +263,7 @@ namespace ImageView.Managers
             Queue<string> dirQueue = new Queue<string>(dirList);
             ConcurrentQueue<ThumbnailData> scannedThumbnailEntries = new ConcurrentQueue<ThumbnailData>();
 
-            int threads = Environment.ProcessorCount;
+            int threads = Environment.ProcessorCount*2;
             int filesProccessed = 0;
 
             /*
