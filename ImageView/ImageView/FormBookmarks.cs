@@ -40,13 +40,15 @@ namespace ImageView
         private int _fixedLinks;
         private TreeViewDataContext _treeViewDataContext;
         private object _valueFromMouseDown;
-        private bool _showOverlayPreview = false;
+        private readonly OverlayFormManager _overlayFormManager;
+
 
         public FormBookmarks(BookmarkService bookmarkService, BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService)
         {
             _bookmarkService = bookmarkService;
             _bookmarkManager = bookmarkManager;
             _applicationSettingsService = applicationSettingsService;
+            _overlayFormManager = new OverlayFormManager();
             InitializeComponent();
             _logStringBuilder = new StringBuilder();
             _volumeInfoArray = new List<string>();
@@ -348,7 +350,7 @@ namespace ImageView
 
         private void bookmarksDataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && e.RowIndex >= 0)
                 LoadImageFromSelectedRow();
         }
 
@@ -470,11 +472,42 @@ namespace ImageView
             {
                 _treeViewDataContext.ExpandNode(bookmarksTree.TopNode.Tag as BookmarkFolder);
             }
+            _overlayFormManager.ActiveRow = -1;
         }
 
         #endregion
 
         #region bookmarksDataGridViewEvents
+
+        // Sort the list based on clicked column
+        private async void bookmarksDataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                var column = bookmarksDataGridView.Columns[e.ColumnIndex];
+                if (column.Tag == null)
+                {
+                    column.Tag = SortOrder.Ascending;
+                }
+                else
+                {
+                    var currentSortOrder = ((SortOrder)(int)column.Tag);
+                    column.Tag = currentSortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
+                }
+
+                string sortBy = column.DataPropertyName;
+
+                TreeNode selectedNode = bookmarksTree.SelectedNode;
+
+                if (!(selectedNode.Tag is BookmarkFolder selectedBookmarkfolder)) return;
+
+
+
+                _bookmarkManager.UpdateSortOrder(selectedBookmarkfolder, sortBy, (SortOrder)column.Tag);
+                ReLoadBookmarks();
+                await _bookmarkService.SaveBookmarksAsync();
+            }
+        }
 
         // Paints the content that spans multiple columns and the focus rectangle.
         private void bookmarksDataGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
@@ -752,8 +785,8 @@ namespace ImageView
 
         private void showOverlayPreviewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _showOverlayPreview = !_showOverlayPreview;
-            showOverlayPreviewToolStripMenuItem.Checked = _showOverlayPreview;
+            _overlayFormManager.IsEnabled = !_overlayFormManager.IsEnabled;
+            showOverlayPreviewToolStripMenuItem.Checked = _overlayFormManager.IsEnabled;
         }
 
         private void maximizePreviewAreaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -768,8 +801,43 @@ namespace ImageView
             splitContainer2.SplitterDistance = Convert.ToInt32(splitContainer2.Height * 0.5);
         }
 
+
         #endregion
 
 
+
+        private void bookmarksDataGridView_MouseEnter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bookmarksDataGridView_MouseLeave(object sender, EventArgs e)
+        {
+            _overlayFormManager.HideForm();
+        }
+
+        private void bookmarksDataGridView_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (_overlayFormManager.IsEnabled && e.RowIndex >= 0 && _overlayFormManager.ActiveRow != e.RowIndex)
+            {
+                _overlayFormManager.ActiveRow = e.RowIndex;
+                var row = bookmarksDataGridView.Rows[e.RowIndex];
+                if (row.DataBoundItem is Bookmark dataItem)
+                {
+                    _overlayFormManager.LoadImageAndDisplayForm(dataItem.CompletePath, Cursor.Position);
+                }
+            }
+
+        }
+
+        private void bookmarksDataGridView_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void bookmarksDataGridView_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+        }
     }
 }

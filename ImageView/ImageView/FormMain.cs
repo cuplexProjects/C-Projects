@@ -104,6 +104,7 @@ namespace ImageView
 
             addBookmarkToolStripMenuItem.Enabled = false;
             Text = _windowTitle;
+            ToggleSlideshowNenuState();
             _pictureBoxAnimation.LoadCompleted += pictureBoxAnimation_LoadCompleted;
         }
 
@@ -688,14 +689,22 @@ namespace ImageView
             SyncUserControlStateWithAppSettings();
             timerSlideShow.Interval = 1;
             timerSlideShow.Start();
+            ToggleSlideshowNenuState();
 
             //Disable screensaver
             ScreenSaver.Disable();
         }
 
+        private void ToggleSlideshowNenuState()
+        {
+            startToolStripMenuItem.Enabled = !timerSlideShow.Enabled;
+            stopToolStripMenuItem.Enabled = timerSlideShow.Enabled;
+        }
+
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             timerSlideShow.Enabled = false;
+            ToggleSlideshowNenuState();
 
             //Enable screensaver
             ScreenSaver.Disable();

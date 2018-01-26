@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
@@ -606,6 +608,17 @@ namespace ImageView.Managers
             }
 
             return bookmarks;
+        }
+
+        public void UpdateSortOrder(BookmarkFolder selectedBookmarkfolder, string sortBy, SortOrder sortOrder)
+        {
+            var bookmarks = sortOrder == SortOrder.Ascending ? selectedBookmarkfolder.Bookmarks.OrderBy(o => o.GetType().GetProperty(sortBy)?.GetValue(o, null)).ToList() :
+                selectedBookmarkfolder.Bookmarks.OrderByDescending(o => o.GetType().GetProperty(sortBy)?.GetValue(o, null)).ToList();
+            
+            for (int i = 0; i < bookmarks.Count; i++)
+            {
+                bookmarks[i].SortOrder = i;
+            }
         }
     }
 }

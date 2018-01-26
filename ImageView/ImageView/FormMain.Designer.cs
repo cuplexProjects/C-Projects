@@ -34,6 +34,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemOpenImage = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemLoadBookmarkedImages = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.autoLoadPreviousFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
@@ -90,7 +91,6 @@
             this.timerSlideShow = new System.Windows.Forms.Timer(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.menuItemLoadBookmarkedImages = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -142,6 +142,13 @@
             this.menuItemOpenImage.Size = new System.Drawing.Size(257, 26);
             this.menuItemOpenImage.Text = "Open &Image";
             this.menuItemOpenImage.Click += new System.EventHandler(this.menuItemOpenImage_Click);
+            // 
+            // menuItemLoadBookmarkedImages
+            // 
+            this.menuItemLoadBookmarkedImages.Name = "menuItemLoadBookmarkedImages";
+            this.menuItemLoadBookmarkedImages.Size = new System.Drawing.Size(257, 26);
+            this.menuItemLoadBookmarkedImages.Text = "Load Bookmarked images";
+            this.menuItemLoadBookmarkedImages.Click += new System.EventHandler(this.menuItemLoadBookmarkedImages_Click);
             // 
             // toolStripSeparator4
             // 
@@ -323,8 +330,9 @@
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+            this.startToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.startToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(158, 26);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
@@ -332,21 +340,21 @@
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
             this.stopToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(158, 26);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // setIntervalToolStripMenuItem
             // 
             this.setIntervalToolStripMenuItem.Name = "setIntervalToolStripMenuItem";
-            this.setIntervalToolStripMenuItem.Size = new System.Drawing.Size(158, 26);
+            this.setIntervalToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.setIntervalToolStripMenuItem.Text = "Set Interval";
             this.setIntervalToolStripMenuItem.Click += new System.EventHandler(this.setIntervalToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(155, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(178, 6);
             // 
             // settingsToolStripMenuItem
             // 
@@ -561,13 +569,6 @@
             this.pictureBox1.LoadCompleted += new System.ComponentModel.AsyncCompletedEventHandler(this.pictureBox1_LoadCompleted);
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             this.pictureBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
-            // 
-            // menuItemLoadBookmarkedImages
-            // 
-            this.menuItemLoadBookmarkedImages.Name = "menuItemLoadBookmarkedImages";
-            this.menuItemLoadBookmarkedImages.Size = new System.Drawing.Size(257, 26);
-            this.menuItemLoadBookmarkedImages.Text = "Load Bookmarked images";
-            this.menuItemLoadBookmarkedImages.Click += new System.EventHandler(this.menuItemLoadBookmarkedImages_Click);
             // 
             // FormMain
             // 

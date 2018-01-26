@@ -213,6 +213,7 @@
     <Compile Include="Library\AutofacModules\LoggingModule.cs" />
     <Compile Include="Managers\FileManager.cs" />
     <Compile Include="Managers\ManagerBase.cs" />
+    <Compile Include="Managers\OverlayFormManager.cs" />
     <Compile Include="Managers\ThumbnailManager.cs" />
     <Compile Include="Models\ApplicationVersion.cs" />
     <Compile Include="Models\CachedImage.cs" />
@@ -356,6 +357,12 @@
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
     <Compile Include="Storage\LocalStorageRegistryAccess.cs" />
+    <Compile Include="UserControls\BookmarkPreviewOverlayUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\BookmarkPreviewOverlayUserControl.Designer.cs">
+      <DependentUpon>BookmarkPreviewOverlayUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ColorSelectComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -502,6 +509,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UserControls\BookmarkPreviewOverlayUserControl.resx">
+      <DependentUpon>BookmarkPreviewOverlayUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\ConfirmExitUserControl.resx">
       <DependentUpon>ConfirmExitUserControl.cs</DependentUpon>
     </EmbeddedResource>

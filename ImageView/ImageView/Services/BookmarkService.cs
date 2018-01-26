@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using GeneralToolkitLib.Storage.Memory;
 using GeneralToolkitLib.Utility.RandomGenerator;
 using ImageView.Configuration;
@@ -16,6 +17,7 @@ namespace ImageView.Services
         private readonly BookmarkManager _bookmarkManager;
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly string _directory;
+        private static object _lockObj = new object();
 
         public BookmarkService(BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService)
         {
@@ -55,8 +57,12 @@ namespace ImageView.Services
 
         public bool SaveBookmarks()
         {
-            string password = _passwordStorage.Get(_protectedMemoryStorageKey);
-            return _bookmarkManager.SaveToFile(_directory + BookmarkFileName, password);
+            lock (_lockObj)
+            {
+                string password = _passwordStorage.Get(_protectedMemoryStorageKey);
+                return _bookmarkManager.SaveToFile(_directory + BookmarkFileName, password);
+
+            }
         }
 
         private string GetDefaultPassword()
@@ -78,12 +84,20 @@ namespace ImageView.Services
                 return "CodeRed";
 
             }
-            
+
         }
 
         public void Dispose()
         {
             _passwordStorage?.Dispose();
+        }
+
+        public async Task SaveBookmarksAsync()
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                SaveBookmarks();
+            });
         }
     }
 }

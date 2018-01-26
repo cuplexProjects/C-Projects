@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 using ImageView.UserControls;
 
 namespace ImageView.Utility
@@ -67,6 +68,20 @@ namespace ImageView.Utility
 
 
             return frmModal;
+        }
+
+        public static Form CreateFloatingForm(UserControl userControl, Size formSize)
+        {
+            Form form = new Form();
+            form.Controls.Add(userControl);
+            form.FormBorderStyle = FormBorderStyle.None;
+            form.StartPosition = FormStartPosition.CenterParent;
+            form.TopMost = true;
+            form.ShowInTaskbar = false;
+            form.ShowIcon = false;
+            form.Size = formSize;
+
+            return form;
         }
     }
 }
