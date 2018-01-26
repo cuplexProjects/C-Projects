@@ -41,12 +41,15 @@ namespace ImageView.Events
         public Type BookmarkType { get; private set; }
     }
 
+    [FlagsAttribute]
     public enum BookmarkActions
     {
-        CreatedBookmark,
-        CreatedBookmarkFolder,
-        DeletedBookmark,
-        DeletedBookmarkFolder,
-        LoadedNewDataSource,
+        CreatedBookmark = 1,
+        CreatedBookmarkFolder = 2,
+        DeletedBookmark = 4,
+        DeletedBookmarkFolder = 8,
+        EditedBookmark = 16,
+        EditedBookmarkFolder = 32,
+        LoadedNewDataSource = 64,
     }
 }

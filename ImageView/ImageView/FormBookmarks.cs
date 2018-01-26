@@ -445,7 +445,16 @@ namespace ImageView
 
         private void Instance_OnBookmarksUpdate(object sender, BookmarkUpdatedEventArgs e)
         {
-            ReLoadBookmarks();
+            if ((e.BookmarkAction & (BookmarkActions.CreatedBookmark | BookmarkActions.DeletedBookmark)) != 0)
+            {
+                ReLoadBookmarks();
+            }
+            else if ((e.BookmarkAction & (BookmarkActions.CreatedBookmarkFolder | BookmarkActions.DeletedBookmarkFolder)) != 0)
+            {
+                _treeViewDataContext.BindData();
+                _treeViewDataContext.ExpandNode(_bookmarkManager.RootFolder);
+            }
+
         }
 
         #endregion
