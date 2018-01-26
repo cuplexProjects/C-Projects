@@ -34,6 +34,7 @@ namespace ImageView
             chkShowSwitchImgButtons.Checked = settings.ShowSwitchImageButtons;
             chkEnableAutoload.Checked = settings.EnableAutoLoadFunctionFromMenu;
             chkConfirmExit.Checked = settings.ConfirmApplicationShutdown;
+            ChkAutomaticallyCheckForUpdates.Checked = settings.AutomaticUpdateCheck;
 
             if (settings.ShowNextPrevControlsOnEnterWindow)
             {
@@ -124,6 +125,7 @@ namespace ImageView
             settings.ScreenWidthOffset = Convert.ToInt32(numericScreenWidthOffset.Value);
 
             _applicationSettingsService.Settings.ImageCacheSize = _selectedCacheSize;
+            _applicationSettingsService.Settings.AutomaticUpdateCheck = ChkAutomaticallyCheckForUpdates.Checked;
             _imageCacheService.CacheSize = _selectedCacheSize;
 
             _applicationSettingsService.SaveSettings();
@@ -214,6 +216,11 @@ namespace ImageView
         {
             UpdateCacheSizeLabel();
             _selectedCacheSize = trackBarCacheSize.Value * TrackbarDivider;
+        }
+
+        private void toolTipUpdateDescription_Popup(object sender, PopupEventArgs e)
+        {
+
         }
     }
 }

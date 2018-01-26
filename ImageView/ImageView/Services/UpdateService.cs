@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Web;
-using System.Windows.Forms;
 using ImageView.Models;
 using JetBrains.Annotations;
 
@@ -18,6 +17,21 @@ namespace ImageView.Services
     {
         private readonly Regex _versionRegex = new Regex(@"^(Version = )(\d\.\d\.\d\.\d)$");
         private readonly Regex _downloadUrlRegex = new Regex(@"^(URL = )(https://.*\.msi)");
+
+        public async Task<bool> IsLatestVersion()
+        {
+
+            var latestVersion = await GetLatestVersion();
+            var curentVersion = ApplicationVersion.Parse(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
+            return curentVersion.CompareTo(latestVersion) >= 0;
+        }
+
+        public async Task DownloadAndRunLatestVersionInstaller()
+        {
+            string path = await DownloadLatestVersion();
+            Process.Start(path);
+        }
 
         public async Task<ApplicationVersion> GetLatestVersion()
         {

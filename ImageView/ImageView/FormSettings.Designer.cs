@@ -93,6 +93,7 @@
             this.backgroundColorDropdownList = new ImageView.UserControls.ColorSelectComboBox();
             this.label19 = new System.Windows.Forms.Label();
             this.lblColorOption1 = new System.Windows.Forms.Label();
+            this.BackgroundImageDropdown = new System.Windows.Forms.ComboBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.tabPageCacheSettings = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -109,8 +110,9 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.imageListSettings = new System.Windows.Forms.ImageList(this.components);
-            this.BackgroundImageDropdown = new System.Windows.Forms.ComboBox();
             this.backgroundImageList = new System.Windows.Forms.ImageList(this.components);
+            this.ChkAutomaticallyCheckForUpdates = new System.Windows.Forms.CheckBox();
+            this.toolTipUpdateDescription = new System.Windows.Forms.ToolTip(this.components);
             this.tabControlSettings.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -198,6 +200,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.ChkAutomaticallyCheckForUpdates);
             this.groupBox1.Controls.Add(this.chkConfirmExit);
             this.groupBox1.Controls.Add(this.groupBox5);
             this.groupBox1.Controls.Add(this.numericScreenWidthOffset);
@@ -989,10 +992,10 @@
             this.backgroundColorDropdownList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.backgroundColorDropdownList.ForeColor = System.Drawing.Color.Transparent;
             this.backgroundColorDropdownList.FormattingEnabled = true;
-            this.backgroundColorDropdownList.Location = new System.Drawing.Point(260, 3);
+            this.backgroundColorDropdownList.Location = new System.Drawing.Point(259, 3);
             this.backgroundColorDropdownList.MaxDropDownItems = 10;
             this.backgroundColorDropdownList.Name = "backgroundColorDropdownList";
-            this.backgroundColorDropdownList.Size = new System.Drawing.Size(291, 23);
+            this.backgroundColorDropdownList.Size = new System.Drawing.Size(292, 23);
             this.backgroundColorDropdownList.TabIndex = 0;
             // 
             // label19
@@ -1004,7 +1007,7 @@
             this.label19.Location = new System.Drawing.Point(5, 35);
             this.label19.Margin = new System.Windows.Forms.Padding(5);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(247, 20);
+            this.label19.Size = new System.Drawing.Size(246, 20);
             this.label19.TabIndex = 4;
             this.label19.Text = "Initial Background Image";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1018,10 +1021,20 @@
             this.lblColorOption1.Location = new System.Drawing.Point(5, 5);
             this.lblColorOption1.Margin = new System.Windows.Forms.Padding(5);
             this.lblColorOption1.Name = "lblColorOption1";
-            this.lblColorOption1.Size = new System.Drawing.Size(247, 20);
+            this.lblColorOption1.Size = new System.Drawing.Size(246, 20);
             this.lblColorOption1.TabIndex = 0;
             this.lblColorOption1.Text = "Background color";
             this.lblColorOption1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // BackgroundImageDropdown
+            // 
+            this.BackgroundImageDropdown.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BackgroundImageDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.BackgroundImageDropdown.FormattingEnabled = true;
+            this.BackgroundImageDropdown.Location = new System.Drawing.Point(259, 33);
+            this.BackgroundImageDropdown.Name = "BackgroundImageDropdown";
+            this.BackgroundImageDropdown.Size = new System.Drawing.Size(292, 24);
+            this.BackgroundImageDropdown.TabIndex = 0;
             // 
             // groupBox6
             // 
@@ -1202,21 +1215,30 @@
             this.imageListSettings.Images.SetKeyName(3, "Configuration Settings.ico");
             this.imageListSettings.Images.SetKeyName(4, "Paint.png");
             // 
-            // BackgroundImageDropdown
-            // 
-            this.BackgroundImageDropdown.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BackgroundImageDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.BackgroundImageDropdown.FormattingEnabled = true;
-            this.BackgroundImageDropdown.Location = new System.Drawing.Point(260, 33);
-            this.BackgroundImageDropdown.Name = "BackgroundImageDropdown";
-            this.BackgroundImageDropdown.Size = new System.Drawing.Size(291, 24);
-            this.BackgroundImageDropdown.TabIndex = 0;
-            // 
             // backgroundImageList
             // 
             this.backgroundImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             this.backgroundImageList.ImageSize = new System.Drawing.Size(256, 256);
             this.backgroundImageList.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // ChkAutomaticallyCheckForUpdates
+            // 
+            this.ChkAutomaticallyCheckForUpdates.AutoSize = true;
+            this.ChkAutomaticallyCheckForUpdates.Location = new System.Drawing.Point(272, 54);
+            this.ChkAutomaticallyCheckForUpdates.Margin = new System.Windows.Forms.Padding(4);
+            this.ChkAutomaticallyCheckForUpdates.Name = "ChkAutomaticallyCheckForUpdates";
+            this.ChkAutomaticallyCheckForUpdates.Size = new System.Drawing.Size(210, 21);
+            this.ChkAutomaticallyCheckForUpdates.TabIndex = 14;
+            this.ChkAutomaticallyCheckForUpdates.Text = "Check for updates automatic";
+            this.toolTipUpdateDescription.SetToolTip(this.ChkAutomaticallyCheckForUpdates, "If checked the program wil automatically check for updates when \r\nthe program sta" +
+        "rts if the last check was over 3 days ago.\r\n");
+            this.ChkAutomaticallyCheckForUpdates.UseVisualStyleBackColor = true;
+            // 
+            // toolTipUpdateDescription
+            // 
+            this.toolTipUpdateDescription.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.toolTipUpdateDescription.ToolTipTitle = "Automatic Updates";
+            this.toolTipUpdateDescription.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTipUpdateDescription_Popup);
             // 
             // FormSettings
             // 
@@ -1365,5 +1387,7 @@
         private UserControls.ColorSelectComboBox backgroundColorDropdownList;
         private System.Windows.Forms.ComboBox BackgroundImageDropdown;
         private System.Windows.Forms.ImageList backgroundImageList;
+        private System.Windows.Forms.CheckBox ChkAutomaticallyCheckForUpdates;
+        private System.Windows.Forms.ToolTip toolTipUpdateDescription;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autofac;
 using ImageView.Configuration;
@@ -32,6 +33,10 @@ namespace ImageView
             {
                 ApplicationSettingsService settingsService = scope.Resolve<ApplicationSettingsService>();
                 settingsService.LoadSettings();
+
+                // Begin startup async jobs
+                var startupService = scope.Resolve<StartupService>();
+                startupService.ScheduleAndRunStartupJobs();
 
                 FormMain frmMain = scope.Resolve<FormMain>();
                 Application.Run(frmMain);

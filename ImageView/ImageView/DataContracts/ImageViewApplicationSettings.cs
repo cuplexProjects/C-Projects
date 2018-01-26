@@ -46,6 +46,7 @@ namespace ImageView.DataContracts
             ThumbnailSize = 256;
             MaxThumbnails = 256;
             ConfirmApplicationShutdown = true;
+            AutomaticUpdateCheck = true;
 
             // 128 Mb
             ImageCacheSize = 134217728;
@@ -137,6 +138,13 @@ namespace ImageView.DataContracts
 
         [DataMember(Name = "MainWindowBackgroundColor", Order = 29)]
         public bool MainWindowBackgroundColor { get; set; }
+
+        [DataMember(Name = "AutomaticUpdateCheck", Order = 30)]
+        public bool AutomaticUpdateCheck { get; set; }
+
+        [DataMember(Name = "LastUpdateCheck", Order = 31)]
+        public DateTime? LastUpdateCheck { get; set; }
+
 
         public void RemoveDuplicateEntriesWithIgnoreCase()
         {

@@ -128,8 +128,8 @@ namespace ImageView
             // 
             this.splitContainer1.Panel2.Controls.Add(this.bookmarksDataGridView);
             this.splitContainer1.Panel2.Controls.Add(this.mainWinMenu);
-            this.splitContainer1.Size = new System.Drawing.Size(734, 462);
-            this.splitContainer1.SplitterDistance = 206;
+            this.splitContainer1.Size = new System.Drawing.Size(832, 603);
+            this.splitContainer1.SplitterDistance = 233;
             this.splitContainer1.TabIndex = 3;
             // 
             // splitContainer2
@@ -146,8 +146,8 @@ namespace ImageView
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.pictureBoxPreview);
-            this.splitContainer2.Size = new System.Drawing.Size(206, 462);
-            this.splitContainer2.SplitterDistance = 225;
+            this.splitContainer2.Size = new System.Drawing.Size(233, 603);
+            this.splitContainer2.SplitterDistance = 293;
             this.splitContainer2.TabIndex = 0;
             // 
             // bookmarksTree
@@ -162,7 +162,7 @@ namespace ImageView
             this.bookmarksTree.SelectedImageIndex = 1;
             this.bookmarksTree.ShowPlusMinus = false;
             this.bookmarksTree.ShowRootLines = false;
-            this.bookmarksTree.Size = new System.Drawing.Size(206, 225);
+            this.bookmarksTree.Size = new System.Drawing.Size(233, 293);
             this.bookmarksTree.TabIndex = 0;
             this.bookmarksTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.bookmarksTree_DragDrop);
             this.bookmarksTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.bookmarksTree_DragEnter);
@@ -213,7 +213,7 @@ namespace ImageView
             this.pictureBoxPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBoxPreview.Location = new System.Drawing.Point(0, 0);
             this.pictureBoxPreview.Name = "pictureBoxPreview";
-            this.pictureBoxPreview.Size = new System.Drawing.Size(206, 233);
+            this.pictureBoxPreview.Size = new System.Drawing.Size(233, 306);
             this.pictureBoxPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxPreview.TabIndex = 1;
             this.pictureBoxPreview.TabStop = false;
@@ -249,7 +249,7 @@ namespace ImageView
             this.bookmarksDataGridView.ShowCellToolTips = false;
             this.bookmarksDataGridView.ShowEditingIcon = false;
             this.bookmarksDataGridView.ShowRowErrors = false;
-            this.bookmarksDataGridView.Size = new System.Drawing.Size(524, 434);
+            this.bookmarksDataGridView.Size = new System.Drawing.Size(595, 575);
             this.bookmarksDataGridView.StandardTab = true;
             this.bookmarksDataGridView.TabIndex = 0;
             this.bookmarksDataGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.bookmarksDataGridView_CellMouseDoubleClick);
@@ -314,7 +314,7 @@ namespace ImageView
             this.viewToolStripMenuItem});
             this.mainWinMenu.Location = new System.Drawing.Point(0, 0);
             this.mainWinMenu.Name = "mainWinMenu";
-            this.mainWinMenu.Size = new System.Drawing.Size(524, 28);
+            this.mainWinMenu.Size = new System.Drawing.Size(595, 28);
             this.mainWinMenu.TabIndex = 1;
             this.mainWinMenu.Text = "menuStrip1";
             // 
@@ -495,7 +495,7 @@ namespace ImageView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(734, 462);
+            this.ClientSize = new System.Drawing.Size(832, 603);
             this.Controls.Add(this.splitContainer1);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

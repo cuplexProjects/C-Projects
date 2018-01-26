@@ -312,7 +312,7 @@ namespace ImageView
         {
             try
             {
-                pictureBox1.SizeMode = (PictureBoxSizeMode) _applicationSettingsService.Settings.PrimaryImageSizeMode;
+                pictureBox1.SizeMode = (PictureBoxSizeMode)_applicationSettingsService.Settings.PrimaryImageSizeMode;
 
 
                 if (_applicationSettingsService.Settings.NextImageAnimation == ImageViewApplicationSettings.ChangeImageAnimation.None)
@@ -372,7 +372,7 @@ namespace ImageView
                 {
                     long elapsedTime = stopwatch.ElapsedMilliseconds;
 
-                    float factor = stopwatch.ElapsedMilliseconds / (float) animationTime;
+                    float factor = stopwatch.ElapsedMilliseconds / (float)animationTime;
                     Image transitionImage;
                     switch (animation)
                     {
@@ -587,7 +587,7 @@ namespace ImageView
 
         private void pictureBox1_LoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            pictureBox1.SizeMode = (PictureBoxSizeMode) _applicationSettingsService.Settings.PrimaryImageSizeMode;
+            pictureBox1.SizeMode = (PictureBoxSizeMode)_applicationSettingsService.Settings.PrimaryImageSizeMode;
         }
 
         private void openInDefaultApplicationToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -612,7 +612,7 @@ namespace ImageView
                 Log.Warning("RunBookmarkImageImport returned false");
                 MessageBox.Show("Failed to load bookmarked images as source images", "Import failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-          
+
         }
 
         private void topMostToolStripMenuItem_Click(object sender, EventArgs e)
@@ -641,37 +641,25 @@ namespace ImageView
         {
             try
             {
-                var isLatest = await IsLatestVersion();
+                var updateService = _scope.Resolve<UpdateService>();
+                var isLatest = await updateService.IsLatestVersion();
                 if (isLatest)
                 {
                     MessageBox.Show("This is the latest version available", "Update check", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else if (MessageBox.Show("There is a newer version available, do you want to update?", "Update", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
-                    await DownloadAndRunLatestVersionInstaller();
+                    await updateService.DownloadAndRunLatestVersionInstaller();
                 }
+
+                _applicationSettingsService.Settings.LastUpdateCheck = DateTime.Now;
+                _applicationSettingsService.SaveSettings();
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Exception while checking for updates");
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private async Task<bool> IsLatestVersion()
-        {
-            var updateService = _scope.Resolve<UpdateService>();
-            var latestVersion = await updateService.GetLatestVersion();
-            var curentVersion = ApplicationVersion.Parse(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-
-            return curentVersion.CompareTo(latestVersion) >= 0;
-        }
-
-        private async Task DownloadAndRunLatestVersionInstaller()
-        {
-            var updateService = _scope.Resolve<UpdateService>();
-            string path = await updateService.DownloadLatestVersion();
-            Process.Start(path);
         }
 
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
@@ -967,6 +955,6 @@ namespace ImageView
 
         #endregion
 
- 
+
     }
 }
