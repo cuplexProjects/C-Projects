@@ -130,6 +130,19 @@ namespace GeneralToolkitLib.Storage.Registry
                             Log.Error(ex, "ReadObjectFromRegistry Exception");
                         }
                     }
+                    else if (propertyInfo.PropertyType == typeof(DateTime))
+                    {
+                        try
+                        {
+                            object tmp = Read(propertyName);
+                            if (tmp != null)
+                                propertyInfo.SetValue(retVal, new DateTime((long)tmp));
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "ReadObjectFromRegistry Exception. Failed to parse Datetime");
+                        }
+                    }
                     else if (propertyInfo.PropertyType.BaseType == typeof(object))
                         if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.IsClass)
                         {
@@ -182,6 +195,10 @@ namespace GeneralToolkitLib.Storage.Registry
                         {
                             Log.Error(ex, "SaveObjectToRegistry Exception");
                         }
+                    }
+                    else if (propertyInfo.PropertyType == typeof(DateTime))
+                    {
+                        registryData = new RegistryDataTypeQWORD { KeyName = propertyName, Data = ((DateTime)propertyInfo.GetValue(objToSave)).Ticks };
                     }
                     else if (propertyInfo.PropertyType.BaseType == typeof(object))
                         if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.IsClass)

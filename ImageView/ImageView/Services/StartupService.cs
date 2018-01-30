@@ -38,12 +38,7 @@ namespace ImageView.Services
 
             if (settings.AutomaticUpdateCheck)
             {
-                if (!settings.LastUpdateCheck.HasValue)
-                {
-                    settings.LastUpdateCheck = DateTime.Today.AddYears(-1);
-                }
-
-                if (settings.LastUpdateCheck.Value.AddDays(1) < DateTime.Now)
+                if (settings.LastUpdateCheck.AddDays(1) < DateTime.Now)
                 {
                     bool isLatestVersion = await _updateService.IsLatestVersion();
                     settings.LastUpdateCheck = DateTime.Now;

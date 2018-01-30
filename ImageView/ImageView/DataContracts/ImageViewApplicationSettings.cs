@@ -39,7 +39,7 @@ namespace ImageView.DataContracts
             NextImageAnimation = ChangeImageAnimation.None;
             ImageTransitionTime = 1000;
             SlideshowInterval = 5000;
-            PrimaryImageSizeMode = (int) PictureBoxSizeMode.Zoom;
+            PrimaryImageSizeMode = (int)PictureBoxSizeMode.Zoom;
             PasswordProtectBookmarks = false;
             PasswordDerivedString = "";
             ShowNextPrevControlsOnEnterWindow = true;
@@ -47,6 +47,7 @@ namespace ImageView.DataContracts
             MaxThumbnails = 256;
             ConfirmApplicationShutdown = true;
             AutomaticUpdateCheck = true;
+            LastUpdateCheck = new DateTime(2010, 1, 1);
 
             // 128 Mb
             ImageCacheSize = 134217728;
@@ -143,7 +144,7 @@ namespace ImageView.DataContracts
         public bool AutomaticUpdateCheck { get; set; }
 
         [DataMember(Name = "LastUpdateCheck", Order = 31)]
-        public DateTime? LastUpdateCheck { get; set; }
+        public DateTime LastUpdateCheck { get; set; }
 
 
         public void RemoveDuplicateEntriesWithIgnoreCase()

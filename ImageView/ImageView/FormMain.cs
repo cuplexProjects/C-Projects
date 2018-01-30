@@ -267,10 +267,14 @@ namespace ImageView
                 _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideLeft;
                 imgRef = _imageReferenceCollection.GetNextImage();
             }
-            else //Go backward
+            else if (e.Button == MouseButtons.Right)
             {
                 _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideRight;
                 imgRef = _imageReferenceCollection.GetPreviousImage();
+            }
+            else
+            {
+                return;
             }
 
             LoadNewImageFile(imgRef.CompletePath);
