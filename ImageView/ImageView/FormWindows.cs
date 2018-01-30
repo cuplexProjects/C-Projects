@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using ImageView.Events;
 using ImageView.Interfaces;
-using ImageView.Models.Interface;
 using ImageView.Services;
 
 namespace ImageView

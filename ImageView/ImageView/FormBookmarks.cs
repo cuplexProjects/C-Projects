@@ -848,5 +848,17 @@ namespace ImageView
         {
 
         }
+
+        private void maximizedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            maximizedToolStripMenuItem.Checked = !maximizedToolStripMenuItem.Checked;
+            actualImageSizeToolStripMenuItem.Checked = !maximizedToolStripMenuItem.Checked;
+        }
+
+        private void actualImageSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            maximizedToolStripMenuItem.Checked = !maximizedToolStripMenuItem.Checked;
+            actualImageSizeToolStripMenuItem.Checked = !maximizedToolStripMenuItem.Checked;
+        }
     }
 }

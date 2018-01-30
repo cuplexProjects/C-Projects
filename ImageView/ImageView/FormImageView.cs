@@ -10,7 +10,6 @@ using ImageView.Events;
 using ImageView.Interfaces;
 using ImageView.Managers;
 using ImageView.Models;
-using ImageView.Models.Interface;
 using ImageView.Properties;
 using ImageView.Services;
 using Serilog;

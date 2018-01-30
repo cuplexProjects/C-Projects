@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using ImageView.Models.Enums;
 using JetBrains.Annotations;
 using Serilog;
 
@@ -9,12 +11,16 @@ namespace ImageView.Services
     public class StartupService : ServiceBase
     {
         private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly NotificationService _notificationService;
         private readonly UpdateService _updateService;
+        private readonly Guid _mainFormId;
 
-        public StartupService(ApplicationSettingsService applicationSettingsService, UpdateService updateService)
+        public StartupService(ApplicationSettingsService applicationSettingsService, NotificationService notificationService, UpdateService updateService)
         {
             _applicationSettingsService = applicationSettingsService;
+            _notificationService = notificationService;
             _updateService = updateService;
+            _mainFormId = Guid.Parse("C1052D7F-1625-42D0-8DA6-01520211484C");
         }
 
         public void ScheduleAndRunStartupJobs()
@@ -27,25 +33,67 @@ namespace ImageView.Services
 
         private async Task RunStartupJobsAsync()
         {
-            var settings = _applicationSettingsService.Settings;            
+            var taskList = new List<Task>();
+            var settings = _applicationSettingsService.Settings;
 
-            if (settings.LastUpdateCheck != null && (settings.AutomaticUpdateCheck && settings.LastUpdateCheck == null || settings.LastUpdateCheck.Value.AddDays(1) < DateTime.Now))
+            if (settings.AutomaticUpdateCheck)
             {
-                Log.Information("Starting automatic update and install job");
-                await RunUpdateCheckAndInstall();
+                if (!settings.LastUpdateCheck.HasValue)
+                {
+                    settings.LastUpdateCheck = DateTime.Today.AddYears(-1);
+                }
+
+                if (settings.LastUpdateCheck.Value.AddDays(1) < DateTime.Now)
+                {
+                    bool isLatestVersion = await _updateService.IsLatestVersion();
+                    settings.LastUpdateCheck = DateTime.Now;
+                    _applicationSettingsService.SaveSettings();
+
+                    if (!isLatestVersion)
+                    {
+                        taskList.Add(new Task(EnqueueUpdateRequest));
+                    }
+                }
             }
+
+            taskList.Add(TestJob());
+            foreach (var task in taskList)
+            {
+                task.Start();
+            }
+
+            await Task.WhenAll(taskList);
         }
 
-        private async Task RunUpdateCheckAndInstall()
+        private void EnqueueUpdateRequest()
         {
-            bool isLatestVersion = await _updateService.IsLatestVersion();
-            if (!isLatestVersion)
+            var notification = new Notification
             {
-                await _updateService.DownloadAndRunLatestVersionInstaller();
-            }
+                NotificationType = NotificationType.UpdateApplication,
+                TargetId = _mainFormId,
+                BackgroundJob = UpdateProgramJob
+            };
 
-            _applicationSettingsService.Settings.LastUpdateCheck = DateTime.Now;
-            _applicationSettingsService.SaveSettings();
+            _notificationService.AddNotification(notification);
+        }
+
+        private void UpdateProgramJob()
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                await UpdateProgramJobAsync();
+            });
+        }
+
+        private async Task UpdateProgramJobAsync()
+        {
+            await _updateService.DownloadAndRunLatestVersionInstaller();
+        }
+
+        private async Task<bool> TestJob()
+        {
+            await Task.Delay(5000);
+            return true;
         }
     }
 }

@@ -29,15 +29,30 @@ namespace ImageView.Managers
             _overlayUserControl.LoadImage(imagePath);
             var imageSize = _overlayUserControl.GetImageSize();
 
-            int maxWidth = Math.Min(imageSize.Width, Convert.ToInt32(screenBounds.Width / 1.3d));
-            int maxHeight = Math.Min(imageSize.Height, Convert.ToInt32(screenBounds.Height / 1.1d));
+            //int maxWidth = Math.Min(imageSize.Width, Convert.ToInt32(screenBounds.Width / 1.3d));
+            //int maxHeight = Math.Min(imageSize.Height, Convert.ToInt32(screenBounds.Height / 1.1d));
+
+
+            int maxWidth = Convert.ToInt32(screenBounds.Width / 1.3d);
+            int maxHeight = Convert.ToInt32(screenBounds.Height / 1.2d);
+
+            double ratio = imageSize.Width / (double)imageSize.Height;
+
+            if (ratio < 1)
+            {
+                maxWidth = imageSize.Height > maxHeight ? imageSize.Width : Convert.ToInt32(maxHeight * ratio);
+            }
+            else
+            {
+                maxWidth = imageSize.Height > maxHeight ? Convert.ToInt32(maxWidth / ratio) : Convert.ToInt32(maxHeight * ratio);
+            }
 
             Rectangle formRectangle = new Rectangle(0, 0, maxWidth, maxHeight);
 
             if (mousePoint.X > screenBounds.Width / 2)
             {
                 formRectangle.Width = Math.Max(maxWidth - mousePoint.X, maxWidth);
-                formRectangle.X = mousePoint.X -formRectangle.Width-10;
+                formRectangle.X = mousePoint.X - formRectangle.Width - 10;
 
             }
             else
@@ -47,7 +62,7 @@ namespace ImageView.Managers
             }
 
             //Center form on the y axis
-            formRectangle.Y = screenBounds.Height / 2 - Math.Min(maxHeight, imageSize.Height) / 2;
+            formRectangle.Y = screenBounds.Height / 2 - maxHeight / 2;
 
             _formOverlayImage.Left = formRectangle.X;
             _formOverlayImage.Top = formRectangle.Y;

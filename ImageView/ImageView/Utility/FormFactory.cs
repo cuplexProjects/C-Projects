@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using ImageView.UserControls;
 
 namespace ImageView.Utility
 {

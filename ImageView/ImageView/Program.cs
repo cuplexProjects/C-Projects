@@ -39,6 +39,7 @@ namespace ImageView
                 startupService.ScheduleAndRunStartupJobs();
 
                 FormMain frmMain = scope.Resolve<FormMain>();
+                var notificationService = scope.Resolve<NotificationService>();
                 Application.Run(frmMain);
                 
                 settingsService.SaveSettings();

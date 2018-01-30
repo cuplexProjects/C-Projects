@@ -6,7 +6,6 @@ using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using ImageView.Models;
 using JetBrains.Annotations;

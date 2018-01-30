@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ImageView</RootNamespace>
     <AssemblyName>ImageViewer</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
@@ -346,6 +346,7 @@
     <Compile Include="FormSettings.Designer.cs">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\StartupService.cs" />
     <Compile Include="Services\BookmarkService.cs" />
     <Compile Include="Library\EventHandlers\ExceptionEventHandler.cs" />
@@ -582,12 +583,6 @@
     <None Include="Resources\Picture.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GeneralToolkitLib\GeneralToolkitLib\GeneralToolkitLib.csproj">
-      <Project>{18b7c1dc-cb9b-4b4f-b3bb-40e79b277dd9}</Project>
-      <Name>GeneralToolkitLib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\application-exit.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -601,6 +596,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Library\Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeneralToolkitLib\GeneralToolkitLib\GeneralToolkitLib.csproj">
+      <Project>{18b7c1dc-cb9b-4b4f-b3bb-40e79b277dd9}</Project>
+      <Name>GeneralToolkitLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

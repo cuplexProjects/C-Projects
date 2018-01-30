@@ -81,8 +81,8 @@ namespace ImageView.Managers
             SaveThumbnailDatabase();
 
             _isRunningThumbnailScan = false;
-            progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = scannedFiles, ScannedFiles = scannedFiles, IsComplete = true});
-            
+            progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = scannedFiles, ScannedFiles = scannedFiles, IsComplete = true });
+
         }
 
         public int GetFileCount(List<string> dirList)
@@ -263,7 +263,7 @@ namespace ImageView.Managers
             Queue<string> dirQueue = new Queue<string>(dirList);
             ConcurrentQueue<ThumbnailData> scannedThumbnailEntries = new ConcurrentQueue<ThumbnailData>();
 
-            int threads = Environment.ProcessorCount*2;
+            int threads = Environment.ProcessorCount * 2;
             int filesProccessed = 0;
 
             /*
@@ -277,14 +277,14 @@ namespace ImageView.Managers
                 while (dirQueue.Count > 0 && !_abortScan)
                 {
                     var filenames = GetImageFilenamesInDirectory(dirQueue.Dequeue());
-                  
+
                     while (filenames.Count < threads * 4 && dirQueue.Count > 0)
                     {
                         filenames.AddRange(GetImageFilenamesInDirectory(dirQueue.Dequeue()));
                     }
 
                     filesProccessed += filenames.Count;
-                    ParallelOptions parallelOptions = new ParallelOptions {MaxDegreeOfParallelism = threads};
+                    ParallelOptions parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = threads };
                     var cancellationToken = parallelOptions.CancellationToken;
 
                     Queue<string> filenameQueue = new Queue<string>(filenames);
@@ -362,7 +362,7 @@ namespace ImageView.Managers
                 UniqueId = Guid.NewGuid()
             };
 
-            thumbnailDatas.Enqueue(new ThumbnailData {ThumbnailEntry = thumbnail, Image = thumbnailImage});
+            thumbnailDatas.Enqueue(new ThumbnailData { ThumbnailEntry = thumbnail, Image = thumbnailImage });
         }
 
         private void SaveThumbnailData(ThumbnailData thumbnailData)
@@ -437,7 +437,7 @@ namespace ImageView.Managers
 
                 // Update progress
                 scannedFiles++;
-                progress?.Report(new ThumbnailScanProgress {TotalAmountOfFiles = filesToScan, ScannedFiles = scannedFiles});
+                progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = filesToScan, ScannedFiles = scannedFiles });
             }
 
             return scannedFiles;
@@ -457,9 +457,9 @@ namespace ImageView.Managers
 
             //Check for duplicates
             var query = (from t in thumbnailDatabase.ThumbnailEntries
-                group t by new {EntryFilePath = t.Directory + t.FileName}
+                         group t by new { EntryFilePath = t.Directory + t.FileName }
                 into g
-                select new {FilePath = g.Key, Count = g.Count()}).ToList();
+                         select new { FilePath = g.Key, Count = g.Count() }).ToList();
 
             var duplicateKeys = query.Where(x => x.Count > 1).Select(x => x.FilePath.EntryFilePath).ToList();
 
@@ -521,7 +521,7 @@ namespace ImageView.Managers
             {
                 if (width > maxSize)
                 {
-                    double factor = (double) width / maxSize;
+                    double factor = (double)width / maxSize;
                     width = maxSize;
                     height = Convert.ToInt32(Math.Ceiling(height / factor));
                 }
@@ -534,7 +534,7 @@ namespace ImageView.Managers
             {
                 if (height > maxSize)
                 {
-                    double factor = (double) height / maxSize;
+                    double factor = (double)height / maxSize;
                     height = maxSize;
                     width = Convert.ToInt32(Math.Ceiling(width / factor));
                 }

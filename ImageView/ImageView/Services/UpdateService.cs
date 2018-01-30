@@ -20,7 +20,6 @@ namespace ImageView.Services
 
         public async Task<bool> IsLatestVersion()
         {
-
             var latestVersion = await GetLatestVersion();
             var curentVersion = ApplicationVersion.Parse(Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
@@ -33,7 +32,7 @@ namespace ImageView.Services
             Process.Start(path);
         }
 
-        public async Task<ApplicationVersion> GetLatestVersion()
+        private async Task<ApplicationVersion> GetLatestVersion()
         {
             string url = Properties.Settings.Default.UpdateHistoryUrl;
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
@@ -46,7 +45,7 @@ namespace ImageView.Services
             return versions.Count > 0 ? versions.Last() : null;
         }
 
-        public async Task<string> DownloadLatestVersion()
+        private async Task<string> DownloadLatestVersion()
         {
             var latestVersion = await GetLatestVersion();
             var tempDir = Path.GetTempPath();

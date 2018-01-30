@@ -105,7 +105,6 @@ namespace ImageView
                 _imageLoaderService.StopImport();
         }
 
-        private delegate void UpdateProgressDelegate(
-            string status, int imagesLoaded, double completionRate, bool completed);
+        private delegate void UpdateProgressDelegate(string status, int imagesLoaded, double completionRate, bool completed);
     }
 }

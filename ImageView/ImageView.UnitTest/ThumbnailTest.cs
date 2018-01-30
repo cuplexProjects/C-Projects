@@ -1,8 +1,6 @@
-﻿using System.Configuration;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
 using ImageView.Configuration;
 using ImageView.Managers;
 using ImageView.Services;

@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +13,7 @@ using GeneralToolkitLib.WindowsApi;
 using ImageView.DataContracts;
 using ImageView.Events;
 using ImageView.Models;
+using ImageView.Models.Enums;
 using ImageView.Properties;
 using ImageView.Services;
 using ImageView.UserControls;
@@ -22,9 +22,10 @@ using Serilog;
 
 namespace ImageView
 {
-    public partial class FormMain : Form
+    public partial class FormMain : Form, INotificationTarget
     {
         private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly NotificationService _notificationService;
         private readonly BookmarkService _bookmarkService;
         private readonly FormAddBookmark _formAddBookmark;
         private readonly FormSettings _formSettings;
@@ -46,10 +47,11 @@ namespace ImageView
         private bool _imageTransitionRunning;
         private int _imageViewFormIdCnt = 1;
         private bool _winKeyDown;
-
+        public Guid FormId => Guid.Parse("C1052D7F-1625-42D0-8DA6-01520211484C");
+        private delegate void NotificationDeligate(Notification notification);
 
         public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService,
-            ImageLoaderService imageLoaderService, ILifetimeScope scope)
+            ImageLoaderService imageLoaderService, ILifetimeScope scope, NotificationService notificationService)
         {
             _formAddBookmark = formAddBookmark;
             _bookmarkService = bookmarkService;
@@ -58,6 +60,7 @@ namespace ImageView
             _imageCacheService = imageCacheService;
             _imageLoaderService = imageLoaderService;
             _scope = scope;
+            _notificationService = notificationService;
             InitializeComponent();
             _imageViewFormList = new List<FormImageView>();
             _windowTitle = "Image Viewer - " + Application.ProductVersion;
@@ -106,7 +109,27 @@ namespace ImageView
             Text = _windowTitle;
             ToggleSlideshowNenuState();
             _pictureBoxAnimation.LoadCompleted += pictureBoxAnimation_LoadCompleted;
+
+
+            _notificationService.RegisterAsNotificationReciever(this);
         }
+
+        public void NotificationsReceived(Notification notification)
+        {
+            if (notification.NotificationType == NotificationType.UpdateApplication)
+            {
+                this.Invoke(new NotificationDeligate(NotificationsReceivedNativeThread), notification);
+            }
+        }
+
+        private void NotificationsReceivedNativeThread(Notification notification)
+        {
+            if (MessageBox.Show(this, "There is a new version available, do you want to upgrade to the latest version?", "Upgrade?", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
+            {
+                notification.BackgroundJob.Invoke();
+            }
+        }
+
 
         private void Instance_OnRegistryAccessDenied(object sender, EventArgs e)
         {
@@ -651,9 +674,6 @@ namespace ImageView
                 {
                     await updateService.DownloadAndRunLatestVersionInstaller();
                 }
-
-                _applicationSettingsService.Settings.LastUpdateCheck = DateTime.Now;
-                _applicationSettingsService.SaveSettings();
             }
             catch (Exception ex)
             {
@@ -954,7 +974,5 @@ namespace ImageView
         }
 
         #endregion
-
-
     }
 }
