@@ -46,3 +46,10 @@ Desktop.ini
 /OauthClient/packages
 /Apps.cuplex.se/packages
 /Packages
+/ImageView/packages
+/cdn.cuplex.se/packages/DotNet.Contracts.1.10.20606.1
+/cdn.cuplex.se/packages
+/NewCuplexSite/CuplexProject/packages
+/SecureChat/packages
+/SignalRChat/packages
+/WiFiPasswordGenerator/packages/JetBrains.dotMemoryUnit.2.1.20150828.125449

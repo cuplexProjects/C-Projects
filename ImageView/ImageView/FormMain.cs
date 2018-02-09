@@ -12,8 +12,9 @@ using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.WindowsApi;
 using ImageView.DataContracts;
 using ImageView.Events;
+using ImageView.Library.CustomAttributes;
 using ImageView.Models;
-using ImageView.Models.Enums;
+using ImageView.Models.UserInteraction;
 using ImageView.Properties;
 using ImageView.Services;
 using ImageView.UserControls;
@@ -22,11 +23,12 @@ using Serilog;
 
 namespace ImageView
 {
-    public partial class FormMain : Form, INotificationTarget
+    [NotificationId("MainForm")]
+    public partial class FormMain : Form
     {
         private readonly ApplicationSettingsService _applicationSettingsService;
-        private readonly NotificationService _notificationService;
         private readonly BookmarkService _bookmarkService;
+        private readonly UserInteractionService _interactionService;
         private readonly FormAddBookmark _formAddBookmark;
         private readonly FormSettings _formSettings;
         private readonly FormState _formState = new FormState();
@@ -47,11 +49,9 @@ namespace ImageView
         private bool _imageTransitionRunning;
         private int _imageViewFormIdCnt = 1;
         private bool _winKeyDown;
-        public Guid FormId => Guid.Parse("C1052D7F-1625-42D0-8DA6-01520211484C");
-        private delegate void NotificationDeligate(Notification notification);
 
-        public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService,
-            ImageLoaderService imageLoaderService, ILifetimeScope scope, NotificationService notificationService)
+        public FormMain(FormAddBookmark formAddBookmark, BookmarkService bookmarkService, FormSettings formSettings, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService, ImageLoaderService imageLoaderService,
+            ILifetimeScope scope, UserInteractionService interactionService)
         {
             _formAddBookmark = formAddBookmark;
             _bookmarkService = bookmarkService;
@@ -60,14 +60,20 @@ namespace ImageView
             _imageCacheService = imageCacheService;
             _imageLoaderService = imageLoaderService;
             _scope = scope;
-            _notificationService = notificationService;
+            _interactionService = interactionService;
+
             InitializeComponent();
             _imageViewFormList = new List<FormImageView>();
             _windowTitle = "Image Viewer - " + Application.ProductVersion;
         }
 
-
         private bool ImageSourceDataAvailable => _dataReady && _imageLoaderService.ImageReferenceList != null;
+
+        private delegate void NativeThreadFunctin();
+        private delegate void NativeThreadFunctinUserInfo(object sender, UserInformationEventArgs e);
+        private delegate void NativeThreadFunctinUserQuestion(object sender, UserQuestionEventArgs e);
+
+        #region Form Events
 
         private void FormMain_Load(object sender, EventArgs e)
         {
@@ -110,71 +116,43 @@ namespace ImageView
             ToggleSlideshowNenuState();
             _pictureBoxAnimation.LoadCompleted += pictureBoxAnimation_LoadCompleted;
 
-
-            _notificationService.RegisterAsNotificationReciever(this);
+            //Notification Service
+            _interactionService.Initialize(this);
+            _interactionService.UserInformationRecieved += _interactionService_UserInformationRecieved;
+            _interactionService.UserQuestionRecieved += _interactionService_UserQuestionRecieved;
         }
 
-        public void NotificationsReceived(Notification notification)
+        private void _interactionService_UserQuestionRecieved(object sender, UserQuestionEventArgs e)
         {
-            if (notification.NotificationType == NotificationType.UpdateApplication)
+            Invoke(new NativeThreadFunctinUserQuestion(ShowQuestionOnNativeThread), this, e);
+        }
+
+        private void _interactionService_UserInformationRecieved(object sender, UserInformationEventArgs e)
+        {
+            Invoke(new NativeThreadFunctinUserInfo(ShowInfoMessageOnNativeThread), this, e);
+        }
+
+
+        private void ShowInfoMessageOnNativeThread(object sender, UserInformationEventArgs e)
+        {
+            MessageBox.Show(e.UserInformation.Message, e.UserInformation.Label, e.UserInformation.Buttons, e.UserInformation.Icon);
+        }
+
+        private void ShowQuestionOnNativeThread(object sender, UserQuestionEventArgs e)
+        {
+            var result = MessageBox.Show(e.UserQuestion.Message, e.UserQuestion.Label, e.UserQuestion.Buttons, e.UserQuestion.Icon);
+
+            if (result == DialogResult.OK)
             {
-                this.Invoke(new NotificationDeligate(NotificationsReceivedNativeThread), notification);
+                e.UserQuestion.OkResponse.Invoke();
+            }
+            else
+            {
+                e.UserQuestion.CancelResponse.Invoke();
+
             }
         }
 
-        private void NotificationsReceivedNativeThread(Notification notification)
-        {
-            if (MessageBox.Show(this, "There is a new version available, do you want to upgrade to the latest version?", "Upgrade?", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
-            {
-                notification.BackgroundJob.Invoke();
-            }
-        }
-
-
-        private void Instance_OnRegistryAccessDenied(object sender, EventArgs e)
-        {
-        }
-
-        private async void pictureBoxAnimation_LoadCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            if (_imageTransitionRunning)
-            {
-                return;
-            }
-
-            var settings = _applicationSettingsService.Settings;
-            var currentImage = pictureBox1.Image.Clone() as Image;
-            var nextImage = _pictureBoxAnimation.Image.Clone() as Image;
-            _pictureBoxAnimation.Image = null;
-
-            int animationTime = settings.ImageTransitionTime;
-            await PerformImageTransition(currentImage, nextImage, settings.NextImageAnimation, animationTime);
-
-            currentImage?.Dispose();
-
-            nextImage?.Dispose();
-
-            if (_pictureBoxAnimation.Image != null)
-            {
-                _pictureBoxAnimation.Image.Dispose();
-                _pictureBoxAnimation.Image = null;
-            }
-
-            SyncUserControlStateWithAppSettings();
-            GC.Collect();
-        }
-
-        private bool AllowAplicatonExit()
-        {
-            if (!_applicationSettingsService.Settings.ConfirmApplicationShutdown)
-            {
-                return true;
-            }
-            var confirmExitUserControl = new ConfirmExitUserControl(_applicationSettingsService);
-            var exitDialogForm = FormFactory.CreateModalSimpleDialog(confirmExitUserControl);
-
-            return exitDialogForm.ShowDialog(this) == DialogResult.OK;
-        }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -226,13 +204,11 @@ namespace ImageView
 
             if (e.KeyCode == Keys.Right || e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
             {
-                _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideRight;
-                LoadNewImageFile(_imageReferenceCollection.GetNextImage().CompletePath);
+                ChangeImage(true);
             }
             else if (e.KeyCode == Keys.Left)
             {
-                _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideLeft;
-                LoadNewImageFile(_imageReferenceCollection.GetPreviousImage().CompletePath);
+                ChangeImage(false);
             }
         }
 
@@ -243,42 +219,59 @@ namespace ImageView
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    ChangeImage(true);
+                    break;
+                case MouseButtons.Right:
+                    ChangeImage(false);
+                    break;
+            }
+        }
+
+        private void FormMain_Activated(object sender, EventArgs e)
+        {
+            _formWindows?.RestoreFocusToMainForm();
+        }
+
+        #endregion
+
+
+
+        private void Instance_OnRegistryAccessDenied(object sender, EventArgs e)
+        {
+        }
+
+        #region Form Controls Events
+
+        private async void pictureBoxAnimation_LoadCompleted(object sender, AsyncCompletedEventArgs e)
+        {
             if (_imageTransitionRunning)
             {
                 return;
             }
 
-            if (!ImageSourceDataAvailable)
-            {
-                return;
-            }
-            ImageReferenceElement imgRef;
+            var settings = _applicationSettingsService.Settings;
+            var currentImage = pictureBox1.Image.Clone() as Image;
+            var nextImage = _pictureBoxAnimation.Image.Clone() as Image;
+            _pictureBoxAnimation.Image = null;
 
-            //Reset timer
-            if (timerSlideShow.Enabled)
-            {
-                timerSlideShow.Stop();
-                timerSlideShow.Start();
-            }
+            int animationTime = settings.ImageTransitionTime;
+            await PerformImageTransition(currentImage, nextImage, settings.NextImageAnimation, animationTime);
 
-            //Go Forward
-            if (e.Button == MouseButtons.Left)
+            currentImage?.Dispose();
+
+            nextImage?.Dispose();
+
+            if (_pictureBoxAnimation.Image != null)
             {
-                _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideLeft;
-                imgRef = _imageReferenceCollection.GetNextImage();
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideRight;
-                imgRef = _imageReferenceCollection.GetPreviousImage();
-            }
-            else
-            {
-                return;
+                _pictureBoxAnimation.Image.Dispose();
+                _pictureBoxAnimation.Image = null;
             }
 
-            LoadNewImageFile(imgRef.CompletePath);
-            AddNextImageToCache(_imageReferenceCollection.PeekNextImage().CompletePath);
+            SyncUserControlStateWithAppSettings();
+            GC.Collect();
         }
 
         private void timerSlideShow_Tick(object sender, EventArgs e)
@@ -292,6 +285,33 @@ namespace ImageView
             LoadNewImageFile(_imageReferenceCollection.GetNextImage().CompletePath);
         }
 
+        private void formSetSlideshowInterval_OnIntervalChanged(object sender, IntervalEventArgs e)
+        {
+            timerSlideShow.Interval = e.Interval * 1000;
+            _applicationSettingsService.Settings.SlideshowInterval = timerSlideShow.Interval;
+        }
+
+
+
+        #endregion
+
+
+
+
+        private bool AllowAplicatonExit()
+        {
+            if (!_applicationSettingsService.Settings.ConfirmApplicationShutdown)
+            {
+                return true;
+            }
+            var confirmExitUserControl = new ConfirmExitUserControl(_applicationSettingsService);
+            var exitDialogForm = FormFactory.CreateModalSimpleDialog(confirmExitUserControl);
+
+            return exitDialogForm.ShowDialog(this) == DialogResult.OK;
+        }
+        
+        
+
         private void Instance_OnImageWasDeleted(object sender, EventArgs e)
         {
             Invoke(new NativeThreadFunctin(SetImageReferenceCollection));
@@ -302,11 +322,6 @@ namespace ImageView
             Invoke(new NativeThreadFunctin(HandleImportDataComplete));
         }
 
-        private void formSetSlideshowInterval_OnIntervalChanged(object sender, IntervalEventArgs e)
-        {
-            timerSlideShow.Interval = e.Interval * 1000;
-            _applicationSettingsService.Settings.SlideshowInterval = timerSlideShow.Interval;
-        }
 
         private void HandleImportDataComplete()
         {
@@ -333,6 +348,47 @@ namespace ImageView
             _changeImageAnimation = settings.NextImageAnimation;
             autoLoadPreviousFolderToolStripMenuItem.Enabled = settings.EnableAutoLoadFunctionFromMenu &&
                                                               !string.IsNullOrWhiteSpace(settings.LastFolderLocation);
+            if (settings.MainWindowBackgroundColor != null)
+            {
+                pictureBox1.BackColor = settings.MainWindowBackgroundColor.ToColor();
+                BackColor = settings.MainWindowBackgroundColor.ToColor();
+            }
+        }
+
+        private void ChangeImage(bool next)
+        {
+            if (_imageTransitionRunning)
+            {
+                return;
+            }
+
+            if (!ImageSourceDataAvailable)
+            {
+                return;
+            }
+            ImageReferenceElement imgRef;
+
+            //Reset timer
+            if (timerSlideShow.Enabled)
+            {
+                timerSlideShow.Stop();
+                timerSlideShow.Start();
+            }
+
+            //Go Forward
+            if (next)
+            {
+                _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideLeft;
+                imgRef = _imageReferenceCollection.GetNextImage();
+            }
+            else
+            {
+                _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideRight;
+                imgRef = _imageReferenceCollection.GetPreviousImage();
+            }
+
+            LoadNewImageFile(imgRef.CompletePath);
+            AddNextImageToCache(_imageReferenceCollection.PeekNextImage().CompletePath);
         }
 
         private void LoadNewImageFile(string imagePath)
@@ -467,18 +523,13 @@ namespace ImageView
             _imageTransitionRunning = false;
         }
 
-        private void FormMain_Activated(object sender, EventArgs e)
-        {
-            _formWindows?.RestoreFocusToMainForm();
-        }
-
         private void ToggleFullscreen()
         {
             if (_fullScreen)
             {
                 _formState.Restore(this);
                 menuStrip1.Visible = true;
-                BackColor = Color.WhiteSmoke;
+                BackColor = _applicationSettingsService.Settings.MainWindowBackgroundColor.ToColor();
                 Cursor.Show();
             }
             else
@@ -492,14 +543,6 @@ namespace ImageView
                 //HideCursorInFullScreen().Start();
             }
             _fullScreen = !_fullScreen;
-        }
-
-
-        private void autoLoadPreviousFolderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var formLoad = new FormLoad(_imageLoaderService);
-            formLoad.SetBasePath(_applicationSettingsService.Settings.LastFolderLocation);
-            formLoad.ShowDialog(this);
         }
 
         private void AutoArrangeOnSingleScreen()
@@ -622,9 +665,14 @@ namespace ImageView
             OpenImageInDefaultApp();
         }
 
-        private delegate void NativeThreadFunctin();
-
         #region Main Menu Functions
+
+        private void autoLoadPreviousFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var formLoad = new FormLoad(_imageLoaderService);
+            formLoad.SetBasePath(_applicationSettingsService.Settings.LastFolderLocation);
+            formLoad.ShowDialog(this);
+        }
 
         private async void menuItemLoadBookmarkedImages_Click(object sender, EventArgs e)
         {

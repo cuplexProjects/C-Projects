@@ -138,7 +138,7 @@ namespace ImageView.DataContracts
         public bool ConfirmApplicationShutdown { get; set; }
 
         [DataMember(Name = "MainWindowBackgroundColor", Order = 29)]
-        public bool MainWindowBackgroundColor { get; set; }
+        public ColorDataModel MainWindowBackgroundColor { get; set; }
 
         [DataMember(Name = "AutomaticUpdateCheck", Order = 30)]
         public bool AutomaticUpdateCheck { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Storage;
@@ -618,6 +619,66 @@ namespace ImageView.Managers
             {
                 bookmarks[i].SortOrder = i;
             }
+        }
+
+        private IEnumerable<Bookmark> GetAllBookmarsWithIncorrectPath(BookmarkFolder rootFolder)
+        {
+            var bookmarkList = new List<Bookmark>();
+
+            foreach (var bookmark in rootFolder.Bookmarks)
+            {
+                if (!File.Exists(bookmark.CompletePath))
+                {
+                    bookmarkList.Add(bookmark);
+                }
+            }
+
+            foreach (var bookmarkFolder in rootFolder.BookmarkFolders)
+            {
+                bookmarkList.AddRange(GetAllBookmarsWithIncorrectPath(bookmarkFolder));
+            }
+            
+            return bookmarkList;
+        }
+
+        public Task<int> FixBrokenLinksFromBaseDir(string selectedPath)
+        {
+            var task = Task<int>.Factory.StartNew(() =>
+            {
+                int filePathsCorrected = 0;
+                var brokenLinksList = GetAllBookmarsWithIncorrectPath(RootFolder);
+
+                foreach (var bookmark in brokenLinksList)
+                {
+                    var fileMatches = Directory.EnumerateFiles(selectedPath, bookmark.FileName, SearchOption.AllDirectories).ToList();
+
+                    if (fileMatches.Any())
+                    {
+                        foreach (string fileMatch in fileMatches)
+                        {
+                            FileInfo fileInfo = new FileInfo(fileMatch);
+                            if (fileInfo.Length == bookmark.Size)
+                            {
+                                string dir = GeneralConverters.GetDirectoryNameFromPath(fileMatch);
+                                string fileName = GeneralConverters.GetFileNameFromPath(fileMatch);
+
+                                bookmark.Directory = dir;
+                                bookmark.FileName = fileName;
+                                bookmark.CompletePath = fileMatch;
+                                bookmark.CreationTime = fileInfo.CreationTime;
+                                bookmark.LastAccessTime = fileInfo.LastAccessTime;
+                                bookmark.LastWriteTime = fileInfo.LastWriteTime;
+                                filePathsCorrected++;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                return filePathsCorrected;
+            });
+
+            return task;
         }
     }
 }

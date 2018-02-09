@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Serilog;
 
 namespace ImageView.UserControls
 {
@@ -16,7 +17,15 @@ namespace ImageView.UserControls
 
         public void LoadImage(string filename)
         {
-            OverlayPictureBox.Image = Image.FromFile(filename);
+            try
+            {
+                OverlayPictureBox.Image = Image.FromFile(filename);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception,"Failed to load image: "+ filename);
+                Console.WriteLine(exception);
+            }
         }
 
         public Size GetImageSize()

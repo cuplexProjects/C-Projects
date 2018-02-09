@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
 using ImageView.DataContracts;
@@ -84,9 +86,22 @@ namespace ImageView
             lblFadeTime.Text = trackBarFadeTime.Value + " ms";
 
             // Colors
-            backgroundColorDropdownList.DataSource = UIHelper.GetSelectableBackgroundColors();
+            var colorList = UIHelper.GetSelectableBackgroundColors();
+            backgroundColorDropdownList.DataSource = colorList;
+
             if (backgroundColorDropdownList.Items.Count > 0)
-                backgroundColorDropdownList.SelectedIndex = 0;
+            {
+                if (settings.MainWindowBackgroundColor != null)
+                {
+                    Color savedColor = ColorDataModel.CreateFromColorDataModel(settings.MainWindowBackgroundColor);
+                    var item = colorList.FirstOrDefault(x => x.ToArgb() == savedColor.ToArgb());
+                    backgroundColorDropdownList.SelectedItem = item;
+                }
+                else
+                {
+                    backgroundColorDropdownList.SelectedIndex = 0;
+                }
+            }
 
             UpdateCacheStats();
         }
@@ -122,6 +137,9 @@ namespace ImageView
             settings.ImageTransitionTime = trackBarFadeTime.Value;
             settings.ScreenMinXOffset = Convert.ToInt32(numericScreenMinOffset.Value);
             settings.ScreenWidthOffset = Convert.ToInt32(numericScreenWidthOffset.Value);
+
+            Color selectedColor = (Color)backgroundColorDropdownList.SelectedItem;
+            settings.MainWindowBackgroundColor = ColorDataModel.CreateFromColor(selectedColor);
 
             _applicationSettingsService.Settings.ImageCacheSize = _selectedCacheSize;
             _applicationSettingsService.Settings.AutomaticUpdateCheck = ChkAutomaticallyCheckForUpdates.Checked;

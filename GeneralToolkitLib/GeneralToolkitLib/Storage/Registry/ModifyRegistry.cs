@@ -1,20 +1,24 @@
 using System;
 using System.Collections;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using GeneralToolkitLib.WindowsApi;
 using Microsoft.Win32;
+using ProtoBuf;
 using Serilog;
 
 namespace GeneralToolkitLib.Storage.Registry
 {
     public class RegistryAccess : IRegistryAccess
     {
+        private const string SerializedObjPrefix = @"#/[FROM-B64-OBJ]\#";
         public RegistryAccess(string productName)
         {
             ProductName = productName.Replace(" ", "");
@@ -27,7 +31,7 @@ namespace GeneralToolkitLib.Storage.Registry
         public RegistryAccess(string companyName, string productName)
         {
             CompanyName = companyName;
-            ProductName = productName.Replace(" ","");
+            ProductName = productName.Replace(" ", "");
 
             if (string.IsNullOrWhiteSpace(companyName))
                 throw new ArgumentException("Invalid argument. CompanyName cant be null or whitespace.", nameof(companyName));
@@ -143,6 +147,24 @@ namespace GeneralToolkitLib.Storage.Registry
                             Log.Error(ex, "ReadObjectFromRegistry Exception. Failed to parse Datetime");
                         }
                     }
+                    else if (propertyInfo.PropertyType.IsClass)
+                    {
+                        try
+                        {
+                            string tmp = Read(propertyName) as string;
+                            if (tmp != null && tmp.IndexOf(SerializedObjPrefix, StringComparison.Ordinal) == 0)
+                            {
+                                tmp = tmp.Replace(SerializedObjPrefix, "");
+
+                                object deserializedObj = DeserializeFromString(tmp);
+                                propertyInfo.SetValue(retVal, deserializedObj);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "ReadObjectFromRegistry Exception. Failed to parse class");
+                        }
+                    }
                     else if (propertyInfo.PropertyType.BaseType == typeof(object))
                         if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.IsClass)
                         {
@@ -200,6 +222,10 @@ namespace GeneralToolkitLib.Storage.Registry
                     {
                         registryData = new RegistryDataTypeQWORD { KeyName = propertyName, Data = ((DateTime)propertyInfo.GetValue(objToSave)).Ticks };
                     }
+                    else if (VerifyObjectToSerialize(propertyInfo.GetValue(objToSave)))
+                    {
+                        registryData = new RegistryDataTypeString { KeyName = propertyName, Data = SerializedObjPrefix + SerializeObjectToString(propertyInfo.GetValue(objToSave)) };
+                    }
                     else if (propertyInfo.PropertyType.BaseType == typeof(object))
                         if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.IsClass)
                             if (typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType))
@@ -223,6 +249,27 @@ namespace GeneralToolkitLib.Storage.Registry
             {
                 Log.Error(ex, "SaveObjectToRegistry");
             }
+        }
+
+        private bool VerifyObjectToSerialize(object obj)
+        {
+            return obj != null && obj.GetType().Attributes.HasFlag(TypeAttributes.Serializable & TypeAttributes.Public);
+        }
+
+        private string SerializeObjectToString(object obj)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            var stream = new MemoryStream();
+            formatter.Serialize(stream, obj);
+            return Convert.ToBase64String(stream.ToArray());
+        }
+
+        private object DeserializeFromString(string data)
+        {
+            byte[] bytes = Convert.FromBase64String(data);
+            BinaryFormatter formatter = new BinaryFormatter();
+            var stream = new MemoryStream(bytes);
+            return formatter.Deserialize(stream);
         }
 
         private string SerializeStructToString(object obj)

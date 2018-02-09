@@ -41,10 +41,12 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(319, 122);
+            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOk.Location = new System.Drawing.Point(318, 138);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(100, 34);
-            this.btnOk.TabIndex = 0;
+            this.btnOk.Size = new System.Drawing.Size(100, 30);
+            this.btnOk.TabIndex = 3;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
@@ -74,7 +76,7 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(260, 22);
-            this.txtPassword.TabIndex = 3;
+            this.txtPassword.TabIndex = 1;
             // 
             // txtPasswordConfirm
             // 
@@ -83,7 +85,8 @@
             this.txtPasswordConfirm.Name = "txtPasswordConfirm";
             this.txtPasswordConfirm.PasswordChar = '*';
             this.txtPasswordConfirm.Size = new System.Drawing.Size(260, 22);
-            this.txtPasswordConfirm.TabIndex = 4;
+            this.txtPasswordConfirm.TabIndex = 2;
+            this.txtPasswordConfirm.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtPasswordConfirm_KeyUp);
             // 
             // groupBox1
             // 
@@ -94,9 +97,9 @@
             this.groupBox1.Controls.Add(this.lblPassword);
             this.groupBox1.Controls.Add(this.txtPassword);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(3, 13);
+            this.groupBox1.Location = new System.Drawing.Point(3, 10);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(425, 180);
+            this.groupBox1.Size = new System.Drawing.Size(435, 180);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Set Password";
@@ -105,17 +108,19 @@
             // 
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(23, 131);
+            this.lblStatus.Location = new System.Drawing.Point(24, 111);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(0, 17);
+            this.lblStatus.Size = new System.Drawing.Size(338, 17);
             this.lblStatus.TabIndex = 6;
+            this.lblStatus.Text = "password length must be atleast 8 characters";
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(213, 122);
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(212, 138);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(100, 34);
-            this.btnCancel.TabIndex = 5;
+            this.btnCancel.Size = new System.Drawing.Size(100, 30);
+            this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -126,7 +131,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "SelectPassword";
-            this.Size = new System.Drawing.Size(435, 203);
+            this.Size = new System.Drawing.Size(502, 248);
+            this.Load += new System.EventHandler(this.SelectPassword_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

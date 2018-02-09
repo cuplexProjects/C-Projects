@@ -19,7 +19,11 @@ namespace ImageView
     public partial class FormImageView : Form, IObservable<ImageViewFormInfoBase>, ImageViewFormWindow
     {
         private const float ZoomMin = 0.0095f;
-        private const int ChangeImagePanelWidth = 50; 
+        private const int ChangeImagePanelWidth = 50;
+        private readonly ApplicationSettingsService _applicationSettingsService;
+        private readonly BookmarkManager _bookmarkManager;
+        private readonly FormAddBookmark _formAddBookmark;
+        private readonly ImageCacheService _imageCache;
         private readonly ImageLoaderService _imageLoaderService;
         private readonly List<IObserver<ImageViewFormInfoBase>> _observers;
         private Image _currentImage;
@@ -30,21 +34,18 @@ namespace ImageView
         private ImageReferenceElement _imgRef;
         private int _imgx; // current offset of image
         private int _imgy;
+        private FormWindowState _lastFormState;
         private Point _mouseDown;
         private bool _mouseHover;
-        private bool _showSwitchImgPanel;
         private MouseHoverInfo _mouseHoverInfo;
         private bool _mousepressed; // true as long as left mousebutton is pressed
         private bool _requireFocusNotification = true;
         private bool _showSwitchImgOnMouseOverWindow;
+        private bool _showSwitchImgPanel;
         private int _startx; // offset of image when mouse was pressed
         private int _starty;
         private bool _switchImgButtonsEnabled;
         private float _zoom = -1;
-        private readonly FormAddBookmark _formAddBookmark;
-        private readonly BookmarkManager _bookmarkManager;
-        private readonly ApplicationSettingsService _applicationSettingsService;
-        private readonly ImageCacheService _imageCache;
 
         public FormImageView(int id, FormAddBookmark formAddBookmark, BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCache, ImageLoaderService imageLoaderService)
         {
@@ -64,6 +65,8 @@ namespace ImageView
                 _showSwitchImgOnMouseOverWindow = _applicationSettingsService.Settings.ShowNextPrevControlsOnEnterWindow;
                 _mouseHoverInfo = new MouseHoverInfo();
             }
+
+            _lastFormState = WindowState;
         }
 
         private int FormId { get; }
@@ -97,7 +100,22 @@ namespace ImageView
                 // Provide observer with existing data. 
                 observer.OnNext(_imageViewFormInfo);
             }
+
             return new Unsubscriber<ImageViewFormInfoBase>(_observers, observer);
+        }
+
+        protected override void OnClientSizeChanged(EventArgs e)
+        {
+            if (WindowState != _lastFormState)
+            {
+                _lastFormState = WindowState;
+                OnWindowStateChanged(e);
+            }
+        }
+
+        protected void OnWindowStateChanged(EventArgs e)
+        {
+            ResetZoomAndRepaint();
         }
 
         private void FormImageView_Load(object sender, EventArgs e)
@@ -147,7 +165,7 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                Log.Error(ex,imageReference != null
+                Log.Error(ex, imageReference != null
                     ? $"FormMain.LoadNewImageFile(string imagePath) Error when trying to load file: {imageReference.CompletePath} : {ex.Message}"
                     : "imgRef was null in FormImageView.LoadNewImageFile()", ex);
             }
@@ -189,16 +207,16 @@ namespace ImageView
                 // the distance the mouse has been moved since mouse was pressed
                 int deltaY = mousePosNow.Y - _mouseDown.Y;
 
-                _imgx = (int) (_startx + deltaX/_zoom);
+                _imgx = (int)(_startx + deltaX / _zoom);
                 // calculate new offset of image based on the current zoom factor
-                _imgy = (int) (_starty + deltaY/_zoom);
+                _imgy = (int)(_starty + deltaY / _zoom);
 
                 pictureBox.Refresh();
             }
 
             if (_mouseHoverInfo == null) return;
 
-           
+
             var leftPanel = new Rectangle(0, 0, ChangeImagePanelWidth, Height);
             var rightPanel = new Rectangle(ClientSize.Width - ChangeImagePanelWidth, 0, ChangeImagePanelWidth, Height);
 
@@ -242,38 +260,38 @@ namespace ImageView
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if ((msg.Msg != WindowEvents.WM_KEYDOWN) && (msg.Msg != WindowEvents.WM_SYSKEYDOWN))
+            if (msg.Msg != WindowEvents.WM_KEYDOWN && msg.Msg != WindowEvents.WM_SYSKEYDOWN)
                 return base.ProcessCmdKey(ref msg, keyData);
 
             switch (keyData)
             {
                 case Keys.Right:
-                    _imgx -= (int) (pictureBox.Width*0.1F/_zoom);
+                    _imgx -= (int)(pictureBox.Width * 0.1F / _zoom);
                     pictureBox.Refresh();
                     break;
 
                 case Keys.Left:
-                    _imgx += (int) (pictureBox.Width*0.1F/_zoom);
+                    _imgx += (int)(pictureBox.Width * 0.1F / _zoom);
                     pictureBox.Refresh();
                     break;
 
                 case Keys.Down:
-                    _imgy -= (int) (pictureBox.Height*0.1F/_zoom);
+                    _imgy -= (int)(pictureBox.Height * 0.1F / _zoom);
                     pictureBox.Refresh();
                     break;
 
                 case Keys.Up:
-                    _imgy += (int) (pictureBox.Height*0.1F/_zoom);
+                    _imgy += (int)(pictureBox.Height * 0.1F / _zoom);
                     pictureBox.Refresh();
                     break;
 
                 case Keys.PageDown:
-                    _imgy -= (int) (pictureBox.Height*0.90F/_zoom);
+                    _imgy -= (int)(pictureBox.Height * 0.90F / _zoom);
                     pictureBox.Refresh();
                     break;
 
                 case Keys.PageUp:
-                    _imgy += (int) (pictureBox.Height*0.90F/_zoom);
+                    _imgy += (int)(pictureBox.Height * 0.90F / _zoom);
                     pictureBox.Refresh();
                     break;
 
@@ -301,6 +319,7 @@ namespace ImageView
                 SetImageReferenceCollection();
                 return;
             }
+
             _imgRef = _imageReferenceCollection.GetNextImage();
             LoadNewImageFile(_imgRef);
         }
@@ -313,6 +332,7 @@ namespace ImageView
                 SetImageReferenceCollection();
                 return;
             }
+
             _imgRef = _imageReferenceCollection.GetPreviousImage();
             LoadNewImageFile(_imgRef);
         }
@@ -322,10 +342,10 @@ namespace ImageView
             float oldzoom = _zoom;
 
             if (e.Delta > 0)
-                _zoom += 0.1F + _zoom*.05f;
+                _zoom += 0.1F + _zoom * .05f;
 
             else if (e.Delta < 0)
-                _zoom = Math.Max(_zoom - 0.1F - _zoom*.05f, ZoomMin);
+                _zoom = Math.Max(_zoom - 0.1F - _zoom * .05f, ZoomMin);
 
             MouseEventArgs mouse = e;
             Point mousePosNow = mouse.Location;
@@ -333,11 +353,11 @@ namespace ImageView
             int x = mousePosNow.X - pictureBox.Location.X; // Where location of the mouse in the pictureframe
             int y = mousePosNow.Y - pictureBox.Location.Y;
 
-            int oldimagex = (int) (x/oldzoom); // Where in the IMAGE is it now
-            int oldimagey = (int) (y/oldzoom);
+            int oldimagex = (int)(x / oldzoom); // Where in the IMAGE is it now
+            int oldimagey = (int)(y / oldzoom);
 
-            int newimagex = (int) (x/_zoom); // Where in the IMAGE will it be when the new zoom i made
-            int newimagey = (int) (y/_zoom);
+            int newimagex = (int)(x / _zoom); // Where in the IMAGE will it be when the new zoom i made
+            int newimagey = (int)(y / _zoom);
 
             _imgx = newimagex - oldimagex + _imgx; // Where to move image to keep focus on one point
             _imgy = newimagey - oldimagey + _imgy;
@@ -357,14 +377,31 @@ namespace ImageView
                 _imgy = 0;
 
             if (_currentImage == null) return;
+
             Graphics g = CreateGraphics();
             if (fitEntireImage)
+            {
                 _zoom = Math.Min(
-                    (float) pictureBox.Height/_currentImage.Height*(_currentImage.VerticalResolution/g.DpiY),
-                    (float) pictureBox.Width/_currentImage.Width*(_currentImage.HorizontalResolution/g.DpiX)
-                    );
+                    (float)pictureBox.Height / _currentImage.Height * (_currentImage.VerticalResolution / g.DpiY),
+                    (float)pictureBox.Width / _currentImage.Width * (_currentImage.HorizontalResolution / g.DpiX)
+                );
+
+                //_zoom = Math.Min(
+                //    (float)pictureBox.Height / _currentImage.Height,
+                //    (float)pictureBox.Width / _currentImage.Width 
+                //);
+
+                // Center image
+                int zoomedWith = Convert.ToInt32(_currentImage.Width * _zoom);
+                if (pictureBox.Width > zoomedWith && _zoom > 1)
+                {
+                    _imgx = Convert.ToInt32((pictureBox.Width - zoomedWith) / 2d / _zoom);
+                }
+            }
             else
-                _zoom = pictureBox.Width/(float) _currentImage.Width*(_currentImage.HorizontalResolution/g.DpiX);
+            {
+                _zoom = pictureBox.Width / (float)_currentImage.Width * (_currentImage.HorizontalResolution / g.DpiX);
+            }
         }
 
         private void pictureBox_Paint(object sender, PaintEventArgs e)
@@ -393,16 +430,16 @@ namespace ImageView
                         b = new SolidBrush(Color.FromArgb(128, Color.Black));
                     }
 
-                    int imgWidth = Convert.ToInt32(Math.Min(Resources.Arrow_Back_icon.Width, ChangeImagePanelWidth)*0.8);
-                    float imgScale = (float)imgWidth/Resources.Arrow_Back_icon.Width*0.7f;
-                    int imgMargin = (ChangeImagePanelWidth - imgWidth)/2;
-                    int imgYpos = ClientSize.Height/2 - imgWidth/2;
+                    int imgWidth = Convert.ToInt32(Math.Min(Resources.Arrow_Back_icon.Width, ChangeImagePanelWidth) * 0.8);
+                    float imgScale = (float)imgWidth / Resources.Arrow_Back_icon.Width * 0.7f;
+                    int imgMargin = (ChangeImagePanelWidth - imgWidth) / 2;
+                    int imgYpos = ClientSize.Height / 2 - imgWidth / 2;
 
                     g.ScaleTransform(imgScale, imgScale);
                     g.TranslateTransform(imgMargin, 0);
                     Point leftArrowPos = new Point(0, imgYpos);
-                    Point rightArrowPos=new Point(ClientSize.Width- ChangeImagePanelWidth, imgYpos);
-                    
+                    Point rightArrowPos = new Point(ClientSize.Width - ChangeImagePanelWidth, imgYpos);
+
                     g.DrawImage(Resources.Arrow_Back_icon, TranslatePoint(leftArrowPos, imgScale));
                     g.DrawImage(Resources.Arrow_Next_icon, TranslatePoint(rightArrowPos, imgScale));
                     g.ResetTransform();
@@ -419,7 +456,7 @@ namespace ImageView
                         rect.Inflate(-1, -1);
                         p.Color = Color.FromArgb(128, Color.MidnightBlue);
                         g.DrawRectangle(p, rect);
-                        
+
                         b = new SolidBrush(Color.FromArgb(96, Color.Black));
                         g.FillRectangle(b, rect);
                     }
@@ -427,13 +464,13 @@ namespace ImageView
             }
             catch (Exception ex)
             {
-                Log.Error(ex,"Exception in image scale transform");
+                Log.Error(ex, "Exception in image scale transform");
             }
         }
 
         private PointF TranslatePoint(Point point, float scale)
         {
-            return new PointF(point.X/scale, point.Y/scale);
+            return new PointF(point.X / scale, point.Y / scale);
         }
 
         private void copyFilepathToolStripMenuItem_Click(object sender, EventArgs e)
@@ -512,11 +549,29 @@ namespace ImageView
             }
         }
 
+        private void bookmarkImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_bookmarkManager == null)
+            {
+                MessageBox.Show(Resources.Please_unlock_bookmarks_first);
+                return;
+            }
+
+            if (!ImageSourceDataAvailable || _imageReferenceCollection.CurrentImage == null)
+            {
+                return;
+            }
+
+            var starupPosition = Location;
+            _formAddBookmark.Init(starupPosition, _imageReferenceCollection.CurrentImage);
+            _formAddBookmark.ShowDialog(this);
+        }
+
         private class MouseHoverInfo
         {
+            private bool _leftButtonPressed;
             private bool _overLeftButton;
             private bool _overRightButton;
-            private bool _leftButtonPressed;
 
             public bool OverLeftPanel
             {
@@ -548,7 +603,8 @@ namespace ImageView
             public bool LeftButtonPressed
             {
                 get => _leftButtonPressed;
-                set {
+                set
+                {
                     if (_leftButtonPressed != value)
                         StateChanged = true;
                     _leftButtonPressed = value;
@@ -559,23 +615,6 @@ namespace ImageView
             {
                 StateChanged = false;
             }
-        }
-
-        private void bookmarkImageToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_bookmarkManager == null)
-            {
-                MessageBox.Show(Resources.Please_unlock_bookmarks_first);
-                return;
-            }
-            if (!ImageSourceDataAvailable || _imageReferenceCollection.CurrentImage == null)
-            {
-                return;
-            }
-        
-            var starupPosition = Location;
-            _formAddBookmark.Init(starupPosition, _imageReferenceCollection.CurrentImage);
-            _formAddBookmark.ShowDialog(this);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autofac;
 using ImageView.Configuration;
@@ -39,7 +38,7 @@ namespace ImageView
                 startupService.ScheduleAndRunStartupJobs();
 
                 FormMain frmMain = scope.Resolve<FormMain>();
-                var notificationService = scope.Resolve<NotificationService>();
+        
                 Application.Run(frmMain);
                 
                 settingsService.SaveSettings();

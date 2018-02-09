@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using GeneralToolkitLib.Converters;
 using ImageView.DataBinding;
 using ImageView.DataContracts;
 using ImageView.Events;
@@ -35,7 +34,6 @@ namespace ImageView
         private readonly StringBuilder _logStringBuilder;
         private readonly List<string> _volumeInfoArray;
         private int _brokenLinks;
-        private string _defaultDrive = "c:\\";
         private Rectangle _dragBoxFromMouseDown;
         private int _fixedLinks;
         private TreeViewDataContext _treeViewDataContext;
@@ -191,71 +189,6 @@ namespace ImageView
             {
                 ReLoadBookmarks();
             }
-        }
-
-
-        private bool VolumeExists(string volumeLabel)
-        {
-            if (string.IsNullOrEmpty(volumeLabel))
-                return false;
-
-            return _volumeInfoArray.Any(x => string.Equals(x, volumeLabel, StringComparison.CurrentCultureIgnoreCase));
-        }
-
-
-        private void UpdateBrokenLinksOnThreeNodes(IReadOnlyCollection<BookmarkFolder> bookmarkTreeNodes)
-        {
-            if (bookmarkTreeNodes == null)
-                return;
-
-            foreach (BookmarkFolder bookmarkTreeNode in bookmarkTreeNodes)
-            {
-                UpdateBrokenLinksOnBookmarks(bookmarkTreeNode.Bookmarks);
-                UpdateBrokenLinksOnThreeNodes(bookmarkTreeNode.BookmarkFolders);
-            }
-        }
-
-        private void UpdateBrokenLinksOnBookmarks(IReadOnlyCollection<Bookmark> bookmarks)
-        {
-            if (bookmarks == null)
-                return;
-
-            foreach (Bookmark bookmark in bookmarks)
-            {
-                string volumeLabel = GeneralConverters.GetVolumeLabelFromPath(bookmark.Directory);
-                string originalPath = bookmark.CompletePath;
-                if (!VolumeExists(volumeLabel)) continue;
-                if (!File.Exists(bookmark.CompletePath))
-                {
-                    _brokenLinks++;
-                    if (!FindFilePath(bookmark, _defaultDrive)) continue;
-                    _logStringBuilder.AppendLine($"Fixed broken link: {originalPath} replaced to {bookmark.CompletePath}");
-                    _fixedLinks++;
-                }
-            }
-        }
-
-        private bool FindFilePath(Bookmark bookmark, string rootDirectory)
-        {
-            var directoryInfo = new DirectoryInfo(rootDirectory);
-            FileInfo[] fileInfoArray = null;
-            try
-            {
-                fileInfoArray = directoryInfo.GetFiles(bookmark.FileName, SearchOption.AllDirectories);
-            }
-            catch (Exception exception)
-            {
-                Log.Error(exception, "Exception in FindFilePath() rootDirectory=" + rootDirectory);
-            }
-
-            FileInfo fileInfo =
-                fileInfoArray?.FirstOrDefault(fi => fi.Name == bookmark.FileName && fi.Length == bookmark.Size);
-            if (fileInfo == null) return false;
-            bookmark.Directory = fileInfo.DirectoryName;
-            bookmark.CompletePath = fileInfo.DirectoryName + "\\" + bookmark.FileName;
-            bookmark.LastAccessTime = fileInfo.LastAccessTime;
-
-            return true;
         }
 
         private void bookmarksTree_DragDrop(object sender, DragEventArgs e)
@@ -584,7 +517,8 @@ namespace ImageView
         {
             var formSetDefaultDrive = new FormSetDefaultDrive();
             if (formSetDefaultDrive.ShowDialog(this) == DialogResult.OK)
-                _defaultDrive = formSetDefaultDrive.SelectedDrive;
+            {
+            }
         }
 
         private void renameFolderMenuItem_Click(object sender, EventArgs e)
@@ -607,13 +541,10 @@ namespace ImageView
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             bool result = _bookmarkService.SaveBookmarks();
-            if (result)
-            {
-                MessageBox.Show("Bookmarks saved", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
+            if (!result)
             {
                 MessageBox.Show("Unable to save bookmarks", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Log.Error("Unable to save bookmarks");
             }
         }
 
@@ -763,24 +694,41 @@ namespace ImageView
             }
         }
 
-        private void tryToFixBrokenLinksToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void tryToFixBrokenLinksToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (_bookmarkManager == null)
                 return;
 
-            showLogToolStripMenuItem.Enabled = true;
-            _logStringBuilder.Clear();
-            _brokenLinks = 0;
-            _fixedLinks = 0;
+            folderBrowserDialog1.Description = "Select base directory to link from";
+            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                string selectedPath = folderBrowserDialog1.SelectedPath;
+                int linkesFixed= await _bookmarkManager.FixBrokenLinksFromBaseDir(selectedPath);
 
-            BookmarkFolder bookmarkFolder = _bookmarkManager.RootFolder;
-            UpdateBrokenLinksOnBookmarks(bookmarkFolder.Bookmarks);
-            UpdateBrokenLinksOnThreeNodes(bookmarkFolder.BookmarkFolders);
+                if (linkesFixed > 0)
+                {
+                    _bookmarkService.SaveBookmarks();
+                }
 
-            _logStringBuilder.AppendLine($"Found {_brokenLinks} broken linkes and fixed {_fixedLinks} links.");
 
-            if (_fixedLinks > 0)
-                _bookmarkService.SaveBookmarks();
+                MessageBox.Show($"Corrected {linkesFixed} incorrect file paths", "Fix broken links", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+
+
+            //showLogToolStripMenuItem.Enabled = true;
+            //_logStringBuilder.Clear();
+            //_brokenLinks = 0;
+            //_fixedLinks = 0;
+
+            //BookmarkFolder bookmarkFolder = _bookmarkManager.RootFolder;
+            //UpdateBrokenLinksOnBookmarks(bookmarkFolder.Bookmarks);
+            //UpdateBrokenLinksOnThreeNodes(bookmarkFolder.BookmarkFolders);
+
+            //_logStringBuilder.AppendLine($"Found {_brokenLinks} broken linkes and fixed {_fixedLinks} links.");
+
+            //if (_fixedLinks > 0)
+            //    _bookmarkService.SaveBookmarks();
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
@@ -847,18 +795,6 @@ namespace ImageView
         private void bookmarksDataGridView_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
         {
 
-        }
-
-        private void maximizedToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            maximizedToolStripMenuItem.Checked = !maximizedToolStripMenuItem.Checked;
-            actualImageSizeToolStripMenuItem.Checked = !maximizedToolStripMenuItem.Checked;
-        }
-
-        private void actualImageSizeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            maximizedToolStripMenuItem.Checked = !maximizedToolStripMenuItem.Checked;
-            actualImageSizeToolStripMenuItem.Checked = !maximizedToolStripMenuItem.Checked;
         }
     }
 }

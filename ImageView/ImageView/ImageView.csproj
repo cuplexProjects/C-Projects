@@ -50,8 +50,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>CODE_ANALYSIS;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -89,7 +88,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -188,6 +187,7 @@
     <Compile Include="DataContracts\Bookmark.cs" />
     <Compile Include="DataContracts\BookmarkContainer.cs" />
     <Compile Include="DataContracts\BookmarkFolder.cs" />
+    <Compile Include="DataContracts\ColorDataModel.cs" />
     <Compile Include="DataContracts\ThumbnailDatabase.cs" />
     <Compile Include="DataContracts\ThumbnailEntry.cs" />
     <Compile Include="FormEditBookmark.cs">
@@ -211,6 +211,7 @@
     <Compile Include="Interfaces\IExceptionEventHandler.cs" />
     <Compile Include="Library\AutofacModules\ImageViewModule.cs" />
     <Compile Include="Library\AutofacModules\LoggingModule.cs" />
+    <Compile Include="Library\CustomAttributes\NotificationIdAttribute.cs" />
     <Compile Include="Managers\FileManager.cs" />
     <Compile Include="Managers\ManagerBase.cs" />
     <Compile Include="Managers\OverlayFormManager.cs" />
@@ -297,6 +298,11 @@
     </Compile>
     <Compile Include="Models\Interface\IRepository.cs" />
     <Compile Include="Models\ThumbnailScanProgress.cs" />
+    <Compile Include="Models\UserInteraction\UserInformationEventargs.cs" />
+    <Compile Include="Models\UserInteraction\UserInteractionBase.cs" />
+    <Compile Include="Models\UserInteraction\UserQuestionEventArgs.cs" />
+    <Compile Include="Models\UserInteraction\UserInteractionInformation.cs" />
+    <Compile Include="Models\UserInteraction\UserInteractionQuestion.cs" />
     <Compile Include="MoreLinq\MoreEnumerable.DistinctBy.cs" />
     <Compile Include="Properties\Settings1.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -346,7 +352,6 @@
     <Compile Include="FormSettings.Designer.cs">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\StartupService.cs" />
     <Compile Include="Services\BookmarkService.cs" />
     <Compile Include="Library\EventHandlers\ExceptionEventHandler.cs" />
@@ -357,6 +362,7 @@
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\ThumbnailService.cs" />
     <Compile Include="Services\UpdateService.cs" />
+    <Compile Include="Services\UserInteractionService.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
     <Compile Include="Storage\LocalStorageRegistryAccess.cs" />
     <Compile Include="UserControls\BookmarkPreviewOverlayUserControl.cs">

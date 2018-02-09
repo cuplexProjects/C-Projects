@@ -17,7 +17,7 @@ namespace ImageView.Services
         private readonly BookmarkManager _bookmarkManager;
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly string _directory;
-        private static object _lockObj = new object();
+        private static readonly object LockObj = new object();
 
         public BookmarkService(BookmarkManager bookmarkManager, ApplicationSettingsService applicationSettingsService)
         {
@@ -57,7 +57,7 @@ namespace ImageView.Services
 
         public bool SaveBookmarks()
         {
-            lock (_lockObj)
+            lock (LockObj)
             {
                 string password = _passwordStorage.Get(_protectedMemoryStorageKey);
                 return _bookmarkManager.SaveToFile(_directory + BookmarkFileName, password);
@@ -82,9 +82,7 @@ namespace ImageView.Services
             {
                 Log.Error(e, "GetDefaultPassword");
                 return "CodeRed";
-
             }
-
         }
 
         public void Dispose()

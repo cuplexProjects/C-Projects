@@ -7,12 +7,32 @@ namespace ImageView.UserControls
     {
         public string SelectedPassword { get; private set; }
         private const int MinLength = 8;
+
+        private void SelectPassword_Load(object sender, EventArgs e)
+        {
+            lblStatus.Text = "";
+        }
+
         public SelectPassword()
         {
             InitializeComponent();
         }
 
         private void btnOk_Click(object sender, EventArgs e)
+        {
+            SetPassword();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            var parentForm = this.ParentForm;
+            if (parentForm != null)
+            {
+                parentForm.DialogResult = DialogResult.Cancel;
+            }
+        }
+
+        private void SetPassword()
         {
             if (!VerifyPasswords())
             {
@@ -24,15 +44,6 @@ namespace ImageView.UserControls
             if (parentForm != null)
             {
                 parentForm.DialogResult = DialogResult.OK;
-            }
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            var parentForm = this.ParentForm;
-            if (parentForm != null)
-            {
-                parentForm.DialogResult = DialogResult.Cancel;
             }
         }
 
@@ -52,6 +63,14 @@ namespace ImageView.UserControls
 
             lblStatus.Text = "";
             return true;
+        }
+
+        private void txtPasswordConfirm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SetPassword();
+            }
         }
     }
 }

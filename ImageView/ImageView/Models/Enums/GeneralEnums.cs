@@ -7,8 +7,9 @@
 
     public enum NotificationType
     {
-         UpdateApplication,
-         Other,
+         OkCancelQuery,
+         Information,
+         Error,
     }
 
 }

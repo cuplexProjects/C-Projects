@@ -35,6 +35,7 @@
             this.tabControlSettings = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ChkAutomaticallyCheckForUpdates = new System.Windows.Forms.CheckBox();
             this.chkConfirmExit = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -111,7 +112,6 @@
             this.label23 = new System.Windows.Forms.Label();
             this.imageListSettings = new System.Windows.Forms.ImageList(this.components);
             this.backgroundImageList = new System.Windows.Forms.ImageList(this.components);
-            this.ChkAutomaticallyCheckForUpdates = new System.Windows.Forms.CheckBox();
             this.toolTipUpdateDescription = new System.Windows.Forms.ToolTip(this.components);
             this.tabControlSettings.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
@@ -219,6 +219,19 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
+            // 
+            // ChkAutomaticallyCheckForUpdates
+            // 
+            this.ChkAutomaticallyCheckForUpdates.AutoSize = true;
+            this.ChkAutomaticallyCheckForUpdates.Location = new System.Drawing.Point(272, 54);
+            this.ChkAutomaticallyCheckForUpdates.Margin = new System.Windows.Forms.Padding(4);
+            this.ChkAutomaticallyCheckForUpdates.Name = "ChkAutomaticallyCheckForUpdates";
+            this.ChkAutomaticallyCheckForUpdates.Size = new System.Drawing.Size(210, 21);
+            this.ChkAutomaticallyCheckForUpdates.TabIndex = 14;
+            this.ChkAutomaticallyCheckForUpdates.Text = "Check for updates automatic";
+            this.toolTipUpdateDescription.SetToolTip(this.ChkAutomaticallyCheckForUpdates, "If checked the program wil automatically check for updates when \r\nthe program sta" +
+        "rts if the last check was over 3 days ago.\r\n");
+            this.ChkAutomaticallyCheckForUpdates.UseVisualStyleBackColor = true;
             // 
             // chkConfirmExit
             // 
@@ -1220,19 +1233,6 @@
             this.backgroundImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             this.backgroundImageList.ImageSize = new System.Drawing.Size(256, 256);
             this.backgroundImageList.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // ChkAutomaticallyCheckForUpdates
-            // 
-            this.ChkAutomaticallyCheckForUpdates.AutoSize = true;
-            this.ChkAutomaticallyCheckForUpdates.Location = new System.Drawing.Point(272, 54);
-            this.ChkAutomaticallyCheckForUpdates.Margin = new System.Windows.Forms.Padding(4);
-            this.ChkAutomaticallyCheckForUpdates.Name = "ChkAutomaticallyCheckForUpdates";
-            this.ChkAutomaticallyCheckForUpdates.Size = new System.Drawing.Size(210, 21);
-            this.ChkAutomaticallyCheckForUpdates.TabIndex = 14;
-            this.ChkAutomaticallyCheckForUpdates.Text = "Check for updates automatic";
-            this.toolTipUpdateDescription.SetToolTip(this.ChkAutomaticallyCheckForUpdates, "If checked the program wil automatically check for updates when \r\nthe program sta" +
-        "rts if the last check was over 3 days ago.\r\n");
-            this.ChkAutomaticallyCheckForUpdates.UseVisualStyleBackColor = true;
             // 
             // toolTipUpdateDescription
             // 

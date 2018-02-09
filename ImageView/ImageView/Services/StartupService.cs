@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ImageView.Models.Enums;
+using System.Windows.Forms;
+using ImageView.Models.UserInteraction;
 using JetBrains.Annotations;
 using Serilog;
 
@@ -11,16 +12,14 @@ namespace ImageView.Services
     public class StartupService : ServiceBase
     {
         private readonly ApplicationSettingsService _applicationSettingsService;
-        private readonly NotificationService _notificationService;
         private readonly UpdateService _updateService;
-        private readonly Guid _mainFormId;
+        private readonly UserInteractionService _interactionService;
 
-        public StartupService(ApplicationSettingsService applicationSettingsService, NotificationService notificationService, UpdateService updateService)
+        public StartupService(ApplicationSettingsService applicationSettingsService, UpdateService updateService, UserInteractionService interactionService)
         {
             _applicationSettingsService = applicationSettingsService;
-            _notificationService = notificationService;
             _updateService = updateService;
-            _mainFormId = Guid.Parse("C1052D7F-1625-42D0-8DA6-01520211484C");
+            _interactionService = interactionService;
         }
 
         public void ScheduleAndRunStartupJobs()
@@ -51,7 +50,7 @@ namespace ImageView.Services
                 }
             }
 
-            taskList.Add(TestJob());
+            //taskList.Add(TestJob());
             foreach (var task in taskList)
             {
                 task.Start();
@@ -62,18 +61,25 @@ namespace ImageView.Services
 
         private void EnqueueUpdateRequest()
         {
-            var notification = new Notification
+            _interactionService.RequestUserAccept(new UserInteractionQuestion
             {
-                NotificationType = NotificationType.UpdateApplication,
-                TargetId = _mainFormId,
-                BackgroundJob = UpdateProgramJob
-            };
+                Buttons = MessageBoxButtons.OKCancel,
+                CancelResponse = NoUpdate,
+                OkResponse = UpdateProgramJob,
+                Icon = MessageBoxIcon.Question,
+                Message = "There is a newer version available, do you want to download and update?",
+                Label = "Update program?"
+            });
+        }
 
-            _notificationService.AddNotification(notification);
+        private void NoUpdate()
+        {
+            Log.Information("User selected cancel on update request");
         }
 
         private void UpdateProgramJob()
         {
+            Log.Information("User selected ok on update request");
             Task.Factory.StartNew(async () =>
             {
                 await UpdateProgramJobAsync();
@@ -88,6 +94,7 @@ namespace ImageView.Services
         private async Task<bool> TestJob()
         {
             await Task.Delay(5000);
+            _interactionService.InformUser(new UserInteractionInformation {Buttons = MessageBoxButtons.OK,Icon = MessageBoxIcon.Asterisk,Message = "Hello this is  a test", Label = "Test"});
             return true;
         }
     }

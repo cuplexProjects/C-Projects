@@ -61,20 +61,13 @@ namespace ImageView
             Close();
         }
 
-        private void btnRemoveFilesNotFound_Click(object sender, EventArgs e)
+        private async void btnRemoveFilesNotFound_Click(object sender, EventArgs e)
         {
             btnRemoveFilesNotFound.Enabled = false;
-            var result = _thumbnailService.RemoveAllNonAccessableFilesAndSaveDb();
+            bool result = await Task<bool>.Factory.StartNew(() => _thumbnailService.RemoveAllNonAccessableFilesAndSaveDb());
             btnRemoveFilesNotFound.Enabled = true;
 
-            if (result)
-            {
-                lblInfo.Text = "Successfully removed missing files.";
-            }
-            else
-            {
-                lblInfo.Text = "No missing files where found.";
-            }
+            lblInfo.Text = result ? "Successfully removed missing files." : "No missing files where found.";
             UpdateInformationLabels();
         }
 

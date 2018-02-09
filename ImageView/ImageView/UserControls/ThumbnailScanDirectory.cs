@@ -50,12 +50,15 @@ namespace ImageView.UserControls
 
         private void Handler(ThumbnailScanProgress thumbnailScanProgress)
         {
-            progressBar.Value = thumbnailScanProgress.PercentComplete;
             if (thumbnailScanProgress.IsComplete)
             {
                 progressBar.Value = progressBar.Maximum;
                 _scaningDirectory = false;
                 UpdateButtonState();
+            }
+            else
+            {
+                progressBar.Value = thumbnailScanProgress.PercentComplete;
             }
         }
 
@@ -88,6 +91,7 @@ namespace ImageView.UserControls
                 btnScan.Enabled = true;
                 btnCancel.Enabled = false;
                 btnBrowse.Enabled = true;
+                //progressBar.Value = progressBar.Maximum;
             }
         }
 

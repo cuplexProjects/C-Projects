@@ -33,6 +33,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.grpBoxControls = new System.Windows.Forms.GroupBox();
+            this.btnOptimize = new System.Windows.Forms.Button();
             this.btnScanDirectory = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnGenerate = new System.Windows.Forms.Button();
@@ -41,7 +42,6 @@
             this.menuItemOpenInDefApp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemBookmark = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemCopyPath = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnOptimize = new System.Windows.Forms.Button();
             this.grpBoxControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxMaximized)).BeginInit();
             this.contextMenuFullSizeImg.SuspendLayout();
@@ -50,10 +50,9 @@
             // statusStrip
             // 
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip.Location = new System.Drawing.Point(5, 526);
+            this.statusStrip.Location = new System.Drawing.Point(4, 423);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip.Size = new System.Drawing.Size(772, 22);
+            this.statusStrip.Size = new System.Drawing.Size(578, 22);
             this.statusStrip.TabIndex = 0;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -65,10 +64,9 @@
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(5, 70);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(4, 57);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(768, 452);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(576, 368);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // grpBoxControls
@@ -79,17 +77,31 @@
             this.grpBoxControls.Controls.Add(this.btnScanDirectory);
             this.grpBoxControls.Controls.Add(this.btnSettings);
             this.grpBoxControls.Controls.Add(this.btnGenerate);
-            this.grpBoxControls.Location = new System.Drawing.Point(5, 8);
+            this.grpBoxControls.Location = new System.Drawing.Point(4, 6);
+            this.grpBoxControls.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.grpBoxControls.Name = "grpBoxControls";
-            this.grpBoxControls.Size = new System.Drawing.Size(772, 55);
+            this.grpBoxControls.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.grpBoxControls.Size = new System.Drawing.Size(579, 45);
             this.grpBoxControls.TabIndex = 2;
             this.grpBoxControls.TabStop = false;
             // 
+            // btnOptimize
+            // 
+            this.btnOptimize.Location = new System.Drawing.Point(243, 15);
+            this.btnOptimize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnOptimize.Name = "btnOptimize";
+            this.btnOptimize.Size = new System.Drawing.Size(69, 24);
+            this.btnOptimize.TabIndex = 3;
+            this.btnOptimize.Text = "Optimize";
+            this.btnOptimize.UseVisualStyleBackColor = true;
+            this.btnOptimize.Click += new System.EventHandler(this.btnOptimize_Click);
+            // 
             // btnScanDirectory
             // 
-            this.btnScanDirectory.Location = new System.Drawing.Point(199, 19);
+            this.btnScanDirectory.Location = new System.Drawing.Point(149, 15);
+            this.btnScanDirectory.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnScanDirectory.Name = "btnScanDirectory";
-            this.btnScanDirectory.Size = new System.Drawing.Size(120, 30);
+            this.btnScanDirectory.Size = new System.Drawing.Size(90, 24);
             this.btnScanDirectory.TabIndex = 2;
             this.btnScanDirectory.Text = "Scan Directory";
             this.btnScanDirectory.UseVisualStyleBackColor = true;
@@ -97,9 +109,10 @@
             // 
             // btnSettings
             // 
-            this.btnSettings.Location = new System.Drawing.Point(101, 19);
+            this.btnSettings.Location = new System.Drawing.Point(76, 15);
+            this.btnSettings.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(92, 30);
+            this.btnSettings.Size = new System.Drawing.Size(69, 24);
             this.btnSettings.TabIndex = 1;
             this.btnSettings.Text = "Settings";
             this.btnSettings.UseVisualStyleBackColor = true;
@@ -108,9 +121,10 @@
             // btnGenerate
             // 
             this.btnGenerate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGenerate.Location = new System.Drawing.Point(3, 19);
+            this.btnGenerate.Location = new System.Drawing.Point(2, 15);
+            this.btnGenerate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(92, 30);
+            this.btnGenerate.Size = new System.Drawing.Size(69, 24);
             this.btnGenerate.TabIndex = 0;
             this.btnGenerate.Text = "Generate";
             this.btnGenerate.UseVisualStyleBackColor = true;
@@ -121,9 +135,10 @@
             this.picBoxMaximized.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.picBoxMaximized.Location = new System.Drawing.Point(9, 69);
+            this.picBoxMaximized.Location = new System.Drawing.Point(7, 56);
+            this.picBoxMaximized.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.picBoxMaximized.Name = "picBoxMaximized";
-            this.picBoxMaximized.Size = new System.Drawing.Size(764, 453);
+            this.picBoxMaximized.Size = new System.Drawing.Size(573, 368);
             this.picBoxMaximized.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBoxMaximized.TabIndex = 0;
             this.picBoxMaximized.TabStop = false;
@@ -137,53 +152,42 @@
             this.menuItemBookmark,
             this.menuItemCopyPath});
             this.contextMenuFullSizeImg.Name = "contextMenuFullSizeImg";
-            this.contextMenuFullSizeImg.Size = new System.Drawing.Size(271, 82);
+            this.contextMenuFullSizeImg.Size = new System.Drawing.Size(222, 70);
             // 
             // menuItemOpenInDefApp
             // 
             this.menuItemOpenInDefApp.Name = "menuItemOpenInDefApp";
-            this.menuItemOpenInDefApp.Size = new System.Drawing.Size(270, 26);
+            this.menuItemOpenInDefApp.Size = new System.Drawing.Size(221, 22);
             this.menuItemOpenInDefApp.Text = "Open In Default Application";
             this.menuItemOpenInDefApp.Click += new System.EventHandler(this.menuItemOpenInDefApp_Click);
             // 
             // menuItemBookmark
             // 
             this.menuItemBookmark.Name = "menuItemBookmark";
-            this.menuItemBookmark.Size = new System.Drawing.Size(270, 26);
+            this.menuItemBookmark.Size = new System.Drawing.Size(221, 22);
             this.menuItemBookmark.Text = "Bookmark Image";
             this.menuItemBookmark.Click += new System.EventHandler(this.menuItemBookmark_Click);
             // 
             // menuItemCopyPath
             // 
             this.menuItemCopyPath.Name = "menuItemCopyPath";
-            this.menuItemCopyPath.Size = new System.Drawing.Size(270, 26);
+            this.menuItemCopyPath.Size = new System.Drawing.Size(221, 22);
             this.menuItemCopyPath.Text = "Copy Filepath";
             this.menuItemCopyPath.Click += new System.EventHandler(this.menuItemCopyPath_Click);
             // 
-            // btnOptimize
-            // 
-            this.btnOptimize.Location = new System.Drawing.Point(325, 21);
-            this.btnOptimize.Name = "btnOptimize";
-            this.btnOptimize.Size = new System.Drawing.Size(92, 30);
-            this.btnOptimize.TabIndex = 3;
-            this.btnOptimize.Text = "Optimize";
-            this.btnOptimize.UseVisualStyleBackColor = true;
-            this.btnOptimize.Click += new System.EventHandler(this.btnOptimize_Click);
-            // 
             // FormThumbnailView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(782, 553);
+            this.ClientSize = new System.Drawing.Size(586, 449);
             this.Controls.Add(this.grpBoxControls);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.picBoxMaximized);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(400, 300);
+            this.MinimumSize = new System.Drawing.Size(304, 251);
             this.Name = "FormThumbnailView";
-            this.Padding = new System.Windows.Forms.Padding(5);
+            this.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Thumbnails";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormThumbnailView_FormClosing);

@@ -294,9 +294,16 @@ namespace ImageView.Managers
                     var taskList = new List<Task>();
                     while (filenameQueue.Count > 0 && !_abortScan)
                     {
-                        while (taskList.Count < threads)
+                        while (taskList.Count < threads && filenameQueue.Count > 0)
                         {
-                            taskList.Add(Task.Factory.StartNew(() => { GetThumbnailEntry(filenameQueue.Dequeue(), scannedThumbnailEntries); }, cancellationToken));
+                            taskList.Add(Task.Factory.StartNew(() =>
+                            {
+                                if (filenameQueue.Count > 0)
+                                {
+                                    GetThumbnailEntry(filenameQueue.Dequeue(), scannedThumbnailEntries);
+                                }
+                                
+                            }, cancellationToken));
                         }
 
                         Task.WaitAny(taskList.ToArray());
@@ -309,8 +316,9 @@ namespace ImageView.Managers
                                 dataStorageTask = Task.Factory.StartNew(() => { ProcessThumbnailData(scannedThumbnailEntries); }, cancellationToken);
                             }
                         }
+                        progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = totalNumberOfFiles, ScannedFiles = filesProccessed, IsComplete = false });
                     }
-                    progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = totalNumberOfFiles, ScannedFiles = filesProccessed, IsComplete = false });
+                    
                 }
 
                 ProcessThumbnailData(scannedThumbnailEntries);
@@ -325,7 +333,10 @@ namespace ImageView.Managers
             {
                 if (thumbnailDatas.TryDequeue(out var data))
                 {
-                    SaveThumbnailData(data);
+                    if (!_fileDictionary.ContainsKey(Path.Combine(data.ThumbnailEntry.Directory, data.ThumbnailEntry.FileName)))
+                    {
+                        SaveThumbnailData(data);
+                    }
                 }
             }
         }
@@ -347,6 +358,11 @@ namespace ImageView.Managers
 
         private void GetThumbnailEntry(string fullPath, ConcurrentQueue<ThumbnailData> thumbnailDatas)
         {
+            if (string.IsNullOrEmpty(fullPath))
+            {
+                return;
+            }
+
             string fileName = GeneralConverters.GetFileNameFromPath(fullPath);
             string directory = GeneralConverters.GetDirectoryNameFromPath(fullPath);
             Image thumbnailImage = LoadImageFromFile(fullPath);

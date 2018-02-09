@@ -3,9 +3,9 @@ using System.Drawing;
 
 namespace ImageView.Utility
 {
-    public class UIHelper
+    public static class UIHelper
     {
-        public static List<Color> GetSelectableBackgroundColors()
+        public static List<Color> GetSelectableSystemBackgroundColors()
         {
             var list = new List<Color>
             {
@@ -42,6 +42,35 @@ namespace ImageView.Utility
                 SystemColors.ActiveCaption,
                 SystemColors.GradientInactiveCaption,
                 SystemColors.WindowText,
+            };
+
+            return list;
+        }
+
+        public static List<Color> GetSelectableBackgroundColors()
+        {
+            var list = new List<Color>
+            {
+                Color.AliceBlue,
+                Color.Azure,
+                Color.White,
+                Color.WhiteSmoke,
+                Color.Black,
+                Color.Bisque,
+                Color.BlanchedAlmond,
+                Color.BurlyWood,
+                Color.CadetBlue,
+                Color.Cornsilk,
+                Color.Gray,
+                Color.Silver,
+                Color.DarkGray,
+                Color.DimGray,
+                Color.SlateGray,
+                Color.LightSlateGray,
+                Color.PapayaWhip,
+                Color.MidnightBlue,
+                Color.SteelBlue,
+                Color.LightSkyBlue,
             };
 
             return list;
