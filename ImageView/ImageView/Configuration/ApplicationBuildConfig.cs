@@ -72,6 +72,11 @@ namespace ImageView.Configuration
 
         private static bool IsDebug(Assembly assembly)
         {
+            /*
+             * Temporary override
+                return false;            
+             */
+
             var attributes = assembly.GetCustomAttributes(typeof(DebuggableAttribute), true);
             if (attributes.Length == 0)
                 return true;

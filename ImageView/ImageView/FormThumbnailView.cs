@@ -38,8 +38,16 @@ namespace ImageView
             _imageLoaderService = imageLoaderService;
             _thumbnailSize = ValidateThumbnailSize(_applicationSettingsService.Settings.ThumbnailSize);
             _maxThumbnails = _applicationSettingsService.Settings.MaxThumbnails;
+            _applicationSettingsService.OnSettingsSaved += _applicationSettingsService_OnSettingsSaved;
             _thumbnailService.LoadThumbnailDatabase();
             InitializeComponent();
+        }
+
+        private void _applicationSettingsService_OnSettingsSaved(object sender, EventArgs e)
+        {
+            ImageViewApplicationSettings appSettings = _applicationSettingsService.Settings;
+            flowLayoutPanel1.BackColor = appSettings.MainWindowBackgroundColor.ToColor();
+            picBoxMaximized.BackColor = appSettings.MainWindowBackgroundColor.ToColor();
         }
 
         private void FormThumbnailView_Load(object sender, EventArgs e)
@@ -51,6 +59,8 @@ namespace ImageView
             RestoreFormState.SetFormSizeAndPosition(this, appSettings.ThumbnailFormSize, appSettings.ThumbnailFormLocation, Screen.PrimaryScreen.WorkingArea);
             Closing += FormThumbnailView_Closing;
             SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+            flowLayoutPanel1.BackColor = appSettings.MainWindowBackgroundColor.ToColor();
+            picBoxMaximized.BackColor = appSettings.MainWindowBackgroundColor.ToColor();
             UpdateStyles();
         }
 
@@ -114,6 +124,7 @@ namespace ImageView
 
         private List<Control> GenerateThumbnails()
         {
+            var backColor = _applicationSettingsService.Settings.MainWindowBackgroundColor.ToColor();
             var pictureBoxes = new List<Control>();
             bool randomizeImageCollection = _applicationSettingsService.Settings.AutoRandomizeCollection;
             var imgRefList = _imageLoaderService.GenerateThumbnailList(randomizeImageCollection);
@@ -127,7 +138,7 @@ namespace ImageView
                     Height = _thumbnailSize,
                     BorderStyle = BorderStyle.FixedSingle,
                     SizeMode = PictureBoxSizeMode.Zoom,
-                    BackColor = Color.White,
+                    BackColor = backColor,
                     Tag = element.CompletePath
                 };
 

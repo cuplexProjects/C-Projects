@@ -86,8 +86,8 @@ namespace ImageView
         public void ReloadSettings()
         {
             _switchImgButtonsEnabled = _applicationSettingsService.Settings.ShowSwitchImageButtons;
-            _showSwitchImgOnMouseOverWindow =
-                _applicationSettingsService.Settings.ShowNextPrevControlsOnEnterWindow;
+            _showSwitchImgOnMouseOverWindow = _applicationSettingsService.Settings.ShowNextPrevControlsOnEnterWindow;
+            pictureBox.BackColor = _applicationSettingsService.Settings.MainWindowBackgroundColor.ToColor();
             _mouseHoverInfo = _switchImgButtonsEnabled ? new MouseHoverInfo() : null;
         }
 
@@ -120,6 +120,7 @@ namespace ImageView
 
         private void FormImageView_Load(object sender, EventArgs e)
         {
+            pictureBox.BackColor = _applicationSettingsService.Settings.MainWindowBackgroundColor.ToColor();
             ShowInTaskbar = _applicationSettingsService.Settings.ShowImageViewFormsInTaskBar;
             SetImageReferenceCollection();
             if (!ImageSourceDataAvailable) return;

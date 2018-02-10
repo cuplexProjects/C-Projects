@@ -94,8 +94,12 @@ namespace GeneralToolkitLib.Storage.Registry
                 var retVal = new T();
                 Type objType = typeof(T);
                 var properties = objType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
                 foreach (PropertyInfo propertyInfo in properties)
                 {
+                    var attrs = propertyInfo.PropertyType.GetCustomAttributes();
+                    bool protoBufferCompatible = attrs.OfType<DataContractAttribute>().Any();
+
                     string propertyName = propertyInfo.Name;
                     if (propertyInfo.PropertyType == typeof(string))
                         propertyInfo.SetValue(retVal, Read(propertyName) as string);
@@ -146,7 +150,7 @@ namespace GeneralToolkitLib.Storage.Registry
                             Log.Error(ex, "ReadObjectFromRegistry Exception. Failed to parse Datetime");
                         }
                     }
-                    else if (propertyInfo.PropertyType.IsClass)
+                    else if (propertyInfo.PropertyType.IsClass && protoBufferCompatible)
                     {
                         try
                         {
@@ -155,8 +159,15 @@ namespace GeneralToolkitLib.Storage.Registry
                             {
                                 tmp = tmp.Replace(SerializedObjPrefix, "");
 
-                                var deserializedObj = DeserializeFromString(tmp);
-                                propertyInfo.SetValue(retVal, deserializedObj);
+                                // Invoke generic deserialize method with just PropertyType
+                                MethodInfo method = GetType().GetMethod("DeserializeFromString", BindingFlags.NonPublic | BindingFlags.Static);
+                                if (method != null)
+                                {
+                                    MethodInfo generic = method.MakeGenericMethod(propertyInfo.PropertyType);
+                                    object[] inputObjects = { tmp };
+                                    var deserializedObj = generic.Invoke(this, inputObjects);
+                                    propertyInfo.SetValue(retVal, deserializedObj);
+                                }
                             }
                         }
                         catch (Exception ex)
@@ -262,11 +273,11 @@ namespace GeneralToolkitLib.Storage.Registry
             return Convert.ToBase64String(stream.ToArray());
         }
 
-        private object DeserializeFromString(string data)
+        private static TX DeserializeFromString<TX>(string data)
         {
             byte[] bytes = Convert.FromBase64String(data);
             var stream = new MemoryStream(bytes);
-            return Serializer.Deserialize<object>(stream);
+            return Serializer.Deserialize<TX>(stream);
         }
 
         private string SerializeStructToString(object obj)
