@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
@@ -18,7 +17,7 @@ namespace GeneralToolkitLib.Storage.Registry
 {
     public class RegistryAccess : IRegistryAccess
     {
-        private const string SerializedObjPrefix = @"#/[FROM-B64-OBJ]\#";
+        private const string SerializedObjPrefix = @"/|[<|PB64|>]|\";
         public RegistryAccess(string productName)
         {
             ProductName = productName.Replace(" ", "");
@@ -156,7 +155,7 @@ namespace GeneralToolkitLib.Storage.Registry
                             {
                                 tmp = tmp.Replace(SerializedObjPrefix, "");
 
-                                object deserializedObj = DeserializeFromString(tmp);
+                                var deserializedObj = DeserializeFromString(tmp);
                                 propertyInfo.SetValue(retVal, deserializedObj);
                             }
                         }
@@ -258,18 +257,16 @@ namespace GeneralToolkitLib.Storage.Registry
 
         private string SerializeObjectToString(object obj)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
             var stream = new MemoryStream();
-            formatter.Serialize(stream, obj);
+            Serializer.Serialize(stream, obj);
             return Convert.ToBase64String(stream.ToArray());
         }
 
         private object DeserializeFromString(string data)
         {
             byte[] bytes = Convert.FromBase64String(data);
-            BinaryFormatter formatter = new BinaryFormatter();
             var stream = new MemoryStream(bytes);
-            return formatter.Deserialize(stream);
+            return Serializer.Deserialize<object>(stream);
         }
 
         private string SerializeStructToString(object obj)
