@@ -124,6 +124,18 @@ namespace ImageView
             if (!(selectedNode.Tag is BookmarkFolder selectedBookmarkfolder)) return false;
             _bookmarkManager.VerifyIntegrityOfBookmarFolder(selectedBookmarkfolder);
             bookmarkBindingSource.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
+            if (bookmarksDataGridView.SelectedRows.Count > 0)
+            {
+                if (bookmarksDataGridView.CurrentRow != null)
+                {
+                    int selectedIndex = bookmarksDataGridView.CurrentRow.Index;
+                    if (selectedIndex > 0)
+                    {
+                        bookmarksDataGridView.Rows[selectedIndex].Selected = false;
+                        bookmarksDataGridView.Rows[0].Selected = true;
+                    }
+                }
+            }
             bookmarksDataGridView.Update();
             bookmarksDataGridView.Refresh();
 
@@ -505,13 +517,6 @@ namespace ImageView
         #endregion
 
         #region MenuEventHandlers
-
-        private void showLogToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var formLogWindow = new FormLogWindow();
-            formLogWindow.SetLogText(_logStringBuilder.ToString());
-            formLogWindow.ShowDialog(this);
-        }
 
         private void setDefaultDriveToolStripMenuItem_Click(object sender, EventArgs e)
         {

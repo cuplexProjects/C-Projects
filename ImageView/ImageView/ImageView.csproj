@@ -78,7 +78,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>287F80DFC26B414919B90BD1A8B18190C2E02224</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>12FC74622D2E79BE0690E930C780629307196A49</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>
@@ -88,7 +88,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -241,12 +241,6 @@
     </Compile>
     <Compile Include="FormInputText.Designer.cs">
       <DependentUpon>FormInputText.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormLogWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormLogWindow.Designer.cs">
-      <DependentUpon>FormLogWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="FormRestartWithAdminPrivileges.cs">
       <SubType>Form</SubType>
@@ -461,9 +455,6 @@
     <EmbeddedResource Include="FormInputText.resx">
       <DependentUpon>FormInputText.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormLogWindow.resx">
-      <DependentUpon>FormLogWindow.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormRestartWithAdminPrivileges.resx">
       <DependentUpon>FormRestartWithAdminPrivileges.cs</DependentUpon>
     </EmbeddedResource>
@@ -547,6 +538,7 @@
       <DependentUpon>ThumbnailSettings.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ImageViewCertificateSignFile.pfx" />
+    <None Include="ImageView_2_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\ImageView.DataContracts.Bookmark.datasource" />
     <None Include="Properties\DataSources\ImageView.DataContracts.BookmarkFolder.datasource" />

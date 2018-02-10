@@ -45,6 +45,11 @@ namespace ImageView
             this.renameFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
             this.bookmarksDataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sizeFormatedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bookmarkBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.mainWinMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,8 +62,6 @@ namespace ImageView
             this.tryToFixBrokenLinksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setDefaultDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeDuplicatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.showLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showOverlayPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -71,11 +74,6 @@ namespace ImageView
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bookmarkFolderBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sizeFormatedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bookmarkBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -87,10 +85,10 @@ namespace ImageView
             this.contextMenuStripFolders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarksDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).BeginInit();
             this.mainWinMenu.SuspendLayout();
             this.contextMenuStripBookmarks.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarkFolderBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -266,6 +264,46 @@ namespace ImageView
             this.bookmarksDataGridView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.bookmarksDataGridView_MouseMove);
             this.bookmarksDataGridView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.bookmarksDataGridView_MouseUp);
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "BoookmarkName";
+            this.dataGridViewTextBoxColumn1.HeaderText = "BoookmarkName";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "FileName";
+            this.dataGridViewTextBoxColumn2.HeaderText = "FileName";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "CompletePath";
+            this.dataGridViewTextBoxColumn3.FillWeight = 75F;
+            this.dataGridViewTextBoxColumn3.HeaderText = "CompletePath";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            // 
+            // sizeFormatedDataGridViewTextBoxColumn
+            // 
+            this.sizeFormatedDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.sizeFormatedDataGridViewTextBoxColumn.DataPropertyName = "SizeFormated";
+            this.sizeFormatedDataGridViewTextBoxColumn.FillWeight = 50F;
+            this.sizeFormatedDataGridViewTextBoxColumn.HeaderText = "File Size";
+            this.sizeFormatedDataGridViewTextBoxColumn.MinimumWidth = 20;
+            this.sizeFormatedDataGridViewTextBoxColumn.Name = "sizeFormatedDataGridViewTextBoxColumn";
+            this.sizeFormatedDataGridViewTextBoxColumn.ReadOnly = true;
+            this.sizeFormatedDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            // 
+            // bookmarkBindingSource
+            // 
+            this.bookmarkBindingSource.DataSource = typeof(ImageView.DataContracts.Bookmark);
+            // 
             // mainWinMenu
             // 
             this.mainWinMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -336,10 +374,8 @@ namespace ImageView
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tryToFixBrokenLinksToolStripMenuItem,
-            this.setDefaultDriveToolStripMenuItem,
             this.removeDuplicatesToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.showLogToolStripMenuItem});
+            this.setDefaultDriveToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -364,19 +400,6 @@ namespace ImageView
             this.removeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.removeDuplicatesToolStripMenuItem.Text = "Remove Duplicates";
             this.removeDuplicatesToolStripMenuItem.Click += new System.EventHandler(this.removeDuplicatesToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(172, 6);
-            // 
-            // showLogToolStripMenuItem
-            // 
-            this.showLogToolStripMenuItem.Enabled = false;
-            this.showLogToolStripMenuItem.Name = "showLogToolStripMenuItem";
-            this.showLogToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.showLogToolStripMenuItem.Text = "Show Log";
-            this.showLogToolStripMenuItem.Click += new System.EventHandler(this.showLogToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -457,46 +480,6 @@ namespace ImageView
             this.folderBrowserDialog1.RootFolder = System.Environment.SpecialFolder.MyComputer;
             this.folderBrowserDialog1.ShowNewFolderButton = false;
             // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "BoookmarkName";
-            this.dataGridViewTextBoxColumn1.HeaderText = "BoookmarkName";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "FileName";
-            this.dataGridViewTextBoxColumn2.HeaderText = "FileName";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "CompletePath";
-            this.dataGridViewTextBoxColumn3.FillWeight = 75F;
-            this.dataGridViewTextBoxColumn3.HeaderText = "CompletePath";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            // 
-            // sizeFormatedDataGridViewTextBoxColumn
-            // 
-            this.sizeFormatedDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.sizeFormatedDataGridViewTextBoxColumn.DataPropertyName = "SizeFormated";
-            this.sizeFormatedDataGridViewTextBoxColumn.FillWeight = 50F;
-            this.sizeFormatedDataGridViewTextBoxColumn.HeaderText = "File Size";
-            this.sizeFormatedDataGridViewTextBoxColumn.MinimumWidth = 20;
-            this.sizeFormatedDataGridViewTextBoxColumn.Name = "sizeFormatedDataGridViewTextBoxColumn";
-            this.sizeFormatedDataGridViewTextBoxColumn.ReadOnly = true;
-            this.sizeFormatedDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            // 
-            // bookmarkBindingSource
-            // 
-            this.bookmarkBindingSource.DataSource = typeof(ImageView.DataContracts.Bookmark);
-            // 
             // FormBookmarks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -523,11 +506,11 @@ namespace ImageView
             this.contextMenuStripFolders.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bookmarksDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).EndInit();
             this.mainWinMenu.ResumeLayout(false);
             this.mainWinMenu.PerformLayout();
             this.contextMenuStripBookmarks.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bookmarkFolderBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bookmarkBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -552,9 +535,7 @@ namespace ImageView
         private System.Windows.Forms.MenuStrip mainWinMenu;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tryToFixBrokenLinksToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showLogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setDefaultDriveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem renameFolderMenuItem;
         private System.Windows.Forms.BindingSource bookmarkFolderBindingSource;
