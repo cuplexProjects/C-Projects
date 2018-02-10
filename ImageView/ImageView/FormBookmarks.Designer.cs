@@ -60,7 +60,6 @@ namespace ImageView
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tryToFixBrokenLinksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setDefaultDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeDuplicatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showOverlayPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -374,8 +373,7 @@ namespace ImageView
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tryToFixBrokenLinksToolStripMenuItem,
-            this.removeDuplicatesToolStripMenuItem,
-            this.setDefaultDriveToolStripMenuItem});
+            this.removeDuplicatesToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -386,13 +384,6 @@ namespace ImageView
             this.tryToFixBrokenLinksToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.tryToFixBrokenLinksToolStripMenuItem.Text = "Fix Broken Links";
             this.tryToFixBrokenLinksToolStripMenuItem.Click += new System.EventHandler(this.tryToFixBrokenLinksToolStripMenuItem_Click);
-            // 
-            // setDefaultDriveToolStripMenuItem
-            // 
-            this.setDefaultDriveToolStripMenuItem.Name = "setDefaultDriveToolStripMenuItem";
-            this.setDefaultDriveToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.setDefaultDriveToolStripMenuItem.Text = "Set Default Drive";
-            this.setDefaultDriveToolStripMenuItem.Click += new System.EventHandler(this.setDefaultDriveToolStripMenuItem_Click);
             // 
             // removeDuplicatesToolStripMenuItem
             // 
@@ -535,7 +526,6 @@ namespace ImageView
         private System.Windows.Forms.MenuStrip mainWinMenu;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tryToFixBrokenLinksToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem setDefaultDriveToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem renameFolderMenuItem;
         private System.Windows.Forms.BindingSource bookmarkFolderBindingSource;

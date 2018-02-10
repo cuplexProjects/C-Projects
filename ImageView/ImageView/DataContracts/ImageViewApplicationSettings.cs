@@ -99,10 +99,10 @@ namespace ImageView.DataContracts
         public string PasswordDerivedString { get; protected set; }
 
         [DataMember(Name = "MainFormPosition", Order = 16)]
-        public Point MainFormPosition { get; protected set; }
+        public PointDataModel MainFormPosition { get; protected set; }
 
         [DataMember(Name = "MainFormSize", Order = 17)]
-        public Size MainFormSize { get; protected set; }
+        public SizeDataModel MainFormSize { get; protected set; }
 
         [DataMember(Name = "UseSavedMainFormPosition", Order = 18)]
         public bool UseSavedMainFormPosition { get; protected set; }
@@ -129,10 +129,10 @@ namespace ImageView.DataContracts
         public int MaxThumbnails { get; set; }
 
         [DataMember(Name = "ThumbnailFormSize", Order = 26)]
-        public Size ThumbnailFormSize { get; set; }
+        public SizeDataModel ThumbnailFormSize { get; set; }
 
         [DataMember(Name = "ThumbnailFormLocation", Order = 27)]
-        public Point ThumbnailFormLocation { get; set; }
+        public PointDataModel ThumbnailFormLocation { get; set; }
 
         [DataMember(Name = "ConfirmApplicationShutdown", Order = 28)]
         public bool ConfirmApplicationShutdown { get; set; }
@@ -183,8 +183,8 @@ namespace ImageView.DataContracts
 
             if (intersection != Rectangle.Empty)
             {
-                MainFormPosition = new Point(mainFormBounds.X, mainFormBounds.Y);
-                MainFormSize = new Size(mainFormBounds.Width, mainFormBounds.Height);
+                MainFormPosition = new PointDataModel(mainFormBounds.X, mainFormBounds.Y);
+                MainFormSize = new SizeDataModel(mainFormBounds.Width, mainFormBounds.Height);
                 UseSavedMainFormPosition = true;
             }
         }

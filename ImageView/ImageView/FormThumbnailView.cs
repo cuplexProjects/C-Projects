@@ -56,7 +56,11 @@ namespace ImageView
                 return;
 
             ImageViewApplicationSettings appSettings = _applicationSettingsService.Settings;
-            RestoreFormState.SetFormSizeAndPosition(this, appSettings.ThumbnailFormSize, appSettings.ThumbnailFormLocation, Screen.PrimaryScreen.WorkingArea);
+            if (appSettings.ThumbnailFormSize != null && appSettings.ThumbnailFormLocation != null)
+            {
+                RestoreFormState.SetFormSizeAndPosition(this, appSettings.ThumbnailFormSize.ToSize(), appSettings.ThumbnailFormLocation.ToPoint(), Screen.PrimaryScreen.WorkingArea);
+            }
+
             Closing += FormThumbnailView_Closing;
             SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             flowLayoutPanel1.BackColor = appSettings.MainWindowBackgroundColor.ToColor();
@@ -67,8 +71,8 @@ namespace ImageView
         private void FormThumbnailView_Closing(object sender, CancelEventArgs e)
         {
             ImageViewApplicationSettings appSettings = _applicationSettingsService.Settings;
-            appSettings.ThumbnailFormLocation = Location;
-            appSettings.ThumbnailFormSize = Size;
+            appSettings.ThumbnailFormLocation = PointDataModel.CreateFromPoint(Location);
+            appSettings.ThumbnailFormSize = SizeDataModel.CreateFromSize(Size);
             _applicationSettingsService.SaveSettings();
             Controls.Clear();
         }

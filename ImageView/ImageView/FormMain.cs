@@ -103,8 +103,8 @@ namespace ImageView
 
             if (_applicationSettingsService.Settings.UseSavedMainFormPosition)
             {
-                RestoreFormState.SetFormSizeAndPosition(this, _applicationSettingsService.Settings.MainFormSize,
-                    _applicationSettingsService.Settings.MainFormPosition, Screen.PrimaryScreen.WorkingArea);
+                RestoreFormState.SetFormSizeAndPosition(this, _applicationSettingsService.Settings.MainFormSize.ToSize(),
+                    _applicationSettingsService.Settings.MainFormPosition.ToPoint(), Screen.PrimaryScreen.WorkingArea);
             }
 
             _changeImageAnimation = _applicationSettingsService.Settings.NextImageAnimation;

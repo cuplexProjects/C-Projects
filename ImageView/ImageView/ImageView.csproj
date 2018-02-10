@@ -188,6 +188,8 @@
     <Compile Include="DataContracts\BookmarkContainer.cs" />
     <Compile Include="DataContracts\BookmarkFolder.cs" />
     <Compile Include="DataContracts\ColorDataModel.cs" />
+    <Compile Include="DataContracts\PointDataModel.cs" />
+    <Compile Include="DataContracts\SizeDataModel.cs" />
     <Compile Include="DataContracts\ThumbnailDatabase.cs" />
     <Compile Include="DataContracts\ThumbnailEntry.cs" />
     <Compile Include="FormEditBookmark.cs">

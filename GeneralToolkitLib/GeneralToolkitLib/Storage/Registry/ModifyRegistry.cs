@@ -17,7 +17,7 @@ namespace GeneralToolkitLib.Storage.Registry
 {
     public class RegistryAccess : IRegistryAccess
     {
-        private const string SerializedObjPrefix = @"/|[<|PB64|>]|\";
+        private const string SerializedObjPrefix = @"/|{#}|\";
         public RegistryAccess(string productName)
         {
             ProductName = productName.Replace(" ", "");
