@@ -1,6 +1,6 @@
 ﻿namespace ImageView.Interfaces
 {
-    public interface ImageViewFormWindow
+    public interface IMageViewFormWindow
     {
         void ResetZoomAndRepaint();
         void ReloadSettings();

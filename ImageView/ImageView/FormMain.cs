@@ -860,6 +860,7 @@ namespace ImageView
             }
             else
             {
+                _formBookmarks.WindowState = FormWindowState.Normal;
                 _formBookmarks.Show();
                 _formBookmarks.Focus();
             }

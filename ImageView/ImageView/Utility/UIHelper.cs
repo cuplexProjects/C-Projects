@@ -49,6 +49,8 @@ namespace ImageView.Utility
 
         public static List<Color> GetSelectableBackgroundColors()
         {
+            var darkerGray = Color.FromArgb(255, 30, 30, 30);
+
             var list = new List<Color>
             {
                 Color.AliceBlue,
@@ -64,6 +66,7 @@ namespace ImageView.Utility
                 Color.Gray,
                 Color.Silver,
                 Color.DarkGray,
+                darkerGray,
                 Color.DimGray,
                 Color.SlateGray,
                 Color.LightSlateGray,

@@ -62,7 +62,7 @@ namespace ImageView.UserControls
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private async void btnCancel_Click(object sender, EventArgs e)
         {
             if (_thumbnailService.IsRunningScan)
             {

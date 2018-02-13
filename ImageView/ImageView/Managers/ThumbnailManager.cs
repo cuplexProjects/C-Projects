@@ -272,7 +272,7 @@ namespace ImageView.Managers
              */
 
             // Work Scheduler Task
-            return await Task.Run(() =>
+            return await Task.Factory.StartNew(() =>
             {
                 while (dirQueue.Count > 0 && !_abortScan)
                 {

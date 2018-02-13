@@ -16,7 +16,7 @@ using Serilog;
 
 namespace ImageView
 {
-    public partial class FormImageView : Form, IObservable<ImageViewFormInfoBase>, ImageViewFormWindow
+    public partial class FormImageView : Form, IObservable<ImageViewFormInfoBase>, IMageViewFormWindow
     {
         private const float ZoomMin = 0.0095f;
         private const int ChangeImagePanelWidth = 50;
@@ -59,20 +59,13 @@ namespace ImageView
             _applicationSettingsService = applicationSettingsService;
             _imageCache = imageCache;
             _imageLoaderService = imageLoaderService;
-            _switchImgButtonsEnabled = _applicationSettingsService.Settings.ShowSwitchImageButtons;
-            if (_switchImgButtonsEnabled)
-            {
-                _showSwitchImgOnMouseOverWindow = _applicationSettingsService.Settings.ShowNextPrevControlsOnEnterWindow;
-                _mouseHoverInfo = new MouseHoverInfo();
-            }
-
             _lastFormState = WindowState;
+
+            ReloadSettings();
         }
 
         private int FormId { get; }
-
-        private bool ImageSourceDataAvailable
-            => _dataReady && _imageLoaderService.ImageReferenceList != null && !_imageLoaderService.IsRunningImport;
+        private bool ImageSourceDataAvailable => _dataReady && _imageLoaderService.ImageReferenceList != null && !_imageLoaderService.IsRunningImport;
 
         public void ResetZoomAndRepaint()
         {
@@ -120,7 +113,7 @@ namespace ImageView
 
         private void FormImageView_Load(object sender, EventArgs e)
         {
-            pictureBox.BackColor = _applicationSettingsService.Settings.MainWindowBackgroundColor.ToColor();
+            //pictureBox.BackColor = _applicationSettingsService.Settings.MainWindowBackgroundColor.ToColor();
             ShowInTaskbar = _applicationSettingsService.Settings.ShowImageViewFormsInTaskBar;
             SetImageReferenceCollection();
             if (!ImageSourceDataAvailable) return;
@@ -134,8 +127,7 @@ namespace ImageView
             bool randomizeImageCollection = _applicationSettingsService.Settings.AutoRandomizeCollection;
             if (!_imageLoaderService.IsRunningImport && _imageLoaderService.ImageReferenceList != null)
             {
-                _imageReferenceCollection =
-                    _imageLoaderService.GenerateImageReferenceCollection(randomizeImageCollection);
+                _imageReferenceCollection = _imageLoaderService.GenerateImageReferenceCollection(randomizeImageCollection);
                 _dataReady = true;
             }
         }
@@ -144,7 +136,6 @@ namespace ImageView
         {
             try
             {
-                //_currentImage = Image.FromFile(imageReference.CompletePath);
                 _currentImage = _imageCache.GetImage(imageReference.CompletePath);
 
                 _imgx = 0;
@@ -200,7 +191,7 @@ namespace ImageView
         {
             MouseEventArgs mouse = e;
 
-            if (mouse.Button == MouseButtons.Left)
+            if (mouse.Button == MouseButtons.Left )
             {
                 Point mousePosNow = mouse.Location;
 
@@ -217,13 +208,13 @@ namespace ImageView
 
             if (_mouseHoverInfo == null) return;
 
-
             var leftPanel = new Rectangle(0, 0, ChangeImagePanelWidth, Height);
             var rightPanel = new Rectangle(ClientSize.Width - ChangeImagePanelWidth, 0, ChangeImagePanelWidth, Height);
 
             _mouseHoverInfo.OverLeftPanel = false;
             _mouseHoverInfo.OverRightPanel = false;
             _mouseHoverInfo.LeftButtonPressed = mouse.Button == MouseButtons.Left;
+
             if (leftPanel.IntersectsWith(new Rectangle(mouse.Location, new Size(1, 1))))
             {
                 _mouseHoverInfo.OverLeftPanel = true;
@@ -235,6 +226,7 @@ namespace ImageView
 
             UpdateSwitchImgPanelState();
 
+
             if (_mouseHoverInfo.StateChanged)
             {
                 pictureBox.Refresh();
@@ -244,7 +236,7 @@ namespace ImageView
 
         private void UpdateSwitchImgPanelState()
         {
-            _showSwitchImgPanel = _switchImgButtonsEnabled && _mouseHover && !_mouseHoverInfo.LeftButtonPressed;
+            _showSwitchImgPanel = _switchImgButtonsEnabled && _mouseHover;
         }
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
@@ -394,9 +386,16 @@ namespace ImageView
 
                 // Center image
                 int zoomedWith = Convert.ToInt32(_currentImage.Width * _zoom);
-                if (pictureBox.Width > zoomedWith && _zoom > 1)
+                if (pictureBox.Width > zoomedWith) // && _zoom > 1)
                 {
-                    _imgx = Convert.ToInt32((pictureBox.Width - zoomedWith) / 2d / _zoom);
+                    if (_zoom > 1)
+                    {
+                        _imgx = Convert.ToInt32((pictureBox.Width - zoomedWith) / 2d / _zoom);
+                    }
+                    else
+                    {
+                        _imgx = Convert.ToInt32((pictureBox.Width - zoomedWith) / 4d / _zoom);
+                    }
                 }
             }
             else
@@ -588,7 +587,7 @@ namespace ImageView
 
             public bool OverRightPanel
             {
-                private get => _overRightButton;
+                get => _overRightButton;
                 set
                 {
                     if (_overRightButton != value)

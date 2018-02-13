@@ -56,9 +56,7 @@ namespace ImageView
             }
             else
             {
-                var frmStateInfo = value as ImageViewFormInfo;
-
-                if (frmStateInfo == null || frmStateInfo.FormReference != _lastActiveImageViewForm) return;
+                if (!(value is ImageViewFormInfo frmStateInfo) || frmStateInfo.FormReference != _lastActiveImageViewForm) return;
                 if (frmStateInfo.FormHasFocus)
                     _lastActiveImageViewForm = null;
                 else if (frmStateInfo.FormHasFocus)
@@ -137,8 +135,7 @@ namespace ImageView
             int y = 8;
             foreach (object form in listBoxActiveWindows.SelectedItems)
             {
-                var imageWindowListItem = form as ImageWindowListItem;
-                if (imageWindowListItem != null)
+                if (form is ImageWindowListItem imageWindowListItem)
                 {
                     imageWindowListItem.WindowRef.Location = new Point(x, y);
                     imageWindowListItem.WindowRef.Size = new Size(400, 300);
@@ -146,7 +143,7 @@ namespace ImageView
                     x += 8;
                     y += 30;
 
-                    var imageViewFormWindow = imageWindowListItem.WindowRef as ImageViewFormWindow;
+                    var imageViewFormWindow = imageWindowListItem.WindowRef as IMageViewFormWindow;
                     imageViewFormWindow?.ResetZoomAndRepaint();
                 }
             }
@@ -170,7 +167,7 @@ namespace ImageView
                         maxWindowsVertical, screenWidthOffset, windowPosision);
                     imageWindowListItem.WindowRef.StartPosition = FormStartPosition.Manual;
 
-                    var imageViewWindow = imageWindowListItem.WindowRef as ImageViewFormWindow;
+                    var imageViewWindow = imageWindowListItem.WindowRef as IMageViewFormWindow;
                     imageViewWindow?.ResetZoomAndRepaint();
                     imageWindowListItem.WindowRef.Focus();
 
@@ -229,8 +226,7 @@ namespace ImageView
             _applicationSettingsService.Settings.ShowImageViewFormsInTaskBar = showInTaskbar;
             foreach (object form in listBoxActiveWindows.Items)
             {
-                var imageWindowListItem = form as ImageWindowListItem;
-                if (imageWindowListItem != null)
+                if (form is ImageWindowListItem imageWindowListItem)
                     imageWindowListItem.WindowRef.ShowInTaskbar = showInTaskbar;
             }
         }

@@ -243,7 +243,7 @@ namespace ImageView.Services
                 IsRunningImport = true;
                 _filesLoaded = 0;
 
-                await Task.Run(() =>
+                await Task.Factory.StartNew(() =>
                 {
                     _runWorkerThread = true;
                     DoImageImport();

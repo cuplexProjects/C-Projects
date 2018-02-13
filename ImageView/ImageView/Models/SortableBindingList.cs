@@ -41,20 +41,9 @@ namespace ImageView.Models
             populateBaseList(this, originalList);
         }
 
-        protected override bool SupportsSortingCore
-        {
-            get { return true; }
-        }
-
-        protected override ListSortDirection SortDirectionCore
-        {
-            get { return sortDirection; }
-        }
-
-        protected override PropertyDescriptor SortPropertyCore
-        {
-            get { return sortProperty; }
-        }
+        protected override bool SupportsSortingCore => true;
+        protected override ListSortDirection SortDirectionCore => sortDirection;
+        protected override PropertyDescriptor SortPropertyCore => sortProperty;
 
         protected override void ApplySortCore(PropertyDescriptor prop, ListSortDirection direction)
         {

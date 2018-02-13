@@ -87,6 +87,7 @@ namespace ImageView
 
             // Colors
             var colorList = UIHelper.GetSelectableBackgroundColors();
+            colorList.AddRange(UIHelper.GetSelectableSystemBackgroundColors());
             backgroundColorDropdownList.DataSource = colorList;
             BackgroundImageDropdown.DataSource = UIHelper.GetSelectableBackgroundColors(); ;
 

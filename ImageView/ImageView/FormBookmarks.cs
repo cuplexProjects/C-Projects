@@ -92,8 +92,8 @@ namespace ImageView
 
                 InitBookmarksDataSource();
             }
+        
         }
-
 
         private bool ReLoadBookmarks()
         {
@@ -468,7 +468,7 @@ namespace ImageView
                 }
                 else
                 {
-                    var currentSortOrder = (SortOrder) (int) column.Tag;
+                    var currentSortOrder = (SortOrder)(int)column.Tag;
                     column.Tag = currentSortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
                 }
 
@@ -479,7 +479,7 @@ namespace ImageView
                 if (!(selectedNode.Tag is BookmarkFolder selectedBookmarkfolder)) return;
 
 
-                _bookmarkManager.UpdateSortOrder(selectedBookmarkfolder, sortBy, (SortOrder) column.Tag);
+                _bookmarkManager.UpdateSortOrder(selectedBookmarkfolder, sortBy, (SortOrder)column.Tag);
                 ReLoadBookmarks();
                 await _bookmarkService.SaveBookmarksAsync();
             }
@@ -520,12 +520,10 @@ namespace ImageView
                         e.RowBounds.Height);
 
                     // Paint the custom selection background.
-                    using (
-                        Brush backbrush = new LinearGradientBrush(rowBounds, _gridViewGradientBackgroundColorStart,
-                            _gridViewGradientBackgroundColorStop, LinearGradientMode.Vertical))
+                    using (Brush backbrush = new LinearGradientBrush(rowBounds, _gridViewGradientBackgroundColorStart, _gridViewGradientBackgroundColorStop, LinearGradientMode.Vertical))
                     {
                         e.Graphics.FillRectangle(backbrush, rowBounds);
-                        var p = new Pen(backbrush, 1) {Color = _gridViewSelectionBorderColor};
+                        var p = new Pen(backbrush, 1) { Color = _gridViewSelectionBorderColor };
                         e.Graphics.DrawRectangle(p, rowBounds);
                     }
                 }
