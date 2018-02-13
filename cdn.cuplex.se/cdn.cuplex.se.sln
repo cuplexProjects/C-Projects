@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cuplex.Web.Cdn", "Egmont.Web.Cdn\Cuplex.Web.Cdn.csproj", "{644DB58F-2E0D-4CD4-A7FF-45D627B25259}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cuplex.Web.Cdn", "Cuplex.Web.Cdn\Cuplex.Web.Cdn.csproj", "{644DB58F-2E0D-4CD4-A7FF-45D627B25259}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cuplex.Common.ImageProvider.Provider", "Egmont.Common.ImageProvider\Egmont.Common.ImageProvider.Provider\Cuplex.Common.ImageProvider.Provider.csproj", "{8351A25E-CC25-4311-A6F4-B0C8B8298D4E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cuplex.ImageProvider", "Cuplex.ImageProvider\Cuplex.ImageProvider\Cuplex.ImageProvider.csproj", "{8351A25E-CC25-4311-A6F4-B0C8B8298D4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

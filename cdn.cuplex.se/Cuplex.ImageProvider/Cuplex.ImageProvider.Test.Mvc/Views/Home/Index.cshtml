@@ -1,0 +1,9 @@
+﻿@model dynamic
+@{ const string imageUrl = "/ImageProvider/Test.png"; }
+ImageProvider test, MVC edition.<br>
+<img src="@FluentImageProviderImage.Create(imageUrl).Width(300).Technique(Teknik.Max).MvcRender()" alt="Test">
+<img src="@FluentImageProviderImage.Create(imageUrl).Width(200).Technique(Teknik.Max).MvcRender()" alt="Test">
+<img src="@FluentImageProviderImage.Create(imageUrl).Width(100).Technique(Teknik.Max).MvcRender()" alt="Test">
+<img src="@FluentImageProviderImage.Create(imageUrl).Width(100).Height(100).Technique(Teknik.Utsnitt).MvcRender()" alt="Test">
+<img src="@FluentImageProviderImage.Create(imageUrl).Width(100).Height(100).Technique(Teknik.Tvinga).MvcRender()" alt="Test">
+<img src="@FluentImageProviderImage.Create(imageUrl).Width(100).Height(100).Technique(Teknik.Top).MvcRender()" alt="Test">
