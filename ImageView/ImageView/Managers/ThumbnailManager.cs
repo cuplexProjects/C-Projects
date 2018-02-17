@@ -208,7 +208,7 @@ namespace ImageView.Managers
             foreach (ThumbnailEntry entry in _thumbnailDatabase.ThumbnailEntries)
             {
                 if (!_fileManager.HasAccessToDirectory(entry.Directory)) continue;
-                if (FileManager.IsUpToDate(entry)) continue;
+                if (File.Exists(Path.Combine(entry.Directory, entry.FileName)) && FileManager.IsUpToDate(entry)) continue;
                 thumbnailsToRemove.Enqueue(entry);
             }
 
@@ -302,7 +302,7 @@ namespace ImageView.Managers
                                 {
                                     GetThumbnailEntry(filenameQueue.Dequeue(), scannedThumbnailEntries);
                                 }
-                                
+
                             }, cancellationToken));
                         }
 
@@ -318,7 +318,7 @@ namespace ImageView.Managers
                         }
                         progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = totalNumberOfFiles, ScannedFiles = filesProccessed, IsComplete = false });
                     }
-                    
+
                 }
 
                 ProcessThumbnailData(scannedThumbnailEntries);
@@ -677,8 +677,16 @@ namespace ImageView.Managers
                 var filesToProcess = _fileDictionary.Values.Where(x => x.SourceImageLength == 0).Select(x => Path.Combine(x.Directory, x.FileName)).ToList();
                 foreach (string fileName in filesToProcess)
                 {
-                    FileInfo fileInfo = new FileInfo(fileName);
-                    _fileDictionary[fileName].SourceImageLength = fileInfo.Length;
+                    if (File.Exists(fileName))
+                    {
+                        var fileInfo = new FileInfo(fileName);
+                        _fileDictionary[fileName].SourceImageLength = fileInfo.Length;
+                    }
+                    else
+                    {
+                        _fileDictionary.Remove(fileName);
+                    }
+
                 }
 
                 var fileEntryList = _fileDictionary.Values.OrderBy(x => x.SourceImageLength).ToList();

@@ -113,6 +113,7 @@
             this.imageListSettings = new System.Windows.Forms.ImageList(this.components);
             this.backgroundImageList = new System.Windows.Forms.ImageList(this.components);
             this.toolTipUpdateDescription = new System.Windows.Forms.ToolTip(this.components);
+            this.chkToggleSlidshowWithThirdMouseButton = new System.Windows.Forms.CheckBox();
             this.tabControlSettings.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -189,13 +190,14 @@
             this.tabPageGeneral.ImageIndex = 2;
             this.tabPageGeneral.Location = new System.Drawing.Point(4, 39);
             this.tabPageGeneral.Name = "tabPageGeneral";
-            this.tabPageGeneral.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageGeneral.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageGeneral.Size = new System.Drawing.Size(433, 350);
             this.tabPageGeneral.TabIndex = 0;
             this.tabPageGeneral.Text = "General ";
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkToggleSlidshowWithThirdMouseButton);
             this.groupBox1.Controls.Add(this.ChkAutomaticallyCheckForUpdates);
             this.groupBox1.Controls.Add(this.chkConfirmExit);
             this.groupBox1.Controls.Add(this.groupBox5);
@@ -457,7 +459,7 @@
             this.tabPageWindowSettings.ImageIndex = 1;
             this.tabPageWindowSettings.Location = new System.Drawing.Point(4, 39);
             this.tabPageWindowSettings.Name = "tabPageWindowSettings";
-            this.tabPageWindowSettings.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageWindowSettings.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageWindowSettings.Size = new System.Drawing.Size(433, 350);
             this.tabPageWindowSettings.TabIndex = 1;
             this.tabPageWindowSettings.Text = "Window Arrangement";
@@ -485,7 +487,7 @@
             this.tableLayoutPanel2.Controls.Add(this.label15, 1, 0);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 19);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel2.Padding = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -684,7 +686,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label10, 2, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 19);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -915,9 +917,9 @@
             this.tabPageColorSettings.Controls.Add(this.groupBox6);
             this.tabPageColorSettings.ImageKey = "Paint.png";
             this.tabPageColorSettings.Location = new System.Drawing.Point(4, 39);
-            this.tabPageColorSettings.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPageColorSettings.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageColorSettings.Name = "tabPageColorSettings";
-            this.tabPageColorSettings.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPageColorSettings.Padding = new System.Windows.Forms.Padding(2);
             this.tabPageColorSettings.Size = new System.Drawing.Size(433, 350);
             this.tabPageColorSettings.TabIndex = 3;
             this.tabPageColorSettings.Text = "Colors";
@@ -932,7 +934,7 @@
             this.tableLayoutPanel4.Controls.Add(this.lblColorOption1, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.BackgroundImageDropdown, 1, 1);
             this.tableLayoutPanel4.Location = new System.Drawing.Point(8, 27);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 3;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
@@ -949,7 +951,7 @@
             this.backgroundColorDropdownList.ForeColor = System.Drawing.Color.Transparent;
             this.backgroundColorDropdownList.FormattingEnabled = true;
             this.backgroundColorDropdownList.Location = new System.Drawing.Point(194, 2);
-            this.backgroundColorDropdownList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.backgroundColorDropdownList.Margin = new System.Windows.Forms.Padding(2);
             this.backgroundColorDropdownList.MaxDropDownItems = 10;
             this.backgroundColorDropdownList.Name = "backgroundColorDropdownList";
             this.backgroundColorDropdownList.Size = new System.Drawing.Size(220, 21);
@@ -962,7 +964,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(4, 28);
-            this.label19.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.label19.Margin = new System.Windows.Forms.Padding(4);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(184, 16);
             this.label19.TabIndex = 4;
@@ -976,7 +978,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblColorOption1.AutoSize = true;
             this.lblColorOption1.Location = new System.Drawing.Point(4, 4);
-            this.lblColorOption1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblColorOption1.Margin = new System.Windows.Forms.Padding(4);
             this.lblColorOption1.Name = "lblColorOption1";
             this.lblColorOption1.Size = new System.Drawing.Size(184, 16);
             this.lblColorOption1.TabIndex = 0;
@@ -989,7 +991,7 @@
             this.BackgroundImageDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.BackgroundImageDropdown.FormattingEnabled = true;
             this.BackgroundImageDropdown.Location = new System.Drawing.Point(194, 26);
-            this.BackgroundImageDropdown.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BackgroundImageDropdown.Margin = new System.Windows.Forms.Padding(2);
             this.BackgroundImageDropdown.Name = "BackgroundImageDropdown";
             this.BackgroundImageDropdown.Size = new System.Drawing.Size(220, 21);
             this.BackgroundImageDropdown.TabIndex = 0;
@@ -997,9 +999,9 @@
             // groupBox6
             // 
             this.groupBox6.Location = new System.Drawing.Point(8, 10);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox6.Size = new System.Drawing.Size(422, 287);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
@@ -1009,9 +1011,9 @@
             // 
             this.tabPageCacheSettings.Controls.Add(this.panel3);
             this.tabPageCacheSettings.Location = new System.Drawing.Point(4, 39);
-            this.tabPageCacheSettings.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPageCacheSettings.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageCacheSettings.Name = "tabPageCacheSettings";
-            this.tabPageCacheSettings.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPageCacheSettings.Padding = new System.Windows.Forms.Padding(2);
             this.tabPageCacheSettings.Size = new System.Drawing.Size(433, 350);
             this.tabPageCacheSettings.TabIndex = 2;
             this.tabPageCacheSettings.Text = "Cache Settings";
@@ -1027,7 +1029,7 @@
             this.panel3.Controls.Add(this.label23);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(2, 2);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(11, 12, 11, 12);
             this.panel3.Size = new System.Drawing.Size(429, 346);
@@ -1048,7 +1050,7 @@
             // 
             this.trackBarCacheSize.LargeChange = 32;
             this.trackBarCacheSize.Location = new System.Drawing.Point(130, 101);
-            this.trackBarCacheSize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.trackBarCacheSize.Margin = new System.Windows.Forms.Padding(2);
             this.trackBarCacheSize.Maximum = 256;
             this.trackBarCacheSize.Minimum = 5;
             this.trackBarCacheSize.Name = "trackBarCacheSize";
@@ -1063,7 +1065,7 @@
             // 
             this.pbarPercentUsed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.pbarPercentUsed.Location = new System.Drawing.Point(168, 76);
-            this.pbarPercentUsed.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbarPercentUsed.Margin = new System.Windows.Forms.Padding(2);
             this.pbarPercentUsed.Name = "pbarPercentUsed";
             this.pbarPercentUsed.Size = new System.Drawing.Size(248, 14);
             this.pbarPercentUsed.TabIndex = 6;
@@ -1081,7 +1083,7 @@
             this.tableLayoutPanel3.Controls.Add(this.lblUsedSpace, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.label18, 0, 1);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(14, 15);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 4;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -1200,6 +1202,18 @@
             this.toolTipUpdateDescription.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTipUpdateDescription.ToolTipTitle = "Automatic Updates";
             this.toolTipUpdateDescription.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTipUpdateDescription_Popup);
+            // 
+            // chkToggleSlidshowWithThirdMouseButton
+            // 
+            this.chkToggleSlidshowWithThirdMouseButton.AutoSize = true;
+            this.chkToggleSlidshowWithThirdMouseButton.Location = new System.Drawing.Point(256, 69);
+            this.chkToggleSlidshowWithThirdMouseButton.Name = "chkToggleSlidshowWithThirdMouseButton";
+            this.chkToggleSlidshowWithThirdMouseButton.Size = new System.Drawing.Size(157, 17);
+            this.chkToggleSlidshowWithThirdMouseButton.TabIndex = 15;
+            this.chkToggleSlidshowWithThirdMouseButton.Text = "Toggle Slideshow with MB3";
+            this.toolTipUpdateDescription.SetToolTip(this.chkToggleSlidshowWithThirdMouseButton, "If checked the program wil automatically check for updates when \r\nthe program sta" +
+        "rts if the last check was over 3 days ago.\r\n");
+            this.chkToggleSlidshowWithThirdMouseButton.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -1349,5 +1363,6 @@
         private System.Windows.Forms.ImageList backgroundImageList;
         private System.Windows.Forms.CheckBox ChkAutomaticallyCheckForUpdates;
         private System.Windows.Forms.ToolTip toolTipUpdateDescription;
+        private System.Windows.Forms.CheckBox chkToggleSlidshowWithThirdMouseButton;
     }
 }

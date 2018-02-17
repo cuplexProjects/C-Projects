@@ -28,13 +28,13 @@ namespace ImageView
     {
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly BookmarkService _bookmarkService;
-        private readonly UserInteractionService _interactionService;
         private readonly FormAddBookmark _formAddBookmark;
         private readonly FormSettings _formSettings;
         private readonly FormState _formState = new FormState();
         private readonly ImageCacheService _imageCacheService;
         private readonly ImageLoaderService _imageLoaderService;
         private readonly List<FormImageView> _imageViewFormList;
+        private readonly UserInteractionService _interactionService;
         private readonly PictureBox _pictureBoxAnimation = new PictureBox();
         private readonly ILifetimeScope _scope;
         private readonly string _windowTitle;
@@ -69,8 +69,378 @@ namespace ImageView
 
         private bool ImageSourceDataAvailable => _dataReady && _imageLoaderService.ImageReferenceList != null;
 
+
+        private void DisplaySlideshowStatus()
+        {
+            string tooltipText = timerSlideShow.Enabled ? "Slideshow started" : "Slideshow stoped";
+
+            toolTipSlideshowState.Active = true;
+            toolTipSlideshowState.InitialDelay = 150;
+            toolTipSlideshowState.ToolTipIcon = ToolTipIcon.Info;
+            toolTipSlideshowState.UseFading = true;
+            toolTipSlideshowState.UseAnimation = true;
+            toolTipSlideshowState.IsBalloon = true;
+            toolTipSlideshowState.SetToolTip(pictureBox1, tooltipText);
+            toolTipSlideshowState.Show(tooltipText, this);
+            toolTipSlideshowState.Popup += ToolTipSlideshowState_Popup;
+        }
+
+        private bool ToggleSlideshow()
+        {
+            if (!ImageSourceDataAvailable)
+            {
+                return false;
+            }
+
+            if (timerSlideShow.Enabled)
+            {
+                timerSlideShow.Stop();
+            }
+            else
+            {
+                timerSlideShow.Interval = _applicationSettingsService.Settings.SlideshowInterval;
+                timerSlideShow.Start();
+            }
+
+            SyncUserControlStateWithAppSettings();
+            ToggleSlideshowMenuState();
+
+            return true;
+        }
+
+        private bool AllowAplicatonExit()
+        {
+            if (!_applicationSettingsService.Settings.ConfirmApplicationShutdown)
+            {
+                return true;
+            }
+
+            var confirmExitUserControl = new ConfirmExitUserControl(_applicationSettingsService);
+            var exitDialogForm = FormFactory.CreateModalSimpleDialog(confirmExitUserControl);
+
+            return exitDialogForm.ShowDialog(this) == DialogResult.OK;
+        }
+
+
+        private void HandleImportDataComplete()
+        {
+            addBookmarkToolStripMenuItem.Enabled = true;
+            SetImageReferenceCollection();
+        }
+
+
+        private void SyncUserControlStateWithAppSettings()
+        {
+            var settings = _applicationSettingsService.Settings;
+
+            if (TopMost != settings.AlwaysOntop)
+            {
+                TopMost = settings.AlwaysOntop;
+            }
+
+            topMostToolStripMenuItem.Checked = settings.AlwaysOntop;
+
+            _changeImageAnimation = settings.NextImageAnimation;
+            autoLoadPreviousFolderToolStripMenuItem.Enabled = settings.EnableAutoLoadFunctionFromMenu &&
+                                                              !string.IsNullOrWhiteSpace(settings.LastFolderLocation);
+            if (settings.MainWindowBackgroundColor != null)
+            {
+                pictureBox1.BackColor = settings.MainWindowBackgroundColor.ToColor();
+                BackColor = settings.MainWindowBackgroundColor.ToColor();
+            }
+        }
+
+        private void ChangeImage(bool next)
+        {
+            if (_imageTransitionRunning)
+            {
+                return;
+            }
+
+            if (!ImageSourceDataAvailable)
+            {
+                return;
+            }
+
+            ImageReferenceElement imgRef;
+
+            //Reset timer
+            if (timerSlideShow.Enabled)
+            {
+                timerSlideShow.Stop();
+                timerSlideShow.Start();
+            }
+
+            //Go Forward
+            if (next)
+            {
+                _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideLeft;
+                imgRef = _imageReferenceCollection.GetNextImage();
+            }
+            else
+            {
+                _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideRight;
+                imgRef = _imageReferenceCollection.GetPreviousImage();
+            }
+
+            LoadNewImageFile(imgRef.CompletePath);
+            AddNextImageToCache(_imageReferenceCollection.PeekNextImage().CompletePath);
+        }
+
+        private void LoadNewImageFile(string imagePath)
+        {
+            try
+            {
+                pictureBox1.SizeMode = (PictureBoxSizeMode) _applicationSettingsService.Settings.PrimaryImageSizeMode;
+
+
+                if (_applicationSettingsService.Settings.NextImageAnimation == ImageViewApplicationSettings.ChangeImageAnimation.None)
+                {
+                    _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.None;
+                }
+
+                _pictureBoxAnimation.ImageLocation = null;
+
+                if (pictureBox1.Image != null && _changeImageAnimation != ImageViewApplicationSettings.ChangeImageAnimation.None)
+                {
+                    _pictureBoxAnimation.Image = _imageCacheService.GetImage(imagePath);
+                    _pictureBoxAnimation.Refresh();
+                }
+                else
+                {
+                    pictureBox1.Image = _imageCacheService.GetImage(imagePath);
+                    pictureBox1.Refresh();
+                }
+
+                Text = _windowTitle + @" | " + GeneralConverters.GetFileNameFromPath(imagePath);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "FormMain.LoadNewImageFile(string imagePath) Error when trying to load file: {imagePath} : {Message}", imagePath, ex.Message);
+            }
+        }
+
+        private void AddNextImageToCache(string imagePath)
+        {
+            _imageCacheService.GetImage(imagePath);
+        }
+
+        private void SetImageReferenceCollection()
+        {
+            bool randomizeImageCollection = _applicationSettingsService.Settings.AutoRandomizeCollection;
+            if (!_imageLoaderService.IsRunningImport && _imageLoaderService.ImageReferenceList != null)
+            {
+                _imageReferenceCollection = _imageLoaderService.GenerateImageReferenceCollection(randomizeImageCollection);
+                if (_imageLoaderService.ImageReferenceList.Count > 0)
+                {
+                    _dataReady = true;
+                }
+            }
+        }
+
+        private async Task PerformImageTransition(Image currentImage, Image nextImage, ImageViewApplicationSettings.ChangeImageAnimation animation, int animationTime)
+        {
+            const int sleepTime = 1;
+            _imageTransitionRunning = true;
+            await Task.Run(() =>
+            {
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                while (stopwatch.ElapsedMilliseconds <= animationTime)
+                {
+                    long elapsedTime = stopwatch.ElapsedMilliseconds;
+
+                    float factor = stopwatch.ElapsedMilliseconds / (float) animationTime;
+                    Image transitionImage;
+                    switch (animation)
+                    {
+                        case ImageViewApplicationSettings.ChangeImageAnimation.SlideLeft:
+                            transitionImage = ImageTransform.OffsetImagesHorizontal(currentImage, nextImage,
+                                new Size(pictureBox1.Width, pictureBox1.Height), factor, false);
+                            break;
+                        case ImageViewApplicationSettings.ChangeImageAnimation.SlideRight:
+                            transitionImage = ImageTransform.OffsetImagesHorizontal(nextImage, currentImage,
+                                new Size(pictureBox1.Width, pictureBox1.Height), factor, true);
+                            break;
+                        case ImageViewApplicationSettings.ChangeImageAnimation.SlideDown:
+                            transitionImage = ImageTransform.OffsetImagesVertical(nextImage, currentImage,
+                                new Size(nextImage.Width, nextImage.Height), factor, true);
+                            break;
+                        case ImageViewApplicationSettings.ChangeImageAnimation.SlideUp:
+                            transitionImage = ImageTransform.OffsetImagesVertical(currentImage, nextImage,
+                                new Size(Math.Max(nextImage.Width, currentImage.Width), nextImage.Height), factor, false);
+                            break;
+                        case ImageViewApplicationSettings.ChangeImageAnimation.FadeIn:
+                            int width = nextImage.Width;
+                            int height = nextImage.Height;
+                            var nextImageBitmap = new Bitmap(nextImage, new Size(width, height));
+                            transitionImage = ImageTransform.SetImageOpacity(nextImageBitmap, factor);
+                            break;
+                        default:
+                            return;
+                    }
+
+                    if (!Visible)
+                    {
+                        return;
+                    }
+
+                    try
+                    {
+                        pictureBox1.Image = transitionImage.Clone() as Image;
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, Resources.Failed_to_set_transition_image_over_current_image_);
+                        MessageBox.Show(Resources.Failed_to_set_transition_image_over_current_image_,
+                            Resources.Error_loading_new_image, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        _imageTransitionRunning = false;
+                        return;
+                    }
+                    finally
+                    {
+                        transitionImage.Dispose();
+                    }
+
+                    elapsedTime = stopwatch.ElapsedMilliseconds - elapsedTime;
+
+                    if (sleepTime - elapsedTime > 0)
+                    {
+                        Thread.Sleep(Convert.ToInt32(sleepTime - elapsedTime));
+                    }
+                }
+
+                stopwatch.Stop();
+                Log.Verbose("Image transition finished after " + stopwatch.ElapsedMilliseconds + " ms");
+                Invoke(new EventHandler(OnImageLoadComplete), this, new EventArgs());
+            });
+
+            pictureBox1.Image = nextImage.Clone() as Image;
+            _imageTransitionRunning = false;
+        }
+
+        private void ToggleFullscreen()
+        {
+            if (_fullScreen)
+            {
+                _formState.Restore(this);
+                menuStrip1.Visible = true;
+                BackColor = _applicationSettingsService.Settings.MainWindowBackgroundColor.ToColor();
+                Cursor.Show();
+            }
+            else
+            {
+                _formState.Save(this);
+                _formState.Maximize(this);
+                menuStrip1.Visible = false;
+
+                BackColor = Color.Black;
+                Cursor.Hide();
+                //HideCursorInFullScreen().Start();
+            }
+
+            _fullScreen = !_fullScreen;
+        }
+
+        private void AutoArrangeOnSingleScreen()
+        {
+            if (_imageViewFormList.Count == 0)
+            {
+                return;
+            }
+
+            var screen = Screen.PrimaryScreen;
+            int widthPerScreen = screen.WorkingArea.Width / _imageViewFormList.Count;
+            int offset = 0;
+
+            foreach (var formImage in _imageViewFormList)
+            {
+                formImage.Width = widthPerScreen;
+                formImage.Height = screen.WorkingArea.Height;
+                formImage.Left = offset;
+                formImage.Top = 0;
+                formImage.Focus();
+                offset += widthPerScreen;
+                formImage.ResetZoomAndRepaint();
+            }
+        }
+
+        private void AutoArrangeOnMultipleScreens()
+        {
+            int index = 0;
+            int windowsPerScreen = 2;
+
+            int widthOffset = _applicationSettingsService.Settings.ScreenWidthOffset;
+            int minXOffset = _applicationSettingsService.Settings.ScreenMinXOffset;
+
+            foreach (var screen in Screen.AllScreens.OrderBy(s => s.Bounds.X))
+            {
+                if (screen.Primary)
+                {
+                    continue;
+                }
+
+                for (int i = 0; i < windowsPerScreen; i++)
+                {
+                    if (index >= _imageViewFormList.Count)
+                    {
+                        break;
+                    }
+
+                    var imageWindow = _imageViewFormList[index++];
+                    if (imageWindow == null || imageWindow.IsDisposed)
+                    {
+                        continue;
+                    }
+
+                    imageWindow.Margin = new Padding(0);
+
+                    int screenWidth = screen.Bounds.Width + widthOffset;
+                    int screenMinx = screen.WorkingArea.X - minXOffset;
+
+
+                    if (i == 0)
+                    {
+                        imageWindow.SetDesktopBounds(screenMinx, screen.WorkingArea.Y, screenWidth / 2,
+                            screen.WorkingArea.Height);
+                    }
+                    else
+                    {
+                        imageWindow.SetDesktopBounds(screenMinx + screen.WorkingArea.Width / 2, screen.WorkingArea.Y,
+                            screenWidth / 2, screen.WorkingArea.Height);
+                    }
+
+
+                    imageWindow.WindowState = FormWindowState.Normal;
+                    imageWindow.ResetZoomAndRepaint();
+                    imageWindow.Show();
+                    imageWindow.Focus();
+                }
+            }
+        }
+
+
+        private void OpenImageInDefaultApp()
+        {
+            if (ImageSourceDataAvailable)
+            {
+                string currentFile = _imageReferenceCollection.CurrentImage.CompletePath;
+                try
+                {
+                    Process.Start(currentFile);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Error in MainForm open image in default app");
+                }
+            }
+        }
+
         private delegate void NativeThreadFunctin();
+
         private delegate void NativeThreadFunctinUserInfo(object sender, UserInformationEventArgs e);
+
         private delegate void NativeThreadFunctinUserQuestion(object sender, UserQuestionEventArgs e);
 
         #region Form Events
@@ -113,13 +483,44 @@ namespace ImageView
 
             addBookmarkToolStripMenuItem.Enabled = false;
             Text = _windowTitle;
-            ToggleSlideshowNenuState();
+            ToggleSlideshowMenuState();
             _pictureBoxAnimation.LoadCompleted += pictureBoxAnimation_LoadCompleted;
 
             //Notification Service
             _interactionService.Initialize(this);
             _interactionService.UserInformationRecieved += _interactionService_UserInformationRecieved;
             _interactionService.UserQuestionRecieved += _interactionService_UserQuestionRecieved;
+        }
+
+        private void FormThumbnailView_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (sender is Form form)
+            {
+                form.Dispose();
+            }
+
+            _formThumbnailView = null;
+            GC.Collect();
+        }
+
+        private void Instance_OnImageWasDeleted(object sender, EventArgs e)
+        {
+            Invoke(new NativeThreadFunctin(SetImageReferenceCollection));
+        }
+
+        private void Instance_OnImportComplete(object sender, ProgressEventArgs e)
+        {
+            Invoke(new NativeThreadFunctin(HandleImportDataComplete));
+        }
+
+        private void Instance_OnRegistryAccessDenied(object sender, EventArgs e)
+        {
+        }
+
+
+        private void Instance_OnSettingsSaved(object sender, EventArgs e)
+        {
+            SyncUserControlStateWithAppSettings();
         }
 
         private void _interactionService_UserQuestionRecieved(object sender, UserQuestionEventArgs e)
@@ -149,7 +550,6 @@ namespace ImageView
             else
             {
                 e.UserQuestion.CancelResponse.Invoke();
-
             }
         }
 
@@ -219,16 +619,41 @@ namespace ImageView
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
+            var settings = _applicationSettingsService.Settings;
             switch (e.Button)
             {
+                case MouseButtons.XButton1:
                 case MouseButtons.Left:
                     ChangeImage(true);
                     break;
                 case MouseButtons.Right:
+                case MouseButtons.XButton2:
                     ChangeImage(false);
                     break;
+                case MouseButtons.Middle:
+                    if (settings.ToggleSlideshowWithThirdMouseButton && ToggleSlideshow())
+                    {
+                        DisplaySlideshowStatus();
+                    }
+
+                    break;
+                case MouseButtons.None:
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
+
+        private void ToolTipSlideshowState_Popup(object sender, PopupEventArgs e)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                await Task.Delay(1500);
+                toolTipSlideshowState.Active = false;
+            });
+        }
+
 
         private void FormMain_Activated(object sender, EventArgs e)
         {
@@ -237,13 +662,21 @@ namespace ImageView
 
         #endregion
 
+        #region Form Controls Events
 
+        private void openInDefaultApplicationToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenImageInDefaultApp();
+        }
 
-        private void Instance_OnRegistryAccessDenied(object sender, EventArgs e)
+        private void imageDetailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
         }
 
-        #region Form Controls Events
+        private void pictureBox1_LoadCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            pictureBox1.SizeMode = (PictureBoxSizeMode) _applicationSettingsService.Settings.PrimaryImageSizeMode;
+        }
 
         private async void pictureBoxAnimation_LoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
@@ -291,381 +724,14 @@ namespace ImageView
             _applicationSettingsService.Settings.SlideshowInterval = timerSlideShow.Interval;
         }
 
-
-
         #endregion
 
-
-
-
-        private bool AllowAplicatonExit()
-        {
-            if (!_applicationSettingsService.Settings.ConfirmApplicationShutdown)
-            {
-                return true;
-            }
-            var confirmExitUserControl = new ConfirmExitUserControl(_applicationSettingsService);
-            var exitDialogForm = FormFactory.CreateModalSimpleDialog(confirmExitUserControl);
-
-            return exitDialogForm.ShowDialog(this) == DialogResult.OK;
-        }
-        
-        
-
-        private void Instance_OnImageWasDeleted(object sender, EventArgs e)
-        {
-            Invoke(new NativeThreadFunctin(SetImageReferenceCollection));
-        }
-
-        private void Instance_OnImportComplete(object sender, ProgressEventArgs e)
-        {
-            Invoke(new NativeThreadFunctin(HandleImportDataComplete));
-        }
-
-
-        private void HandleImportDataComplete()
-        {
-            addBookmarkToolStripMenuItem.Enabled = true;
-            SetImageReferenceCollection();
-        }
-
-        private void Instance_OnSettingsSaved(object sender, EventArgs e)
-        {
-            SyncUserControlStateWithAppSettings();
-        }
-
-        private void SyncUserControlStateWithAppSettings()
-        {
-            var settings = _applicationSettingsService.Settings;
-
-            if (TopMost != settings.AlwaysOntop)
-            {
-                TopMost = settings.AlwaysOntop;
-            }
-
-            topMostToolStripMenuItem.Checked = settings.AlwaysOntop;
-
-            _changeImageAnimation = settings.NextImageAnimation;
-            autoLoadPreviousFolderToolStripMenuItem.Enabled = settings.EnableAutoLoadFunctionFromMenu &&
-                                                              !string.IsNullOrWhiteSpace(settings.LastFolderLocation);
-            if (settings.MainWindowBackgroundColor != null)
-            {
-                pictureBox1.BackColor = settings.MainWindowBackgroundColor.ToColor();
-                BackColor = settings.MainWindowBackgroundColor.ToColor();
-            }
-        }
-
-        private void ChangeImage(bool next)
-        {
-            if (_imageTransitionRunning)
-            {
-                return;
-            }
-
-            if (!ImageSourceDataAvailable)
-            {
-                return;
-            }
-            ImageReferenceElement imgRef;
-
-            //Reset timer
-            if (timerSlideShow.Enabled)
-            {
-                timerSlideShow.Stop();
-                timerSlideShow.Start();
-            }
-
-            //Go Forward
-            if (next)
-            {
-                _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideLeft;
-                imgRef = _imageReferenceCollection.GetNextImage();
-            }
-            else
-            {
-                _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideRight;
-                imgRef = _imageReferenceCollection.GetPreviousImage();
-            }
-
-            LoadNewImageFile(imgRef.CompletePath);
-            AddNextImageToCache(_imageReferenceCollection.PeekNextImage().CompletePath);
-        }
-
-        private void LoadNewImageFile(string imagePath)
-        {
-            try
-            {
-                pictureBox1.SizeMode = (PictureBoxSizeMode)_applicationSettingsService.Settings.PrimaryImageSizeMode;
-
-
-                if (_applicationSettingsService.Settings.NextImageAnimation == ImageViewApplicationSettings.ChangeImageAnimation.None)
-                {
-                    _changeImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.None;
-                }
-
-                _pictureBoxAnimation.ImageLocation = null;
-
-                if (pictureBox1.Image != null && _changeImageAnimation != ImageViewApplicationSettings.ChangeImageAnimation.None)
-                {
-                    _pictureBoxAnimation.Image = _imageCacheService.GetImage(imagePath);
-                    _pictureBoxAnimation.Refresh();
-                }
-                else
-                {
-                    pictureBox1.Image = _imageCacheService.GetImage(imagePath);
-                    pictureBox1.Refresh();
-                }
-
-                Text = _windowTitle + @" | " + GeneralConverters.GetFileNameFromPath(imagePath);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "FormMain.LoadNewImageFile(string imagePath) Error when trying to load file: {imagePath} : {Message}", imagePath, ex.Message);
-            }
-        }
-
-        private void AddNextImageToCache(string imagePath)
-        {
-            _imageCacheService.GetImage(imagePath);
-        }
-
-        private void SetImageReferenceCollection()
-        {
-            bool randomizeImageCollection = _applicationSettingsService.Settings.AutoRandomizeCollection;
-            if (!_imageLoaderService.IsRunningImport && _imageLoaderService.ImageReferenceList != null)
-            {
-                _imageReferenceCollection = _imageLoaderService.GenerateImageReferenceCollection(randomizeImageCollection);
-                if (_imageLoaderService.ImageReferenceList.Count > 0)
-                {
-                    _dataReady = true;
-                }
-            }
-        }
-
-        private async Task PerformImageTransition(Image currentImage, Image nextImage,
-            ImageViewApplicationSettings.ChangeImageAnimation animation, int animationTime)
-        {
-            const int sleepTime = 1;
-            _imageTransitionRunning = true;
-            await Task.Run(() =>
-            {
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
-                while (stopwatch.ElapsedMilliseconds <= animationTime)
-                {
-                    long elapsedTime = stopwatch.ElapsedMilliseconds;
-
-                    float factor = stopwatch.ElapsedMilliseconds / (float)animationTime;
-                    Image transitionImage;
-                    switch (animation)
-                    {
-                        case ImageViewApplicationSettings.ChangeImageAnimation.SlideLeft:
-                            transitionImage = ImageTransform.OffsetImagesHorizontal(currentImage, nextImage,
-                                new Size(pictureBox1.Width, pictureBox1.Height), factor, false);
-                            break;
-                        case ImageViewApplicationSettings.ChangeImageAnimation.SlideRight:
-                            transitionImage = ImageTransform.OffsetImagesHorizontal(nextImage, currentImage,
-                                new Size(pictureBox1.Width, pictureBox1.Height), factor, true);
-                            break;
-                        case ImageViewApplicationSettings.ChangeImageAnimation.SlideDown:
-                            transitionImage = ImageTransform.OffsetImagesVertical(nextImage, currentImage,
-                                new Size(nextImage.Width, nextImage.Height), factor, true);
-                            break;
-                        case ImageViewApplicationSettings.ChangeImageAnimation.SlideUp:
-                            transitionImage = ImageTransform.OffsetImagesVertical(currentImage, nextImage,
-                                new Size(Math.Max(nextImage.Width, currentImage.Width), nextImage.Height), factor, false);
-                            break;
-                        case ImageViewApplicationSettings.ChangeImageAnimation.FadeIn:
-                            int width = nextImage.Width;
-                            int height = nextImage.Height;
-                            var nextImageBitmap = new Bitmap(nextImage, new Size(width, height));
-                            transitionImage = ImageTransform.SetImageOpacity(nextImageBitmap, factor);
-                            break;
-                        default:
-                            return;
-                    }
-
-                    if (!Visible)
-                    {
-                        return;
-                    }
-                    try
-                    {
-                        pictureBox1.Image = transitionImage.Clone() as Image;
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, Resources.Failed_to_set_transition_image_over_current_image_);
-                        MessageBox.Show(Resources.Failed_to_set_transition_image_over_current_image_,
-                            Resources.Error_loading_new_image, MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                        _imageTransitionRunning = false;
-                        return;
-                    }
-                    finally
-                    {
-                        transitionImage.Dispose();
-                    }
-
-                    elapsedTime = stopwatch.ElapsedMilliseconds - elapsedTime;
-
-                    if (sleepTime - elapsedTime > 0)
-                    {
-                        Thread.Sleep(Convert.ToInt32(sleepTime - elapsedTime));
-                    }
-                }
-                stopwatch.Stop();
-                Log.Verbose("Image transition finished after " + stopwatch.ElapsedMilliseconds + " ms");
-                Invoke(new EventHandler(OnImageLoadComplete), this, new EventArgs());
-            });
-
-            pictureBox1.Image = nextImage.Clone() as Image;
-            _imageTransitionRunning = false;
-        }
-
-        private void ToggleFullscreen()
-        {
-            if (_fullScreen)
-            {
-                _formState.Restore(this);
-                menuStrip1.Visible = true;
-                BackColor = _applicationSettingsService.Settings.MainWindowBackgroundColor.ToColor();
-                Cursor.Show();
-            }
-            else
-            {
-                _formState.Save(this);
-                _formState.Maximize(this);
-                menuStrip1.Visible = false;
-
-                BackColor = Color.Black;
-                Cursor.Hide();
-                //HideCursorInFullScreen().Start();
-            }
-            _fullScreen = !_fullScreen;
-        }
-
-        private void AutoArrangeOnSingleScreen()
-        {
-            if (_imageViewFormList.Count == 0)
-            {
-                return;
-            }
-
-            var screen = Screen.PrimaryScreen;
-            int widthPerScreen = screen.WorkingArea.Width / _imageViewFormList.Count;
-            int offset = 0;
-
-            foreach (var formImage in _imageViewFormList)
-            {
-                formImage.Width = widthPerScreen;
-                formImage.Height = screen.WorkingArea.Height;
-                formImage.Left = offset;
-                formImage.Top = 0;
-                formImage.Focus();
-                offset += widthPerScreen;
-                formImage.ResetZoomAndRepaint();
-            }
-        }
-
-        private void AutoArrangeOnMultipleScreens()
-        {
-            int index = 0;
-            int windowsPerScreen = 2;
-
-            int widthOffset = _applicationSettingsService.Settings.ScreenWidthOffset;
-            int minXOffset = _applicationSettingsService.Settings.ScreenMinXOffset;
-
-            foreach (var screen in Screen.AllScreens.OrderBy(s => s.Bounds.X))
-            {
-                if (screen.Primary)
-                {
-                    continue;
-                }
-                for (int i = 0; i < windowsPerScreen; i++)
-                {
-                    if (index >= _imageViewFormList.Count)
-                    {
-                        break;
-                    }
-
-                    var imageWindow = _imageViewFormList[index++];
-                    if (imageWindow == null || imageWindow.IsDisposed)
-                    {
-                        continue;
-                    }
-                    imageWindow.Margin = new Padding(0);
-
-                    int screenWidth = screen.Bounds.Width + widthOffset;
-                    int screenMinx = screen.WorkingArea.X - minXOffset;
-
-
-                    if (i == 0)
-                    {
-                        imageWindow.SetDesktopBounds(screenMinx, screen.WorkingArea.Y, screenWidth / 2,
-                            screen.WorkingArea.Height);
-                    }
-                    else
-                    {
-                        imageWindow.SetDesktopBounds(screenMinx + screen.WorkingArea.Width / 2, screen.WorkingArea.Y,
-                            screenWidth / 2, screen.WorkingArea.Height);
-                    }
-
-
-                    imageWindow.WindowState = FormWindowState.Normal;
-                    imageWindow.ResetZoomAndRepaint();
-                    imageWindow.Show();
-                    imageWindow.Focus();
-                }
-            }
-        }
-
-        private void FormThumbnailView_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (sender is Form form)
-            {
-                form.Dispose();
-            }
-            _formThumbnailView = null;
-            GC.Collect();
-        }
+        #region Main Menu Functions
 
         private void openInDefaultApplicationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenImageInDefaultApp();
         }
-
-        private void OpenImageInDefaultApp()
-        {
-            if (ImageSourceDataAvailable)
-            {
-                string currentFile = _imageReferenceCollection.CurrentImage.CompletePath;
-                try
-                {
-                    Process.Start(currentFile);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "Error in MainForm open image in default app");
-                }
-            }
-        }
-
-        private void imageDetailsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void pictureBox1_LoadCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            pictureBox1.SizeMode = (PictureBoxSizeMode)_applicationSettingsService.Settings.PrimaryImageSizeMode;
-        }
-
-        private void openInDefaultApplicationToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            OpenImageInDefaultApp();
-        }
-
-        #region Main Menu Functions
 
         private void autoLoadPreviousFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -687,7 +753,6 @@ namespace ImageView
                 Log.Warning("RunBookmarkImageImport returned false");
                 MessageBox.Show("Failed to load bookmarked images as source images", "Import failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
         }
 
         private void topMostToolStripMenuItem_Click(object sender, EventArgs e)
@@ -746,16 +811,17 @@ namespace ImageView
             {
                 return;
             }
+
             SyncUserControlStateWithAppSettings();
-            timerSlideShow.Interval = 1;
+            timerSlideShow.Interval = _applicationSettingsService.Settings.SlideshowInterval;
             timerSlideShow.Start();
-            ToggleSlideshowNenuState();
+            ToggleSlideshowMenuState();
 
             //Disable screensaver
             ScreenSaver.Disable();
         }
 
-        private void ToggleSlideshowNenuState()
+        private void ToggleSlideshowMenuState()
         {
             startToolStripMenuItem.Enabled = !timerSlideShow.Enabled;
             stopToolStripMenuItem.Enabled = timerSlideShow.Enabled;
@@ -764,10 +830,10 @@ namespace ImageView
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             timerSlideShow.Enabled = false;
-            ToggleSlideshowNenuState();
+            ToggleSlideshowMenuState();
 
             //Enable screensaver
-            ScreenSaver.Disable();
+            ScreenSaver.Enable();
         }
 
         private void setIntervalToolStripMenuItem_Click(object sender, EventArgs e)
@@ -829,6 +895,7 @@ namespace ImageView
                 {
                     Cursor.Show();
                 }
+
                 var starupPosition = new Point(Location.X, Location.Y);
                 starupPosition.X += addBookmarkToolStripMenuItem.Width;
                 starupPosition.Y += addBookmarkToolStripMenuItem.Height + (Height - ClientSize.Height);
@@ -923,6 +990,7 @@ namespace ImageView
                 {
                     continue;
                 }
+
                 imageWindow.Show();
                 imageWindow.Focus();
             }
@@ -948,8 +1016,8 @@ namespace ImageView
             {
                 return;
             }
-            if (
-                MessageBox.Show(this, Resources.Are_you_sure_you_want_to_close_all_windows_,
+
+            if (MessageBox.Show(this, Resources.Are_you_sure_you_want_to_close_all_windows_,
                     Resources.Close_all_windows_, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) ==
                 DialogResult.OK)
             {
@@ -994,6 +1062,7 @@ namespace ImageView
                 {
                     return;
                 }
+
                 _imageReferenceCollection = new ImageReferenceCollection(new List<int>(), _imageLoaderService);
                 var currentImage = _imageReferenceCollection.SetCurrentImage(openFileDialog1.FileName);
                 _dataReady = true;

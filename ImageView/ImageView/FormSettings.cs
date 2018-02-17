@@ -36,6 +36,7 @@ namespace ImageView
             chkEnableAutoload.Checked = settings.EnableAutoLoadFunctionFromMenu;
             chkConfirmExit.Checked = settings.ConfirmApplicationShutdown;
             ChkAutomaticallyCheckForUpdates.Checked = settings.AutomaticUpdateCheck;
+            chkToggleSlidshowWithThirdMouseButton.Checked = settings.ToggleSlideshowWithThirdMouseButton;
 
             if (settings.ShowNextPrevControlsOnEnterWindow)
             {
@@ -111,7 +112,7 @@ namespace ImageView
         private void btnOk_Click(object sender, EventArgs e)
         {
             ImageViewApplicationSettings settings = _applicationSettingsService.Settings;
-            settings.AutoRandomizeCollection = chkAutoRandomize.Checked;
+
 
             if (rbImgTransformNone.Checked)
                 settings.NextImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.None;
@@ -128,14 +129,16 @@ namespace ImageView
             //if (rbImgTransformSlideUp.Checked)
             //    settings.NextImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.SlideUp;
 
-            _applicationSettingsService.Settings.ShowSwitchImageButtons = chkShowSwitchImgButtons.Checked;
-            _applicationSettingsService.Settings.EnableAutoLoadFunctionFromMenu = chkEnableAutoload.Checked;
-            _applicationSettingsService.Settings.ShowNextPrevControlsOnEnterWindow = rbOverWindow.Checked;
-            _applicationSettingsService.Settings.ConfirmApplicationShutdown = chkConfirmExit.Checked;
+            settings.AutoRandomizeCollection = chkAutoRandomize.Checked;
+            settings.ShowSwitchImageButtons = chkShowSwitchImgButtons.Checked;
+            settings.EnableAutoLoadFunctionFromMenu = chkEnableAutoload.Checked;
+            settings.ShowNextPrevControlsOnEnterWindow = rbOverWindow.Checked;
+            settings.ConfirmApplicationShutdown = chkConfirmExit.Checked;
 
             if (rbImgTransformFadeIn.Checked)
                 settings.NextImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.FadeIn;
 
+            settings.ToggleSlideshowWithThirdMouseButton = chkToggleSlidshowWithThirdMouseButton.Checked;
             settings.ImageTransitionTime = trackBarFadeTime.Value;
             settings.ScreenMinXOffset = Convert.ToInt32(numericScreenMinOffset.Value);
             settings.ScreenWidthOffset = Convert.ToInt32(numericScreenWidthOffset.Value);

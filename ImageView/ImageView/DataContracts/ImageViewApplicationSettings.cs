@@ -146,6 +146,9 @@ namespace ImageView.DataContracts
         [DataMember(Name = "LastUpdateCheck", Order = 31)]
         public DateTime LastUpdateCheck { get; set; }
 
+        [DataMember(Name = "ToggleSlideshowWithThirdMouseButton", Order = 32)]
+        public bool ToggleSlideshowWithThirdMouseButton { get; set; }
+
 
         public void RemoveDuplicateEntriesWithIgnoreCase()
         {

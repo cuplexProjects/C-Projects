@@ -75,14 +75,14 @@ namespace ImageView.Services
 
             try
             {
-                await Task.Run( () =>
-                {
-                    IsRunningScan = true;
-                    var scanTask= _thumbnailManager.StartThumbnailScan(path, progress, scanSubdirectories);
-                    Task.WaitAll(scanTask);
-                    _thumbnailManager.SaveThumbnailDatabase();
-                    IsRunningScan = false;
-                });
+                await Task.Run(() =>
+               {
+                   IsRunningScan = true;
+                   var scanTask = _thumbnailManager.StartThumbnailScan(path, progress, scanSubdirectories);
+                   Task.WaitAll(scanTask);
+                   _thumbnailManager.SaveThumbnailDatabase();
+                   IsRunningScan = false;
+               });
             }
             catch (Exception ex)
             {
@@ -168,8 +168,17 @@ namespace ImageView.Services
         /// <param name="maxSize">The maximum size.</param>
         public bool TruncateCacheSize(long maxSize)
         {
-            bool result = _thumbnailManager.ReduceCachSize(maxSize);
-            SaveThumbnailDatabase();
+            bool result;
+            try
+            {
+                result = _thumbnailManager.ReduceCachSize(maxSize);
+                SaveThumbnailDatabase();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "TruncateCacheSize encountered an exception. Message: {Message}", ex.Message);
+                return false;
+            }
 
             return result;
         }
