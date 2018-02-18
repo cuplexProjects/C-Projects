@@ -12,16 +12,16 @@ namespace GeneralToolkitLib.Encryption.Licence
     public class LicenceService
     {
         private static LicenceService _instance;
-        private SerialNumberManager serialNumberManager;
+        private SerialNumberManager _serialNumberManager;
         private const int MAX_FILE_SIZE = 4096;
         private LicenceDataModel _licenceData;
         private readonly LicenceServiceState _serviceState;
-        private bool initializing;
+        private bool _initializing;
         public event EventHandler OnInitComplete;
 
         public bool Initialized
         {
-            get { return !initializing; }
+            get { return !_initializing; }
         }
 
         public bool ValidLicence
@@ -39,16 +39,13 @@ namespace GeneralToolkitLib.Encryption.Licence
         {
             get
             {
-                if (!initializing && _licenceData != null)
+                if (!_initializing && _licenceData != null)
                     return _licenceData.RegistrationKey;
                 return null;
             }
         }
 
-        public LicenceDataModel LicenceData
-        {
-            get { return _licenceData; }
-        }
+        public LicenceDataModel LicenceData => _licenceData;
 
         private LicenceService()
         {
@@ -62,7 +59,7 @@ namespace GeneralToolkitLib.Encryption.Licence
             switch (app)
             {
                 case SerialNumbersSettings.ProtectedApp.SecureMemo:
-                    pubKey = SerialNumbersSettings.ProtectedApplications.PublicKeys.SecureMEMO;
+                    pubKey = SerialNumbersSettings.ProtectedApplications.PublicKeys.SecureMemo;
                     break;
                 case SerialNumbersSettings.ProtectedApp.SearchForDuplicates:
                     pubKey = SerialNumbersSettings.ProtectedApplications.PublicKeys.SearchForDuplicates;
@@ -75,15 +72,15 @@ namespace GeneralToolkitLib.Encryption.Licence
             RSA_AsymetricEncryption rsaAsymetricEncryption = new RSA_AsymetricEncryption();
             RSAKeySetIdentity rsaPublicKeySetIdentity = new RSAKeySetIdentity("", pubKey);
             RSAParameters rsaPublicKey = rsaAsymetricEncryption.ParseRSAPublicKeyOnlyInfo(rsaPublicKeySetIdentity);
-            serialNumberManager = new SerialNumberManager(rsaPublicKey, app);
+            _serialNumberManager = new SerialNumberManager(rsaPublicKey, app);
         }
 
         private void LoadSystemInfo()
         {
-            if (initializing || _serviceState.SystemInfo != null)
+            if (_initializing || _serviceState.SystemInfo != null)
                 return;
 
-            initializing = true;
+            _initializing = true;
             var t = new Task(() => _serviceState.SystemInfo = SysInfoManager.GetComputerId());
             t.GetAwaiter().OnCompleted(InitCompleted);
             t.Start();
@@ -91,19 +88,18 @@ namespace GeneralToolkitLib.Encryption.Licence
 
         private void InitCompleted()
         {
-            initializing = false;
-            if (OnInitComplete != null)
-                OnInitComplete.Invoke(this, new EventArgs());
+            _initializing = false;
+            OnInitComplete?.Invoke(this, new EventArgs());
         }
 
         public void ValidateLicence()
         {
-            if (serialNumberManager == null)
+            if (_serialNumberManager == null)
                 return;
 
-            serialNumberManager.LicenceData = _licenceData;
+            _serialNumberManager.LicenceData = _licenceData;
             _serviceState.Validated = true;
-            _serviceState.Valid = serialNumberManager.ValidateRegistrationData();
+            _serviceState.Valid = _serialNumberManager.ValidateRegistrationData();
         }
 
         public bool LoadLicenceFromFile(string filename)
@@ -141,11 +137,7 @@ namespace GeneralToolkitLib.Encryption.Licence
             return false;
         }
 
-
-        public static LicenceService Instance
-        {
-            get { return _instance ?? (_instance = new LicenceService()); }
-        }
+        public static LicenceService Instance => _instance ?? (_instance = new LicenceService());
 
         internal class LicenceServiceState
         {

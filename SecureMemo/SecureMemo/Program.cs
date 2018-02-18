@@ -6,8 +6,9 @@ using System.Threading;
 using System.Windows.Forms;
 using Autofac;
 using GeneralToolkitLib.ConfigHelper;
-using GeneralToolkitLib.Log;
+
 using SecureMemo.Configuration;
+using Serilog;
 
 namespace SecureMemo
 {
@@ -27,9 +28,10 @@ namespace SecureMemo
         private static void Main()
         {
             InitializeAutofac();
-#if DEBUG
-            GlobalSettings.Initialize(Assembly.GetExecutingAssembly().GetName().Name, false);
-            LogWriter.SetMinimumLogLevel(LogWriter.LogLevel.Debug);
+
+            //GlobalSettings.Initialize(Assembly.GetExecutingAssembly().GetName().Name, false);
+            //Log.SetMinimumLogLevel(LogWriter.LogLevel.Debug);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -40,12 +42,12 @@ namespace SecureMemo
             }
 
             return;
-#else
-            GlobalSettings.Initialize(Assembly.GetExecutingAssembly().GetName().Name, true);
-            LogWriter.SetMinimumLogLevel(LogWriter.LogLevel.Warning);
-#endif
 
-#pragma warning disable 162
+            //GlobalSettings.Initialize(Assembly.GetExecutingAssembly().GetName().Name, true);
+            //Log.SetMinimumLogLevel(LogWriter.LogLevel.Warning);
+
+
+
             if (!IsFirstInstance())
             {
                 FindAndFocusExistingInstance();
@@ -61,7 +63,7 @@ namespace SecureMemo
                 Application.Run(frmMain);
             }
             ReleaseMutex();
-#pragma warning restore 162
+
         }
 
         private static void RegisterMutex()

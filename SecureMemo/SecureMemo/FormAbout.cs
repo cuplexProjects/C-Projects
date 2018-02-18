@@ -3,7 +3,8 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using GeneralToolkitLib.Encryption.Licence;
-using GeneralToolkitLib.Log;
+using Serilog;
+
 
 namespace SecureMemo
 {
@@ -33,7 +34,7 @@ namespace SecureMemo
             }
             catch (Exception exception)
             {
-                LogWriter.LogError("Exception in FormAbout.Load(): ", exception);
+                Log.Error(exception, "Exception in FormAbout.Load(): {Message}", exception.Message);
             }
         }
 

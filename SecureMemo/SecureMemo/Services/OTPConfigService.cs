@@ -2,8 +2,9 @@
 using System.IO;
 using System.Security.Cryptography;
 using GeneralToolkitLib.Converters;
-using GeneralToolkitLib.Log;
+
 using SecureMemo.DataModels;
+using Serilog;
 
 namespace SecureMemo.Services
 {
@@ -14,7 +15,7 @@ namespace SecureMemo.Services
         private string PasswordHash { get; set; }
         const int SaltByteLength = 64;
         public bool Initialized { get; private set; }
-        
+
 
 
         private OTPConfigService()
@@ -28,11 +29,11 @@ namespace SecureMemo.Services
         /// <returns>Password hash</returns>
         public string Create(string password)
         {
-            
+
             using (var randomNumberGenerator = RandomNumberGenerator.Create())
             {
-                byte[] salt1Bytes= new byte[SaltByteLength];
-                byte[] salt2Bytes= new byte[SaltByteLength];
+                byte[] salt1Bytes = new byte[SaltByteLength];
+                byte[] salt2Bytes = new byte[SaltByteLength];
                 byte[] passwordBytes = GeneralConverters.GetByteArrayFromString(password);
 
                 randomNumberGenerator.GetBytes(salt1Bytes);
@@ -70,7 +71,7 @@ namespace SecureMemo.Services
                 var buffer = new byte[4];
                 bytesRead = fs.Read(buffer, 0, 4);
                 int configOffsetBytes = BitConverter.ToInt32(buffer, 0);
-                if (configOffsetBytes <= 0 || configOffsetBytes > SaltByteLength*2 + 64)
+                if (configOffsetBytes <= 0 || configOffsetBytes > SaltByteLength * 2 + 64)
                     throw new DataMisalignedException("configOffsetBytes is invalid");
 
                 buffer = new byte[configOffsetBytes];
@@ -82,7 +83,7 @@ namespace SecureMemo.Services
 
                 Buffer.BlockCopy(buffer, 0, salt1Bytes, 0, SaltByteLength);
                 Buffer.BlockCopy(buffer, SaltByteLength, salt2Bytes, 0, SaltByteLength);
-                Buffer.BlockCopy(buffer, SaltByteLength*2, passwordHashBytes, 0, passwordHashBytes.Length);
+                Buffer.BlockCopy(buffer, SaltByteLength * 2, passwordHashBytes, 0, passwordHashBytes.Length);
 
                 buffer = new byte[4];
                 bytesRead += fs.Read(buffer, 0, 4);
@@ -102,7 +103,7 @@ namespace SecureMemo.Services
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Exception in LoadSettings()", ex);
+                Log.Error(ex, "Exception in LoadSettings()");
                 return false;
             }
             finally
@@ -125,9 +126,9 @@ namespace SecureMemo.Services
                     File.Delete(filename);
 
                 fs = File.OpenWrite(filename);
-                
+
                 fs.Seek(4, 0);
-                
+
                 fs.Write(_otpSettings.Salt1, 0, _otpSettings.Salt1.Length);
                 fs.Write(_otpSettings.Salt2, 0, _otpSettings.Salt2.Length);
 
@@ -153,7 +154,7 @@ namespace SecureMemo.Services
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Exception in SaveSettings()", ex);
+                Log.Error(ex,"Exception in SaveSettings()");
                 if (File.Exists(filename))
                     File.Delete(filename);
             }
@@ -164,7 +165,7 @@ namespace SecureMemo.Services
             return true;
         }
 
-        private string CreatePasswordHash(byte[] salt1Bytes, byte[] salt2Bytes, byte[]passwordBytes)
+        private string CreatePasswordHash(byte[] salt1Bytes, byte[] salt2Bytes, byte[] passwordBytes)
         {
             int hashDataLength = SaltByteLength * 2 + passwordBytes.Length;
 

@@ -27,7 +27,7 @@ namespace GeneralToolkitLib.Encryption.Licence
             byte[] sysInfoBytes = Encoding.ASCII.GetBytes(sysInfoTmp);
             byte[] cumputerIdBytes;
 
-            using (var hashAlg = SHA512Cng.Create())
+            using (var hashAlg = SHA512.Create())
             {
                 cumputerIdBytes = hashAlg.ComputeHash(sysInfoBytes);
             }

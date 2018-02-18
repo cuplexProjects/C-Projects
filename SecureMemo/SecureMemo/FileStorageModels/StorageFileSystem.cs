@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
-using GeneralToolkitLib.Log;
 using SecureMemo.FileStorageEvents;
+using Serilog;
 
 namespace SecureMemo.FileStorageModels
 {
@@ -165,12 +165,12 @@ namespace SecureMemo.FileStorageModels
             return _files.Where(f => f.DirectoryId == directoryId).ToList();
         }
 
-        public void SaveToFile(string DirectoryPath)
+        public void SaveToFile(string directoryPath)
         {
             FileStream fs = null;
             try
             {
-                fs = File.OpenWrite(DirectoryPath + "\\" + fsStructureFileName);
+                fs = File.OpenWrite(directoryPath + "\\" + fsStructureFileName);
                 var binaryFormatter = new BinaryFormatter();
                 var fileSystemContent = new StorageFileContent
                 {
@@ -187,34 +187,32 @@ namespace SecureMemo.FileStorageModels
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Exception in SaveToFile()", ex);
+                Log.Error(ex, "Exception in SaveToFile() + {Message}", ex.Message);
             }
             finally
             {
-                if (fs != null)
-                    fs.Close();
+                fs?.Close();
             }
         }
 
-        public static StorageFileSystem LoadFileSystem(string DirectoryPath)
+        public static StorageFileSystem LoadFileSystem(string directoryPath)
         {
             FileStream fs = null;
             try
             {
-                fs = File.OpenRead(DirectoryPath + "\\" + fsStructureFileName);
+                fs = File.OpenRead(directoryPath + "\\" + fsStructureFileName);
                 var binaryFormatter = new BinaryFormatter();
                 var storageFileSystemContent = binaryFormatter.Deserialize(fs) as StorageFileContent;
                 return new StorageFileSystem(storageFileSystemContent);
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error loading filesystem", ex);
+                Log.Error(ex, "Error loading filesystem {Message}", ex.Message);
                 return null;
             }
             finally
             {
-                if (fs != null)
-                    fs.Close();
+                fs?.Close();
             }
         }
 

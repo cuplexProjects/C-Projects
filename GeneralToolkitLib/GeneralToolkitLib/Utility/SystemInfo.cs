@@ -23,10 +23,10 @@ namespace GeneralToolkitLib.Utility
 
         #endregion
 
-        public static string GetSystemInfo(string SoftwareName)
+        public static string GetSystemInfo(string softwareName)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(SoftwareName);
+            sb.AppendLine(softwareName);
 
             if (UseProcessorID)
                 sb.AppendLine(RunQuery("Processor", "ProcessorId"));
@@ -38,7 +38,7 @@ namespace GeneralToolkitLib.Utility
                 sb.AppendLine(RunQuery("BaseBoard", "Manufacturer"));
 
             if (UseDiskDriveSignature)
-                sb.AppendLine(RunQuery("DiskDrive", "Signature"));
+                sb.AppendLine(RunQuery("DiskDrive", "__RELPATH"));
 
             if (UseVideoControllerCaption)
                 sb.AppendLine(RunQuery("VideoController", "Caption"));
@@ -49,20 +49,23 @@ namespace GeneralToolkitLib.Utility
             if (UseBiosVersion)
                 sb.AppendLine(RunQuery("BIOS", "Version"));
 
+            if (UseBiosManufacturer)
+                sb.AppendLine(RunQuery("BIOS", "Manufacturer"));
+
             if (UseWindowsSerialNumber)
                 sb.AppendLine(RunQuery("OperatingSystem", "SerialNumber"));
 
             return sb.ToString();
         }
 
-        private static string RunQuery(string TableName, string MethodName)
+        private static string RunQuery(string tableName, string methodName)
         {
-            ManagementObjectSearcher MOS = new ManagementObjectSearcher("Select * from Win32_" + TableName);
-            foreach (var MO in MOS.Get().Cast<ManagementObject>())
+            ManagementObjectSearcher mos = new ManagementObjectSearcher("Select * from Win32_" + tableName);
+            foreach (var mo in mos.Get().Cast<ManagementObject>())
             {
                 try
                 {
-                    return MO[MethodName].ToString();
+                    return mo.GetPropertyValue(methodName).ToString();
                 }
                 catch (Exception e)
                 {

@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
 using SecureMemo.DataModels;
 using SecureMemo.Services;
+using Serilog;
 
 namespace SecureMemo.Storage
 {
-    public class MemoStorageService : IDisposable
+    public class MemoStorageService
     {
         private const string DatabaeFileName = "MemoDatabase.dat";
         private const string ConfSaltVal = "l73hgwiHLwscWqHQUT7vwJSTX58K0XWZlecm77NbzmqbsF60LOEeftqSdeSvL6cB";
@@ -22,11 +22,6 @@ namespace SecureMemo.Storage
         {
             _appSettingsService = appSettingsService;
             _databaseFilePath = databaseFilePath;
-        }
-
-        public void Dispose()
-        {
-           
         }
 
         private string GetFullPathToDatabaseFile()
@@ -60,7 +55,7 @@ namespace SecureMemo.Storage
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error loading database", ex);
+                Log.Error(ex, "Error loading database");
             }
             return tabPageDataCollection;
         }
@@ -88,7 +83,7 @@ namespace SecureMemo.Storage
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error saving database", ex);
+                Log.Error(ex, "Error saving database");
             }
 
             return success;
@@ -103,7 +98,7 @@ namespace SecureMemo.Storage
                 return null;
 
             var backupFiles = dirInfo.GetFiles("*MemoDatabase.dat");
-            return backupFiles.Select(backupFile => new BackupFileInfo {Name = backupFile.Name, CreatedDate = backupFile.CreationTime, FullName = backupFile.FullName}).ToList();
+            return backupFiles.Select(backupFile => new BackupFileInfo { Name = backupFile.Name, CreatedDate = backupFile.CreationTime, FullName = backupFile.FullName }).ToList();
         }
 
         public void MakeBackup()
@@ -178,7 +173,7 @@ namespace SecureMemo.Storage
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error when calling RestoreBackupFromSyncFolder()", ex);
+                Log.Error(ex, "Error when calling RestoreBackupFromSyncFolder() - {Message}", ex.Message);
                 restoreSyncDataResult.ErrorText = ex.Message;
             }
 

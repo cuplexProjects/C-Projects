@@ -3,14 +3,14 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using GeneralToolkitLib.ConfigHelper;
-using GeneralToolkitLib.Log;
 using SecureMemo.DataModels;
 using SecureMemo.Utility;
+using Serilog;
 
 namespace SecureMemo.Services
 {
     public class AppSettingsService
-    {       
+    {
         private readonly SecureMemoAppSettings _defaultAppSettings;
         private readonly IniConfigFileManager _iniConfigFileManager;
         private readonly string _iniConfigFilePath;
@@ -25,7 +25,7 @@ namespace SecureMemo.Services
         }
 
         public SecureMemoAppSettings Settings { get; }
-        
+
 
         private void CreateAppDataDirectoryIfDirNotFound(string settingsFolderPath)
         {
@@ -36,7 +36,7 @@ namespace SecureMemo.Services
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error when creating app data folder", ex);
+                Log.Error(ex, "Error when creating app data folder");
             }
         }
 
@@ -101,7 +101,7 @@ namespace SecureMemo.Services
                     {
                         FontSize = Convert.ToSingle(fontConfigFileSection.ConfigItems["FontSize"]),
                         FontFamilyName = fontConfigFileSection.ConfigItems["FontFamilyName"],
-                        Style = (FontStyle) Enum.Parse(typeof (FontStyle), fontConfigFileSection.ConfigItems["Style"])
+                        Style = (FontStyle)Enum.Parse(typeof(FontStyle), fontConfigFileSection.ConfigItems["Style"])
                     };
                     fontSettings.FontFamily = new Font(fontConfigFileSection.ConfigItems["FontFamily"], fontSettings.FontSize, fontSettings.Style).FontFamily;
 
@@ -112,7 +112,7 @@ namespace SecureMemo.Services
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Failed to load application settings", ex);
+                Log.Error(ex,"Failed to load application settings");
                 throw;
             }
         }
@@ -149,7 +149,7 @@ namespace SecureMemo.Services
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Error in AppSettings Save", ex);
+                Log.Error(ex,"Error in AppSettings Save");
             }
         }
     }

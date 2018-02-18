@@ -10,8 +10,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Cuplex Inc")]
 [assembly: AssemblyProduct("Secure Memo")]
-[assembly: AssemblyCopyright("Copyright ©  2016 Martin Dahl")]
-[assembly: AssemblyTrademark("Martin Dahl 2016 - dev@cuplex.se")]
+[assembly: AssemblyCopyright("Copyright ©  2018 Martin Dahl")]
+[assembly: AssemblyTrademark("Martin Dahl 2018 - dev@cuplex.se")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.2.1.0")]
-[assembly: AssemblyFileVersion("1.2.1.0")]
+[assembly: AssemblyVersion("1.4.1.0")]
+[assembly: AssemblyFileVersion("1.4.1.0")]

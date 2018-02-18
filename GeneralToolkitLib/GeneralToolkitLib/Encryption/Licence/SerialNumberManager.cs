@@ -21,19 +21,16 @@ namespace GeneralToolkitLib.Encryption.Licence
             set { _licenceData = value; }
         }
 
-        public SerialNumberManager(RSAParameters pubRSAKey, SerialNumbersSettings.ProtectedApp app)
+        public SerialNumberManager(RSAParameters pubRsaKey, SerialNumbersSettings.ProtectedApp app)
         {
             _app = app;
-            _rsaPubKey = pubRSAKey;
+            _rsaPubKey = pubRsaKey;
             _licenceData = new LicenceDataModel();
         }
 
         public bool ValidateRegistrationData()
         {
-            if (_licenceData == null)
-                return false;
-
-            if (string.IsNullOrEmpty(_licenceData.RegistrationKey) || _licenceData.ValidationHash == null || _licenceData.ValidationHash.Length != VALIDATION_HASH_LENTH)
+            if (string.IsNullOrEmpty(_licenceData?.RegistrationKey) || _licenceData.ValidationHash == null || _licenceData.ValidationHash.Length != VALIDATION_HASH_LENTH)
                 return false;
 
             byte[] licenceDataBytes = ObjectSerializer.SerializeDataContract(LicenceData.RegistrationData);
@@ -54,7 +51,7 @@ namespace GeneralToolkitLib.Encryption.Licence
         private string CreateRegistrationKey(byte[] licenceBytes)
         {
             string regKeyData = GeneralConverters.ByteArrayToBase64(licenceBytes);
-            regKeyData = SerialNumbersSettings.ProtectedApplications.SaltData.GeneralToolkit + regKeyData + SerialNumbersSettings.ProtectedApplications.SaltData.GeneralToolkit + this._app;
+            regKeyData = SerialNumbersSettings.ProtectedApplications.SaltData.GeneralToolkit + regKeyData + SerialNumbersSettings.ProtectedApplications.SaltData.GeneralToolkit + _app;
             byte[] buffer = null;
             EncryptionManager.EncodeString(ref buffer, regKeyData, "064lMPnLyjI6sqfXm5KhSE4R0FDU0AchClDyxpAWKkJgFyih59IkhX598sveO7vdbuEKgbEQjDRcLtx0FbcJtASEqHZE8bLX2CIq2LwYZC4OWZGWzx7dv0dxp1h6dcck");
             return ConvertToBase32SerialNumber(buffer);
@@ -62,7 +59,7 @@ namespace GeneralToolkitLib.Encryption.Licence
 
         private string ConvertToBase32SerialNumber(byte[] hashBytes)
         {
-            byte[] halfHashBytes = SHA256Cng.Create().ComputeHash(hashBytes);
+            byte[] halfHashBytes = SHA256.Create().ComputeHash(hashBytes);
             string base32Str = Base32.ToBase32String(halfHashBytes);
 
             string key = "";
@@ -78,27 +75,27 @@ namespace GeneralToolkitLib.Encryption.Licence
 
         public byte[] HashAndSign(byte[] encrypted, RSAParameters rsaPrivateParams)
         {
-            RSACryptoServiceProvider rsaCSP = new RSACryptoServiceProvider(4096);
-            var hashAlgorithm = SHA1Managed.Create();
+            RSACryptoServiceProvider rsaCsp = new RSACryptoServiceProvider(4096);
+            var hashAlgorithm = SHA256.Create();
 
-            rsaCSP.ImportParameters(rsaPrivateParams);
+            rsaCsp.ImportParameters(rsaPrivateParams);
 
             byte[] hashedData = hashAlgorithm.ComputeHash(encrypted);
-            return rsaCSP.SignHash(hashedData, CryptoConfig.MapNameToOID("SHA1"));
+            return rsaCsp.SignHash(hashedData, CryptoConfig.MapNameToOID("SHA256"));
         }
 
-        public static byte[] HashAndSignBytes(byte[] DataToSign, RSAParameters Key)
+        public static byte[] HashAndSignBytes(byte[] dataToSign, RSAParameters key)
         {
             try
             {
                 // Create a new instance of RSACryptoServiceProvider using the  
                 // key from RSAParameters.  
-                RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider(4096);
-                RSAalg.ImportParameters(Key);
+                RSACryptoServiceProvider rsAalg = new RSACryptoServiceProvider(4096);
+                rsAalg.ImportParameters(key);
 
                 // Hash and sign the data. Pass a new instance of SHA1CryptoServiceProvider 
                 // to specify the use of SHA1 for hashing. 
-                return RSAalg.SignData(DataToSign, new SHA1CryptoServiceProvider());
+                return rsAalg.SignData(dataToSign, new SHA256CryptoServiceProvider());
             }
             catch (CryptographicException e)
             {
@@ -108,19 +105,19 @@ namespace GeneralToolkitLib.Encryption.Licence
             }
         }
 
-        private static bool VerifySignedHash(byte[] DataToVerify, byte[] SignedData, RSAParameters Key)
+        private static bool VerifySignedHash(byte[] dataToVerify, byte[] signedData, RSAParameters key)
         {
             try
             {
                 // Create a new instance of RSACryptoServiceProvider using the  
                 // key from RSAParameters.
-                RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider();
+                RSACryptoServiceProvider rsAalg = new RSACryptoServiceProvider();
 
-                RSAalg.ImportParameters(Key);
+                rsAalg.ImportParameters(key);
 
                 // Verify the data using the signature.  Pass a new instance of SHA1CryptoServiceProvider 
                 // to specify the use of SHA1 for hashing. 
-                return RSAalg.VerifyData(DataToVerify, new SHA1CryptoServiceProvider(), SignedData);
+                return rsAalg.VerifyData(dataToVerify, new SHA256CryptoServiceProvider(), signedData);
             }
             catch (CryptographicException e)
             {

@@ -180,7 +180,6 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\ApplicationBuildConfig.cs" />
     <Compile Include="Configuration\AutofacConfig.cs" />
     <Compile Include="Configuration\IApplicationBuildConfig.cs" />
     <Compile Include="DataBinding\TreeViewDataContext.cs" />

@@ -8,7 +8,6 @@ using Autofac;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Encryption.Licence;
 using GeneralToolkitLib.Encryption.Licence.StaticData;
-using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage.Memory;
 using SecureMemo.DataModels;
 using SecureMemo.Forms;
@@ -19,6 +18,7 @@ using SecureMemo.Storage;
 using SecureMemo.TextSearchModels;
 using SecureMemo.UserControls;
 using SecureMemo.Utility;
+using Serilog;
 
 namespace SecureMemo
 {
@@ -711,7 +711,7 @@ namespace SecureMemo
             }
             catch (Exception ex)
             {
-                LogWriter.LogError("Unhandled exception when calling _formFind_OnSearch()", ex);
+                Log.Error(ex,"Unhandled exception when calling _formFind_OnSearch()");
                 MessageBox.Show(ex.Message, Resources.FormMain__ErrorText, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -803,7 +803,7 @@ namespace SecureMemo
         {
             if (_tabPageClickIndex < 0 || _tabPageClickIndex > tabControlNotepad.TabCount)
             {
-                LogWriter.LogMessage($"Rename tab page could not find selected index: {_tabPageClickIndex}", LogWriter.LogLevel.Warning);
+                Log.Warning("Rename tab page could not find selected index: {_tabPageClickIndex}", _tabPageClickIndex);
                 return;
             }
             var tabPage = tabControlNotepad.TabPages[_tabPageClickIndex];
@@ -824,7 +824,7 @@ namespace SecureMemo
         {
             if (_tabPageClickIndex < 0 || _tabPageClickIndex > tabControlNotepad.TabCount)
             {
-                LogWriter.LogMessage($"Delete tab page could not find selected index: {_tabPageClickIndex}", LogWriter.LogLevel.Warning);
+                Log.Warning("Delete tab page could not find selected index: {_tabPageClickIndex}", _tabPageClickIndex);
                 return;
             }
 

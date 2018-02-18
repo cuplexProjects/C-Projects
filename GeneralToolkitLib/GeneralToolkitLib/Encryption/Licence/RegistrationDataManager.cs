@@ -8,10 +8,7 @@ namespace GeneralToolkitLib.Encryption.Licence
     {
         private readonly RegistrationDataModel _registrationData;
 
-        public RegistrationDataModel RegistrationData
-        {
-            get { return _registrationData; }
-        }
+        public RegistrationDataModel RegistrationData => _registrationData;
 
         private RegistrationDataManager(RegistrationDataModel registrationData)
         {
