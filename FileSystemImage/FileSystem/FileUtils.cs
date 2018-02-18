@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage.Models;
+using Serilog;
 
 namespace FileSystemImage.FileSystem
 {
@@ -275,7 +275,7 @@ namespace FileSystemImage.FileSystem
                 }
                 catch (Exception ex)
                 {
-                    LogWriter.LogError("Error in FileSystemWorker.GetDirectoryCount() : ", ex);
+                    Log.Error(ex, "Error in FileSystemWorker.GetDirectoryCount() : {Message}", ex.Message );
                 }
 
                 return count;

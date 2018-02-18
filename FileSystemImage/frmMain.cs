@@ -14,9 +14,9 @@ using FileSystemImage.Utils;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.DataTypes;
 using GeneralToolkitLib.Hashing;
-using GeneralToolkitLib.Log;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
+using Serilog;
 
 namespace FileSystemImage
 {
@@ -102,6 +102,7 @@ namespace FileSystemImage
 
                 LoadAndSaveProgressInfoLabel.Text = "Opening file: " + openFileDialog.FileName;
                 LoadFileSystemImageFromFile(_currentFileName, password);
+                Log.Debug("Successfuly opened file: {FileName}", openFileDialog.FileName);
             }
         }
 
@@ -214,6 +215,7 @@ namespace FileSystemImage
             {
                 string password = setPasswordDialog.VerifiedPassword;
                 SaveFileSystemImageToFile(_currentFileSystemDrive, _currentFileName, password);
+                Log.Debug("Successfuly Saved file: {FileName}", saveFileDialog.FileName);
             }
             MemoryHandler.RunGarbageCollect();
         }
@@ -419,7 +421,7 @@ namespace FileSystemImage
             catch (Exception ex)
             {
                 MessageBox.Show(this, ex.Message);
-                LogWriter.LogError("DoPartialTreeUpdateAsync failed", ex);
+                Log.Error(ex, "DoPartialTreeUpdateAsync failed");
             }
         }
 

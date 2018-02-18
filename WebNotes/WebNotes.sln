@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNotes", "WebNotes\WebNotes.csproj", "{62BB936B-8C05-4014-8EDF-BCD7DCF7D382}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNotesDataLibrary", "WebNotesDataLibrary\WebNotesDataLibrary.csproj", "{264EC8FD-079A-459E-88A9-CFDFBB31EB18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62BB936B-8C05-4014-8EDF-BCD7DCF7D382}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62BB936B-8C05-4014-8EDF-BCD7DCF7D382}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62BB936B-8C05-4014-8EDF-BCD7DCF7D382}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62BB936B-8C05-4014-8EDF-BCD7DCF7D382}.Release|Any CPU.Build.0 = Release|Any CPU
+		{264EC8FD-079A-459E-88A9-CFDFBB31EB18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{264EC8FD-079A-459E-88A9-CFDFBB31EB18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{264EC8FD-079A-459E-88A9-CFDFBB31EB18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{264EC8FD-079A-459E-88A9-CFDFBB31EB18}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {50CE3180-2DBE-499F-84FE-F931FA609C45}
+	EndGlobalSection
+EndGlobal

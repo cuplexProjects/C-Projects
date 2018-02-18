@@ -1,5 +1,5 @@
 ﻿using System;
-using GeneralToolkitLib.Log;
+using Serilog;
 
 namespace FileSystemImage.Utils
 {
@@ -10,7 +10,7 @@ namespace FileSystemImage.Utils
             GC.Collect(0, GCCollectionMode.Forced);
             long memAlloc = GC.GetTotalMemory(true);
 #if DEBUG
-            LogWriter.LogMessage("Current Allocated Memory Is: " + memAlloc/1024 + " kb", LogWriter.LogLevel.Debug);
+            Log.Debug("Current Allocated Memory Is: " + memAlloc/1024 + " kb");
 #endif
         }
     }

@@ -142,6 +142,7 @@
     <Compile Include="ConfigHelper\AssemblyHelper.cs" />
     <Compile Include="ConfigHelper\DefaultConfig.cs" />
     <Compile Include="ConfigHelper\IniConfigFileManager.cs" />
+    <Compile Include="Configuration\ApplicationBuildConfig.cs" />
     <Compile Include="Converters\Base32.cs" />
     <Compile Include="Converters\GeneralConverters.cs" />
     <Compile Include="Converters\StringManipulation.cs" />

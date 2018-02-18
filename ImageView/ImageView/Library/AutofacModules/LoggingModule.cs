@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using Autofac;
 using AutofacSerilogIntegration;
-using ImageView.Configuration;
+using GeneralToolkitLib.Configuration;
 using Serilog;
 using Serilog.Events;
 
@@ -26,7 +26,7 @@ namespace ImageView.Library.AutofacModules
                     buffered: false,
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.ff} [{Level}] {Message}{NewLine}{Exception}{Data}")
                 .Enrich.FromLogContext()
-                .MinimumLevel.Information()
+                .MinimumLevel.Is(logLevel)
                 .CreateLogger();
 
             builder.RegisterLogger();

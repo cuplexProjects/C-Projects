@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Storage.Memory;
 using GeneralToolkitLib.Utility.RandomGenerator;
-using ImageView.Configuration;
 using ImageView.Managers;
 using Serilog;
 

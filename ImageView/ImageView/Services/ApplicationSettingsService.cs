@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Storage.Registry;
-using ImageView.Configuration;
 using ImageView.DataContracts;
 using ImageView.Interfaces;
 using ImageView.Library.EventHandlers;

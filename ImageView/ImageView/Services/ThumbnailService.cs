@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading.Tasks;
-using ImageView.Configuration;
+using GeneralToolkitLib.Configuration;
 using ImageView.Managers;
 using ImageView.Models;
 using Serilog;
@@ -75,7 +75,7 @@ namespace ImageView.Services
 
             try
             {
-                await Task.Run(() =>
+                await Task.Factory.StartNew(() =>
                {
                    IsRunningScan = true;
                    var scanTask = _thumbnailManager.StartThumbnailScan(path, progress, scanSubdirectories);

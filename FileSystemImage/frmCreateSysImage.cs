@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using FileSystemImage.FileSystem;
 using GeneralToolkitLib.Converters;
-using GeneralToolkitLib.Log;
+using Serilog;
 
 namespace FileSystemImage
 {
@@ -33,7 +33,7 @@ namespace FileSystemImage
             }
             catch(Exception ex)
             {
-                LogWriter.LogError("Error in frmCreateSysImage.frmCreateSysImage_Load() @ DriveInfo.GetDrives(): ", ex);
+                Log.Error(ex,"Error in frmCreateSysImage.frmCreateSysImage_Load() @ DriveInfo.GetDrives(): ");
                 return;
             }
 
@@ -48,7 +48,7 @@ namespace FileSystemImage
                 }
                 catch(IOException ioException)
                 {
-                    LogWriter.LogError("Error in frmCreateSysImage.frmCreateSysImage_Load(): ", ioException);
+                    Log.Error(ioException, "Error in frmCreateSysImage.frmCreateSysImage_Load(): {Message}", ioException.Message);
                 }
             }
 
