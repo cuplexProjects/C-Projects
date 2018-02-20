@@ -33,6 +33,8 @@ namespace ImageView.Models
             }
         }
 
+        public int ImageCount => _imageLoaderService.ImageReferenceList?.Count ?? 0;
+
         public ImageReferenceElement GetNextImage()
         {
             ImageListPointer = ImageListPointer + 1;

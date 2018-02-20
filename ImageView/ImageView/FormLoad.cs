@@ -40,15 +40,15 @@ namespace ImageView
         private void Instance_OnImportComplete(object sender, ProgressEventArgs e)
         {
             if (IsHandleCreated)
-                Invoke(new UpdateProgressDelegate(UpdateProgressOnLocalThread), e.ProgressStatus.ToString(),
-                    e.ImagesLoaded, e.CompletionRate, true);
+                Invoke(new UpdateProgressDelegate(UpdateProgressOnLocalThread), e.ProgressStatus.ToString(), e.ImagesLoaded, e.CompletionRate, true);
         }
 
         private void Instance_OnProgressUpdate(object sender, ProgressEventArgs e)
         {
             if (IsHandleCreated)
-                Invoke(new UpdateProgressDelegate(UpdateProgressOnLocalThread), e.ProgressStatus.ToString(),
-                    e.ImagesLoaded, e.CompletionRate, false);
+            {
+                Invoke(new UpdateProgressDelegate(UpdateProgressOnLocalThread), e.ProgressStatus.ToString(), e.ImagesLoaded, e.CompletionRate, false);
+            }
         }
 
         private void UpdateProgressOnLocalThread(string status, int imagesLoaded, double completionRate, bool completed)
@@ -60,11 +60,10 @@ namespace ImageView
                 progressBar1.Value = progressBar1.Maximum;
                 btnStart.Enabled = true;
                 btnCancel.Enabled = false;
-                if (MessageBox.Show("Close importer?", "Close?", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                    Close();
+                Close();
             }
             else
-                progressBar1.Value = Math.Min(progressBar1.Maximum, Convert.ToInt32(imagesLoaded*completionRate));
+                progressBar1.Value = Math.Min(progressBar1.Maximum, Convert.ToInt32(imagesLoaded * completionRate));
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
@@ -84,7 +83,7 @@ namespace ImageView
             progressBar1.Value = 0;
             bool result = await _imageLoaderService.RunImageImport(_baseSearchPath);
 
-             btnStart.Enabled = false;
+            btnStart.Enabled = false;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

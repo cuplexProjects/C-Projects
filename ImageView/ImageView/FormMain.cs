@@ -72,11 +72,12 @@ namespace ImageView
 
         private void DisplaySlideshowStatus()
         {
-            string tooltipText = timerSlideShow.Enabled ? "Slideshow started" : "Slideshow stoped";
+            string tooltipText = timerSlideShow.Enabled ? $"Slideshow started with a delay of {_applicationSettingsService.Settings.SlideshowInterval / 1000} seconds per image." : "Slideshow stoped";
 
             toolTipSlideshowState.Active = true;
             toolTipSlideshowState.InitialDelay = 150;
-            toolTipSlideshowState.ToolTipIcon = ToolTipIcon.Info;
+            toolTipSlideshowState.AutoPopDelay = 2000;
+            toolTipSlideshowState.AutomaticDelay = 500;
             toolTipSlideshowState.UseFading = true;
             toolTipSlideshowState.UseAnimation = true;
             toolTipSlideshowState.IsBalloon = true;
@@ -157,7 +158,7 @@ namespace ImageView
                 return;
             }
 
-            if (!ImageSourceDataAvailable)
+            if (!ImageSourceDataAvailable || _imageReferenceCollection.ImageCount == 0)
             {
                 return;
             }
@@ -191,7 +192,7 @@ namespace ImageView
         {
             try
             {
-                pictureBox1.SizeMode = (PictureBoxSizeMode) _applicationSettingsService.Settings.PrimaryImageSizeMode;
+                pictureBox1.SizeMode = (PictureBoxSizeMode)_applicationSettingsService.Settings.PrimaryImageSizeMode;
 
 
                 if (_applicationSettingsService.Settings.NextImageAnimation == ImageViewApplicationSettings.ChangeImageAnimation.None)
@@ -250,7 +251,7 @@ namespace ImageView
                 {
                     long elapsedTime = stopwatch.ElapsedMilliseconds;
 
-                    float factor = stopwatch.ElapsedMilliseconds / (float) animationTime;
+                    float factor = stopwatch.ElapsedMilliseconds / (float)animationTime;
                     Image transitionImage;
                     switch (animation)
                     {
@@ -675,7 +676,7 @@ namespace ImageView
 
         private void pictureBox1_LoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            pictureBox1.SizeMode = (PictureBoxSizeMode) _applicationSettingsService.Settings.PrimaryImageSizeMode;
+            pictureBox1.SizeMode = (PictureBoxSizeMode)_applicationSettingsService.Settings.PrimaryImageSizeMode;
         }
 
         private async void pictureBoxAnimation_LoadCompleted(object sender, AsyncCompletedEventArgs e)
@@ -861,7 +862,7 @@ namespace ImageView
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new AboutBox1().ShowDialog(this);
+            new AboutBox().ShowDialog(this);
         }
 
         private void copyFilepathToolStripMenuItem_Click(object sender, EventArgs e)

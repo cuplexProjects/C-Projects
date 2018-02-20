@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using ImageView.UserControls;
 using ImageView.Utility;
@@ -10,28 +11,95 @@ namespace ImageView.Managers
     {
         private readonly Form _formOverlayImage;
         private readonly BookmarkPreviewOverlayUserControl _overlayUserControl;
+        private readonly ImageSourceAndLocation _imageSourceState;
+        private int _showImageDelay;
+        private int _hideImageDelay;
+        private static readonly object LockObject = new object();
 
         public bool IsEnabled { get; set; }
         public int ActiveRow { get; set; }
 
+        public int ShowImageDelay
+        {
+            get => _showImageDelay;
+            set
+            {
+                if (value >= 0)
+                {
+                    _showImageDelay = value;
+                }
+            }
+        }
+
+        public int HideImageDelay
+        {
+            get => _hideImageDelay;
+            set
+            {
+                if (value >= 0)
+                {
+                    _hideImageDelay = value;
+                }
+            }
+        }
 
         public OverlayFormManager()
         {
             _overlayUserControl = new BookmarkPreviewOverlayUserControl();
             _formOverlayImage = FormFactory.CreateFloatingForm(_overlayUserControl, new Size(250, 250));
             _overlayUserControl.Dock = DockStyle.Fill;
+            _imageSourceState = new ImageSourceAndLocation { LastShownImageTime = DateTime.Today };
+
+            // Default value
+            ShowImageDelay = 750;
         }
 
-        public void LoadImageAndDisplayForm(string imagePath, Point mousePoint)
+        private void UpdateToLastImageWhenTimeoutExpires()
         {
+            lock (LockObject)
+            {
+                if (_imageSourceState.IsAwaitingDelay)
+                {
+                    return;
+                }
+            }
+
+            Task.Factory.StartNew(async () =>
+            {
+                _imageSourceState.IsAwaitingDelay = true;
+                bool isMoving = true;
+
+                while (isMoving)
+                {
+                    isMoving = DateTime.Now < _imageSourceState.LastShownImageTime.AddMilliseconds(ShowImageDelay);
+                    await Task.Delay(HideImageDelay);
+                }
+
+                _imageSourceState.IsAwaitingDelay = false;
+                if (_imageSourceState.LastShownImagePath != _imageSourceState.ImagePath)
+                {
+                    LoadImageAndDisplayForm(_imageSourceState.ImagePath, _imageSourceState.MousePoint, true);
+                }
+            });
+        }
+
+        public void LoadImageAndDisplayForm(string imagePath, Point mousePoint, bool invokedByOtherThread = false)
+        {
+            _imageSourceState.ImagePath = imagePath;
+            _imageSourceState.MousePointDelta = _imageSourceState.MousePoint;
+            _imageSourceState.MousePoint = mousePoint;
+
+            if (_imageSourceState.LastShownImageTime.AddMilliseconds(ShowImageDelay) >= DateTime.Now)
+            {
+                UpdateToLastImageWhenTimeoutExpires();
+                return;
+            }
+
             //Maximize display area
             var screenBounds = Screen.PrimaryScreen.Bounds;
             _overlayUserControl.LoadImage(imagePath);
+            _imageSourceState.LastShownImagePath = imagePath;
             var imageSize = _overlayUserControl.GetImageSize();
-
-            //int maxWidth = Math.Min(imageSize.Width, Convert.ToInt32(screenBounds.Width / 1.3d));
-            //int maxHeight = Math.Min(imageSize.Height, Convert.ToInt32(screenBounds.Height / 1.1d));
-
 
             int maxWidth = Convert.ToInt32(screenBounds.Width / 1.3d);
             int maxHeight = Convert.ToInt32(screenBounds.Height / 1.2d);
@@ -64,12 +132,21 @@ namespace ImageView.Managers
             //Center form on the y axis
             formRectangle.Y = screenBounds.Height / 2 - maxHeight / 2;
 
-            _formOverlayImage.Left = formRectangle.X;
-            _formOverlayImage.Top = formRectangle.Y;
-            _formOverlayImage.Width = formRectangle.Width;
-            _formOverlayImage.Height = formRectangle.Height;
+            _imageSourceState.LastShownImageTime = DateTime.Now;
+            if (!invokedByOtherThread)
+            {
+                _formOverlayImage.Left = formRectangle.X;
+                _formOverlayImage.Top = formRectangle.Y;
+                _formOverlayImage.Width = formRectangle.Width;
+                _formOverlayImage.Height = formRectangle.Height;
+                _formOverlayImage.Show();
+            }
+        }
 
-            _formOverlayImage.Show();
+        public async Task HideFormWithDelay()
+        {
+            await Task.Delay(HideImageDelay);
+            _formOverlayImage.Hide();
         }
 
         public void HideForm()
@@ -81,6 +158,17 @@ namespace ImageView.Managers
         {
             _formOverlayImage?.Dispose();
             _overlayUserControl?.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        private class ImageSourceAndLocation
+        {
+            public DateTime LastShownImageTime;
+            public bool IsAwaitingDelay;
+            public string ImagePath;
+            public string LastShownImagePath;
+            public Point MousePoint;
+            public Point MousePointDelta;
         }
     }
 }

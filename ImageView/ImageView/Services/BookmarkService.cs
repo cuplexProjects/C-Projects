@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Storage.Memory;
@@ -55,13 +56,15 @@ namespace ImageView.Services
             return false;
         }
 
-        public bool SaveBookmarks()
+        public bool SaveBookmarks(bool savedAsync = false)
         {
             lock (LockObj)
             {
                 string password = _passwordStorage.Get(_protectedMemoryStorageKey);
-                return _bookmarkManager.SaveToFile(_directory + BookmarkFileName, password);
+                bool result = _bookmarkManager.SaveToFile(_directory + BookmarkFileName, password);
+                Log.Debug("SaveBookmarks called with Result: {result}, SavedAsync: {savedAsync}, ManagedThreadId: {ManagedThreadId}", result, savedAsync, Thread.CurrentThread.ManagedThreadId);
 
+                return result;
             }
         }
 
@@ -72,9 +75,11 @@ namespace ImageView.Services
                 string defaultKey = _applicationSettingsService.Settings.DefaultKey;
 
                 if (defaultKey != null && defaultKey.Length == 256) return defaultKey;
+                string previousKey = defaultKey;
                 defaultKey = new SecureRandomGenerator().GetAlphaNumericString(256);
                 _applicationSettingsService.Settings.DefaultKey = defaultKey;
                 _applicationSettingsService.SaveSettings();
+                Log.Information("New default bookmark key was created and saved. Previous key was: {previousKey}", previousKey);
 
                 return defaultKey;
             }
@@ -94,7 +99,7 @@ namespace ImageView.Services
         {
             await Task.Factory.StartNew(() =>
             {
-                SaveBookmarks();
+                SaveBookmarks(true);
             });
         }
     }

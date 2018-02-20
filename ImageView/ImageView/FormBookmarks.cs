@@ -53,6 +53,8 @@ namespace ImageView
             bookmarksTree.AfterSelect += BookmarksTree_AfterSelect;
             InitBookmarksDataGridViev();
             _treeViewDataContext = new TreeViewDataContext(bookmarksTree, _bookmarkManager.RootFolder);
+            _overlayFormManager.HideImageDelay = 250;
+            _overlayFormManager.ShowImageDelay = 500;
 
             if (_applicationSettingsService.Settings.PasswordProtectBookmarks)
                 using (var formgetPassword = new FormGetPassword
@@ -281,9 +283,9 @@ namespace ImageView
         {
         }
 
-        private void bookmarksDataGridView_MouseLeave(object sender, EventArgs e)
+        private async void bookmarksDataGridView_MouseLeave(object sender, EventArgs e)
         {
-            _overlayFormManager.HideForm();
+            await _overlayFormManager.HideFormWithDelay();
         }
 
         private void bookmarksDataGridView_CellMouseEnter(object sender, DataGridViewCellEventArgs e)

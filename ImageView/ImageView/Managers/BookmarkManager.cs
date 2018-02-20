@@ -109,7 +109,7 @@ namespace ImageView.Managers
                     SaveToFile(filename, password);
                 }
 
-                IsModified = false;
+                IsModified = true;
 
                 return true;
             }
@@ -150,7 +150,7 @@ namespace ImageView.Managers
                 }
 
                 RootFolder = _bookmarkContainer.RootFolder;
-                IsModified = false;
+                IsModified = true;
                 return true;
             }
             catch (Exception ex)

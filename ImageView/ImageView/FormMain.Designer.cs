@@ -332,7 +332,7 @@
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
             this.startToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.startToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
@@ -340,21 +340,21 @@
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
             this.stopToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // setIntervalToolStripMenuItem
             // 
             this.setIntervalToolStripMenuItem.Name = "setIntervalToolStripMenuItem";
-            this.setIntervalToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.setIntervalToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.setIntervalToolStripMenuItem.Text = "Set Interval";
             this.setIntervalToolStripMenuItem.Click += new System.EventHandler(this.setIntervalToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(129, 6);
             // 
             // settingsToolStripMenuItem
             // 
@@ -568,6 +568,12 @@
             this.pictureBox1.LoadCompleted += new System.ComponentModel.AsyncCompletedEventHandler(this.pictureBox1_LoadCompleted);
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             this.pictureBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
+            // 
+            // toolTipSlideshowState
+            // 
+            this.toolTipSlideshowState.AutoPopDelay = 5000;
+            this.toolTipSlideshowState.InitialDelay = 100;
+            this.toolTipSlideshowState.ReshowDelay = 500;
             // 
             // FormMain
             // 

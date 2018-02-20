@@ -346,6 +346,7 @@ namespace ImageView.Services
         {
             _randomNumberGenerator?.Dispose();
             _winId?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 
