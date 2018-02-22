@@ -75,7 +75,7 @@ namespace ImageView.Managers
             return fileEntry;
         }
 
-        public void RecreateDatabase(IEnumerable<ThumbnailEntry> thumbnailEntries)
+        public void RecreateDatabase(List<ThumbnailEntry> thumbnailEntries)
         {
             if (_fileStream == null)
                 _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
@@ -92,9 +92,25 @@ namespace ImageView.Managers
                 if (File.Exists(tempFileName))
                     File.Delete(tempFileName);
 
+                // Verify
+                var deleteQueue = new Queue<ThumbnailEntry>();
+                foreach (var thumbnailEntry in thumbnailEntries)
+                {
+                    if (thumbnailEntry.Length <= 0 || !File.Exists(Path.Combine(thumbnailEntry.Directory, thumbnailEntry.FileName)))
+                    {
+                        deleteQueue.Enqueue(thumbnailEntry);
+                    }
+                }
+
+                while (deleteQueue.Count>0)
+                {
+                    thumbnailEntries.Remove(deleteQueue.Dequeue());
+                }
+
                 temporaryDatabaseFile = File.OpenWrite(tempFileName);
                 foreach (ThumbnailEntry entry in thumbnailEntries)
                 {
+
                     var buffer = new byte[entry.Length];
                     _fileStream.Position = entry.FilePosition;
                     _fileStream.Read(buffer, 0, entry.Length);
@@ -104,6 +120,7 @@ namespace ImageView.Managers
                 }
 
                 CloseStream();
+                temporaryDatabaseFile.Flush(true);
                 temporaryDatabaseFile.Close();
                 temporaryDatabaseFile = null;
                 File.Delete(_fileName);

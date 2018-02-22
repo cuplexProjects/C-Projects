@@ -41,6 +41,7 @@ namespace ImageView.UserControls
 
         private async void btnScan_Click(object sender, EventArgs e)
         {
+            progressBar.Value = 0;
             _scaningDirectory = true;
             UpdateButtonState();
             var progress = new Progress<ThumbnailScanProgress>(Handler);

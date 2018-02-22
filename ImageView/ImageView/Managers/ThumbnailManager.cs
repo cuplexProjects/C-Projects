@@ -710,7 +710,7 @@ namespace ImageView.Managers
                 _fileDictionary = fileEntryList.ToDictionary(x => x.Directory + x.FileName, x => x);
                 _thumbnailDatabase.ThumbnailEntries.Clear();
                 _thumbnailDatabase.ThumbnailEntries.AddRange(_fileDictionary.Values);
-                _fileManager.RecreateDatabase(_fileDictionary.Values);
+                _fileManager.RecreateDatabase(_fileDictionary.Values.ToList());
                 SaveThumbnailDatabase();
                 IsModified = true;
                 return true;
