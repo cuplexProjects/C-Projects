@@ -220,5 +220,16 @@ namespace ImageView.Managers
             FileInfo fileInfo = new FileInfo(_fileName);
             return fileInfo.Length;
         }
+
+        // Deletes the current filecontainer and recreates an empty filecontainer.
+        public void DeleteBinaryContainer()
+        {
+            CloseStream();
+            File.Delete(_fileName);
+
+            var fsStream = File.Create(_fileName);
+            fsStream.Flush(true);
+            fsStream.Close();
+        }
     }
 }

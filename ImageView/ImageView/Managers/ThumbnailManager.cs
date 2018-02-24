@@ -724,6 +724,41 @@ namespace ImageView.Managers
             }
         }
 
+        public bool ClearDatabase()
+        {
+            if (_fileManager == null || _isRunningThumbnailScan)
+            {
+                return false;
+            }
+
+            try
+            {
+                bool isLocked = _fileManager.LockDatabase();
+                if (!isLocked)
+                {
+                    return false;
+                }
+
+                CloseFileHandle();
+                _thumbnailDatabase.ThumbnailEntries.Clear();
+                _fileManager.DeleteBinaryContainer();
+
+                // Saves the Index file
+                SaveThumbnailDatabase();
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception, "Failed to clear database");
+                return false;
+            }
+            finally
+            {
+                _fileManager.UnlockDatabase();
+            }
+
+            return true;
+        }
+
         private class ThumbnailData
         {
             public ThumbnailEntry ThumbnailEntry { get; set; }

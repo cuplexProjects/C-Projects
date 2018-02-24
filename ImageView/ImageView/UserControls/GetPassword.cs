@@ -13,6 +13,11 @@ namespace ImageView.UserControls
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            if (!ValidatePassword(txtPassword.Text))
+            {
+                return;
+            }
+
             SelectedPassword = txtPassword.Text;
             var parentForm = ParentForm;
             if (parentForm != null)
@@ -34,6 +39,12 @@ namespace ImageView.UserControls
         {
             if (e.KeyData == Keys.Enter)
             {
+                e.SuppressKeyPress = true;
+                if (!ValidatePassword(txtPassword.Text))
+                {
+                    return;
+                }
+
                 SelectedPassword = txtPassword.Text;
                 var parentForm = ParentForm;
                 if (parentForm != null)
@@ -41,6 +52,11 @@ namespace ImageView.UserControls
                     parentForm.DialogResult = DialogResult.OK;
                 }
             }
+        }
+
+        private bool ValidatePassword(string password)
+        {
+            return !string.IsNullOrWhiteSpace(password);
         }
     }
 }

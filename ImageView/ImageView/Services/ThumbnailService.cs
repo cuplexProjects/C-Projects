@@ -182,5 +182,15 @@ namespace ImageView.Services
 
             return result;
         }
+
+        public bool ClearDatabase()
+        {
+            if (IsRunningScan)
+            {
+                return false;
+            }
+
+            return _thumbnailManager.ClearDatabase();
+        }
     }
 }

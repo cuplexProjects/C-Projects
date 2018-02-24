@@ -52,7 +52,16 @@ namespace ImageView
         {
             if (MessageBox.Show("Are you sure you want to completly remove the thumbnail cache?", "Confirm delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
+                if (_thumbnailService.ClearDatabase())
+                {
+                    MessageBox.Show("Successfuly cleared the Thumbnail database.", "Database cleared", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Failed to clear the Thumbnail database because it is in use", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
+                UpdateInformationLabels();
             }
         }
 

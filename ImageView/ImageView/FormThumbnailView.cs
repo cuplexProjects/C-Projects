@@ -86,6 +86,8 @@ namespace ImageView
             SetUpdateDatabaseEnabledState(false);
             flowLayoutPanel1.Controls.Clear();
 
+            btnGenerate.Enabled = false;
+
             try
             {
                 await Task.Run(() =>
@@ -104,6 +106,9 @@ namespace ImageView
                 MessageBox.Show(this, ex.Message, Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Log.Error(ex, "Error in generate thumbnails");
             }
+
+            btnGenerate.Enabled = true;
+            Refresh();
         }
 
         private void UpdatePictureBoxList(object sender, EventArgs e)
