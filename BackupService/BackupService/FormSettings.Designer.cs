@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridViewBackupFolders = new System.Windows.Forms.DataGridView();
+            this.backupFolderBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -43,40 +44,38 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtDestinationFile = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
+            this.customPanel3 = new BackupService.UserControls.CustomPanel();
+            this.label7 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.radioButtonMonth = new System.Windows.Forms.RadioButton();
+            this.customPanel2 = new BackupService.UserControls.CustomPanel();
+            this.label6 = new System.Windows.Forms.Label();
             this.radioButtonWeek = new System.Windows.Forms.RadioButton();
             this.radioButtonOne = new System.Windows.Forms.RadioButton();
             this.radioButtonDay = new System.Windows.Forms.RadioButton();
             this.panel4 = new System.Windows.Forms.Panel();
             this.dtPickerStartTime = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
+            this.customPanel1 = new BackupService.UserControls.CustomPanel();
+            this.label5 = new System.Windows.Forms.Label();
             this.dtPickerStartDate = new System.Windows.Forms.DateTimePicker();
             this.btnBackup = new System.Windows.Forms.Button();
             this.saveFileDialogSetDestination = new System.Windows.Forms.SaveFileDialog();
             this.toolTipFileDrop = new System.Windows.Forms.ToolTip(this.components);
-            this.backupFolderBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.customPanel3 = new BackupService.UserControls.CustomPanel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.customPanel2 = new BackupService.UserControls.CustomPanel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.customPanel1 = new BackupService.UserControls.CustomPanel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.fullPathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.subFoldersDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.filesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sizeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBackupFolders)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backupFolderBindingSource)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel7.SuspendLayout();
-            this.panel5.SuspendLayout();
-            this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.backupFolderBindingSource)).BeginInit();
             this.customPanel3.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.customPanel2.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.customPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -103,7 +102,6 @@
             this.dataGridViewBackupFolders.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dataGridViewBackupFolders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewBackupFolders.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.fullPathDataGridViewTextBoxColumn,
             this.subFoldersDataGridViewTextBoxColumn,
             this.filesDataGridViewTextBoxColumn,
             this.sizeDataGridViewTextBoxColumn});
@@ -121,6 +119,11 @@
             this.dataGridViewBackupFolders.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridViewBackupFolders_UserDeletingRow);
             this.dataGridViewBackupFolders.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridViewBackupFolders_DragDrop);
             this.dataGridViewBackupFolders.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridViewBackupFolders_DragEnter);
+            // 
+            // backupFolderBindingSource
+            // 
+            this.backupFolderBindingSource.AllowNew = true;
+            this.backupFolderBindingSource.DataSource = typeof(BackupService.Settings.BackupFolder);
             // 
             // groupBox2
             // 
@@ -262,6 +265,30 @@
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
+            // customPanel3
+            // 
+            this.customPanel3.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.customPanel3.BorderColor = System.Drawing.Color.Silver;
+            this.customPanel3.BorderWidth = 2;
+            this.customPanel3.Controls.Add(this.label7);
+            this.customPanel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.customPanel3.Location = new System.Drawing.Point(0, 0);
+            this.customPanel3.Name = "customPanel3";
+            this.customPanel3.Size = new System.Drawing.Size(269, 27);
+            this.customPanel3.TabIndex = 15;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(80)))), ((int)(((byte)(134)))));
+            this.label7.Location = new System.Drawing.Point(10, 5);
+            this.label7.Margin = new System.Windows.Forms.Padding(5);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(126, 17);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Backup destination";
+            // 
             // panel5
             // 
             this.panel5.Controls.Add(this.radioButtonMonth);
@@ -286,13 +313,37 @@
             this.radioButtonMonth.Text = "Monthly";
             this.radioButtonMonth.UseVisualStyleBackColor = true;
             // 
+            // customPanel2
+            // 
+            this.customPanel2.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.customPanel2.BorderColor = System.Drawing.Color.Silver;
+            this.customPanel2.BorderWidth = 2;
+            this.customPanel2.Controls.Add(this.label6);
+            this.customPanel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.customPanel2.Location = new System.Drawing.Point(0, 0);
+            this.customPanel2.Name = "customPanel2";
+            this.customPanel2.Size = new System.Drawing.Size(269, 27);
+            this.customPanel2.TabIndex = 14;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(80)))), ((int)(((byte)(134)))));
+            this.label6.Location = new System.Drawing.Point(10, 5);
+            this.label6.Margin = new System.Windows.Forms.Padding(5);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(75, 17);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Recurrence";
+            // 
             // radioButtonWeek
             // 
             this.radioButtonWeek.AutoSize = true;
             this.radioButtonWeek.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioButtonWeek.Location = new System.Drawing.Point(9, 93);
             this.radioButtonWeek.Name = "radioButtonWeek";
-            this.radioButtonWeek.Size = new System.Drawing.Size(67, 21);
+            this.radioButtonWeek.Size = new System.Drawing.Size(66, 21);
             this.radioButtonWeek.TabIndex = 6;
             this.radioButtonWeek.Text = "Weekly";
             this.radioButtonWeek.UseVisualStyleBackColor = true;
@@ -355,6 +406,30 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "Start:";
             // 
+            // customPanel1
+            // 
+            this.customPanel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.customPanel1.BorderColor = System.Drawing.Color.Silver;
+            this.customPanel1.BorderWidth = 2;
+            this.customPanel1.Controls.Add(this.label5);
+            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.customPanel1.Location = new System.Drawing.Point(0, 0);
+            this.customPanel1.Name = "customPanel1";
+            this.customPanel1.Size = new System.Drawing.Size(269, 27);
+            this.customPanel1.TabIndex = 13;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(80)))), ((int)(((byte)(134)))));
+            this.label5.Location = new System.Drawing.Point(10, 5);
+            this.label5.Margin = new System.Windows.Forms.Padding(5);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(86, 17);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "When to run";
+            // 
             // dtPickerStartDate
             // 
             this.dtPickerStartDate.CalendarFont = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -381,117 +456,32 @@
             // 
             this.toolTipFileDrop.ToolTipTitle = "Drag and drop";
             // 
-            // backupFolderBindingSource
-            // 
-            this.backupFolderBindingSource.AllowNew = true;
-            this.backupFolderBindingSource.DataSource = typeof(BackupService.Settings.BackupFolder);
-            // 
-            // customPanel3
-            // 
-            this.customPanel3.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.customPanel3.BorderColor = System.Drawing.Color.Silver;
-            this.customPanel3.BorderWidth = 2;
-            this.customPanel3.Controls.Add(this.label7);
-            this.customPanel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.customPanel3.Location = new System.Drawing.Point(0, 0);
-            this.customPanel3.Name = "customPanel3";
-            this.customPanel3.Size = new System.Drawing.Size(269, 27);
-            this.customPanel3.TabIndex = 15;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(80)))), ((int)(((byte)(134)))));
-            this.label7.Location = new System.Drawing.Point(10, 5);
-            this.label7.Margin = new System.Windows.Forms.Padding(5);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(126, 17);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "Backup destination";
-            // 
-            // customPanel2
-            // 
-            this.customPanel2.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.customPanel2.BorderColor = System.Drawing.Color.Silver;
-            this.customPanel2.BorderWidth = 2;
-            this.customPanel2.Controls.Add(this.label6);
-            this.customPanel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.customPanel2.Location = new System.Drawing.Point(0, 0);
-            this.customPanel2.Name = "customPanel2";
-            this.customPanel2.Size = new System.Drawing.Size(269, 27);
-            this.customPanel2.TabIndex = 14;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(80)))), ((int)(((byte)(134)))));
-            this.label6.Location = new System.Drawing.Point(10, 5);
-            this.label6.Margin = new System.Windows.Forms.Padding(5);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(75, 17);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "Recurrence";
-            // 
-            // customPanel1
-            // 
-            this.customPanel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.customPanel1.BorderColor = System.Drawing.Color.Silver;
-            this.customPanel1.BorderWidth = 2;
-            this.customPanel1.Controls.Add(this.label5);
-            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.customPanel1.Location = new System.Drawing.Point(0, 0);
-            this.customPanel1.Name = "customPanel1";
-            this.customPanel1.Size = new System.Drawing.Size(269, 27);
-            this.customPanel1.TabIndex = 13;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(80)))), ((int)(((byte)(134)))));
-            this.label5.Location = new System.Drawing.Point(10, 5);
-            this.label5.Margin = new System.Windows.Forms.Padding(5);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(86, 17);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "When to run";
-            // 
-            // fullPathDataGridViewTextBoxColumn
-            // 
-            this.fullPathDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.fullPathDataGridViewTextBoxColumn.DataPropertyName = "FullPath";
-            this.fullPathDataGridViewTextBoxColumn.HeaderText = "Path";
-            this.fullPathDataGridViewTextBoxColumn.Name = "fullPathDataGridViewTextBoxColumn";
-            this.fullPathDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
             // subFoldersDataGridViewTextBoxColumn
             // 
-            this.subFoldersDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.subFoldersDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.subFoldersDataGridViewTextBoxColumn.DataPropertyName = "SubFolders";
+            this.subFoldersDataGridViewTextBoxColumn.FillWeight = 60F;
             this.subFoldersDataGridViewTextBoxColumn.HeaderText = "SubFolders";
             this.subFoldersDataGridViewTextBoxColumn.Name = "subFoldersDataGridViewTextBoxColumn";
             this.subFoldersDataGridViewTextBoxColumn.ReadOnly = true;
-            this.subFoldersDataGridViewTextBoxColumn.Width = 98;
             // 
             // filesDataGridViewTextBoxColumn
             // 
-            this.filesDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.filesDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.filesDataGridViewTextBoxColumn.DataPropertyName = "Files";
+            this.filesDataGridViewTextBoxColumn.FillWeight = 20F;
             this.filesDataGridViewTextBoxColumn.HeaderText = "Files";
             this.filesDataGridViewTextBoxColumn.Name = "filesDataGridViewTextBoxColumn";
             this.filesDataGridViewTextBoxColumn.ReadOnly = true;
-            this.filesDataGridViewTextBoxColumn.Width = 58;
             // 
             // sizeDataGridViewTextBoxColumn
             // 
-            this.sizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.sizeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.sizeDataGridViewTextBoxColumn.DataPropertyName = "Size";
+            this.sizeDataGridViewTextBoxColumn.FillWeight = 20F;
             this.sizeDataGridViewTextBoxColumn.HeaderText = "Size";
             this.sizeDataGridViewTextBoxColumn.Name = "sizeDataGridViewTextBoxColumn";
             this.sizeDataGridViewTextBoxColumn.ReadOnly = true;
-            this.sizeDataGridViewTextBoxColumn.Width = 56;
             // 
             // FormSettings
             // 
@@ -507,20 +497,20 @@
             this.Load += new System.EventHandler(this.FormSettings_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBackupFolders)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backupFolderBindingSource)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.backupFolderBindingSource)).EndInit();
             this.customPanel3.ResumeLayout(false);
             this.customPanel3.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
             this.customPanel2.ResumeLayout(false);
             this.customPanel2.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.customPanel1.ResumeLayout(false);
             this.customPanel1.PerformLayout();
             this.ResumeLayout(false);

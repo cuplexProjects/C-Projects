@@ -12,7 +12,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MD")]
 [assembly: AssemblyProduct("GeneralToolkitLib")]
-[assembly: AssemblyCopyright("Copyright ©  2017 Martin Dahl")]
+[assembly: AssemblyCopyright("Copyright ©  2018 Martin Dahl")]
 [assembly: AssemblyTrademark("MD")]
 [assembly: AssemblyCulture("")]
 

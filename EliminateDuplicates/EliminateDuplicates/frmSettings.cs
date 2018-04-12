@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using DeleteDuplicateFiles.Managers;
 using DeleteDuplicateFiles.Models;
 using DeleteDuplicateFiles.Services;
 using GeneralToolkitLib.ConfigHelper;
@@ -13,28 +14,30 @@ using GeneralToolkitLib.Converters;
 
 namespace DeleteDuplicateFiles
 {
-    public partial class frmSettings : Form
+    public partial class FrmSettings : Form
     {
-        private ProgramSettings AppSettings { get; set; }
+        private readonly AppSettingsManager _appSettingsManager;
+        private readonly ComputedHashService _computedHashService;
 
-        public frmSettings()
+        public FrmSettings(AppSettingsManager appSettingsManager, ComputedHashService computedHashService)
         {
+            _appSettingsManager = appSettingsManager;
+            _computedHashService = computedHashService;
             InitializeComponent();
         }
 
         private void frmSettings_Load(object sender, EventArgs e)
         {
-            AppSettingsManager.Instance.LoadSettings();
-            AppSettings = AppSettingsManager.Instance.Settings;
+            _appSettingsManager.LoadSettings();
 
-            UpdateUIFromProgramSettings();
+            UpdateUiFromProgramSettings();
             SetApplicationLogFileInfo();
         }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            UpdateProgramSettingsFromUI();
-            AppSettingsManager.Instance.SaveSettings();
+            UpdateProgramSettingsFromUi();
+            _appSettingsManager.SaveSettings();
             Close();
         }
 
@@ -43,20 +46,22 @@ namespace DeleteDuplicateFiles
             Close();
         }
 
-        private void UpdateProgramSettingsFromUI()
+        private void UpdateProgramSettingsFromUi()
         {
-            AppSettings.DeletionMode = radioRecycleBin.Checked
-                ? ProgramSettings.DeletionModes.RecycleBin
-                : ProgramSettings.DeletionModes.Permanent;
-            AppSettings.HashAlgorithm = radioCRC32.Checked
+            var settings = _appSettingsManager.Settings;
+
+            settings.HashAlgorithm = radioCRC32.Checked
                 ? ProgramSettings.HashAlgorithms.CRC32
                 : ProgramSettings.HashAlgorithms.MD5;
-            AppSettings.MasterFileSelectionMethod = radioNewestDate.Checked
+            settings.MasterFileSelectionMethod = radioNewestDate.Checked
                 ? ProgramSettings.MasterFileSelectionMethods.NewestModifiedDate
                 : ProgramSettings.MasterFileSelectionMethods.OldestModifiedDate;
-            AppSettings.MaximumNoOfHashingThreads = Convert.ToInt32(numericMaximumNoOfHashThreads.Value);
-            AppSettings.IgnoreHiddenFilesAndDirectories = chkIgnoreHiddenFilesAndDirs.Checked;
-            AppSettings.IgnoreSystemFilesAndDirectories = chkIgnoreSystemFiles.Checked;
+            settings.MaximumNoOfHashingThreads = Convert.ToInt32(numericMaximumNoOfHashThreads.Value);
+            settings.IgnoreHiddenFilesAndDirectories = chkIgnoreHiddenFilesAndDirs.Checked;
+            settings.IgnoreSystemFilesAndDirectories = chkIgnoreSystemFiles.Checked;
+            settings.DeletionMode = radioRecycleBin.Checked
+                ? ProgramSettings.DeletionModes.RecycleBin
+                : ProgramSettings.DeletionModes.Permanent;
         }
 
         private void SetApplicationLogFileInfo()
@@ -87,21 +92,22 @@ namespace DeleteDuplicateFiles
             }
         }
 
-        private void UpdateUIFromProgramSettings()
+        private void UpdateUiFromProgramSettings()
         {
-            radioRecycleBin.Checked = AppSettings.DeletionMode == ProgramSettings.DeletionModes.RecycleBin;
-            radioCRC32.Checked = AppSettings.HashAlgorithm == ProgramSettings.HashAlgorithms.CRC32;
-            radioNewestDate.Checked = AppSettings.MasterFileSelectionMethod ==
-                                      ProgramSettings.MasterFileSelectionMethods.NewestModifiedDate;
-            numericMaximumNoOfHashThreads.Value = AppSettings.MaximumNoOfHashingThreads;
-            chkIgnoreHiddenFilesAndDirs.Checked = AppSettings.IgnoreHiddenFilesAndDirectories;
-            chkIgnoreSystemFiles.Checked = AppSettings.IgnoreSystemFilesAndDirectories;
+            var settings = _appSettingsManager.Settings;
+
+            radioRecycleBin.Checked = settings.DeletionMode == ProgramSettings.DeletionModes.RecycleBin;
+            radioCRC32.Checked = settings.HashAlgorithm == ProgramSettings.HashAlgorithms.CRC32;
+            radioNewestDate.Checked = settings.MasterFileSelectionMethod == ProgramSettings.MasterFileSelectionMethods.NewestModifiedDate;
+            numericMaximumNoOfHashThreads.Value = settings.MaximumNoOfHashingThreads;
+            chkIgnoreHiddenFilesAndDirs.Checked = settings.IgnoreHiddenFilesAndDirectories;
+            chkIgnoreSystemFiles.Checked = settings.IgnoreSystemFilesAndDirectories;
         }
 
         private void btnOptimizeDb_Click(object sender, EventArgs e)
         {
             btnOptimizeDb.Enabled = false;
-            ComputedHashService.Instance.RemoveDeletedFilesFromDataBase();
+            _computedHashService.RemoveDeletedFilesFromDataBase();
         }
 
         public void EnableOptimizeDbButton()

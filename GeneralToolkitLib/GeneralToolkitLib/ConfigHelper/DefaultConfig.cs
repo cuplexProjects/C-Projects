@@ -55,7 +55,7 @@ namespace GeneralToolkitLib.ConfigHelper
             if (!_isInitialized)
                 throw new InvalidOperationException("GetApplicationLogDirectory() can only be called after initialization");
 
-            return _userDataPath + _logFileName;
+            return Path.Combine(_userDataPath, _logFileName);
         }
 
         private static string GetAssemblyPath(string fullAssemblyPath)
@@ -74,7 +74,7 @@ namespace GeneralToolkitLib.ConfigHelper
             if (!_isInitialized)
                 throw new InvalidOperationException("GetHashtableFilename() can only be called after initialization");
 
-            return _userDataPath + UserDbFileName;
+            return Path.Combine(_userDataPath, UserDbFileName);
         }
 
         public static string GetUserDataDirectoryPath()

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DeleteDuplicateFiles.Managers;
 
 #endregion
 
@@ -10,7 +11,7 @@ namespace DeleteDuplicateFiles.Models
 {
     public delegate void SearchProgressEventHandler(object sender, SearchProgressEventArgs e);
 
-    public delegate void RemoveDeletedHashDBItemsEventHandler(object sender, FileHashRemovalEventArgs e);
+    public delegate void RemoveDeletedHashDbItemsEventHandler(object sender, FileHashRemovalEventArgs e);
 
     public class DuplicateFileComparer : IComparer<DuplicateFile>
     {
@@ -35,10 +36,10 @@ namespace DeleteDuplicateFiles.Models
                 var preferredDirectories = _searchProfileManager.CurrentProfile.PreferredDirecoryList;
                 
 
-                if (preferredDirectories.Any(pd => x.Dir.StartsWith(pd.Path)))
+                if (preferredDirectories.Any(pd => x.GetDirectory().StartsWith(pd.Path)))
                 {
-                    PreferredDirectory preferredDirectoryX =preferredDirectories.First(pd => x.Dir.StartsWith(pd.Path));
-                    PreferredDirectory preferredDirectoryY =preferredDirectories.FirstOrDefault(pd => y.Dir.StartsWith(pd.Path));
+                    PreferredDirectory preferredDirectoryX =preferredDirectories.First(pd => x.GetDirectory().StartsWith(pd.Path));
+                    PreferredDirectory preferredDirectoryY =preferredDirectories.FirstOrDefault(pd => y.GetDirectory().StartsWith(pd.Path));
                     return preferredDirectoryY == null
                         ? -1
                         : preferredDirectoryX.SortOrder.CompareTo(preferredDirectoryY.SortOrder);

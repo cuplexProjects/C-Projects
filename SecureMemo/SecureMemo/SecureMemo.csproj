@@ -51,12 +51,13 @@
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>12FC74622D2E79BE0690E930C780629307196A49</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>71C6FFC4613CC73AEB8906237393AADEE29F838E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>Custom</TargetZone>
@@ -97,8 +98,7 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>SecureMemo_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>SecureMemo.Program</StartupObject>
@@ -335,6 +335,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="SecureMemoSignKey.pfx" />
+    <None Include="SecureMemo_1_TemporaryKey.pfx" />
     <None Include="SecureMemo_TemporaryKey.pfx" />
     <None Include="WorkTempSignKey.pfx" />
   </ItemGroup>

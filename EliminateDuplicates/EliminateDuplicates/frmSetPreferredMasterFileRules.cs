@@ -12,36 +12,36 @@ using DeleteDuplicateFiles.Models;
 
 namespace DeleteDuplicateFiles
 {
-    public partial class frmSetPreferredMasterFileRules : Form
+    public partial class FrmSetPreferredMasterFileRules : Form
     {
-        private readonly BindingList<PreferredDirectory> preferredDirectoryList;
+        private readonly BindingList<PreferredDirectory> _preferredDirectoryList;
 
-        public frmSetPreferredMasterFileRules()
+        public FrmSetPreferredMasterFileRules()
         {
             InitializeComponent();
-            preferredDirectoryList = new BindingList<PreferredDirectory>();
-            lstPerferedDirectories.DataSource = preferredDirectoryList;
+            _preferredDirectoryList = new BindingList<PreferredDirectory>();
+            lstPerferedDirectories.DataSource = _preferredDirectoryList;
         }
 
         public void SetPreferredDirectories(IEnumerable<PreferredDirectory> preferredDirectories)
         {
-            preferredDirectoryList.Clear();
+            _preferredDirectoryList.Clear();
             foreach (var preferredDirectory in preferredDirectories)
             {
-                preferredDirectoryList.Add(preferredDirectory);
+                _preferredDirectoryList.Add(preferredDirectory);
             }
         }
 
         public List<PreferredDirectory> GetPreferredDirectories()
         {
-            return preferredDirectoryList.ToList();
+            return _preferredDirectoryList.ToList();
         }
 
         private void UpdateSortOrderForListItems()
         {
-            for (int i = 0; i < preferredDirectoryList.Count; i++)
+            for (int i = 0; i < _preferredDirectoryList.Count; i++)
             {
-                preferredDirectoryList[i].SortOrder = i;
+                _preferredDirectoryList[i].SortOrder = i;
             }
         }
 
@@ -59,12 +59,12 @@ namespace DeleteDuplicateFiles
         {
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
-                preferredDirectoryList.Add(new PreferredDirectory
+                _preferredDirectoryList.Add(new PreferredDirectory
                 {
                     Path = folderBrowserDialog1.SelectedPath,
-                    SortOrder = preferredDirectoryList.Count
+                    SortOrder = _preferredDirectoryList.Count
                 });
-                lstPerferedDirectories.SelectedItem = preferredDirectoryList[preferredDirectoryList.Count - 1];
+                lstPerferedDirectories.SelectedItem = _preferredDirectoryList[_preferredDirectoryList.Count - 1];
                 txtEditPath.Text = "";
             }
         }
@@ -74,26 +74,26 @@ namespace DeleteDuplicateFiles
             string path = txtEditPath.Text;
             if (Directory.Exists(path))
             {
-                if (preferredDirectoryList.Any(pd => pd.Path == path))
+                if (_preferredDirectoryList.Any(pd => pd.Path == path))
                 {
                     MessageBox.Show("Can not add already existing directory");
                     return;
                 }
-                int sortOrder = preferredDirectoryList.Count;
-                preferredDirectoryList.Add(new PreferredDirectory {Path = path, SortOrder = sortOrder});
-                lstPerferedDirectories.SelectedItem = preferredDirectoryList[sortOrder];
+                int sortOrder = _preferredDirectoryList.Count;
+                _preferredDirectoryList.Add(new PreferredDirectory {Path = path, SortOrder = sortOrder});
+                lstPerferedDirectories.SelectedItem = _preferredDirectoryList[sortOrder];
                 txtEditPath.Text = "";
             }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (preferredDirectoryList.Count > 0 && lstPerferedDirectories.SelectedItem != null)
+            if (_preferredDirectoryList.Count > 0 && lstPerferedDirectories.SelectedItem != null)
             {
                 PreferredDirectory directory = lstPerferedDirectories.SelectedItem as PreferredDirectory;
                 if (directory != null)
                 {
-                    preferredDirectoryList.Remove(directory);
+                    _preferredDirectoryList.Remove(directory);
                     UpdateSortOrderForListItems();
                 }
             }
@@ -101,13 +101,13 @@ namespace DeleteDuplicateFiles
 
         private void btnMoveDown_Click(object sender, EventArgs e)
         {
-            if (preferredDirectoryList.Count > 0 && lstPerferedDirectories.SelectedItem != null)
+            if (_preferredDirectoryList.Count > 0 && lstPerferedDirectories.SelectedItem != null)
             {
                 PreferredDirectory directory = lstPerferedDirectories.SelectedItem as PreferredDirectory;
-                if (directory != preferredDirectoryList.Last())
+                if (directory != _preferredDirectoryList.Last())
                 {
-                    preferredDirectoryList[directory.SortOrder] = preferredDirectoryList[directory.SortOrder + 1];
-                    preferredDirectoryList[directory.SortOrder + 1] = directory;
+                    _preferredDirectoryList[directory.SortOrder] = _preferredDirectoryList[directory.SortOrder + 1];
+                    _preferredDirectoryList[directory.SortOrder + 1] = directory;
 
                     UpdateSortOrderForListItems();
                     lstPerferedDirectories.SelectedItem = directory;
@@ -117,13 +117,13 @@ namespace DeleteDuplicateFiles
 
         private void btnMoveUp_Click(object sender, EventArgs e)
         {
-            if (preferredDirectoryList.Count > 0 && lstPerferedDirectories.SelectedItem != null)
+            if (_preferredDirectoryList.Count > 0 && lstPerferedDirectories.SelectedItem != null)
             {
                 PreferredDirectory directory = lstPerferedDirectories.SelectedItem as PreferredDirectory;
-                if (directory != preferredDirectoryList.First())
+                if (directory != _preferredDirectoryList.First())
                 {
-                    preferredDirectoryList[directory.SortOrder] = preferredDirectoryList[directory.SortOrder - 1];
-                    preferredDirectoryList[directory.SortOrder - 1] = directory;
+                    _preferredDirectoryList[directory.SortOrder] = _preferredDirectoryList[directory.SortOrder - 1];
+                    _preferredDirectoryList[directory.SortOrder - 1] = directory;
 
                     UpdateSortOrderForListItems();
                     lstPerferedDirectories.SelectedItem = directory;

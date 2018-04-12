@@ -32,16 +32,16 @@ namespace SecureMemo
             //GlobalSettings.Initialize(Assembly.GetExecutingAssembly().GetName().Name, false);
             //Log.SetMinimumLogLevel(LogWriter.LogLevel.Debug);
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
 
-            using (var scope = Container.BeginLifetimeScope())
-            {
-                FormMain frmMain = scope.Resolve<FormMain>();
-                Application.Run(frmMain);
-            }
+            //using (var scope = Container.BeginLifetimeScope())
+            //{
+            //    FormMain frmMain = scope.Resolve<FormMain>();
+            //    Application.Run(frmMain);
+            //}
 
-            return;
+            //return;
 
             //GlobalSettings.Initialize(Assembly.GetExecutingAssembly().GetName().Name, true);
             //Log.SetMinimumLogLevel(LogWriter.LogLevel.Warning);

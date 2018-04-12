@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Cuplex")]
 [assembly: AssemblyProduct("Delete Duplicates")]
-[assembly: AssemblyCopyright("Martin Dahl Copyright ©  2017")]
+[assembly: AssemblyCopyright("Martin Dahl Copyright ©  2018")]
 [assembly: AssemblyTrademark("Martin Dahl")]
 [assembly: AssemblyCulture("")]
 
@@ -39,5 +39,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.4.1.0")]
-[assembly: AssemblyFileVersion("1.4.1.0")]
+[assembly: AssemblyVersion("2.0.1.1")]
+[assembly: AssemblyFileVersion("2.0.1.1")]

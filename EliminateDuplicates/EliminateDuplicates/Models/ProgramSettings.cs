@@ -51,7 +51,7 @@ namespace DeleteDuplicateFiles.Models
         [DataMember(Name = "HashAlgorithm", Order = 1)]
         public HashAlgorithms HashAlgorithm
         {
-            get { return _hashAlgorithm; }
+            get => _hashAlgorithm;
             set
             {
                 if (_hashAlgorithm != value)
@@ -64,7 +64,7 @@ namespace DeleteDuplicateFiles.Models
         [DataMember(Name = "MasterFileSelectionMethod", Order = 2)]
         public MasterFileSelectionMethods MasterFileSelectionMethod
         {
-            get { return _masterFileSelectionMethod; }
+            get => _masterFileSelectionMethod;
             set
             {
                 if (_masterFileSelectionMethod != value)
@@ -77,7 +77,7 @@ namespace DeleteDuplicateFiles.Models
         [DataMember(Name = "DeletionMode", Order = 3)]
         public DeletionModes DeletionMode
         {
-            get { return _deletionMode; }
+            get => _deletionMode;
             set
             {
                 if (_deletionMode != value)
@@ -90,7 +90,7 @@ namespace DeleteDuplicateFiles.Models
         [DataMember(Name = "MaximumNoOfHashingThreads", Order = 4)]
         public int MaximumNoOfHashingThreads
         {
-            get { return _maximumNoOfHashingThreads; }
+            get => _maximumNoOfHashingThreads;
             set
             {
                 if (_maximumNoOfHashingThreads != value)
@@ -103,7 +103,7 @@ namespace DeleteDuplicateFiles.Models
         [DataMember(Name = "IgnoreHiddenFilesAndDirectories", Order = 5)]
         public bool IgnoreHiddenFilesAndDirectories
         {
-            get { return _ignoreHiddenFilesAndDirectories; }
+            get => _ignoreHiddenFilesAndDirectories;
             set
             {
                 if (_ignoreHiddenFilesAndDirectories != value)
@@ -116,7 +116,7 @@ namespace DeleteDuplicateFiles.Models
         [DataMember(Name = "IgnoreSystemFilesAndDirectories", Order = 6)]
         public bool IgnoreSystemFilesAndDirectories
         {
-            get { return _ignoreSystemFilesAndDirectories; }
+            get => _ignoreSystemFilesAndDirectories;
             set
             {
                 if (_ignoreSystemFilesAndDirectories != value)
@@ -128,7 +128,7 @@ namespace DeleteDuplicateFiles.Models
         [DataMember(Name = "LastProfileFilePath", Order = 7)]
         public string LastProfileFilePath
         {
-            get { return _lastProfileFilePath; }
+            get => _lastProfileFilePath;
             set
             {
                 if (_lastProfileFilePath != value)

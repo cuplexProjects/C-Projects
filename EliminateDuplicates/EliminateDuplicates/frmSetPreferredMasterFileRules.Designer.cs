@@ -1,6 +1,6 @@
 ﻿namespace DeleteDuplicateFiles
 {
-    partial class frmSetPreferredMasterFileRules
+    partial class FrmSetPreferredMasterFileRules
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSetPreferredMasterFileRules));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmSetPreferredMasterFileRules));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -182,7 +182,7 @@
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(475, 350);
-            this.Name = "frmSetPreferredMasterFileRules";
+            this.Name = "FrmSetPreferredMasterFileRules";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Set preferred directories";
             this.groupBox1.ResumeLayout(false);

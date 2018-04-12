@@ -7,16 +7,16 @@ namespace DeleteDuplicateFiles.WindowsApi
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool ChangeWindowMessageFilter(uint message, uint dwFlag);
 
-        private const uint WM_DROPFILES = 0x233;
-        private const uint WM_COPYDATA = 0x004A;
-        private const uint WM_COPYGLOBALDATA = 0x0049;
-        private const uint MSGFLT_ADD = 1;
+        private const uint WmDropfiles = 0x233;
+        private const uint WmCopydata = 0x004A;
+        private const uint WmCopyglobaldata = 0x0049;
+        private const uint MsgfltAdd = 1;
 
         public static void AllowDragAndDropWhenExecutionLevelIsAdministrator()
         {
-            ChangeWindowMessageFilter(WM_DROPFILES, MSGFLT_ADD);
-            ChangeWindowMessageFilter(WM_COPYDATA, MSGFLT_ADD);
-            ChangeWindowMessageFilter(WM_COPYGLOBALDATA, MSGFLT_ADD);
+            ChangeWindowMessageFilter(WmDropfiles, MsgfltAdd);
+            ChangeWindowMessageFilter(WmCopydata, MsgfltAdd);
+            ChangeWindowMessageFilter(WmCopyglobaldata, MsgfltAdd);
         }
     }
 }

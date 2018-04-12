@@ -5,42 +5,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using DeleteDuplicateFiles.Annotations;
+using DeleteDuplicateFiles.DataModels;
 
 #endregion
 
 namespace DeleteDuplicateFiles.Models
 {
-    [Serializable]
-    [DataContract]
-    public class ScanFolderListItem : IComparable<ScanFolderListItem>, IEquatable<ScanFolderListItem>, INotifyPropertyChanged
+    public class ScanFolderListItem : ScanFolderListItemDataModel, IComparable<ScanFolderListItem>, IEquatable<ScanFolderListItem>
     {
-        [DataMember(Order = 1, Name = "FullPath")]
-        private string _fullPath;
-
-        [DataMember(Order = 2, Name = "SortOrder")]
-        private int _sortOrder;
-
-        public string FullPath
-        {
-            get { return _fullPath; }
-            set
-            {
-                _fullPath = value;
-                OnPropertyChanged(nameof(FullPath));
-            }
-        }
-
-        
-        public int SortOrder
-        {
-            get { return _sortOrder; }
-            set
-            {
-                _sortOrder = value;
-                OnPropertyChanged(nameof(SortOrder));
-            }
-        }
-
         public string Drive
         {
             get
@@ -103,6 +75,9 @@ namespace DeleteDuplicateFiles.Models
 
         public bool Equals(ScanFolderListItem other)
         {
+            if (other == null)
+                return false;
+
             if (FullPath != null && other.FullPath != null)
                 return FullPath == other.FullPath;
 
@@ -112,14 +87,6 @@ namespace DeleteDuplicateFiles.Models
         public override string ToString()
         {
             return FullPath;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

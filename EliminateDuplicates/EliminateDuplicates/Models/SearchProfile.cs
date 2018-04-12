@@ -9,11 +9,11 @@ namespace DeleteDuplicateFiles.Models
 {
     [Serializable]
     [DataContract]
-    public class SearchProfile: INotifyPropertyChanged,IDisposable
+    public class SearchProfile : INotifyPropertyChanged, IDisposable
     {
         [DataMember(Order = 1, IsRequired = true, Name = "ScanFolderList")]
         private List<ScanFolderListItem> _scanFolderList;
-        
+
         [DataMember(Order = 2, IsRequired = true, Name = "PreferredDirecoryList")]
         private List<PreferredDirectory> _preferredDirecoryList;
 
@@ -22,22 +22,27 @@ namespace DeleteDuplicateFiles.Models
 
         [DataMember(Order = 4, IsRequired = true, Name = "ProfileName")]
         private string _profileName;
-       
+
+        protected SearchProfile()
+        {
+
+        }
+
         public List<ScanFolderListItem> ScanFolderList => _scanFolderList;
 
         public List<PreferredDirectory> PreferredDirecoryList
         {
-            get { return _preferredDirecoryList; }
+            get => _preferredDirecoryList;
             set
             {
                 _preferredDirecoryList = value;
                 OnPropertyChanged(nameof(PreferredDirecoryList));
             }
         }
-        
+
         public string FileNameFilter
         {
-            get { return _fileNameFilter; }
+            get => _fileNameFilter;
             set
             {
                 _fileNameFilter = value;
@@ -45,10 +50,9 @@ namespace DeleteDuplicateFiles.Models
             }
         }
 
-        
         public string ProfileName
         {
-            get { return _profileName; }
+            get => _profileName;
             set
             {
                 _profileName = value;
@@ -66,12 +70,21 @@ namespace DeleteDuplicateFiles.Models
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void CreateNewScanFolderList()
+        internal static SearchProfile CreateDefaultProfile(string profileName)
+        {
+            var profile = new SearchProfile { ProfileName = profileName };
+            profile.CreateNewScanFolderList();
+            profile.PreferredDirecoryList = new List<PreferredDirectory>();
+
+            return profile;
+        }
+
+        private void CreateNewScanFolderList()
         {
             _preferredDirecoryList = new List<PreferredDirectory>();
             _scanFolderList = new List<ScanFolderListItem>();
