@@ -1,18 +1,17 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using DeleteDuplicateFiles.Annotations;
 using DeleteDuplicateFiles.DataModels;
 
-#endregion
-
 namespace DeleteDuplicateFiles.Models
 {
-    public class ScanFolderListItem : ScanFolderListItemDataModel, IComparable<ScanFolderListItem>, IEquatable<ScanFolderListItem>
+    public class ScanFolderListItem : IComparable<ScanFolderListItem>, IEquatable<ScanFolderListItem>
     {
+        public string FullPath;
+        public int SortOrder;
+
         public string Drive
         {
             get
@@ -88,5 +87,7 @@ namespace DeleteDuplicateFiles.Models
         {
             return FullPath;
         }
+
+
     }
 }

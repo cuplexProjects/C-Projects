@@ -159,7 +159,7 @@
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(200, 9);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(3);
             this.flowLayoutPanel1.Size = new System.Drawing.Size(243, 24);
             this.flowLayoutPanel1.TabIndex = 16;
             this.flowLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel1_Paint);
@@ -242,7 +242,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 153);
-            this.label2.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label2.Margin = new System.Windows.Forms.Padding(3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(127, 13);
             this.label2.TabIndex = 5;
@@ -264,7 +264,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 19);
-            this.label1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label1.Margin = new System.Windows.Forms.Padding(3);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 13);
             this.label1.TabIndex = 2;
@@ -277,7 +277,7 @@
             this.lbResults.Location = new System.Drawing.Point(0, 0);
             this.lbResults.Name = "lbResults";
             this.lbResults.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbResults.Size = new System.Drawing.Size(242, 323);
+            this.lbResults.Size = new System.Drawing.Size(241, 323);
             this.lbResults.TabIndex = 1;
             this.lbResults.SelectedIndexChanged += new System.EventHandler(this.lbResults_SelectedIndexChanged);
             this.lbResults.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lbResults_KeyUp);
@@ -305,7 +305,7 @@
             this.lblSearchStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSearchStatus.AutoSize = true;
             this.lblSearchStatus.Location = new System.Drawing.Point(310, 348);
-            this.lblSearchStatus.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblSearchStatus.Margin = new System.Windows.Forms.Padding(3);
             this.lblSearchStatus.Name = "lblSearchStatus";
             this.lblSearchStatus.Size = new System.Drawing.Size(67, 13);
             this.lblSearchStatus.TabIndex = 12;
@@ -316,7 +316,7 @@
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(269, 348);
-            this.label7.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label7.Margin = new System.Windows.Forms.Padding(3);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(40, 13);
             this.label7.TabIndex = 11;
@@ -327,7 +327,7 @@
             this.lblSearchResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSearchResults.AutoSize = true;
             this.lblSearchResults.Location = new System.Drawing.Point(85, 349);
-            this.lblSearchResults.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblSearchResults.Margin = new System.Windows.Forms.Padding(3);
             this.lblSearchResults.Name = "lblSearchResults";
             this.lblSearchResults.Size = new System.Drawing.Size(13, 13);
             this.lblSearchResults.TabIndex = 10;
@@ -338,7 +338,7 @@
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(6, 349);
-            this.label5.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label5.Margin = new System.Windows.Forms.Padding(3);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(77, 13);
             this.label5.TabIndex = 9;
@@ -362,7 +362,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.groupBox4);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox3);
             this.splitContainer1.Size = new System.Drawing.Size(490, 323);
-            this.splitContainer1.SplitterDistance = 242;
+            this.splitContainer1.SplitterDistance = 241;
             this.splitContainer1.TabIndex = 8;
             // 
             // groupBox5
@@ -380,7 +380,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox5.Location = new System.Drawing.Point(0, 210);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(244, 113);
+            this.groupBox5.Size = new System.Drawing.Size(245, 113);
             this.groupBox5.TabIndex = 2;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "File Info";
@@ -389,7 +389,7 @@
             // 
             this.lblLastWriteTimeInfo.AutoSize = true;
             this.lblLastWriteTimeInfo.Location = new System.Drawing.Point(96, 92);
-            this.lblLastWriteTimeInfo.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblLastWriteTimeInfo.Margin = new System.Windows.Forms.Padding(3);
             this.lblLastWriteTimeInfo.Name = "lblLastWriteTimeInfo";
             this.lblLastWriteTimeInfo.Size = new System.Drawing.Size(106, 13);
             this.lblLastWriteTimeInfo.TabIndex = 12;
@@ -399,7 +399,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(6, 92);
-            this.label11.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label11.Margin = new System.Windows.Forms.Padding(3);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(84, 13);
             this.label11.TabIndex = 11;
@@ -409,7 +409,7 @@
             // 
             this.lblCreationTimeInfo.AutoSize = true;
             this.lblCreationTimeInfo.Location = new System.Drawing.Point(96, 73);
-            this.lblCreationTimeInfo.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblCreationTimeInfo.Margin = new System.Windows.Forms.Padding(3);
             this.lblCreationTimeInfo.Name = "lblCreationTimeInfo";
             this.lblCreationTimeInfo.Size = new System.Drawing.Size(106, 13);
             this.lblCreationTimeInfo.TabIndex = 10;
@@ -419,7 +419,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(6, 73);
-            this.label10.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label10.Margin = new System.Windows.Forms.Padding(3);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(72, 13);
             this.label10.TabIndex = 9;
@@ -429,7 +429,7 @@
             // 
             this.lblFileNameInfo.AutoSize = true;
             this.lblFileNameInfo.Location = new System.Drawing.Point(96, 35);
-            this.lblFileNameInfo.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblFileNameInfo.Margin = new System.Windows.Forms.Padding(3);
             this.lblFileNameInfo.Name = "lblFileNameInfo";
             this.lblFileNameInfo.Size = new System.Drawing.Size(54, 13);
             this.lblFileNameInfo.TabIndex = 8;
@@ -439,7 +439,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(6, 35);
-            this.label8.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label8.Margin = new System.Windows.Forms.Padding(3);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(52, 13);
             this.label8.TabIndex = 7;
@@ -449,7 +449,7 @@
             // 
             this.lblFileSizeInfo.AutoSize = true;
             this.lblFileSizeInfo.Location = new System.Drawing.Point(96, 54);
-            this.lblFileSizeInfo.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblFileSizeInfo.Margin = new System.Windows.Forms.Padding(3);
             this.lblFileSizeInfo.Name = "lblFileSizeInfo";
             this.lblFileSizeInfo.Size = new System.Drawing.Size(41, 13);
             this.lblFileSizeInfo.TabIndex = 6;
@@ -459,7 +459,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(6, 54);
-            this.label6.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label6.Margin = new System.Windows.Forms.Padding(3);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(30, 13);
             this.label6.TabIndex = 5;
@@ -469,7 +469,7 @@
             // 
             this.lblDirectoryInfo.AutoSize = true;
             this.lblDirectoryInfo.Location = new System.Drawing.Point(96, 16);
-            this.lblDirectoryInfo.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblDirectoryInfo.Margin = new System.Windows.Forms.Padding(3);
             this.lblDirectoryInfo.Name = "lblDirectoryInfo";
             this.lblDirectoryInfo.Size = new System.Drawing.Size(59, 13);
             this.lblDirectoryInfo.TabIndex = 4;
@@ -479,7 +479,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(6, 16);
-            this.label4.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label4.Margin = new System.Windows.Forms.Padding(3);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(52, 13);
             this.label4.TabIndex = 3;
@@ -494,7 +494,7 @@
             this.groupBox4.Location = new System.Drawing.Point(0, 69);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.groupBox4.Size = new System.Drawing.Size(243, 135);
+            this.groupBox4.Size = new System.Drawing.Size(244, 135);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Duplicates";
@@ -505,7 +505,7 @@
             this.lbDuplicateFiles.FormattingEnabled = true;
             this.lbDuplicateFiles.Location = new System.Drawing.Point(5, 16);
             this.lbDuplicateFiles.Name = "lbDuplicateFiles";
-            this.lbDuplicateFiles.Size = new System.Drawing.Size(233, 116);
+            this.lbDuplicateFiles.Size = new System.Drawing.Size(234, 116);
             this.lbDuplicateFiles.TabIndex = 0;
             this.lbDuplicateFiles.SelectedIndexChanged += new System.EventHandler(this.lbDuplicateFiles_SelectedIndexChanged);
             // 
@@ -516,7 +516,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(244, 63);
+            this.groupBox3.Size = new System.Drawing.Size(245, 63);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Master File";
@@ -528,7 +528,7 @@
             this.txtMasterFilename.Location = new System.Drawing.Point(6, 33);
             this.txtMasterFilename.Name = "txtMasterFilename";
             this.txtMasterFilename.ReadOnly = true;
-            this.txtMasterFilename.Size = new System.Drawing.Size(232, 20);
+            this.txtMasterFilename.Size = new System.Drawing.Size(233, 20);
             this.txtMasterFilename.TabIndex = 1;
             this.txtMasterFilename.Click += new System.EventHandler(this.txtMasterFilename_Click);
             // 
@@ -554,9 +554,9 @@
             // 
             this.btnDeleteFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDeleteFiles.Enabled = false;
-            this.btnDeleteFiles.Location = new System.Drawing.Point(369, 617);
+            this.btnDeleteFiles.Location = new System.Drawing.Point(355, 617);
             this.btnDeleteFiles.Name = "btnDeleteFiles";
-            this.btnDeleteFiles.Size = new System.Drawing.Size(145, 28);
+            this.btnDeleteFiles.Size = new System.Drawing.Size(150, 33);
             this.btnDeleteFiles.TabIndex = 2;
             this.btnDeleteFiles.Text = "Delete All Selected Copies";
             this.btnDeleteFiles.UseVisualStyleBackColor = true;
@@ -781,9 +781,9 @@
             // 
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSearch.Enabled = false;
-            this.btnSearch.Location = new System.Drawing.Point(284, 617);
+            this.btnSearch.Location = new System.Drawing.Point(271, 616);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(80, 28);
+            this.btnSearch.Size = new System.Drawing.Size(80, 34);
             this.btnSearch.TabIndex = 4;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -817,7 +817,7 @@
             this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(3, 26);
-            this.label15.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label15.Margin = new System.Windows.Forms.Padding(3);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(91, 13);
             this.label15.TabIndex = 13;
@@ -828,7 +828,7 @@
             this.lblFileHashInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblFileHashInfo.AutoSize = true;
             this.lblFileHashInfo.Location = new System.Drawing.Point(156, 26);
-            this.lblFileHashInfo.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblFileHashInfo.Margin = new System.Windows.Forms.Padding(3);
             this.lblFileHashInfo.Name = "lblFileHashInfo";
             this.lblFileHashInfo.Size = new System.Drawing.Size(16, 13);
             this.lblFileHashInfo.TabIndex = 12;
@@ -839,7 +839,7 @@
             this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(3, 5);
-            this.label12.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.label12.Margin = new System.Windows.Forms.Padding(3);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(147, 13);
             this.label12.TabIndex = 10;
@@ -850,13 +850,13 @@
             this.lblFileHashesRunning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblFileHashesRunning.AutoSize = true;
             this.lblFileHashesRunning.Location = new System.Drawing.Point(156, 5);
-            this.lblFileHashesRunning.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblFileHashesRunning.Margin = new System.Windows.Forms.Padding(3);
             this.lblFileHashesRunning.Name = "lblFileHashesRunning";
             this.lblFileHashesRunning.Size = new System.Drawing.Size(13, 13);
             this.lblFileHashesRunning.TabIndex = 11;
             this.lblFileHashesRunning.Text = "0";
             // 
-            // frmMain
+            // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -870,9 +870,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(474, 699);
+            this.MinimumSize = new System.Drawing.Size(485, 699);
             this.Name = "FrmMain";
-            this.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Padding = new System.Windows.Forms.Padding(5);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "//Replcaed with current assembly values\\\\";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);

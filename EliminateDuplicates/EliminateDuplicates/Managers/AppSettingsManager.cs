@@ -1,82 +1,50 @@
 ﻿using System;
-using System.Windows.Forms;
+using DeleteDuplicateFiles.Library.Events;
 using DeleteDuplicateFiles.Models;
-using GeneralToolkitLib.Storage.Registry;
 using JetBrains.Annotations;
 
 namespace DeleteDuplicateFiles.Managers
 {
     [UsedImplicitly]
-    public class AppSettingsManager : ManagerBase, IDisposable
+    public class AppSettingsManager : ManagerBase
     {
-        private SettingsState _settingsState;
+        private ApplicationSettingsModel _applicationSettings;
+        
 
+        public event SettingsChangedEventHandler OnSettingsChanged;
 
-        public AppSettingsManager()
+        public ApplicationSettingsModel ApplicationSettings
         {
-            Settings = new ProgramSettings();
-            Settings.PropertyChanged += Settings_PropertyChanged;
-            _settingsState = SettingsState.None;
-        }
-
-        private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            _settingsState = _settingsState | SettingsState.IsDirty;
-        }
-
-        public ProgramSettings Settings { get; private set; }
-
-    
-
-        public bool HasLoadedSettings => (_settingsState & SettingsState.HasLoadedSettings) == SettingsState.HasLoadedSettings;
-        public bool HasSavedSettings => (_settingsState & SettingsState.HasSavedSettings) == SettingsState.HasSavedSettings;
-
-        public void Dispose()
-        {
-           
-        }
-
-        public void LoadSettings()
-        {
-            var modifyRegistry = new RegistryAccess(Application.ProductName);
-
-            if (Settings != null)
-                Settings.PropertyChanged -= Settings_PropertyChanged;
-
-            Settings = modifyRegistry.ReadObjectFromRegistry<ProgramSettings>() ?? new ProgramSettings();
-            Settings.PropertyChanged += Settings_PropertyChanged;
-            _settingsState = _settingsState | SettingsState.HasLoadedSettings;
-            RemoveIsDirty();
-        }
-
-        public void SaveSettings()
-        {
-            var modifyRegistry = new RegistryAccess(Application.ProductName);
-            modifyRegistry.SaveObjectToRegistry(Settings);
-            _settingsState = _settingsState | SettingsState.HasSavedSettings;
-            RemoveIsDirty();
-        }
-
-        private void RemoveIsDirty()
-        {
-            if ((_settingsState & SettingsState.IsDirty) == SettingsState.IsDirty)
+            get
             {
-                _settingsState = _settingsState ^ SettingsState.IsDirty;
+                return _applicationSettings;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+
+                if (!value.Equals(_applicationSettings))
+                {
+                    OnSettingsChanged?.Invoke(this, new SettingsChangedEventArgs(_applicationSettings, value));
+                }
+
+                _applicationSettings = value;
             }
         }
 
-        public bool HasStateFlag(SettingsState settingsState)
+        public bool ValidateSettings(ApplicationSettingsModel applicationSettings)
         {
-            return (_settingsState & settingsState) > 0;
+            return applicationSettings.MaximumNoOfHashingThreads != 0 && applicationSettings.MasterFileSelectionMethod != 0 && applicationSettings.DeletionMode != 0 && applicationSettings.HashAlgorithm != 0;
         }
-    }
 
-    [Flags]
-    public enum SettingsState
-    {
-        None = 0,
-        HasLoadedSettings = 1,
-        HasSavedSettings = 2,
-        IsDirty = 4
+        public ApplicationSettingsModel GetDefaultSettings()
+        {
+            return ApplicationSettingsModel.GetDefaultSettings();
+        }
+
+
     }
 }

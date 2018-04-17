@@ -1,21 +1,23 @@
-﻿#region
-
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-
-#endregion
+﻿using System.Collections.Generic;
+using AutoMapper;
+using DeleteDuplicateFiles.DataModels;
 
 namespace DeleteDuplicateFiles.Models
 {
-    [DataContract]
     public class FileHashCollection
     {
         public FileHashCollection()
         {
-            FileHashDictionary = new Dictionary<string, ComputedFileHash>();
+            FileHashDictionary = new Dictionary<string, ComputedFileHashModel>();
         }
 
-        [DataMember(Name = "FileHashDictionary", Order = 1)]
-        public Dictionary<string, ComputedFileHash> FileHashDictionary { get; set; }
+    
+        public Dictionary<string, ComputedFileHashModel> FileHashDictionary { get; set; }
+
+        public static void CreateMappings(IProfileExpression expression)
+        {
+            expression.CreateMap<FileHashCollection, FileHashCollectionDataModel>()
+                .ReverseMap();
+        }
     }
 }

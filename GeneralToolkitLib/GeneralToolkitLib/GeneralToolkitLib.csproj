@@ -99,9 +99,11 @@
     <Reference Include="System.Activities" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Reflection.Context" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
@@ -143,7 +145,7 @@
     <Compile Include="Compression\SevenZip\ISetDecoderProperties.cs" />
     <Compile Include="Compression\SevenZip\IWriteCoderProperties.cs" />
     <Compile Include="ConfigHelper\AssemblyHelper.cs" />
-    <Compile Include="ConfigHelper\DefaultConfig.cs" />
+    <Compile Include="ConfigHelper\GlobalSettings.cs" />
     <Compile Include="ConfigHelper\IniConfigFileManager.cs" />
     <Compile Include="Configuration\ApplicationBuildConfig.cs" />
     <Compile Include="Converters\Base32.cs" />
@@ -169,6 +171,7 @@
     <Compile Include="Encryption\Licence\StaticData\SerialNumbersSettings.cs" />
     <Compile Include="Encryption\Licence\SysInfoManager.cs" />
     <Compile Include="Events\Unsubscriber.cs" />
+    <Compile Include="Utility\TypedObjectCompare.cs" />
     <Compile Include="Hashing\ChecksumFileGenerator.cs" />
     <Compile Include="Hashing\ChecksumProgress.cs" />
     <Compile Include="Hashing\CRC32.cs" />

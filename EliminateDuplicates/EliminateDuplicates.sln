@@ -41,12 +41,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_TaskErrorCategory = Error
-		RESX_PrefixTranslations = False
-		RESX_ExcelExportMode = SingleSheet
-		RESX_ShowPerformanceTraces = True
-		RESX_AutoCreateNewLanguageFiles = True
-		RESX_SortFileContentOnSave = True
 		SolutionGuid = {91C82A6B-8B60-4625-BCCE-81E8E90643D8}
+		RESX_SortFileContentOnSave = True
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_ShowPerformanceTraces = True
+		RESX_ExcelExportMode = SingleSheet
+		RESX_PrefixTranslations = False
+		RESX_TaskErrorCategory = Error
 	EndGlobalSection
 EndGlobal

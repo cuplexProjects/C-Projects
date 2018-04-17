@@ -1,29 +1,26 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using DeleteDuplicateFiles.DataModels;
 using DeleteDuplicateFiles.Models;
-
-#endregion
 
 namespace DeleteDuplicateFiles
 {
     public partial class FrmSetPreferredMasterFileRules : Form
     {
-        private readonly BindingList<PreferredDirectory> _preferredDirectoryList;
+        private readonly BindingList<PreferredDirectoryDataModel> _preferredDirectoryList;
 
         public FrmSetPreferredMasterFileRules()
         {
             InitializeComponent();
-            _preferredDirectoryList = new BindingList<PreferredDirectory>();
+            _preferredDirectoryList = new BindingList<PreferredDirectoryDataModel>();
             lstPerferedDirectories.DataSource = _preferredDirectoryList;
         }
 
-        public void SetPreferredDirectories(IEnumerable<PreferredDirectory> preferredDirectories)
+        public void SetPreferredDirectories(IEnumerable<PreferredDirectoryDataModel> preferredDirectories)
         {
             _preferredDirectoryList.Clear();
             foreach (var preferredDirectory in preferredDirectories)
@@ -32,7 +29,7 @@ namespace DeleteDuplicateFiles
             }
         }
 
-        public List<PreferredDirectory> GetPreferredDirectories()
+        public List<PreferredDirectoryDataModel> GetPreferredDirectories()
         {
             return _preferredDirectoryList.ToList();
         }
@@ -59,7 +56,7 @@ namespace DeleteDuplicateFiles
         {
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
-                _preferredDirectoryList.Add(new PreferredDirectory
+                _preferredDirectoryList.Add(new PreferredDirectoryDataModel
                 {
                     Path = folderBrowserDialog1.SelectedPath,
                     SortOrder = _preferredDirectoryList.Count
@@ -80,7 +77,7 @@ namespace DeleteDuplicateFiles
                     return;
                 }
                 int sortOrder = _preferredDirectoryList.Count;
-                _preferredDirectoryList.Add(new PreferredDirectory {Path = path, SortOrder = sortOrder});
+                _preferredDirectoryList.Add(new PreferredDirectoryDataModel {Path = path, SortOrder = sortOrder});
                 lstPerferedDirectories.SelectedItem = _preferredDirectoryList[sortOrder];
                 txtEditPath.Text = "";
             }
@@ -90,10 +87,10 @@ namespace DeleteDuplicateFiles
         {
             if (_preferredDirectoryList.Count > 0 && lstPerferedDirectories.SelectedItem != null)
             {
-                PreferredDirectory directory = lstPerferedDirectories.SelectedItem as PreferredDirectory;
-                if (directory != null)
+                PreferredDirectoryDataModel directoryDataModel = lstPerferedDirectories.SelectedItem as PreferredDirectoryDataModel;
+                if (directoryDataModel != null)
                 {
-                    _preferredDirectoryList.Remove(directory);
+                    _preferredDirectoryList.Remove(directoryDataModel);
                     UpdateSortOrderForListItems();
                 }
             }
@@ -103,14 +100,14 @@ namespace DeleteDuplicateFiles
         {
             if (_preferredDirectoryList.Count > 0 && lstPerferedDirectories.SelectedItem != null)
             {
-                PreferredDirectory directory = lstPerferedDirectories.SelectedItem as PreferredDirectory;
-                if (directory != _preferredDirectoryList.Last())
+                PreferredDirectoryDataModel directoryDataModel = lstPerferedDirectories.SelectedItem as PreferredDirectoryDataModel;
+                if (directoryDataModel != _preferredDirectoryList.Last())
                 {
-                    _preferredDirectoryList[directory.SortOrder] = _preferredDirectoryList[directory.SortOrder + 1];
-                    _preferredDirectoryList[directory.SortOrder + 1] = directory;
+                    _preferredDirectoryList[directoryDataModel.SortOrder] = _preferredDirectoryList[directoryDataModel.SortOrder + 1];
+                    _preferredDirectoryList[directoryDataModel.SortOrder + 1] = directoryDataModel;
 
                     UpdateSortOrderForListItems();
-                    lstPerferedDirectories.SelectedItem = directory;
+                    lstPerferedDirectories.SelectedItem = directoryDataModel;
                 }
             }
         }
@@ -119,14 +116,14 @@ namespace DeleteDuplicateFiles
         {
             if (_preferredDirectoryList.Count > 0 && lstPerferedDirectories.SelectedItem != null)
             {
-                PreferredDirectory directory = lstPerferedDirectories.SelectedItem as PreferredDirectory;
-                if (directory != _preferredDirectoryList.First())
+                PreferredDirectoryDataModel directoryDataModel = lstPerferedDirectories.SelectedItem as PreferredDirectoryDataModel;
+                if (directoryDataModel != _preferredDirectoryList.First())
                 {
-                    _preferredDirectoryList[directory.SortOrder] = _preferredDirectoryList[directory.SortOrder - 1];
-                    _preferredDirectoryList[directory.SortOrder - 1] = directory;
+                    _preferredDirectoryList[directoryDataModel.SortOrder] = _preferredDirectoryList[directoryDataModel.SortOrder - 1];
+                    _preferredDirectoryList[directoryDataModel.SortOrder - 1] = directoryDataModel;
 
                     UpdateSortOrderForListItems();
-                    lstPerferedDirectories.SelectedItem = directory;
+                    lstPerferedDirectories.SelectedItem = directoryDataModel;
                 }
             }
         }

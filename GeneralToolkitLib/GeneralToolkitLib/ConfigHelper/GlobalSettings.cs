@@ -9,10 +9,7 @@ namespace GeneralToolkitLib.ConfigHelper
     /// </summary>
     public static class GlobalSettings
     {
-        public static bool Initialized
-        {
-            get { return _isInitialized; }
-        }
+        public static bool Initialized => _isInitialized;
 
         private const string UserDbFileName = "ComputedHashData.bin";
         private static string _logFileName;

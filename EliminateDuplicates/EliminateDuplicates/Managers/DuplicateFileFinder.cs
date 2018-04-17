@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DeleteDuplicateFiles.DataModels;
 using DeleteDuplicateFiles.Delegates;
 using DeleteDuplicateFiles.Models;
 using DeleteDuplicateFiles.Services;
@@ -16,8 +15,6 @@ using GeneralToolkitLib.Hashing;
 using GeneralToolkitLib.Storage.Registry;
 using GeneralToolkitLib.WindowsApi;
 using Serilog;
-
-#endregion
 
 namespace DeleteDuplicateFiles.Managers
 {
@@ -37,7 +34,7 @@ namespace DeleteDuplicateFiles.Managers
         private Stopwatch _runtimeStopwatch;
         private int _totalNumberOfFiles;
         private readonly AccessHelper _accessHelper = new AccessHelper();
-        private ProgramSettings _programSettings;
+        private ApplicationSettingsModel _applicationSettingsModel;
         public event FileHashEventHandler OnBeginNewFileHash;
         public event FileHashEventHandler OnCompleteFileHash;
         private readonly ComputedHashService _computedHashService;
@@ -87,7 +84,7 @@ namespace DeleteDuplicateFiles.Managers
         private void LoadSettings()
         {
             var registryAccess = new RegistryAccess(Application.ProductName);
-            _programSettings = registryAccess.ReadObjectFromRegistry<ProgramSettings>() ?? new ProgramSettings();
+            _applicationSettingsModel = registryAccess.ReadObjectFromRegistry<ApplicationSettingsModel>() ?? new ApplicationSettingsModel();
         }
 
         private List<DuplicateFile> GetDuplicateFilesWrapper()
@@ -118,7 +115,7 @@ namespace DeleteDuplicateFiles.Managers
             });
 
             int maxLevel = _includeSubdirs ? 0 : 1;
-            bool md5Hash = _programSettings.HashAlgorithm == ProgramSettings.HashAlgorithms.MD5;
+            bool md5Hash = _applicationSettingsModel.HashAlgorithm == ApplicationSettingsModel.HashAlgorithms.MD5;
 
             // Run Test to estimate no files
             _runtimeStopwatch = new Stopwatch();
@@ -152,7 +149,7 @@ namespace DeleteDuplicateFiles.Managers
                     ProgressMessage = "Initial file scan complete, found: " + allFiles.Count + " files."
                 });
 
-                IComparer<DuplicateFile> comparer = new DuplicateFileComparer(_searchProfileManager, _programSettings.MasterFileSelectionMethod);
+                IComparer<DuplicateFile> comparer = new DuplicateFileComparer(_searchProfileManager, _applicationSettingsModel.MasterFileSelectionMethod);
                 allFiles.Sort(comparer);
 
                 var fileGroups = allFiles.GroupBy(f => f.FileSize).Where(x => x.Count() > 1).ToList();
@@ -187,16 +184,16 @@ namespace DeleteDuplicateFiles.Managers
 
                     foreach (var duplicateFileGroup in fileHashList.GroupBy(x => x.GetDriveLetter()))
                     {
-                        taskList.Add(Task.Run(async () =>
+                        taskList.Add(Task.Factory.StartNew((async () =>
                         {
                             try
                             {
 
                                 foreach (DuplicateFile duplicateFile in duplicateFileGroup)
                                 {
-                                    IHashTransform hashTransform = CreateHashTransform(_programSettings.HashAlgorithm);
+                                    IHashTransform hashTransform = CreateHashTransform(_applicationSettingsModel.HashAlgorithm);
                                     duplicateFile.HashValue = await ComputeHashValueAsync(duplicateFile, hashTransform);
-                                    _computedHashService.SetHashValueForFile(duplicateFile, _programSettings.HashAlgorithm);
+                                    _computedHashService.SetHashValueForFile(duplicateFile, _applicationSettingsModel.HashAlgorithm);
                                     if (_cancellationTokenSource.IsCancellationRequested)
                                         break;
                                 }
@@ -205,13 +202,13 @@ namespace DeleteDuplicateFiles.Managers
                             {
                                 Log.Warning(ex, "Get duplicate files was forced to canceled before the execution had time to exit it sub procedures and loops");
                             }
-                        }));
+                        })));
 
                         if (_cancellationTokenSource.IsCancellationRequested)
                             break;
 
 
-                        while (taskList.Count >= _programSettings.MaximumNoOfHashingThreads)
+                        while (taskList.Count >= _applicationSettingsModel.MaximumNoOfHashingThreads)
                         {
                             Task.WaitAny(taskList.ToArray(), _cancellationTokenSource.Token);
                             taskList.RemoveAll(x => x.Status == TaskStatus.RanToCompletion);
@@ -281,9 +278,9 @@ namespace DeleteDuplicateFiles.Managers
             });
         }
 
-        private IHashTransform CreateHashTransform(ProgramSettings.HashAlgorithms hashAlgorithm)
+        private IHashTransform CreateHashTransform(ApplicationSettingsModel.HashAlgorithms hashAlgorithm)
         {
-            if (hashAlgorithm == ProgramSettings.HashAlgorithms.CRC32)
+            if (hashAlgorithm == ApplicationSettingsModel.HashAlgorithms.CRC32)
                 return new CRC32();
             return new MD5();
         }
@@ -376,10 +373,10 @@ namespace DeleteDuplicateFiles.Managers
                 return noFiles;
 
             DirectoryInfo directoryInfo = new DirectoryInfo(rootPath);
-            if (_programSettings.IgnoreSystemFilesAndDirectories && directoryInfo.Attributes.HasFlag(FileAttributes.System))
+            if (_applicationSettingsModel.IgnoreSystemFilesAndDirectories && directoryInfo.Attributes.HasFlag(FileAttributes.System))
                 return noFiles;
 
-            if (_programSettings.IgnoreHiddenFilesAndDirectories && directoryInfo.Attributes.HasFlag(FileAttributes.Hidden))
+            if (_applicationSettingsModel.IgnoreHiddenFilesAndDirectories && directoryInfo.Attributes.HasFlag(FileAttributes.Hidden))
                 return noFiles;
 
             if (!_accessHelper.UserHasReadAccessToDirectory(directoryInfo))
@@ -437,15 +434,15 @@ namespace DeleteDuplicateFiles.Managers
 
             try
             {
-                if (_programSettings.IgnoreHiddenFilesAndDirectories || _programSettings.IgnoreSystemFilesAndDirectories)
+                if (_applicationSettingsModel.IgnoreHiddenFilesAndDirectories || _applicationSettingsModel.IgnoreSystemFilesAndDirectories)
                 {
                     foreach (string fileName in fileNames)
                     {
                         var fileInfo = new FileInfo(fileName);
-                        if (_programSettings.IgnoreHiddenFilesAndDirectories && fileInfo.Attributes.HasFlag(FileAttributes.Hidden))
+                        if (_applicationSettingsModel.IgnoreHiddenFilesAndDirectories && fileInfo.Attributes.HasFlag(FileAttributes.Hidden))
                             continue;
 
-                        if (_programSettings.IgnoreSystemFilesAndDirectories && fileInfo.Attributes.HasFlag(FileAttributes.System))
+                        if (_applicationSettingsModel.IgnoreSystemFilesAndDirectories && fileInfo.Attributes.HasFlag(FileAttributes.System))
                             continue;
 
                         duplicateFiles.Add(new DuplicateFile
@@ -510,10 +507,10 @@ namespace DeleteDuplicateFiles.Managers
                 if (!directoryInfo.Attributes.HasFlag(FileAttributes.Directory) || directoryInfo.Attributes.HasFlag(FileAttributes.ReparsePoint))
                     continue;
 
-                if (_programSettings.IgnoreHiddenFilesAndDirectories && directoryInfo.Attributes.HasFlag(FileAttributes.Hidden))
+                if (_applicationSettingsModel.IgnoreHiddenFilesAndDirectories && directoryInfo.Attributes.HasFlag(FileAttributes.Hidden))
                     continue;
 
-                if (_programSettings.IgnoreSystemFilesAndDirectories &&
+                if (_applicationSettingsModel.IgnoreSystemFilesAndDirectories &&
                     (directoryInfo.Attributes.HasFlag(FileAttributes.System) || subDirectory.Equals("c:\\windows", StringComparison.OrdinalIgnoreCase)))
                     continue;
 

@@ -1,11 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DeleteDuplicateFiles.DataModels;
 using DeleteDuplicateFiles.Managers;
-
-#endregion
 
 namespace DeleteDuplicateFiles.Models
 {
@@ -16,9 +13,9 @@ namespace DeleteDuplicateFiles.Models
     public class DuplicateFileComparer : IComparer<DuplicateFile>
     {
         private readonly SearchProfileManager _searchProfileManager;
-        private readonly ProgramSettings.MasterFileSelectionMethods _selection;
+        private readonly ApplicationSettingsModel.MasterFileSelectionMethods _selection;
 
-        public DuplicateFileComparer(SearchProfileManager searchProfileManager, ProgramSettings.MasterFileSelectionMethods selection)
+        public DuplicateFileComparer(SearchProfileManager searchProfileManager, ApplicationSettingsModel.MasterFileSelectionMethods selection)
         {
             _searchProfileManager = searchProfileManager;
             _selection = selection;
@@ -29,23 +26,23 @@ namespace DeleteDuplicateFiles.Models
             int compareVal = x.CompareTo(y);
             if (x.CompareTo(y) == 0)
             {
-                var activeProfile = _searchProfileManager.CurrentProfile;
+                var activeProfile = _searchProfileManager.CurrentProfileModel;
                 if (activeProfile == null)
                     return 0;
 
-                var preferredDirectories = _searchProfileManager.CurrentProfile.PreferredDirecoryList;
+                var preferredDirectories = _searchProfileManager.CurrentProfileModel.PreferredDirecoryList;
                 
 
                 if (preferredDirectories.Any(pd => x.GetDirectory().StartsWith(pd.Path)))
                 {
-                    PreferredDirectory preferredDirectoryX =preferredDirectories.First(pd => x.GetDirectory().StartsWith(pd.Path));
-                    PreferredDirectory preferredDirectoryY =preferredDirectories.FirstOrDefault(pd => y.GetDirectory().StartsWith(pd.Path));
-                    return preferredDirectoryY == null
+                    PreferredDirectoryDataModel preferredDirectoryDataModelX =preferredDirectories.First(pd => x.GetDirectory().StartsWith(pd.Path));
+                    PreferredDirectoryDataModel preferredDirectoryDataModelY =preferredDirectories.FirstOrDefault(pd => y.GetDirectory().StartsWith(pd.Path));
+                    return preferredDirectoryDataModelY == null
                         ? -1
-                        : preferredDirectoryX.SortOrder.CompareTo(preferredDirectoryY.SortOrder);
+                        : preferredDirectoryDataModelX.SortOrder.CompareTo(preferredDirectoryDataModelY.SortOrder);
                 }
 
-                if (_selection == ProgramSettings.MasterFileSelectionMethods.OldestModifiedDate)
+                if (_selection == ApplicationSettingsModel.MasterFileSelectionMethods.OldestModifiedDate)
                     return x.LastWriteTime.CompareTo(y.LastWriteTime);
 
                 return x.LastWriteTime.CompareTo(y.LastWriteTime)*-1;

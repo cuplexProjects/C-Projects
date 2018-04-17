@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -16,8 +14,6 @@ using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
 using JetBrains.Annotations;
 using Serilog;
-
-#endregion
 
 namespace DeleteDuplicateFiles.Services
 {
@@ -103,9 +99,9 @@ namespace DeleteDuplicateFiles.Services
             return false;
         }
 
-        public bool IsHashComputedForFile(DuplicateFile duplicateFile, ProgramSettings.HashAlgorithms hashAlgorithm)
+        public bool IsHashComputedForFile(DuplicateFile duplicateFile, ApplicationSettingsModel.HashAlgorithms hashAlgorithm)
         {
-            return hashAlgorithm == ProgramSettings.HashAlgorithms.MD5
+            return hashAlgorithm == ApplicationSettingsModel.HashAlgorithms.MD5
                 ? IsHashMD5ComputedForFile(duplicateFile)
                 : IsHashCRC32ComputedForFile(duplicateFile);
 
@@ -121,12 +117,12 @@ namespace DeleteDuplicateFiles.Services
             return FileHashCollection.FileHashDictionary.ContainsKey(duplicateFile.UniqueIdHashValue) ? FileHashCollection.FileHashDictionary[duplicateFile.UniqueIdHashValue].MD5HashValue : null;
         }
 
-        public string GetHashValueForFile(DuplicateFile duplicateFile, ProgramSettings.HashAlgorithms hashAlgorithm)
+        public string GetHashValueForFile(DuplicateFile duplicateFile, ApplicationSettingsModel.HashAlgorithms hashAlgorithm)
         {
             if (FileHashCollection.FileHashDictionary.ContainsKey(duplicateFile.UniqueIdHashValue))
             {
                 var fileHash = FileHashCollection.FileHashDictionary[duplicateFile.UniqueIdHashValue];
-                return hashAlgorithm == ProgramSettings.HashAlgorithms.CRC32
+                return hashAlgorithm == ApplicationSettingsModel.HashAlgorithms.CRC32
                     ? fileHash.CRC32HashValue
                     : fileHash.MD5HashValue;
             }
@@ -134,7 +130,7 @@ namespace DeleteDuplicateFiles.Services
             return null;
         }
 
-        public void SetHashValueForFile(DuplicateFile duplicateFile, ProgramSettings.HashAlgorithms hashAlgorithm)
+        public void SetHashValueForFile(DuplicateFile duplicateFile, ApplicationSettingsModel.HashAlgorithms hashAlgorithm)
         {
             lock (_saveHashValueLockObject)
             {
@@ -142,14 +138,14 @@ namespace DeleteDuplicateFiles.Services
                 {
                     var computedFileHash =
                         FileHashCollection.FileHashDictionary[duplicateFile.UniqueIdHashValue];
-                    if (hashAlgorithm == ProgramSettings.HashAlgorithms.CRC32)
+                    if (hashAlgorithm == ApplicationSettingsModel.HashAlgorithms.CRC32)
                         computedFileHash.CRC32HashValue = duplicateFile.HashValue;
                     else
                         computedFileHash.MD5HashValue = duplicateFile.HashValue;
                 }
                 else
                 {
-                    var computedFileHash = new ComputedFileHash
+                    var computedFileHash = new ComputedFileHashModel
                     {
                         LastWriteTime = duplicateFile.LastWriteTime,
                         CreationTime = duplicateFile.CreationTime,
@@ -157,7 +153,7 @@ namespace DeleteDuplicateFiles.Services
                         FullPath = duplicateFile.FullName
                     };
 
-                    if (hashAlgorithm == ProgramSettings.HashAlgorithms.CRC32)
+                    if (hashAlgorithm == ApplicationSettingsModel.HashAlgorithms.CRC32)
                         computedFileHash.CRC32HashValue = duplicateFile.HashValue;
                     else
                         computedFileHash.MD5HashValue = duplicateFile.HashValue;

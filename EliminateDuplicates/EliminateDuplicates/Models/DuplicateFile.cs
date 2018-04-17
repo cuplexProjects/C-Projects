@@ -1,10 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
-#endregion
+using AutoMapper;
+using DeleteDuplicateFiles.DataModels;
 
 namespace DeleteDuplicateFiles.Models
 {

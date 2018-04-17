@@ -1,34 +1,31 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using DeleteDuplicateFiles.DataModels;
 using DeleteDuplicateFiles.Managers;
 using DeleteDuplicateFiles.Models;
 using DeleteDuplicateFiles.Services;
 using GeneralToolkitLib.ConfigHelper;
 using GeneralToolkitLib.Converters;
 
-#endregion
-
 namespace DeleteDuplicateFiles
 {
     public partial class FrmSettings : Form
     {
-        private readonly AppSettingsManager _appSettingsManager;
+        private readonly AppSettingsService _appSettingsService;
         private readonly ComputedHashService _computedHashService;
 
-        public FrmSettings(AppSettingsManager appSettingsManager, ComputedHashService computedHashService)
+        public FrmSettings(AppSettingsService appSettingsService, ComputedHashService computedHashService)
         {
-            _appSettingsManager = appSettingsManager;
+            _appSettingsService = appSettingsService;
             _computedHashService = computedHashService;
             InitializeComponent();
         }
 
         private void frmSettings_Load(object sender, EventArgs e)
         {
-            _appSettingsManager.LoadSettings();
+            _appSettingsService.LoadSettings();
 
             UpdateUiFromProgramSettings();
             SetApplicationLogFileInfo();
@@ -37,7 +34,7 @@ namespace DeleteDuplicateFiles
         private void btnOk_Click(object sender, EventArgs e)
         {
             UpdateProgramSettingsFromUi();
-            _appSettingsManager.SaveSettings();
+            _appSettingsService.SaveSettings();
             Close();
         }
 
@@ -48,20 +45,20 @@ namespace DeleteDuplicateFiles
 
         private void UpdateProgramSettingsFromUi()
         {
-            var settings = _appSettingsManager.Settings;
+            var settings = _appSettingsService.ApplicationSettings;
 
             settings.HashAlgorithm = radioCRC32.Checked
-                ? ProgramSettings.HashAlgorithms.CRC32
-                : ProgramSettings.HashAlgorithms.MD5;
+                ? ApplicationSettingsModel.HashAlgorithms.CRC32
+                : ApplicationSettingsModel.HashAlgorithms.MD5;
             settings.MasterFileSelectionMethod = radioNewestDate.Checked
-                ? ProgramSettings.MasterFileSelectionMethods.NewestModifiedDate
-                : ProgramSettings.MasterFileSelectionMethods.OldestModifiedDate;
+                ? ApplicationSettingsModel.MasterFileSelectionMethods.NewestModifiedDate
+                : ApplicationSettingsModel.MasterFileSelectionMethods.OldestModifiedDate;
             settings.MaximumNoOfHashingThreads = Convert.ToInt32(numericMaximumNoOfHashThreads.Value);
             settings.IgnoreHiddenFilesAndDirectories = chkIgnoreHiddenFilesAndDirs.Checked;
             settings.IgnoreSystemFilesAndDirectories = chkIgnoreSystemFiles.Checked;
             settings.DeletionMode = radioRecycleBin.Checked
-                ? ProgramSettings.DeletionModes.RecycleBin
-                : ProgramSettings.DeletionModes.Permanent;
+                ? ApplicationSettingsModel.DeletionModes.RecycleBin
+                : ApplicationSettingsModel.DeletionModes.Permanent;
         }
 
         private void SetApplicationLogFileInfo()
@@ -94,11 +91,11 @@ namespace DeleteDuplicateFiles
 
         private void UpdateUiFromProgramSettings()
         {
-            var settings = _appSettingsManager.Settings;
+            var settings = _appSettingsService.ApplicationSettings;
 
-            radioRecycleBin.Checked = settings.DeletionMode == ProgramSettings.DeletionModes.RecycleBin;
-            radioCRC32.Checked = settings.HashAlgorithm == ProgramSettings.HashAlgorithms.CRC32;
-            radioNewestDate.Checked = settings.MasterFileSelectionMethod == ProgramSettings.MasterFileSelectionMethods.NewestModifiedDate;
+            radioRecycleBin.Checked = settings.DeletionMode == ApplicationSettingsModel.DeletionModes.RecycleBin;
+            radioCRC32.Checked = settings.HashAlgorithm == ApplicationSettingsModel.HashAlgorithms.CRC32;
+            radioNewestDate.Checked = settings.MasterFileSelectionMethod == ApplicationSettingsModel.MasterFileSelectionMethods.NewestModifiedDate;
             numericMaximumNoOfHashThreads.Value = settings.MaximumNoOfHashingThreads;
             chkIgnoreHiddenFilesAndDirs.Checked = settings.IgnoreHiddenFilesAndDirectories;
             chkIgnoreSystemFiles.Checked = settings.IgnoreSystemFilesAndDirectories;

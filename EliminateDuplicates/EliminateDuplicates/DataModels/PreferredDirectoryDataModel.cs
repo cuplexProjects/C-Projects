@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace DeleteDuplicateFiles.Models
+namespace DeleteDuplicateFiles.DataModels
 {
     [Serializable]
     [DataContract(Name = "PreferredDirectory")]
-    public class PreferredDirectory
+    public class PreferredDirectoryDataModel
     {
         [DataMember(Name = "SortOrder", Order = 1)]
         public int SortOrder { get; set; }

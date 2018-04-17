@@ -9,7 +9,7 @@ namespace DeleteDuplicateFiles.Configuration
         public static IContainer CreateContainer()
         {
             var builder = new ContainerBuilder();
-            var thisAssembly = Assembly.GetCallingAssembly();
+            var thisAssembly = Assembly.GetExecutingAssembly();
 
 
             var generalToolKitAssembly = AssemblyHelper.GetAssembly();
@@ -19,9 +19,8 @@ namespace DeleteDuplicateFiles.Configuration
             }
 
             builder.RegisterAssemblyModules(thisAssembly);
+
             var container = builder.Build();
-
-
             return container;
         }
     }
