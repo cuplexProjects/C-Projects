@@ -151,6 +151,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows" />
@@ -168,6 +169,11 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataSource\DataContextBase.cs" />
+    <Compile Include="DataSource\FileDataContext.cs" />
+    <Compile Include="Helpers\Helpers.cs" />
+    <Compile Include="Managers\FileHashManager.cs" />
+    <Compile Include="Managers\Interfaces\ISettingsManager.cs" />
     <Compile Include="Library\AutofacModules\AutoMapperModule.cs" />
     <Compile Include="Library\Events\SettingsChangedEventArgs.cs" />
     <Compile Include="Library\Profiles\AutoMapperProfile.cs" />
@@ -180,22 +186,26 @@
     <Compile Include="DataModels\SearchProfileDataModel.cs" />
     <Compile Include="Library\AutofacModules\EliminateDuplicatesModule.cs" />
     <Compile Include="Library\AutofacModules\LoggingModule.cs" />
-    <Compile Include="Managers\AppSettingsManager.cs" />
+    <Compile Include="Managers\PasswordManager.cs" />
+    <Compile Include="Managers\SettingsManager.cs" />
     <Compile Include="Managers\ManagerBase.cs" />
-    <Compile Include="Models\NotificationEventToService.cs" />
-    <Compile Include="Repositories\ApplicationSettingsRepository.cs" />
+    <Compile Include="WorkFlows\DuplicateFileWorkflowController.cs" />
+    <Compile Include="WorkFlows\Implementation\DistributedFileScanner.cs" />
+    <Compile Include="WorkFlows\Interface\ISearchSettings.cs" />
+    <Compile Include="Components\ComputeHash.cs" />
+    <Compile Include="Components\ComponentBase.cs" />
+    <Compile Include="Repositories\FileHashRepository.cs" />
+    <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\SearchProfileRepository.cs" />
-    <Compile Include="Services\AppSettingsService.cs" />
     <Compile Include="Services\ComputedHashService.cs" />
     <Compile Include="Connected Services\TerminologyService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Delegates\FileHashEventArgs.cs" />
     <Compile Include="Delegates\Delegates.cs" />
-    <Compile Include="Managers\DuplicateFileFinder.cs" />
+    <Compile Include="Managers\tmpDuplicateFileFinder.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -246,8 +256,8 @@
     </Compile>
     <Compile Include="Models\ComputedFileHashModel.cs" />
     <Compile Include="Models\FileHashCollection.cs" />
-    <Compile Include="Models\Delegates.cs" />
-    <Compile Include="Models\DuplicateFile.cs" />
+    <Compile Include="Components\Compare\Delegates.cs" />
+    <Compile Include="Models\DuplicateFileModel.cs" />
     <Compile Include="DataModels\PreferredDirectoryDataModel.cs" />
     <Compile Include="Models\ApplicationSettingsModel.cs" />
     <Compile Include="Models\ScanFolderListItem.cs" />
@@ -256,9 +266,11 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Managers\SearchProfileManager.cs" />
-    <Compile Include="Services\SearchProfileService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="WindowsApi\SetWindowMessageFilters.cs" />
+    <Compile Include="WorkFlows\Interface\IWorkflowController.cs" />
+    <Compile Include="WorkFlows\Interface\IWorkflowComponent.cs" />
+    <Compile Include="WorkFlows\WorkFlowBase.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>

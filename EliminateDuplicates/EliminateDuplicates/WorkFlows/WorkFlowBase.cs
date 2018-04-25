@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeleteDuplicateFiles.Models
+namespace DeleteDuplicateFiles.WorkFlows
 {
-    public sealed class NotificationEvent
+    public abstract class WorkFlowBase
     {
 
     }

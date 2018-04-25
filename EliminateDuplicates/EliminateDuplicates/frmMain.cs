@@ -9,12 +9,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autofac;
+using DeleteDuplicateFiles.DataModels;
 using DeleteDuplicateFiles.Delegates;
 using DeleteDuplicateFiles.Managers;
 using DeleteDuplicateFiles.Models;
 using DeleteDuplicateFiles.Resources;
 using DeleteDuplicateFiles.Resources.LanguageFiles;
 using DeleteDuplicateFiles.Services;
+using DeleteDuplicateFiles.WorkFlows;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Storage;
 using Serilog;
@@ -23,25 +25,23 @@ namespace DeleteDuplicateFiles
 {
     public partial class FrmMain : Form
     {
-        private readonly DuplicateFileFinder _duplicateFileFinder;
-        private readonly SearchProfileService _searchProfileService;
+        private readonly DuplicateFileWorkflowController _duplicateFileFinder;
         private readonly SearchProfileManager _searchProfileManager;
-        private List<DuplicateFile> _duplicateFiles;
-        private List<ScanFolderListItem> _scanFolders;
+        private List<DuplicateFileModel> _duplicateFiles;
+        private List<ScanFolderModel> _scanFolders;
         private FrmSettings _settingsForm;
-        private readonly ComputedHashService _computedHashService;
-        private readonly AppSettingsService _appSettingsService;
+        private readonly AppSettingsManager _appAppSettingsService;
         private int _hashComputeCount;
         private readonly ILifetimeScope _scope;
 
-        public FrmMain(ComputedHashService computedHashService, SearchProfileManager searchProfileManager, AppSettingsService appSettingsService, SearchProfileService searchProfileService, ILifetimeScope scope)
+        public FrmMain(SearchProfileManager searchProfileManager, AppSettingsManager appAppSettingsService, SearchProfileManager searchProfileService, ILifetimeScope scope, DuplicateFileWorkflowController duplicateFileFinder)
         {
-            _computedHashService = computedHashService;
             _searchProfileManager = searchProfileManager;
-            _appSettingsService = appSettingsService;
-            _appSettingsService.LoadSettings();
+            _appAppSettingsService = appAppSettingsService;
+            _appAppSettingsService.LoadSettings();
             _scope = scope;
-            _searchProfileService = searchProfileService;
+            _duplicateFileFinder = duplicateFileFinder;
+
             if (DesignMode)
                 return;
 
@@ -50,21 +50,17 @@ namespace DeleteDuplicateFiles
 
             _searchProfileManager.CreateNewProfile("New Profile");
 
-            _scanFolders = _searchProfileManager.CurrentProfileModel.ScanFolderList;
-
-            _duplicateFileFinder = new DuplicateFileFinder(_searchProfileManager, _computedHashService);
+            _scanFolders = _searchProfileManager.SearchProfile.ScanFolderList;
             _duplicateFileFinder.OnProgressUpdate += duplicateFileFinder_OnProgressUpdate;
             _duplicateFileFinder.OnSearchComplete += duplicateFileFinder_OnSearchComplete;
             _duplicateFileFinder.OnSearchBegin += _duplicateFileFinder_OnSearchBegin;
 
             _duplicateFileFinder.OnBeginNewFileHash += _duplicateFileFinder_OnBeginNewFileHash;
             _duplicateFileFinder.OnCompleteFileHash += _duplicateFileFinder_OnCompleteFileHash;
-
-            _computedHashService.OnCompletedRemovalOfDeletedFiles += OnCompletedRemovalOfDeletedFiles;
+            _duplicateFileFinder.OnCompletedRemovalOfDeletedFiles += OnCompletedRemovalOfDeletedFiles;
 
             LoadProfileSettings();
             _duplicateFiles = null;
-            _computedHashService.Init();
             InitLoadAndSaveDialogs();
         }
 
@@ -97,14 +93,14 @@ namespace DeleteDuplicateFiles
                 lblFileHashInfo.Text = GeneralConverters.GetFileNameFromPath(e.FileName) + " - " + GeneralConverters.FormatFileSizeToString(e.FileSize);
         }
 
-        private ApplicationSettingsModel SettingsModel => _appSettingsService.ApplicationSettings;
+        private ApplicationSettingsModel SettingsModel => _appAppSettingsService.ApplicationSettings;
 
         private void InitLoadAndSaveDialogs()
         {
             openFileDialog1.FileName = "";
             openFileDialog1.Filter = PropertyValues.frmMain_InitLoadAndSaveDialogs_OpenFileDialogFilter;
-            if (_searchProfileManager.CurrentProfileModel != null)
-                saveFileDialog1.FileName = _searchProfileManager.CurrentProfileModel.ProfileName + ".dsp";
+            if (_searchProfileManager.SearchProfile != null)
+                saveFileDialog1.FileName = _searchProfileManager.SearchProfile.ProfileName + ".dsp";
 
             saveFileDialog1.FileName = "";
             saveFileDialog1.Filter = PropertyValues.frmMain_InitLoadAndSaveDialogs_OpenFileDialogFilter;
@@ -112,7 +108,7 @@ namespace DeleteDuplicateFiles
 
         private void searchProfileManager_OnProfileDataDataChanged(object sender, EventArgs e)
         {
-            lblSearchProfileName.Text = _searchProfileManager.CurrentProfileModel.ProfileName;
+            lblSearchProfileName.Text = _searchProfileManager.SearchProfile.ProfileName;
             UpdateMenuItemState(sender, e);
         }
 
@@ -193,25 +189,25 @@ namespace DeleteDuplicateFiles
 
         private void LoadProfileSettings()
         {
-            var profile = _searchProfileManager.CurrentProfileModel;
+            var profile = _searchProfileManager.SearchProfile;
             lbScanFolders.DataSource = null;
             if (profile.ScanFolderList != null)
             {
-                _scanFolders = _searchProfileManager.CurrentProfileModel.ScanFolderList;
+                _scanFolders = _searchProfileManager.SearchProfile.ScanFolderList;
                 lbScanFolders.DataSource = _scanFolders;
             }
 
             lbScanFolders.Refresh();
             txtFilenameFilter.Text = profile.FileNameFilter;
-            lblSearchProfileName.Text = _searchProfileManager.CurrentProfileModel.ProfileName;
+            lblSearchProfileName.Text = _searchProfileManager.SearchProfile.ProfileName;
 
             UpdateMenuItemState();
         }
 
         private void SetProfileSettings()
         {
-            var profile = _searchProfileManager.CurrentProfileModel;
-            if (lbScanFolders.DataSource is ObservableCollection<ScanFolderListItem> observableCollection) profile.ScanFolderList = observableCollection.ToList();
+            var profile = _searchProfileManager.SearchProfile;
+            if (lbScanFolders.DataSource is ObservableCollection<ScanFolderModel> observableCollection) profile.ScanFolderList = observableCollection.ToList();
             profile.FileNameFilter = txtFilenameFilter.Text;
         }
 
@@ -251,7 +247,7 @@ namespace DeleteDuplicateFiles
         {
             if (lbResults.SelectedItems.Count > 0)
             {
-                var duplicateFileDeleteList = (from object selectedItem in lbResults.SelectedItems select selectedItem as DuplicateFile).ToList();
+                var duplicateFileDeleteList = (from object selectedItem in lbResults.SelectedItems select selectedItem as DuplicateFileModel).ToList();
                 var noFilesToDelete = duplicateFileDeleteList.Sum(x => x.DuplicateFiles.Count);
 
                 if (MessageBox.Show(string.Format(Generics.AreYouSureYouWantToDelete, noFilesToDelete), Generics.ConfirmDelete, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
@@ -309,7 +305,7 @@ namespace DeleteDuplicateFiles
         {
             if (lbResults.SelectedItems.Count == 1)
             {
-                if (!(lbResults.SelectedItems[0] is DuplicateFile duplicateFile)) return;
+                if (!(lbResults.SelectedItems[0] is DuplicateFileModel duplicateFile)) return;
                 lbDuplicateFiles.DataSource = duplicateFile.DuplicateFiles;
                 txtMasterFilename.Text = duplicateFile.FullName;
             }
@@ -324,7 +320,7 @@ namespace DeleteDuplicateFiles
         {
             if (lbDuplicateFiles.SelectedItem != null)
             {
-                if (!(lbDuplicateFiles.SelectedItem is DuplicateFile duplicateFile)) return;
+                if (!(lbDuplicateFiles.SelectedItem is DuplicateFileModel duplicateFile)) return;
                 lblDirectoryInfo.Text = Path.GetDirectoryName(duplicateFile.FullName);
                 lblFileNameInfo.Text = duplicateFile.Name;
                 lblFileSizeInfo.Text = GeneralConverters.FileSizeToStringFormater.ConvertFileSizeToString(duplicateFile.FileSize);
@@ -359,9 +355,8 @@ namespace DeleteDuplicateFiles
             }
 
             
-            _appSettingsService.SaveSettings();
-
-            _computedHashService.Dispose();
+            _appAppSettingsService.SaveSettings();
+            
         }
 
         private void OnCompletedRemovalOfDeletedFiles(object sender, FileHashRemovalEventArgs e)
@@ -380,7 +375,7 @@ namespace DeleteDuplicateFiles
 
         private bool AddScanFolderToList(string path)
         {
-            var listItem = new ScanFolderListItem
+            var listItem = new ScanFolderModel
             {
                 FullPath = path
             };
@@ -405,7 +400,7 @@ namespace DeleteDuplicateFiles
             if (selectedIndex > 0)
                 lbScanFolders.SelectedIndex = selectedIndex;
 
-            _searchProfileManager.CurrentProfileModel.ScanFolderListUpdated();
+            _searchProfileManager.SearchProfile.ScanFolderListUpdated();
             return true;
         }
 
@@ -417,7 +412,7 @@ namespace DeleteDuplicateFiles
         private void btnMoveUp_Click(object sender, EventArgs e)
         {
             if (lbScanFolders.SelectedItems.Count != 1 || lbScanFolders.Items.Count <= 1) return;
-            var listItem = lbScanFolders.SelectedItems[0] as ScanFolderListItem;
+            var listItem = lbScanFolders.SelectedItems[0] as ScanFolderModel;
 
             if (listItem != null && listItem.SortOrder == 0)
                 return;
@@ -434,13 +429,13 @@ namespace DeleteDuplicateFiles
             lbScanFolders.DataSource = _scanFolders;
 
             lbScanFolders.SelectedItem = listItem;
-            _searchProfileManager.CurrentProfileModel.ScanFolderListUpdated();
+            _searchProfileManager.SearchProfile.ScanFolderListUpdated();
         }
 
         private void btnMoveDown_Click(object sender, EventArgs e)
         {
             if (lbScanFolders.SelectedItems.Count != 1 || lbScanFolders.Items.Count <= 1) return;
-            var listItem = lbScanFolders.SelectedItems[0] as ScanFolderListItem;
+            var listItem = lbScanFolders.SelectedItems[0] as ScanFolderModel;
 
             if (listItem != null && listItem.SortOrder == _scanFolders.Count - 1)
                 return;
@@ -460,7 +455,7 @@ namespace DeleteDuplicateFiles
             lbScanFolders.DataSource = _scanFolders;
 
             lbScanFolders.SelectedItem = listItem;
-            _searchProfileManager.CurrentProfileModel.ScanFolderListUpdated();
+            _searchProfileManager.SearchProfile.ScanFolderListUpdated();
         }
 
         private void lbScanFolders_DragEnter(object sender, DragEventArgs e)
@@ -514,7 +509,7 @@ namespace DeleteDuplicateFiles
         {
             if (lbScanFolders.SelectedItems.Count != 1) return;
 
-            if (!(lbScanFolders.SelectedItems[0] is ScanFolderListItem listItem))
+            if (!(lbScanFolders.SelectedItems[0] is ScanFolderModel listItem))
                 return;
 
             _scanFolders.Remove(listItem);
@@ -522,7 +517,7 @@ namespace DeleteDuplicateFiles
 
             lbScanFolders.DataSource = null;
             lbScanFolders.DataSource = _scanFolders;
-            _searchProfileManager.CurrentProfileModel.ScanFolderListUpdated();
+            _searchProfileManager.SearchProfile.ScanFolderListUpdated();
             UpdateMenuItemState();
         }
 
@@ -538,7 +533,7 @@ namespace DeleteDuplicateFiles
 
         private void SearchForDuplicateFiles()
         {
-            if (!_computedHashService.IsReady)
+            if (!_duplicateFileFinder.IsReady)
             {
                 MessageBox.Show(Display.frmMain_SearchForDuplicateFiles_ComputeHashServUnavailable, Display.frmMain_SearchForDuplicateFiles_DatabaseIsLoading, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -564,11 +559,11 @@ namespace DeleteDuplicateFiles
                 lbDuplicateFiles.DataSource = null;
                 UpdateMenuItemState();
 
-                Task.Run(async () =>
-                {
-                    _duplicateFiles = await _duplicateFileFinder.GetDuplicateFilesAsync(_scanFolders.ToList(), filenameFilter, chkIncludeSubfolders.Checked);
+                var searchProfile = new SearchProfileModel(filenameFilter, _scanFolders.ToList(),new List<PreferredDirectoryDataModel> ()){IncludeSubfolders = chkIncludeSubfolders.Checked };
+
+                _duplicateFileFinder.StartDuplicateSearch(searchProfile);
                     Invoke(new EventHandler(duplicateFileFinder_OnSearchCompleteNativeThread), this, new EventArgs());
-                });
+                
             }
             catch (Exception ex)
             {
@@ -622,7 +617,7 @@ namespace DeleteDuplicateFiles
             {
                 try
                 {
-                    _searchProfileManager.ReplaceCurrentProfile(_searchProfileService.LoadSearchProfile(openFileDialog1.FileName));
+                    _searchProfileManager.LoadSearchProfile(openFileDialog1.FileName);
                     SettingsModel.LastProfileFilePath = openFileDialog1.FileName;
                     LoadProfileSettings();
                 }
@@ -638,7 +633,7 @@ namespace DeleteDuplicateFiles
             try
             {
                 SetProfileSettings();
-                _searchProfileManager.SaveSearchProfile(_searchProfileManager.CurrentProfileModel.FullPath);
+                _searchProfileManager.SaveSearchProfile(_searchProfileManager.SearchProfile.FullPath);
                 UpdateMenuItemState();
             }
             catch (Exception ex)
@@ -653,13 +648,13 @@ namespace DeleteDuplicateFiles
             {
                 try
                 {
-                    _searchProfileManager.CurrentProfileModel.FullPath = saveFileDialog1.FileName;
-                    _searchProfileManager.CurrentProfileModel.ProfileName = GeneralConverters.GetFileNameFromPath(saveFileDialog1.FileName);
+                    _searchProfileManager.SearchProfile.FullPath = saveFileDialog1.FileName;
+                    _searchProfileManager.SearchProfile.ProfileName = GeneralConverters.GetFileNameFromPath(saveFileDialog1.FileName);
 
                     SetProfileSettings();
                     _searchProfileManager.SaveSearchProfile(saveFileDialog1.FileName);
                     UpdateMenuItemState();
-                    lblSearchProfileName.Text = _searchProfileManager.CurrentProfileModel.ProfileName;
+                    lblSearchProfileName.Text = _searchProfileManager.SearchProfile.ProfileName;
                 }
                 catch (Exception ex)
                 {
@@ -677,11 +672,11 @@ namespace DeleteDuplicateFiles
         private void setPreferredDirPrioListToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var frmPreferredMasterFileRules = new FrmSetPreferredMasterFileRules();
-            frmPreferredMasterFileRules.SetPreferredDirectories(_searchProfileManager.CurrentProfileModel.PreferredDirecoryList);
+            frmPreferredMasterFileRules.SetPreferredDirectories(_searchProfileManager.SearchProfile.PreferredDirecoryList);
 
             if (frmPreferredMasterFileRules.ShowDialog(this) == DialogResult.OK)
             {
-                _searchProfileManager.CurrentProfileModel.PreferredDirecoryList = frmPreferredMasterFileRules.GetPreferredDirectories();
+                _searchProfileManager.SearchProfile.PreferredDirecoryList = frmPreferredMasterFileRules.GetPreferredDirectories();
             }
         }
 
@@ -762,16 +757,15 @@ namespace DeleteDuplicateFiles
 
         private void openLastProfileMenuItem_Click(object sender, EventArgs e)
         {
-            var loadedSearchProfile = _searchProfileService.LoadSearchProfile(SettingsModel.LastProfileFilePath);
+            bool loadSearchProfileSuccessfull = _searchProfileManager.LoadSearchProfile(SettingsModel.LastProfileFilePath);
 
-            if (loadedSearchProfile == null)
+            if (!loadSearchProfileSuccessfull)
             {
                 Log.Error("Failed to load search profile from: {loadedSearchProfile}", SettingsModel.LastProfileFilePath);
                 MessageBox.Show(this, "Failed to load search profile, perhaps its and older format version?", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            _searchProfileManager.ReplaceCurrentProfile(loadedSearchProfile);
+            
             LoadProfileSettings();
         }
     }

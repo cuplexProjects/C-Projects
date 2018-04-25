@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using DeleteDuplicateFiles.DataModels;
 using DeleteDuplicateFiles.Models;
-using GeneralToolkitLib.Storage;
-using GeneralToolkitLib.Storage.Models;
+using DeleteDuplicateFiles.Repositories;
 using JetBrains.Annotations;
+using Serilog;
 
 namespace DeleteDuplicateFiles.Managers
 {
@@ -12,12 +12,11 @@ namespace DeleteDuplicateFiles.Managers
     public class SearchProfileManager : ManagerBase
     {
         private const string ProfileMeta = "2sjSoe+5K1bskBVLBgJLec87ivr33d8MAVIjNr1WmJ9Npna/RWGRdNf5RI0iGh5v+r20lrhi18/E0XHboxDL6suUkQd4u86Hm46in47IJEHFiUU0BnOUr+QlYIrj+AEO";
+        private readonly SearchProfileRepository _profileRepository;
 
-        private readonly StorageManager _storageManager;
-
-        public SearchProfileManager()
+        public SearchProfileManager(SearchProfileRepository profileRepository)
         {
-            _storageManager = new StorageManager(StorageManagerSettings.GetDefaultSettings());
+            _profileRepository = profileRepository;
         }
 
         public bool HasLoadedProfile { get; private set; }
@@ -28,13 +27,14 @@ namespace DeleteDuplicateFiles.Managers
 
         public bool EmptyProfile { get; private set; }
 
-        public SearchProfileModel CurrentProfileModel { get; private set; }
+        public SearchProfileModel SearchProfile { get; private set; }
 
 
         public bool SaveSearchProfile(string filePath)
         {
-            if (CurrentProfileModel != null && _storageManager.SerializeObjectToFile(CurrentProfileModel, filePath, null))
+            if (SearchProfile != null)
             {
+                _profileRepository.SaveSearchProfile(SearchProfile, filePath);
                 HasUnsavedProfile = false;
                 EmptyProfile = false;
                 return true;
@@ -43,24 +43,40 @@ namespace DeleteDuplicateFiles.Managers
             return false;
         }
 
-        public void ReplaceCurrentProfile(SearchProfileModel searchProfile) 
+        public  bool LoadSearchProfile(string filepath)
         {
-            CurrentProfileModel = searchProfile ?? throw new ArgumentNullException(nameof(searchProfile));
-        }
+            try
+            {
+                var profile = _profileRepository.LoadSearchProfileFromFile(filepath);
+                if (profile != null)
+                {
+                    SearchProfile = profile;
+                    return true;
+                }
+                    
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "LoadSearchProfile failed for file: {filepath}", filepath);
+                
+            }
 
+            return false;
+        }
+        
         public void CreateNewProfile(string name)
         {
-            CurrentProfileModel = CreateDefaultProfile(name);
+            SearchProfile = CreateDefaultProfile(name);
             EmptyProfile = true;
             NewProfileCreated = true;
         }
 
         private static SearchProfileModel CreateDefaultProfile(string profileName)
         {
-            return new SearchProfileModel(profileName, new List<ScanFolderListItem>(), new List<PreferredDirectoryDataModel>());
+            return new SearchProfileModel(profileName, new List<ScanFolderModel>(), new List<PreferredDirectoryDataModel>());
         }
 
-        public void LoadeScanFolderList(List<ScanFolderListItem> scanFolderList)
+        public void LoadeScanFolderList(List<ScanFolderModel> scanFolderList)
         {
             if (scanFolderList == null)
             {
@@ -68,12 +84,12 @@ namespace DeleteDuplicateFiles.Managers
             }
 
             //This seems very unlikely
-            if (CurrentProfileModel == null)
+            if (SearchProfile == null)
             {
-                CurrentProfileModel = CreateDefaultProfile("New Profile");
+                SearchProfile = CreateDefaultProfile("New Profile");
             }
 
-            CurrentProfileModel.ScanFolderList = scanFolderList;
+            SearchProfile.ScanFolderList = scanFolderList;
         }
 
         public void LoadPreferredDirecoryList(List<PreferredDirectoryDataModel> preferredDirectories)
@@ -84,12 +100,12 @@ namespace DeleteDuplicateFiles.Managers
             }
 
             //This seems very unlikely
-            if (CurrentProfileModel == null)
+            if (SearchProfile == null)
             {
-                CurrentProfileModel = CreateDefaultProfile("New Profile");
+                SearchProfile = CreateDefaultProfile("New Profile");
             }
 
-            CurrentProfileModel.PreferredDirecoryList = preferredDirectories;
+            SearchProfile.PreferredDirecoryList = preferredDirectories;
         }
     }
 }

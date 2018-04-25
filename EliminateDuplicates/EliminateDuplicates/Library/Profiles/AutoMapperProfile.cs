@@ -13,8 +13,8 @@ namespace DeleteDuplicateFiles.Library.Profiles
         {
             SearchProfileModel.CreateMappings(this);
             ApplicationSettingsModel.CreateMappings(this);
-            ComputedFileHashModel.CreateMappings(this);
-            FileHashCollection.CreateMappings(this);
+            //ComputedFileHashModel.CreateMappings(this);
+            //FileHashCollection.CreateMappings(this);
         }
     }
 }

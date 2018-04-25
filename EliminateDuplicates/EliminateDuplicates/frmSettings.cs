@@ -2,10 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using DeleteDuplicateFiles.DataModels;
 using DeleteDuplicateFiles.Managers;
 using DeleteDuplicateFiles.Models;
-using DeleteDuplicateFiles.Services;
 using GeneralToolkitLib.ConfigHelper;
 using GeneralToolkitLib.Converters;
 
@@ -13,19 +11,19 @@ namespace DeleteDuplicateFiles
 {
     public partial class FrmSettings : Form
     {
-        private readonly AppSettingsService _appSettingsService;
-        private readonly ComputedHashService _computedHashService;
+        private readonly AppSettingsManager _settingsManager;
+        private readonly FileHashManager _fileHashManager;
 
-        public FrmSettings(AppSettingsService appSettingsService, ComputedHashService computedHashService)
+        public FrmSettings(AppSettingsManager appSettingsManager, FileHashManager fileHashManager)
         {
-            _appSettingsService = appSettingsService;
-            _computedHashService = computedHashService;
+            _settingsManager = appSettingsManager;
+            _fileHashManager = fileHashManager;
             InitializeComponent();
         }
 
         private void frmSettings_Load(object sender, EventArgs e)
         {
-            _appSettingsService.LoadSettings();
+            _settingsManager.LoadSettings();
 
             UpdateUiFromProgramSettings();
             SetApplicationLogFileInfo();
@@ -34,7 +32,7 @@ namespace DeleteDuplicateFiles
         private void btnOk_Click(object sender, EventArgs e)
         {
             UpdateProgramSettingsFromUi();
-            _appSettingsService.SaveSettings();
+            _settingsManager.SaveSettings();
             Close();
         }
 
@@ -45,7 +43,7 @@ namespace DeleteDuplicateFiles
 
         private void UpdateProgramSettingsFromUi()
         {
-            var settings = _appSettingsService.ApplicationSettings;
+            var settings = _settingsManager.ApplicationSettings;
 
             settings.HashAlgorithm = radioCRC32.Checked
                 ? ApplicationSettingsModel.HashAlgorithms.CRC32
@@ -91,7 +89,7 @@ namespace DeleteDuplicateFiles
 
         private void UpdateUiFromProgramSettings()
         {
-            var settings = _appSettingsService.ApplicationSettings;
+            var settings = _settingsManager.ApplicationSettings;
 
             radioRecycleBin.Checked = settings.DeletionMode == ApplicationSettingsModel.DeletionModes.RecycleBin;
             radioCRC32.Checked = settings.HashAlgorithm == ApplicationSettingsModel.HashAlgorithms.CRC32;
@@ -104,7 +102,7 @@ namespace DeleteDuplicateFiles
         private void btnOptimizeDb_Click(object sender, EventArgs e)
         {
             btnOptimizeDb.Enabled = false;
-            _computedHashService.RemoveDeletedFilesFromDataBase();
+            _fileHashManager.RemoveDeletedFilesFromDataBase();
         }
 
         public void EnableOptimizeDbButton()

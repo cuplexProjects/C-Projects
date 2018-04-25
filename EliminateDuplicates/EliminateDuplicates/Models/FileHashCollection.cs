@@ -1,23 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using AutoMapper;
 using DeleteDuplicateFiles.DataModels;
 
 namespace DeleteDuplicateFiles.Models
 {
-    public class FileHashCollection
+    public class FileHashCollection : FileHashCollectionDataModel
     {
-        public FileHashCollection()
+        public static FileHashCollection CreateFileHashCollection()
         {
-            FileHashDictionary = new Dictionary<string, ComputedFileHashModel>();
+            var collection = new FileHashCollection {CollectionId = Guid.NewGuid(),FileHashDictionary = new Dictionary<string, ComputedFileHashDataModel>(),LastModified = DateTime.Now};
+            return collection;
         }
 
-    
-        public Dictionary<string, ComputedFileHashModel> FileHashDictionary { get; set; }
-
-        public static void CreateMappings(IProfileExpression expression)
-        {
-            expression.CreateMap<FileHashCollection, FileHashCollectionDataModel>()
-                .ReverseMap();
-        }
     }
 }

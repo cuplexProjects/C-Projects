@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Caching;
 using AutoMapper;
 using DeleteDuplicateFiles.DataModels;
+using DeleteDuplicateFiles.DataSource;
 using DeleteDuplicateFiles.Models;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;

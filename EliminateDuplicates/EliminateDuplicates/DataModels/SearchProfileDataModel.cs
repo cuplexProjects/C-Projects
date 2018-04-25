@@ -19,5 +19,8 @@ namespace DeleteDuplicateFiles.DataModels
 
         [DataMember(Order = 4, IsRequired = true, Name = "ProfileName")]
         public string ProfileName { get; set; }
+
+        [DataMember(Order = 5, IsRequired = true, Name = "IncludeSubfolders")]
+        public bool IncludeSubfolders { get; set; }
     }
 }

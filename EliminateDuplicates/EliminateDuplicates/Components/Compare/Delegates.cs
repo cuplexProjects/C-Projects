@@ -10,7 +10,7 @@ namespace DeleteDuplicateFiles.Models
 
     public delegate void RemoveDeletedHashDbItemsEventHandler(object sender, FileHashRemovalEventArgs e);
 
-    public class DuplicateFileComparer : IComparer<DuplicateFile>
+    public class DuplicateFileComparer : IComparer<DuplicateFileModel>
     {
         private readonly SearchProfileManager _searchProfileManager;
         private readonly ApplicationSettingsModel.MasterFileSelectionMethods _selection;
@@ -21,16 +21,16 @@ namespace DeleteDuplicateFiles.Models
             _selection = selection;
         }
 
-        public int Compare(DuplicateFile x, DuplicateFile y)
+        public int Compare(DuplicateFileModel x, DuplicateFileModel y)
         {
             int compareVal = x.CompareTo(y);
             if (x.CompareTo(y) == 0)
             {
-                var activeProfile = _searchProfileManager.CurrentProfileModel;
+                var activeProfile = _searchProfileManager.SearchProfile;
                 if (activeProfile == null)
                     return 0;
 
-                var preferredDirectories = _searchProfileManager.CurrentProfileModel.PreferredDirecoryList;
+                var preferredDirectories = _searchProfileManager.SearchProfile.PreferredDirecoryList;
                 
 
                 if (preferredDirectories.Any(pd => x.GetDirectory().StartsWith(pd.Path)))

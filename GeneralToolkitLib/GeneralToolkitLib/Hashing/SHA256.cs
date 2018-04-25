@@ -11,10 +11,7 @@ namespace GeneralToolkitLib.Hashing
             return sha256Implementation.ComputeHash(inputStream);
         }
 
-        public int HashSize
-        {
-            get { return 256; }
-        }
+        public int HashSize => 256;
 
         public static string GetSHA256HashAsHexString(byte[] data)
         {

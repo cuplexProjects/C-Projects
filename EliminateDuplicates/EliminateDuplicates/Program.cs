@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Windows.Forms;
 using Autofac;
 using DeleteDuplicateFiles.Configuration;
+using DeleteDuplicateFiles.Managers;
 using DeleteDuplicateFiles.Services;
 using DeleteDuplicateFiles.WindowsApi;
 using GeneralToolkitLib.ConfigHelper;
@@ -42,10 +44,16 @@ namespace DeleteDuplicateFiles
 
             using (var scope = Container.BeginLifetimeScope())
             {
-                AppSettingsService settingsService = scope.Resolve<AppSettingsService>();
-                settingsService.LoadSettings();
-
+                //Init default hash key
+                var passwordManager = scope.Resolve<PasswordManager>();
                 
+
+                var settingsService = scope.Resolve<AppSettingsManager>();
+                settingsService.LoadSettings();
+                passwordManager.InitDefaultPwd(settingsService.ApplicationSettings.DefaultKey);
+
+
+
                 var frmMain = scope.Resolve<FrmMain>();
                 Application.Run(frmMain);
 

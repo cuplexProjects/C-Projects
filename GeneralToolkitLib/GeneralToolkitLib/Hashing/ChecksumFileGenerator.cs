@@ -13,13 +13,13 @@ namespace GeneralToolkitLib.Hashing
         private const string CHECKSUM_FILE_INFO = ";{0}  {1} {2} {3}";
         private readonly string _applicationName;
         private readonly IProgress<ChecksumProgress> _progress;
-        private readonly ChecksumProgress checksumProgress;
+        private readonly ChecksumProgress _checksumProgress;
 
         public ChecksumFileGenerator(string applicationName, IProgress<ChecksumProgress> progress)
         {
             _applicationName = applicationName;
             _progress = progress;
-            checksumProgress = new ChecksumProgress();
+            _checksumProgress = new ChecksumProgress();
         }
 
         public void GenrateSFVFileAsync(StringCollection filePathCollection, string sfvFilename)
@@ -29,27 +29,27 @@ namespace GeneralToolkitLib.Hashing
 
         public void GenrateSFVFile(StringCollection filePathCollection, string sfvFilename)
         {
-            using (FileStream fs = File.Create(sfvFilename))
+            using (var fs = File.Create(sfvFilename))
             {
-                CRC32 CRC32HashImplemenation = new CRC32();
+                var CRC32HashImplemenation = new CRC32();
 
                 // Write Header
-                StreamWriter sw = new StreamWriter(fs);
+                var sw = new StreamWriter(fs);
                 sw.WriteLine(CHECKSUM_FILE_HEADER, _applicationName, DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("HH:mm:ss"));
 
-                checksumProgress.FilesTotal = filePathCollection.Count;
-                checksumProgress.Text = "Generating SFV file header";
+                _checksumProgress.FilesTotal = filePathCollection.Count;
+                _checksumProgress.Text = "Generating SFV file header";
 
                 if (_progress != null)
-                    _progress.Report(checksumProgress);
+                    _progress.Report(_checksumProgress);
 
                 foreach (string filename in filePathCollection)
                 {
-                    FileInfo fileInfo = new FileInfo(filename);
+                    var fileInfo = new FileInfo(filename);
 
                     if (!fileInfo.Exists)
                     {
-                        checksumProgress.FilesTotal = checksumProgress.FilesTotal - 1;
+                        _checksumProgress.FilesTotal = _checksumProgress.FilesTotal - 1;
                         continue;
                     }
 
@@ -58,12 +58,12 @@ namespace GeneralToolkitLib.Hashing
 
                 foreach (string filename in filePathCollection)
                 {
-                    checksumProgress.Text = "Processing file: " + filename;
+                    _checksumProgress.Text = "Processing file: " + filename;
 
                     if (_progress != null)
-                        _progress.Report(checksumProgress);
+                        _progress.Report(_checksumProgress);
 
-                    FileInfo fileInfo = new FileInfo(filename);
+                    var fileInfo = new FileInfo(filename);
 
                     if (!fileInfo.Exists)
                         continue;
@@ -71,19 +71,19 @@ namespace GeneralToolkitLib.Hashing
                     {
                         string hexChecksum = GeneralConverters.ByteArrayToHexString(CRC32HashImplemenation.ComputeHash(fileInfo.OpenRead()));
                         sw.WriteLine(GeneralConverters.GetFileNameFromPath(filename) + " " + hexChecksum);
-                        checksumProgress.DataRead = checksumProgress.DataRead + fileInfo.Length;
+                        _checksumProgress.DataRead = _checksumProgress.DataRead + fileInfo.Length;
                     }
                     catch (Exception ex)
                     {
-                        checksumProgress.Text = ex.Message;
+                        _checksumProgress.Text = ex.Message;
                     }
 
 
-                    checksumProgress.FilesCompleted = checksumProgress.FilesCompleted + 1;
-                    checksumProgress.TotalProgress = (checksumProgress.FilesCompleted * 100) / checksumProgress.FilesTotal;
+                    _checksumProgress.FilesCompleted = _checksumProgress.FilesCompleted + 1;
+                    _checksumProgress.TotalProgress = _checksumProgress.FilesCompleted * 100 / _checksumProgress.FilesTotal;
 
                     if (_progress != null)
-                        _progress.Report(checksumProgress);
+                        _progress.Report(_checksumProgress);
                 }
 
                 fs.Flush();
@@ -91,10 +91,10 @@ namespace GeneralToolkitLib.Hashing
 
                 if (_progress != null)
                 {
-                    checksumProgress.Text = "SFV file generation completed";
-                    checksumProgress.TotalProgress = 100;
-                    checksumProgress.Completed = true;
-                    _progress.Report(checksumProgress);
+                    _checksumProgress.Text = "SFV file generation completed";
+                    _checksumProgress.TotalProgress = 100;
+                    _checksumProgress.Completed = true;
+                    _progress.Report(_checksumProgress);
                 }
             }
         }
@@ -106,27 +106,27 @@ namespace GeneralToolkitLib.Hashing
 
         public void GenrateMD5File(StringCollection filePathCollection, string sfvFilename)
         {
-            using (FileStream fs = File.Create(sfvFilename))
+            using (var fs = File.Create(sfvFilename))
             {
-                MD5 MD5HashImplemenation = new MD5();
+                var MD5HashImplemenation = new MD5();
 
                 // Write Header
-                StreamWriter sw = new StreamWriter(fs);
+                var sw = new StreamWriter(fs);
                 sw.WriteLine(CHECKSUM_FILE_HEADER, _applicationName, DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("HH:mm:ss"));
 
-                checksumProgress.FilesTotal = filePathCollection.Count;
-                checksumProgress.Text = "Generating MD5 file header";
+                _checksumProgress.FilesTotal = filePathCollection.Count;
+                _checksumProgress.Text = "Generating MD5 file header";
 
                 if (_progress != null)
-                    _progress.Report(checksumProgress);
+                    _progress.Report(_checksumProgress);
 
                 foreach (string filename in filePathCollection)
                 {
-                    FileInfo fileInfo = new FileInfo(filename);
+                    var fileInfo = new FileInfo(filename);
 
                     if (!fileInfo.Exists)
                     {
-                        checksumProgress.FilesTotal = checksumProgress.FilesTotal - 1;
+                        _checksumProgress.FilesTotal = _checksumProgress.FilesTotal - 1;
                         continue;
                     }
 
@@ -135,12 +135,12 @@ namespace GeneralToolkitLib.Hashing
 
                 foreach (string filename in filePathCollection)
                 {
-                    checksumProgress.Text = "Processing file: " + filename;
+                    _checksumProgress.Text = "Processing file: " + filename;
 
                     if (_progress != null)
-                        _progress.Report(checksumProgress);
+                        _progress.Report(_checksumProgress);
 
-                    FileInfo fileInfo = new FileInfo(filename);
+                    var fileInfo = new FileInfo(filename);
 
                     if (!fileInfo.Exists)
                         continue;
@@ -148,19 +148,19 @@ namespace GeneralToolkitLib.Hashing
                     {
                         string hexChecksum = GeneralConverters.ByteArrayToHexString(MD5HashImplemenation.ComputeHash(fileInfo.OpenRead()));
                         sw.WriteLine(hexChecksum + " *" + GeneralConverters.GetFileNameFromPath(filename));
-                        checksumProgress.DataRead = checksumProgress.DataRead + fileInfo.Length;
+                        _checksumProgress.DataRead = _checksumProgress.DataRead + fileInfo.Length;
                     }
                     catch (Exception ex)
                     {
-                        checksumProgress.Text = ex.Message;
+                        _checksumProgress.Text = ex.Message;
                     }
 
 
-                    checksumProgress.FilesCompleted = checksumProgress.FilesCompleted + 1;
-                    checksumProgress.TotalProgress = (checksumProgress.FilesCompleted * 100) / checksumProgress.FilesTotal;
+                    _checksumProgress.FilesCompleted = _checksumProgress.FilesCompleted + 1;
+                    _checksumProgress.TotalProgress = _checksumProgress.FilesCompleted * 100 / _checksumProgress.FilesTotal;
 
                     if (_progress != null)
-                        _progress.Report(checksumProgress);
+                        _progress.Report(_checksumProgress);
                 }
 
                 sw.Flush();
@@ -169,10 +169,10 @@ namespace GeneralToolkitLib.Hashing
 
                 if (_progress != null)
                 {
-                    checksumProgress.Text = "MD5 file generation completed";
-                    checksumProgress.TotalProgress = 100;
-                    checksumProgress.Completed = true;
-                    _progress.Report(checksumProgress);
+                    _checksumProgress.Text = "MD5 file generation completed";
+                    _checksumProgress.TotalProgress = 100;
+                    _checksumProgress.Completed = true;
+                    _progress.Report(_checksumProgress);
                 }
             }
         }

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
-using DeleteDuplicateFiles.Annotations;
-using DeleteDuplicateFiles.DataModels;
 
 namespace DeleteDuplicateFiles.Models
 {
-    public class ScanFolderListItem : IComparable<ScanFolderListItem>, IEquatable<ScanFolderListItem>
+    public class ScanFolderModel : IComparable<ScanFolderModel>, IEquatable<ScanFolderModel>
     {
         public string FullPath;
         public int SortOrder;
@@ -22,12 +17,12 @@ namespace DeleteDuplicateFiles.Models
             }
         }
 
-        public ScanFolderListItem()
+        public ScanFolderModel()
         {
             SortOrder = -1;
         }
 
-        public bool Contains(ScanFolderListItem other)
+        public bool Contains(ScanFolderModel other)
         {
             if (FullPath == null || other.FullPath == null)
                 throw new ArgumentException("FullPath property can no be null");
@@ -56,7 +51,7 @@ namespace DeleteDuplicateFiles.Models
             return true;
         }
 
-        public int CompareTo(ScanFolderListItem other)
+        public int CompareTo(ScanFolderModel other)
         {
             if (SortOrder >= 0 && other.SortOrder >= 0)
                 return SortOrder.CompareTo(other.SortOrder);
@@ -72,7 +67,7 @@ namespace DeleteDuplicateFiles.Models
             return 0;
         }
 
-        public bool Equals(ScanFolderListItem other)
+        public bool Equals(ScanFolderModel other)
         {
             if (other == null)
                 return false;

@@ -6,17 +6,7 @@ namespace DeleteDuplicateFiles.Models
 {
     public class SearchProfileModel
     {
-        protected SearchProfileModel()
-        {
-        }
-
-        public SearchProfileModel(List<ScanFolderListItem> scanFolderList, List<PreferredDirectoryDataModel> preferredDirecoryList)
-        {
-            ScanFolderList = scanFolderList;
-            PreferredDirecoryList = preferredDirecoryList;
-        }
-
-        public SearchProfileModel(string profileName, List<ScanFolderListItem> scanFolderList, List<PreferredDirectoryDataModel> preferredDirecoryList)
+        public SearchProfileModel(string profileName, List<ScanFolderModel> scanFolderList, List<PreferredDirectoryDataModel> preferredDirecoryList)
         {
             ScanFolderList = scanFolderList;
             PreferredDirecoryList = preferredDirecoryList;
@@ -24,7 +14,7 @@ namespace DeleteDuplicateFiles.Models
         }
 
 
-        public List<ScanFolderListItem> ScanFolderList { get; set; }
+        public List<ScanFolderModel> ScanFolderList { get; set; }
 
         public List<PreferredDirectoryDataModel> PreferredDirecoryList { get; set; }
 
@@ -33,6 +23,8 @@ namespace DeleteDuplicateFiles.Models
         public string ProfileName { get; set; }
 
         public string FullPath { get; set; }
+
+        public bool IncludeSubfolders { get; set; }
 
         public void ScanFolderListUpdated()
         {
@@ -46,6 +38,7 @@ namespace DeleteDuplicateFiles.Models
                 .ForMember(d => d.FileNameFilter, o => o.MapFrom(d => d.FileNameFilter))
                 .ForMember(d => d.PreferredDirecoryList, o => o.MapFrom(d => d.PreferredDirecoryList))
                 .ForMember(d => d.ScanFolderList, o => o.MapFrom(d => d.ScanFolderList))
+                .ForMember(d => d.IncludeSubfolders, o => o.MapFrom(d => d.IncludeSubfolders))
                 .ReverseMap();
         }
     }

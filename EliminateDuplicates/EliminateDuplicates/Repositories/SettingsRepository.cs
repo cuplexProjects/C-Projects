@@ -10,7 +10,7 @@ using Serilog;
 namespace DeleteDuplicateFiles.Repositories
 {
     [UsedImplicitly]
-    public class ApplicationSettingsRepository : RepositoryBase
+    public class SettingsRepository : RepositoryBase
     {
         private readonly IRegistryAccess _registryService;
         private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ namespace DeleteDuplicateFiles.Repositories
         private static string CompanyName => Application.CompanyName;
         private string ProductName { get; } = Application.ProductName;
 
-        public ApplicationSettingsRepository(IMapper mapper)
+        public SettingsRepository(IMapper mapper)
         {
             _mapper = mapper;
             _registryService = new RegistryAccess(CompanyName, ProductName);
