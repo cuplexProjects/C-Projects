@@ -171,6 +171,7 @@
     <Compile Include="Encryption\Licence\StaticData\SerialNumbersSettings.cs" />
     <Compile Include="Encryption\Licence\SysInfoManager.cs" />
     <Compile Include="Events\Unsubscriber.cs" />
+    <Compile Include="Log\SerilogEasyConfig.cs" />
     <Compile Include="Utility\TypedObjectCompare.cs" />
     <Compile Include="Hashing\ChecksumFileGenerator.cs" />
     <Compile Include="Hashing\ChecksumProgress.cs" />

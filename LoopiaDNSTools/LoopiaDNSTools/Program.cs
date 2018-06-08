@@ -3,7 +3,6 @@ using System.Reflection;
 using System.ServiceProcess;
 using System.Windows.Forms;
 using GeneralToolkitLib.ConfigHelper;
-using GeneralToolkitLib.Log;
 
 namespace LoopiaDNSTools
 {

@@ -35,6 +35,7 @@ RelocateRepo.bat
 Desktop.ini
 
 # Base path not included directories
+*/packages/*
 /AllProjectImagesAndIcons
 /AdvancedInstaller
 /CuplexDB
