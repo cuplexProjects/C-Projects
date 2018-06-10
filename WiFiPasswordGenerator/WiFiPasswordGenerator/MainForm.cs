@@ -6,10 +6,10 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralToolkitLib.Barcode;
-using GeneralToolkitLib.Logging;
 using GeneralToolkitLib.Utility;
 using GeneralToolkitLib.Utility.RandomGenerator;
 using Serilog;
@@ -19,7 +19,7 @@ using WiFiPasswordGenerator.Settings;
 namespace WiFiPasswordGenerator
 {
     /// <summary>
-    /// Main user form
+    ///     Main user form
     /// </summary>
     public partial class MainForm : Form
     {
@@ -32,13 +32,13 @@ namespace WiFiPasswordGenerator
         private Size _QROutputSize;
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         public MainForm()
         {
             InitializeComponent();
-            Color outerBorderColor = Color.FromArgb(0x80, 0x80, 0x80, 0x80);
-            Color innerBorderColor = Color.FromArgb(0x80, 0xB0, 0xC4, 0xDE);
+            var outerBorderColor = Color.FromArgb(0x80, 0x80, 0x80, 0x80);
+            var innerBorderColor = Color.FromArgb(0x80, 0xB0, 0xC4, 0xDE);
             Brush innerBrush = new SolidBrush(innerBorderColor);
             Brush outerBrush = new SolidBrush(outerBorderColor);
 
@@ -48,7 +48,8 @@ namespace WiFiPasswordGenerator
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the <see cref="T:System.ComponentModel.Component"/> is reclaimed by garbage collection.
+        ///     Releases unmanaged resources and performs other cleanup operations before the
+        ///     <see cref="T:System.ComponentModel.Component" /> is reclaimed by garbage collection.
         /// </summary>
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -59,11 +60,11 @@ namespace WiFiPasswordGenerator
 
         private void pnlMain_Paint(object sender, PaintEventArgs e)
         {
-            using (Graphics g = e.Graphics)
+            using (var g = e.Graphics)
             {
                 g.Clear(BackColor);
                 g.InterpolationMode = InterpolationMode.Bilinear;
-                Rectangle bordeRectangle = e.ClipRectangle;
+                var bordeRectangle = e.ClipRectangle;
                 bordeRectangle.Width--;
                 bordeRectangle.Height--;
                 g.DrawRectangle(_outerPen, bordeRectangle);
@@ -83,22 +84,22 @@ namespace WiFiPasswordGenerator
                     switch (radioButton.Text.ToUpper()[0])
                     {
                         //L
-                        case (char) 76:
+                        case (char)76:
                             _activeSettings.QR_CodeLevel = QR_CodeLevels.L;
                             break;
 
                         //M
-                        case (char) 77:
+                        case (char)77:
                             _activeSettings.QR_CodeLevel = QR_CodeLevels.M;
                             break;
 
                         //Q
-                        case (char) 81:
+                        case (char)81:
                             _activeSettings.QR_CodeLevel = QR_CodeLevels.Q;
                             break;
 
                         //H
-                        case (char) 72:
+                        case (char)72:
                             _activeSettings.QR_CodeLevel = QR_CodeLevels.H;
                             break;
                     }
@@ -189,7 +190,7 @@ namespace WiFiPasswordGenerator
         private bool IsValidPasswordLength()
         {
             int keyVal;
-            bool validData = false;
+            var validData = false;
             if (int.TryParse(txtPasswordLength.Text, out keyVal))
                 validData = keyVal > 0 && keyVal <= Max_Password_Length;
 
@@ -206,14 +207,14 @@ namespace WiFiPasswordGenerator
             if (!KeyValueNumericValidator.ValidateIntegerInput(e.KeyChar))
             {
                 e.Handled = true;
-                e.KeyChar = Char.MaxValue;
+                e.KeyChar = char.MaxValue;
             }
         }
 
         private void grpBoxQRCode_Resize(object sender, EventArgs e)
         {
-            int margin = 15;
-            int squareSize = Math.Min(grpBoxQRCode.Width - (margin * 2), grpBoxQRCode.Height - (margin * 2));
+            var margin = 15;
+            int squareSize = Math.Min(grpBoxQRCode.Width - margin * 2, grpBoxQRCode.Height - margin * 2);
 
             PicBoxQRCode.SetBounds(margin, margin, squareSize, squareSize);
 
@@ -237,7 +238,9 @@ namespace WiFiPasswordGenerator
                     _QROutputSize.Height = int.Parse(txtUserDefinedQRHeight.Text);
                 }
                 else
+                {
                     _QROutputSize = Size.Empty;
+                }
             }
             catch (Exception ex)
             {
@@ -248,7 +251,7 @@ namespace WiFiPasswordGenerator
         private void txtUserDefinedQRWidth_Validating(object sender, CancelEventArgs e)
         {
             int keyVal;
-            bool validData = false;
+            var validData = false;
             if (int.TryParse(txtPasswordLength.Text, out keyVal))
                 validData = keyVal > 0 && keyVal <= 500;
 
@@ -259,7 +262,7 @@ namespace WiFiPasswordGenerator
         private void txtUserDefinedQRHeight_Validating(object sender, CancelEventArgs e)
         {
             int keyVal;
-            bool validData = false;
+            var validData = false;
             if (int.TryParse(txtPasswordLength.Text, out keyVal))
                 validData = keyVal > 0 && keyVal <= 500;
 
@@ -281,8 +284,7 @@ namespace WiFiPasswordGenerator
         {
             try
             {
-                var linkLabel = sender as LinkLabel;
-                if (linkLabel != null) Process.Start(linkLabel.Text);
+                if (sender is LinkLabel linkLabel) Process.Start(linkLabel.Text);
             }
             catch (Exception ex)
             {
@@ -314,7 +316,7 @@ namespace WiFiPasswordGenerator
 
                 var memoryStream = new MemoryStream();
                 var encoderParameter = new EncoderParameter(Encoder.Quality, 100);
-                bitmap.Save(memoryStream, GetEncoderInfo(ImageFormat.Png), new EncoderParameters(1) {Param = new[] {encoderParameter}});
+                bitmap.Save(memoryStream, GetEncoderInfo(ImageFormat.Png), new EncoderParameters(1) { Param = new[] { encoderParameter } });
                 memoryStream.Position = 0;
                 Clipboard.Clear();
                 Clipboard.SetText(Convert.ToBase64String(memoryStream.ToArray(), 0, Convert.ToInt32(memoryStream.Length), Base64FormattingOptions.InsertLineBreaks), TextDataFormat.Text);
@@ -325,6 +327,111 @@ namespace WiFiPasswordGenerator
         {
             Clipboard.Clear();
             Clipboard.SetText(txtGeneratedPassword.Text);
+        }
+
+        private void txtPasswordLength_TextChanged(object sender, EventArgs e)
+        {
+            if (IsValidPasswordLength())
+            {
+                txtGeneratedPassword.Tag = txtGeneratedPassword.Text;
+            }
+            else
+            {
+                var previousText = txtGeneratedPassword.Tag as string;
+                txtGeneratedPassword.Text = !string.IsNullOrWhiteSpace(previousText) ? previousText : "63";
+            }
+        }
+
+        private void ImportPasswordFromClipboard()
+        {
+            if (Clipboard.ContainsText(TextDataFormat.Text))
+            {
+                string txtData = Clipboard.GetText(TextDataFormat.Text);
+                if (!string.IsNullOrWhiteSpace(txtData) && txtData.Length > 0 && txtData.Length <= Max_Password_Length)
+                    txtGeneratedPassword.Text = txtData;
+                else
+                    MessageBox.Show("The clipboard data did not contain a string between 1 and 500 characters long", "Invalid Password", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void setTextFromClipboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ImportPasswordFromClipboard();
+        }
+
+        private async void generateQRCodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (IsValidPasswordLength() && IsValidSsid())
+            {
+                await GnerateQrCode();
+            }
+            else
+            {
+                MessageBox.Show(this, "Invalid password leangth or SSID", "Ivalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+                
+        }
+
+        private bool IsValidSsid()
+        {
+            Regex ssidRegex = new Regex(@"^\w{8,}$");
+            return txtSSId.Text.Length >= 8 && ssidRegex.IsMatch(txtSSId.Text);
+        }
+
+        private void toolStripMenuItemImportPassword_Click(object sender, EventArgs e)
+        {
+            ImportPasswordFromClipboard();
+        }
+
+        private void toolStripMenuItemImportBase64ImgData_Click(object sender, EventArgs e)
+        {
+            if (Clipboard.ContainsText(TextDataFormat.Text))
+            {
+                string txtData = Clipboard.GetText(TextDataFormat.Text);
+                try
+                {
+                    byte[] pngBytes = Convert.FromBase64String(txtData);
+                    var memoryStream = new MemoryStream(pngBytes);
+                    var bitmap = new Bitmap(memoryStream);
+                    PicBoxQRCode.Image = bitmap;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Could not import Image", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void toolStripMenuItemExportQRImage_Click(object sender, EventArgs e)
+        {
+            ExportQRCodeImageToBase64PngData();
+        }
+
+        private void toolStripMenuItemExportPwdStr_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtGeneratedPassword.Text) && txtGeneratedPassword.Text.Length > 0 && txtGeneratedPassword.Text.Length <= Max_Password_Length)
+            {
+                Clipboard.Clear();
+                Clipboard.SetText(txtGeneratedPassword.Text);
+            }
+        }
+
+        private void txtSSId_Validating(object sender, CancelEventArgs e)
+        {
+            if (txtSSId.Text.Length < 8)
+            {
+                e.Cancel = true;
+            }
+
+            if (txtSSId.Text.Contains('"') || txtSSId.Text.Contains('\\'))
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void txtSSId_Validated(object sender, EventArgs e)
+        {
+
         }
 
         #region GenerateOutput Methods
@@ -342,20 +449,23 @@ namespace WiFiPasswordGenerator
             {
                 var qrCodeGenerator = new QRCodeGenerator();
                 string enValue = _activeSettings.QR_CodeLevel.ToString();
-                var ecc =
-                    (QRCodeGenerator.ECCLevel) Enum.Parse(typeof(QRCodeGenerator.ECCLevel), enValue);
-                QRCodeGenerator.QRCode qrCode = qrCodeGenerator.CreateQrCode(txtGeneratedPassword.Text, ecc);
+                var ecc = (QRCodeGenerator.ECCLevel)Enum.Parse(typeof(QRCodeGenerator.ECCLevel), enValue);
+                string encoderContent = CreateWifimetadataFormatString(txtSSId.Text, rdWPA.Checked, txtGeneratedPassword.Text, rdSSIDVisibleFalse.Checked);
+
+                var qrCode = qrCodeGenerator.CreateQrCode(encoderContent, ecc);
 
                 int moduleCount = qrCode.ModuleMatrix.Count;
                 if (_QROutputSize == Size.Empty)
+                {
                     PicBoxQRCode.Image = qrCode.GetGraphic(Math.Min(500, PicBoxQRCode.Height) / moduleCount);
+                }
                 else
                 {
                     PicBoxQRCode.Image = qrCode.GetGraphic(_QROutputSize.Height / moduleCount);
                     var b = new Bitmap(PicBoxQRCode.Image);
                     b.SetResolution(_QROutputSize.Width, _QROutputSize.Height);
                     PicBoxQRCode.Image = b;
-                    PicBoxQRCode.Refresh();
+                    PicBoxQRCode.Invalidate();  
                 }
             });
             PicBoxQRCode.Refresh();
@@ -389,9 +499,11 @@ namespace WiFiPasswordGenerator
                             encoderParameters.Param[0] = new EncoderParameter(Encoder.Compression, 50);
                         }
                         else
+                        {
                             throw new Exception("Unsupported image type");
+                        }
 
-                        Image img = PicBoxQRCode.Image;
+                        var img = PicBoxQRCode.Image;
                         if (_QROutputSize != Size.Empty)
                         {
                             var b = new Bitmap(img);
@@ -414,88 +526,26 @@ namespace WiFiPasswordGenerator
             MessageBox.Show("Please generate a password first", "Nothing to save", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        // Output format is: WIFI:S:<SSID>;T:<WPA|WEP|>;P:<password>;H:<true|false|>;
+        private string CreateWifimetadataFormatString(string ssid, bool WPAEncryption, string password, bool ssidHidden)
+        {
+            // Replace special characters in ssid
+            if (ssid.Contains(';'))
+            {
+                ssid = ssid.Replace(";", @"\;");
+            }
+
+            string tValue = WPAEncryption ? "WPA" : "WEP";
+            string template = $"WIFI:S:{ssid};T:{tValue};P:{password};H:{ssidHidden.ToString()}";
+            return template;
+        }
+
         private ImageCodecInfo GetEncoderInfo(ImageFormat format)
         {
-            var codecs = ImageCodecInfo.GetImageDecoders();
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
             return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
         }
 
         #endregion
-
-        private void txtPasswordLength_TextChanged(object sender, EventArgs e)
-        {
-            if (IsValidPasswordLength())
-                txtGeneratedPassword.Tag = txtGeneratedPassword.Text;
-            else
-            {
-                string previousText = txtGeneratedPassword.Tag as string;
-                txtGeneratedPassword.Text = !string.IsNullOrWhiteSpace(previousText) ? previousText : "63";
-            }
-        }
-
-        private void ImportPasswordFromClipboard()
-        {
-            if (Clipboard.ContainsText(TextDataFormat.Text))
-            {
-                string txtData = Clipboard.GetText(TextDataFormat.Text);
-                if (!string.IsNullOrWhiteSpace(txtData) && txtData.Length > 0 && txtData.Length <= Max_Password_Length)
-                {
-                    txtGeneratedPassword.Text = txtData;
-                }
-                else
-                {
-                    MessageBox.Show("The clipboard data did not contain a string between 1 and 500 characters long", "Invalid Password", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void setTextFromClipboardToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ImportPasswordFromClipboard();
-        }
-
-        private async void generateQRCodeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (IsValidPasswordLength())
-                await GnerateQrCode();
-        }
-
-        private void toolStripMenuItemImportPassword_Click(object sender, EventArgs e)
-        {
-            ImportPasswordFromClipboard();
-        }
-
-        private void toolStripMenuItemImportBase64ImgData_Click(object sender, EventArgs e)
-        {
-            if (Clipboard.ContainsText(TextDataFormat.Text))
-            {
-                string txtData = Clipboard.GetText(TextDataFormat.Text);
-                try
-                {
-                    Byte[] pngBytes = Convert.FromBase64String(txtData);
-                    MemoryStream memoryStream = new MemoryStream(pngBytes);
-                    Bitmap bitmap = new Bitmap(memoryStream);
-                    PicBoxQRCode.Image = bitmap;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Could not import Image", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void toolStripMenuItemExportQRImage_Click(object sender, EventArgs e)
-        {
-            ExportQRCodeImageToBase64PngData();
-        }
-
-        private void toolStripMenuItemExportPwdStr_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(txtGeneratedPassword.Text) && txtGeneratedPassword.Text.Length > 0 && txtGeneratedPassword.Text.Length <= Max_Password_Length)
-            {
-                Clipboard.Clear();
-                Clipboard.SetText(txtGeneratedPassword.Text);
-            }
-        }
     }
 }

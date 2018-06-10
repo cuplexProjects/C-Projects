@@ -59,10 +59,21 @@
             this.grpBoxQRCode = new System.Windows.Forms.GroupBox();
             this.PicBoxQRCode = new System.Windows.Forms.PictureBox();
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.contextMenuClipboardIO = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ToolStripMenuItemCBImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemImportPassword = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemImportBase64ImgData = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemCBExport = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemExportQRImage = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemExportPwdStr = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.generateQRCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txtGeneratedPassword = new System.Windows.Forms.TextBox();
             this.contextMenuGeneratedPassword = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setTextFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.generateQRCodeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.label3 = new System.Windows.Forms.Label();
             this.grpImgRes = new System.Windows.Forms.GroupBox();
             this.pnlUserDefinedRes = new System.Windows.Forms.Panel();
@@ -74,18 +85,18 @@
             this.rbDefaultRes = new System.Windows.Forms.RadioButton();
             this.btnSaveQRCode = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.contextMenuClipboardIO = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.ToolStripMenuItemCBImport = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemImportPassword = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemImportBase64ImgData = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemCBExport = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemExportQRImage = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemExportPwdStr = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.generateQRCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTipPasswordLength = new System.Windows.Forms.ToolTip(this.components);
-            this.generateQRCodeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtSSId = new System.Windows.Forms.TextBox();
+            this.rdSSIDVisibleTrue = new System.Windows.Forms.RadioButton();
+            this.rdSSIDVisibleFalse = new System.Windows.Forms.RadioButton();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.rdWPA = new System.Windows.Forms.RadioButton();
+            this.rdWEP = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.flowLayoutOutputType.SuspendLayout();
@@ -95,14 +106,22 @@
             this.grpBoxQRCode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBoxQRCode)).BeginInit();
             this.pnlMain.SuspendLayout();
+            this.contextMenuClipboardIO.SuspendLayout();
             this.contextMenuGeneratedPassword.SuspendLayout();
             this.grpImgRes.SuspendLayout();
             this.pnlUserDefinedRes.SuspendLayout();
-            this.contextMenuClipboardIO.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.groupBox4);
             this.groupBox1.Controls.Add(this.linkLabelLastQRPath);
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.txtPasswordLength);
@@ -110,7 +129,7 @@
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Location = new System.Drawing.Point(7, 7);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(685, 200);
+            this.groupBox1.Size = new System.Drawing.Size(685, 258);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
@@ -118,7 +137,7 @@
             // linkLabelLastQRPath
             // 
             this.linkLabelLastQRPath.AutoSize = true;
-            this.linkLabelLastQRPath.Location = new System.Drawing.Point(196, 172);
+            this.linkLabelLastQRPath.Location = new System.Drawing.Point(12, 193);
             this.linkLabelLastQRPath.Name = "linkLabelLastQRPath";
             this.linkLabelLastQRPath.Size = new System.Drawing.Size(83, 13);
             this.linkLabelLastQRPath.TabIndex = 7;
@@ -145,7 +164,7 @@
             this.txtPasswordTypesDescr.Multiline = true;
             this.txtPasswordTypesDescr.Name = "txtPasswordTypesDescr";
             this.txtPasswordTypesDescr.ReadOnly = true;
-            this.txtPasswordTypesDescr.Size = new System.Drawing.Size(225, 103);
+            this.txtPasswordTypesDescr.Size = new System.Drawing.Size(225, 43);
             this.txtPasswordTypesDescr.TabIndex = 7;
             this.txtPasswordTypesDescr.Text = "Default settings uses alpha numeric characters, UC, LC and spcecial characters li" +
     "ke !+-@#?$";
@@ -227,12 +246,12 @@
             // 
             // txtPasswordLength
             // 
-            this.txtPasswordLength.Location = new System.Drawing.Point(119, 165);
+            this.txtPasswordLength.Location = new System.Drawing.Point(122, 218);
             this.txtPasswordLength.MaxLength = 6;
             this.txtPasswordLength.Name = "txtPasswordLength";
             this.txtPasswordLength.Size = new System.Drawing.Size(40, 20);
             this.txtPasswordLength.TabIndex = 4;
-            this.txtPasswordLength.Text = "63";
+            this.txtPasswordLength.Text = "55";
             this.toolTipPasswordLength.SetToolTip(this.txtPasswordLength, "The password length can maximum be 500 characters.");
             this.txtPasswordLength.TextChanged += new System.EventHandler(this.txtPasswordLength_TextChanged);
             this.txtPasswordLength.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPasswordLength_KeyPress);
@@ -243,7 +262,7 @@
             // 
             this.lblPasswordLength.AutoSize = true;
             this.lblPasswordLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPasswordLength.Location = new System.Drawing.Point(9, 168);
+            this.lblPasswordLength.Location = new System.Drawing.Point(12, 221);
             this.lblPasswordLength.Name = "lblPasswordLength";
             this.lblPasswordLength.Size = new System.Drawing.Size(104, 13);
             this.lblPasswordLength.TabIndex = 3;
@@ -335,7 +354,7 @@
             // btnGenerate
             // 
             this.btnGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGenerate.Location = new System.Drawing.Point(570, 434);
+            this.btnGenerate.Location = new System.Drawing.Point(570, 488);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(120, 26);
             this.btnGenerate.TabIndex = 1;
@@ -379,10 +398,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpBoxQRCode.ContextMenuStrip = this.contextMenuQRImage;
             this.grpBoxQRCode.Controls.Add(this.PicBoxQRCode);
-            this.grpBoxQRCode.Location = new System.Drawing.Point(7, 267);
+            this.grpBoxQRCode.Location = new System.Drawing.Point(7, 321);
             this.grpBoxQRCode.Name = "grpBoxQRCode";
             this.grpBoxQRCode.Padding = new System.Windows.Forms.Padding(5, 5, 3, 3);
-            this.grpBoxQRCode.Size = new System.Drawing.Size(557, 196);
+            this.grpBoxQRCode.Size = new System.Drawing.Size(557, 200);
             this.grpBoxQRCode.TabIndex = 5;
             this.grpBoxQRCode.TabStop = false;
             this.grpBoxQRCode.Text = "QR Code";
@@ -395,7 +414,7 @@
             this.PicBoxQRCode.ContextMenuStrip = this.contextMenuQRImage;
             this.PicBoxQRCode.Location = new System.Drawing.Point(174, 10);
             this.PicBoxQRCode.Name = "PicBoxQRCode";
-            this.PicBoxQRCode.Size = new System.Drawing.Size(182, 180);
+            this.PicBoxQRCode.Size = new System.Drawing.Size(182, 184);
             this.PicBoxQRCode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PicBoxQRCode.TabIndex = 3;
             this.PicBoxQRCode.TabStop = false;
@@ -415,16 +434,95 @@
             this.pnlMain.Margin = new System.Windows.Forms.Padding(2);
             this.pnlMain.Name = "pnlMain";
             this.pnlMain.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlMain.Size = new System.Drawing.Size(698, 467);
+            this.pnlMain.Size = new System.Drawing.Size(698, 521);
             this.pnlMain.TabIndex = 6;
             this.pnlMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMain_Paint);
+            // 
+            // contextMenuClipboardIO
+            // 
+            this.contextMenuClipboardIO.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.contextMenuClipboardIO.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemCBImport,
+            this.ToolStripMenuItemCBExport,
+            this.toolStripSeparator1,
+            this.generateQRCodeToolStripMenuItem});
+            this.contextMenuClipboardIO.Name = "contextMenuClipboardIO";
+            this.contextMenuClipboardIO.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.contextMenuClipboardIO.Size = new System.Drawing.Size(188, 124);
+            // 
+            // ToolStripMenuItemCBImport
+            // 
+            this.ToolStripMenuItemCBImport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemImportPassword,
+            this.toolStripMenuItemImportBase64ImgData});
+            this.ToolStripMenuItemCBImport.Image = global::WiFiPasswordGenerator.Properties.Resources._32edit_copy;
+            this.ToolStripMenuItemCBImport.Name = "ToolStripMenuItemCBImport";
+            this.ToolStripMenuItemCBImport.Size = new System.Drawing.Size(187, 38);
+            this.ToolStripMenuItemCBImport.Text = "Clipboard Import";
+            // 
+            // toolStripMenuItemImportPassword
+            // 
+            this.toolStripMenuItemImportPassword.Image = global::WiFiPasswordGenerator.Properties.Resources._32text_x_nfo1;
+            this.toolStripMenuItemImportPassword.Name = "toolStripMenuItemImportPassword";
+            this.toolStripMenuItemImportPassword.Size = new System.Drawing.Size(204, 22);
+            this.toolStripMenuItemImportPassword.Text = "Text Content";
+            this.toolStripMenuItemImportPassword.Click += new System.EventHandler(this.toolStripMenuItemImportPassword_Click);
+            // 
+            // toolStripMenuItemImportBase64ImgData
+            // 
+            this.toolStripMenuItemImportBase64ImgData.Image = global::WiFiPasswordGenerator.Properties.Resources._32Documents_Library1;
+            this.toolStripMenuItemImportBase64ImgData.Name = "toolStripMenuItemImportBase64ImgData";
+            this.toolStripMenuItemImportBase64ImgData.Size = new System.Drawing.Size(204, 22);
+            this.toolStripMenuItemImportBase64ImgData.Text = "QR Image In Text Format";
+            this.toolStripMenuItemImportBase64ImgData.Click += new System.EventHandler(this.toolStripMenuItemImportBase64ImgData_Click);
+            // 
+            // ToolStripMenuItemCBExport
+            // 
+            this.ToolStripMenuItemCBExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemExportQRImage,
+            this.toolStripMenuItemExportPwdStr});
+            this.ToolStripMenuItemCBExport.Image = global::WiFiPasswordGenerator.Properties.Resources._32edit_paste;
+            this.ToolStripMenuItemCBExport.Name = "ToolStripMenuItemCBExport";
+            this.ToolStripMenuItemCBExport.Size = new System.Drawing.Size(187, 38);
+            this.ToolStripMenuItemCBExport.Text = "Clipboard Export";
+            // 
+            // toolStripMenuItemExportQRImage
+            // 
+            this.toolStripMenuItemExportQRImage.Image = global::WiFiPasswordGenerator.Properties.Resources.qr_code_32x32;
+            this.toolStripMenuItemExportQRImage.Name = "toolStripMenuItemExportQRImage";
+            this.toolStripMenuItemExportQRImage.Size = new System.Drawing.Size(181, 22);
+            this.toolStripMenuItemExportQRImage.Text = "QR Code Image";
+            this.toolStripMenuItemExportQRImage.ToolTipText = "QR Code Image is encoded in PNG format and the output text\r\nis a Base64 converted" +
+    " byte array.\r\n";
+            this.toolStripMenuItemExportQRImage.Click += new System.EventHandler(this.toolStripMenuItemExportQRImage_Click);
+            // 
+            // toolStripMenuItemExportPwdStr
+            // 
+            this.toolStripMenuItemExportPwdStr.Image = global::WiFiPasswordGenerator.Properties.Resources._32text_x_nfo1;
+            this.toolStripMenuItemExportPwdStr.Name = "toolStripMenuItemExportPwdStr";
+            this.toolStripMenuItemExportPwdStr.Size = new System.Drawing.Size(181, 22);
+            this.toolStripMenuItemExportPwdStr.Text = "Generated Password";
+            this.toolStripMenuItemExportPwdStr.Click += new System.EventHandler(this.toolStripMenuItemExportPwdStr_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(184, 6);
+            // 
+            // generateQRCodeToolStripMenuItem
+            // 
+            this.generateQRCodeToolStripMenuItem.Image = global::WiFiPasswordGenerator.Properties.Resources._32Chrisbanks2_Cold_Fusion_Hd_QR_scanner;
+            this.generateQRCodeToolStripMenuItem.Name = "generateQRCodeToolStripMenuItem";
+            this.generateQRCodeToolStripMenuItem.Size = new System.Drawing.Size(187, 38);
+            this.generateQRCodeToolStripMenuItem.Text = "Generate QR Code";
+            this.generateQRCodeToolStripMenuItem.Click += new System.EventHandler(this.generateQRCodeToolStripMenuItem_Click);
             // 
             // txtGeneratedPassword
             // 
             this.txtGeneratedPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtGeneratedPassword.ContextMenuStrip = this.contextMenuGeneratedPassword;
-            this.txtGeneratedPassword.Location = new System.Drawing.Point(153, 217);
+            this.txtGeneratedPassword.Location = new System.Drawing.Point(150, 271);
             this.txtGeneratedPassword.Multiline = true;
             this.txtGeneratedPassword.Name = "txtGeneratedPassword";
             this.txtGeneratedPassword.ReadOnly = true;
@@ -459,11 +557,25 @@
             this.setTextFromClipboardToolStripMenuItem.Text = "Paste Text To The Generated Password Field";
             this.setTextFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.setTextFromClipboardToolStripMenuItem_Click);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(316, 6);
+            // 
+            // generateQRCodeToolStripMenuItem1
+            // 
+            this.generateQRCodeToolStripMenuItem1.Image = global::WiFiPasswordGenerator.Properties.Resources._32Chrisbanks2_Cold_Fusion_Hd_QR_scanner;
+            this.generateQRCodeToolStripMenuItem1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.generateQRCodeToolStripMenuItem1.Name = "generateQRCodeToolStripMenuItem1";
+            this.generateQRCodeToolStripMenuItem1.Size = new System.Drawing.Size(319, 38);
+            this.generateQRCodeToolStripMenuItem1.Text = "GenerateQR Code";
+            this.generateQRCodeToolStripMenuItem1.Click += new System.EventHandler(this.generateQRCodeToolStripMenuItem_Click);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(19, 220);
+            this.label3.Location = new System.Drawing.Point(16, 271);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(128, 13);
             this.label3.TabIndex = 8;
@@ -475,7 +587,7 @@
             this.grpImgRes.Controls.Add(this.pnlUserDefinedRes);
             this.grpImgRes.Controls.Add(this.rbUserDefined);
             this.grpImgRes.Controls.Add(this.rbDefaultRes);
-            this.grpImgRes.Location = new System.Drawing.Point(570, 267);
+            this.grpImgRes.Location = new System.Drawing.Point(570, 321);
             this.grpImgRes.Name = "grpImgRes";
             this.grpImgRes.Size = new System.Drawing.Size(125, 129);
             this.grpImgRes.TabIndex = 7;
@@ -562,7 +674,7 @@
             // btnSaveQRCode
             // 
             this.btnSaveQRCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveQRCode.Location = new System.Drawing.Point(570, 402);
+            this.btnSaveQRCode.Location = new System.Drawing.Point(570, 456);
             this.btnSaveQRCode.Name = "btnSaveQRCode";
             this.btnSaveQRCode.Size = new System.Drawing.Size(120, 26);
             this.btnSaveQRCode.TabIndex = 6;
@@ -576,85 +688,6 @@
             this.saveFileDialog1.FileName = "Password_QRCode";
             this.saveFileDialog1.Filter = "png files|*.png|jpeg|*.jpg";
             // 
-            // contextMenuClipboardIO
-            // 
-            this.contextMenuClipboardIO.ImageScalingSize = new System.Drawing.Size(32, 32);
-            this.contextMenuClipboardIO.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripMenuItemCBImport,
-            this.ToolStripMenuItemCBExport,
-            this.toolStripSeparator1,
-            this.generateQRCodeToolStripMenuItem});
-            this.contextMenuClipboardIO.Name = "contextMenuClipboardIO";
-            this.contextMenuClipboardIO.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.contextMenuClipboardIO.Size = new System.Drawing.Size(188, 146);
-            // 
-            // ToolStripMenuItemCBImport
-            // 
-            this.ToolStripMenuItemCBImport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemImportPassword,
-            this.toolStripMenuItemImportBase64ImgData});
-            this.ToolStripMenuItemCBImport.Image = global::WiFiPasswordGenerator.Properties.Resources._32edit_copy;
-            this.ToolStripMenuItemCBImport.Name = "ToolStripMenuItemCBImport";
-            this.ToolStripMenuItemCBImport.Size = new System.Drawing.Size(187, 38);
-            this.ToolStripMenuItemCBImport.Text = "Clipboard Import";
-            // 
-            // toolStripMenuItemImportPassword
-            // 
-            this.toolStripMenuItemImportPassword.Image = global::WiFiPasswordGenerator.Properties.Resources._32text_x_nfo1;
-            this.toolStripMenuItemImportPassword.Name = "toolStripMenuItemImportPassword";
-            this.toolStripMenuItemImportPassword.Size = new System.Drawing.Size(220, 38);
-            this.toolStripMenuItemImportPassword.Text = "Text Content";
-            this.toolStripMenuItemImportPassword.Click += new System.EventHandler(this.toolStripMenuItemImportPassword_Click);
-            // 
-            // toolStripMenuItemImportBase64ImgData
-            // 
-            this.toolStripMenuItemImportBase64ImgData.Image = global::WiFiPasswordGenerator.Properties.Resources._32Documents_Library1;
-            this.toolStripMenuItemImportBase64ImgData.Name = "toolStripMenuItemImportBase64ImgData";
-            this.toolStripMenuItemImportBase64ImgData.Size = new System.Drawing.Size(220, 38);
-            this.toolStripMenuItemImportBase64ImgData.Text = "QR Image In Text Format";
-            this.toolStripMenuItemImportBase64ImgData.Click += new System.EventHandler(this.toolStripMenuItemImportBase64ImgData_Click);
-            // 
-            // ToolStripMenuItemCBExport
-            // 
-            this.ToolStripMenuItemCBExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemExportQRImage,
-            this.toolStripMenuItemExportPwdStr});
-            this.ToolStripMenuItemCBExport.Image = global::WiFiPasswordGenerator.Properties.Resources._32edit_paste;
-            this.ToolStripMenuItemCBExport.Name = "ToolStripMenuItemCBExport";
-            this.ToolStripMenuItemCBExport.Size = new System.Drawing.Size(187, 38);
-            this.ToolStripMenuItemCBExport.Text = "Clipboard Export";
-            // 
-            // toolStripMenuItemExportQRImage
-            // 
-            this.toolStripMenuItemExportQRImage.Image = global::WiFiPasswordGenerator.Properties.Resources.qr_code_32x32;
-            this.toolStripMenuItemExportQRImage.Name = "toolStripMenuItemExportQRImage";
-            this.toolStripMenuItemExportQRImage.Size = new System.Drawing.Size(197, 38);
-            this.toolStripMenuItemExportQRImage.Text = "QR Code Image";
-            this.toolStripMenuItemExportQRImage.ToolTipText = "QR Code Image is encoded in PNG format and the output text\r\nis a Base64 converted" +
-    " byte array.\r\n";
-            this.toolStripMenuItemExportQRImage.Click += new System.EventHandler(this.toolStripMenuItemExportQRImage_Click);
-            // 
-            // toolStripMenuItemExportPwdStr
-            // 
-            this.toolStripMenuItemExportPwdStr.Image = global::WiFiPasswordGenerator.Properties.Resources._32text_x_nfo1;
-            this.toolStripMenuItemExportPwdStr.Name = "toolStripMenuItemExportPwdStr";
-            this.toolStripMenuItemExportPwdStr.Size = new System.Drawing.Size(197, 38);
-            this.toolStripMenuItemExportPwdStr.Text = "Generated Password";
-            this.toolStripMenuItemExportPwdStr.Click += new System.EventHandler(this.toolStripMenuItemExportPwdStr_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(184, 6);
-            // 
-            // generateQRCodeToolStripMenuItem
-            // 
-            this.generateQRCodeToolStripMenuItem.Image = global::WiFiPasswordGenerator.Properties.Resources._32Chrisbanks2_Cold_Fusion_Hd_QR_scanner;
-            this.generateQRCodeToolStripMenuItem.Name = "generateQRCodeToolStripMenuItem";
-            this.generateQRCodeToolStripMenuItem.Size = new System.Drawing.Size(187, 38);
-            this.generateQRCodeToolStripMenuItem.Text = "Generate QR Code";
-            this.generateQRCodeToolStripMenuItem.Click += new System.EventHandler(this.generateQRCodeToolStripMenuItem_Click);
-            // 
             // toolTipPasswordLength
             // 
             this.toolTipPasswordLength.Active = false;
@@ -662,30 +695,133 @@
             this.toolTipPasswordLength.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
             this.toolTipPasswordLength.ToolTipTitle = "Invalid password length";
             // 
-            // generateQRCodeToolStripMenuItem1
+            // label4
             // 
-            this.generateQRCodeToolStripMenuItem1.Image = global::WiFiPasswordGenerator.Properties.Resources._32Chrisbanks2_Cold_Fusion_Hd_QR_scanner;
-            this.generateQRCodeToolStripMenuItem1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.generateQRCodeToolStripMenuItem1.Name = "generateQRCodeToolStripMenuItem1";
-            this.generateQRCodeToolStripMenuItem1.Size = new System.Drawing.Size(319, 38);
-            this.generateQRCodeToolStripMenuItem1.Text = "GenerateQR Code";
-            this.generateQRCodeToolStripMenuItem1.Click += new System.EventHandler(this.generateQRCodeToolStripMenuItem_Click);
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(6, 44);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(113, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Wifi Network SSID";
             // 
-            // toolStripSeparator2
+            // txtSSId
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(316, 6);
+            this.txtSSId.Location = new System.Drawing.Point(6, 60);
+            this.txtSSId.MaxLength = 64;
+            this.txtSSId.Name = "txtSSId";
+            this.txtSSId.Size = new System.Drawing.Size(350, 20);
+            this.txtSSId.TabIndex = 9;
+            this.txtSSId.Validating += new System.ComponentModel.CancelEventHandler(this.txtSSId_Validating);
+            this.txtSSId.Validated += new System.EventHandler(this.txtSSId_Validated);
+            // 
+            // rdSSIDVisibleTrue
+            // 
+            this.rdSSIDVisibleTrue.AutoSize = true;
+            this.rdSSIDVisibleTrue.Checked = true;
+            this.rdSSIDVisibleTrue.Location = new System.Drawing.Point(3, 3);
+            this.rdSSIDVisibleTrue.Name = "rdSSIDVisibleTrue";
+            this.rdSSIDVisibleTrue.Size = new System.Drawing.Size(47, 17);
+            this.rdSSIDVisibleTrue.TabIndex = 10;
+            this.rdSSIDVisibleTrue.TabStop = true;
+            this.rdSSIDVisibleTrue.Text = "True";
+            this.rdSSIDVisibleTrue.UseVisualStyleBackColor = true;
+            // 
+            // rdSSIDVisibleFalse
+            // 
+            this.rdSSIDVisibleFalse.AutoSize = true;
+            this.rdSSIDVisibleFalse.Location = new System.Drawing.Point(56, 3);
+            this.rdSSIDVisibleFalse.Name = "rdSSIDVisibleFalse";
+            this.rdSSIDVisibleFalse.Size = new System.Drawing.Size(50, 17);
+            this.rdSSIDVisibleFalse.TabIndex = 11;
+            this.rdSSIDVisibleFalse.Text = "False";
+            this.rdSSIDVisibleFalse.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.groupBox6);
+            this.groupBox4.Controls.Add(this.groupBox5);
+            this.groupBox4.Controls.Add(this.txtSSId);
+            this.groupBox4.Controls.Add(this.label4);
+            this.groupBox4.Location = new System.Drawing.Point(174, 165);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(504, 87);
+            this.groupBox4.TabIndex = 8;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "WIFI-Network properties";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.flowLayoutPanel1);
+            this.groupBox5.Location = new System.Drawing.Point(378, 7);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(120, 50);
+            this.groupBox5.TabIndex = 9;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "SSID Visible";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.rdSSIDVisibleTrue);
+            this.flowLayoutPanel1.Controls.Add(this.rdSSIDVisibleFalse);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(114, 31);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.flowLayoutPanel2);
+            this.groupBox6.Location = new System.Drawing.Point(196, 7);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(160, 50);
+            this.groupBox6.TabIndex = 10;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Encryption";
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.rdWPA);
+            this.flowLayoutPanel2.Controls.Add(this.rdWEP);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(154, 31);
+            this.flowLayoutPanel2.TabIndex = 0;
+            // 
+            // rdWPA
+            // 
+            this.rdWPA.AutoSize = true;
+            this.rdWPA.Checked = true;
+            this.rdWPA.Location = new System.Drawing.Point(3, 3);
+            this.rdWPA.Name = "rdWPA";
+            this.rdWPA.Size = new System.Drawing.Size(86, 17);
+            this.rdWPA.TabIndex = 10;
+            this.rdWPA.TabStop = true;
+            this.rdWPA.Text = "WPA/WPA2";
+            this.rdWPA.UseVisualStyleBackColor = true;
+            // 
+            // rdWEP
+            // 
+            this.rdWEP.AutoSize = true;
+            this.rdWEP.Location = new System.Drawing.Point(95, 3);
+            this.rdWEP.Name = "rdWEP";
+            this.rdWEP.Size = new System.Drawing.Size(50, 17);
+            this.rdWEP.TabIndex = 11;
+            this.rdWEP.Text = "WEP";
+            this.rdWEP.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 473);
+            this.ClientSize = new System.Drawing.Size(704, 527);
             this.Controls.Add(this.pnlMain);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Location = new System.Drawing.Point(6, 6);
-            this.MinimumSize = new System.Drawing.Size(720, 512);
+            this.MinimumSize = new System.Drawing.Size(720, 566);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(3);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -709,12 +845,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.PicBoxQRCode)).EndInit();
             this.pnlMain.ResumeLayout(false);
             this.pnlMain.PerformLayout();
+            this.contextMenuClipboardIO.ResumeLayout(false);
             this.contextMenuGeneratedPassword.ResumeLayout(false);
             this.grpImgRes.ResumeLayout(false);
             this.grpImgRes.PerformLayout();
             this.pnlUserDefinedRes.ResumeLayout(false);
             this.pnlUserDefinedRes.PerformLayout();
-            this.contextMenuClipboardIO.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -775,6 +919,17 @@
         private System.Windows.Forms.ToolTip toolTipPasswordLength;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem generateQRCodeToolStripMenuItem1;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.RadioButton rdWPA;
+        private System.Windows.Forms.RadioButton rdWEP;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.RadioButton rdSSIDVisibleTrue;
+        private System.Windows.Forms.RadioButton rdSSIDVisibleFalse;
+        private System.Windows.Forms.TextBox txtSSId;
+        private System.Windows.Forms.Label label4;
     }
 }
 
