@@ -6,7 +6,7 @@ using System.IO;
 using System.Xml;
 using Serilog;
 
-namespace GeneralToolkitLib.Storage.Filesystem
+namespace GeneralToolkitLib.Storage.FileSystem
 {
     public class XMLImporter
     {

@@ -9,9 +9,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralToolkitLib.Barcode;
-using GeneralToolkitLib.Log;
+using GeneralToolkitLib.Logging;
 using GeneralToolkitLib.Utility;
 using GeneralToolkitLib.Utility.RandomGenerator;
+using Serilog;
 using WiFiPasswordGenerator.Properties;
 using WiFiPasswordGenerator.Settings;
 
@@ -49,13 +50,12 @@ namespace WiFiPasswordGenerator
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the <see cref="T:System.ComponentModel.Component"/> is reclaimed by garbage collection.
         /// </summary>
-
         private void MainForm_Load(object sender, EventArgs e)
         {
             linkLabelLastQRPath.Text = "";
             Text = Application.ProductName + Resources.Version_ + Application.ProductVersion;
+            Log.Verbose("Main form loaded");
         }
-
 
         private void pnlMain_Paint(object sender, PaintEventArgs e)
         {
@@ -78,9 +78,7 @@ namespace WiFiPasswordGenerator
             // Update QR ECC Level
             foreach (Control control in flowLayoutQRSettings.Controls)
             {
-                var radioButton = control as RadioButton;
-
-                if (radioButton != null && radioButton.Checked)
+                if (control is RadioButton radioButton && radioButton.Checked)
                 {
                     switch (radioButton.Text.ToUpper()[0])
                     {
@@ -104,6 +102,7 @@ namespace WiFiPasswordGenerator
                             _activeSettings.QR_CodeLevel = QR_CodeLevels.H;
                             break;
                     }
+
                     break;
                 }
             }
@@ -111,11 +110,8 @@ namespace WiFiPasswordGenerator
             // Update Password Type
             foreach (Control control in flowLayoutOutputType.Controls)
             {
-                var radioButton = control as RadioButton;
-
-                if (radioButton == null || !radioButton.Checked) continue;
-                int checkBoxIndex;
-                if (!int.TryParse(radioButton.Tag.ToString(), out checkBoxIndex))
+                if (!(control is RadioButton radioButton) || !radioButton.Checked) continue;
+                if (!int.TryParse(radioButton.Tag.ToString(), out int checkBoxIndex))
                     break;
 
                 switch (checkBoxIndex)
@@ -136,10 +132,10 @@ namespace WiFiPasswordGenerator
                         _activeSettings.PasswordType = PasswordTypes.Hex;
                         break;
                     default:
-                        LogWriter.LogMessage("checkBoxIndex unknown: "+checkBoxIndex,LogWriter.LogLevel.Error);
+                        Log.Error("checkBoxIndex unknown: " + checkBoxIndex);
                         break;
-
                 }
+
                 break;
             }
 
@@ -156,7 +152,6 @@ namespace WiFiPasswordGenerator
         {
             pnlMain.Invalidate();
         }
-
 
         private void MainForm_ResizeBegin(object sender, EventArgs e)
         {
@@ -199,7 +194,6 @@ namespace WiFiPasswordGenerator
                 validData = keyVal > 0 && keyVal <= Max_Password_Length;
 
             return validData;
-
         }
 
         private void txtPasswordLength_Validated(object sender, EventArgs e)
@@ -215,7 +209,6 @@ namespace WiFiPasswordGenerator
                 e.KeyChar = Char.MaxValue;
             }
         }
-
 
         private void grpBoxQRCode_Resize(object sender, EventArgs e)
         {
@@ -321,7 +314,7 @@ namespace WiFiPasswordGenerator
 
                 var memoryStream = new MemoryStream();
                 var encoderParameter = new EncoderParameter(Encoder.Quality, 100);
-                bitmap.Save(memoryStream, GetEncoderInfo(ImageFormat.Png), new EncoderParameters(1) { Param = new[] { encoderParameter } });
+                bitmap.Save(memoryStream, GetEncoderInfo(ImageFormat.Png), new EncoderParameters(1) {Param = new[] {encoderParameter}});
                 memoryStream.Position = 0;
                 Clipboard.Clear();
                 Clipboard.SetText(Convert.ToBase64String(memoryStream.ToArray(), 0, Convert.ToInt32(memoryStream.Length), Base64FormattingOptions.InsertLineBreaks), TextDataFormat.Text);
@@ -339,7 +332,7 @@ namespace WiFiPasswordGenerator
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
             var secureRandomGenerator = new SecureRandomGenerator();
-            txtGeneratedPassword.Text = await secureRandomGenerator.GetRandomStringFromPasswordType(_activeSettings.PasswordType,_activeSettings.PasswordLength);
+            txtGeneratedPassword.Text = await secureRandomGenerator.GetRandomStringFromPasswordType(_activeSettings.PasswordType, _activeSettings.PasswordLength);
             await GnerateQrCode();
         }
 
@@ -350,12 +343,12 @@ namespace WiFiPasswordGenerator
                 var qrCodeGenerator = new QRCodeGenerator();
                 string enValue = _activeSettings.QR_CodeLevel.ToString();
                 var ecc =
-                    (QRCodeGenerator.ECCLevel) Enum.Parse(typeof (QRCodeGenerator.ECCLevel), enValue);
+                    (QRCodeGenerator.ECCLevel) Enum.Parse(typeof(QRCodeGenerator.ECCLevel), enValue);
                 QRCodeGenerator.QRCode qrCode = qrCodeGenerator.CreateQrCode(txtGeneratedPassword.Text, ecc);
 
                 int moduleCount = qrCode.ModuleMatrix.Count;
                 if (_QROutputSize == Size.Empty)
-                    PicBoxQRCode.Image = qrCode.GetGraphic(Math.Min(500,PicBoxQRCode.Height) / moduleCount);
+                    PicBoxQRCode.Image = qrCode.GetGraphic(Math.Min(500, PicBoxQRCode.Height) / moduleCount);
                 else
                 {
                     PicBoxQRCode.Image = qrCode.GetGraphic(_QROutputSize.Height / moduleCount);
@@ -369,7 +362,6 @@ namespace WiFiPasswordGenerator
             PicBoxQRCode.BorderStyle = BorderStyle.None;
             PicBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
         }
-
 
         private void btnSaveQRCode_Click(object sender, EventArgs e)
         {
@@ -405,6 +397,7 @@ namespace WiFiPasswordGenerator
                             var b = new Bitmap(img);
                             b.SetResolution(_QROutputSize.Width, _QROutputSize.Height);
                         }
+
                         img.Save(fileName, imageCodecInfo, encoderParameters);
                         linkLabelLastQRPath.Text = fileName;
                     }
@@ -414,8 +407,10 @@ namespace WiFiPasswordGenerator
                         return;
                     }
                 }
+
                 return;
             }
+
             MessageBox.Show("Please generate a password first", "Nothing to save", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -478,8 +473,8 @@ namespace WiFiPasswordGenerator
                 try
                 {
                     Byte[] pngBytes = Convert.FromBase64String(txtData);
-                    MemoryStream memoryStream= new MemoryStream(pngBytes);
-                    Bitmap bitmap= new Bitmap(memoryStream);
+                    MemoryStream memoryStream = new MemoryStream(pngBytes);
+                    Bitmap bitmap = new Bitmap(memoryStream);
                     PicBoxQRCode.Image = bitmap;
                 }
                 catch (Exception ex)
