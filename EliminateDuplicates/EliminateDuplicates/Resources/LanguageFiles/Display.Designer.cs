@@ -97,6 +97,15 @@ namespace DeleteDuplicateFiles.Resources.LanguageFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to load search profile, perhaps its and older format version?.
+        /// </summary>
+        public static string FrmMain_openLastProfileMenuItem_Click_Failed_to_load_search_profile {
+            get {
+                return ResourceManager.GetString("FrmMain_openLastProfileMenuItem_Click_Failed_to_load_search_profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hash database file is still loading, please try again in 5 seconds..
         /// </summary>
         public static string frmMain_SearchForDuplicateFiles_ComputeHashServUnavailable {

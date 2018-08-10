@@ -62,9 +62,23 @@ namespace ImageView.Managers
             if (_fileStream == null)
                 _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
-            _fileStream.Position = _fileStream.Length;
+            _fileStream.Position = Math.Max(_fileStream.Length - 1, 0);
             long position = _fileStream.Position;
-            img.Save(_fileStream, ImageFormat.Jpeg);
+
+
+            using (var ms = new MemoryStream())
+            {
+                BitmapData data= img.
+                img.Save(ms, ImageFormat.Jpeg);
+
+                _fileStream.Lock(0, _fileStream.Length + ms.Length);
+                _fileStream.Flush();
+                _fileStream.Seek(0, SeekOrigin.End);
+                _fileStream.Write(ms.ToArray(), 0, (int)ms.Length);
+                _fileStream.Flush(true);
+                _fileStream.Unlock(0,_fileStream.Length);
+            }
+
 
             var fileEntry = new FileEntry
             {
@@ -102,7 +116,7 @@ namespace ImageView.Managers
                     }
                 }
 
-                while (deleteQueue.Count>0)
+                while (deleteQueue.Count > 0)
                 {
                     thumbnailEntries.Remove(deleteQueue.Dequeue());
                 }

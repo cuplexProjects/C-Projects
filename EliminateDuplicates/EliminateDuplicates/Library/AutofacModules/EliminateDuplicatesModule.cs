@@ -6,6 +6,7 @@ using DeleteDuplicateFiles.Managers;
 using DeleteDuplicateFiles.Repositories;
 using DeleteDuplicateFiles.Services;
 using DeleteDuplicateFiles.WorkFlows;
+using DeleteDuplicateFiles.WorkFlows.Implementation;
 using DeleteDuplicateFiles.WorkFlows.Interface;
 using GeneralToolkitLib.Storage.Memory;
 using JetBrains.Annotations;
@@ -39,7 +40,7 @@ namespace DeleteDuplicateFiles.Library.AutofacModules
                    .SingleInstance();
 
             builder.RegisterAssemblyTypes(typeof(WorkFlowBase).Assembly)
-                   .AssignableTo<IWorkflowComponent>()
+                   .AssignableTo<IWorkflowComponenFileSearch>()
                    .AsSelf()
                    .AsImplementedInterfaces()
                    .InstancePerLifetimeScope();

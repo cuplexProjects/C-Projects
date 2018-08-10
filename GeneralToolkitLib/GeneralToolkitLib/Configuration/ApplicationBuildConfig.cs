@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing.Text;
 using System.IO;
 using System.Reflection;
 
@@ -38,6 +39,15 @@ namespace GeneralToolkitLib.Configuration
             }
 
             return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + Assembly.GetEntryAssembly().GetName().Name.Replace(" ", "") + "\\";
+        }
+
+        /// <summary>
+        /// Sets the override user data path. Used for tests to run properly.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        public static void SetOverrideUserDataPath(string path)
+        {
+            _userDataPath = path;
         }
 
         /// <summary>

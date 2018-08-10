@@ -28,10 +28,11 @@
     <DocumentationFile>bin\Debug\Cuplex.ImageProvider.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -49,20 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BrightnessCornerInfo.cs" />
     <Compile Include="Configuration\GeneralApplicationConfig.cs" />
     <Compile Include="Configuration\ImageProviderConfigSection.cs" />
     <Compile Include="Configuration\ImageProviderPath.cs" />
     <Compile Include="Configuration\PathCollection.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FluentImageProviderImage.cs" />
-    <Compile Include="ImageHelper.cs" />
     <Compile Include="ImageProcessor.cs" />
-    <Compile Include="MinMaxMedBrightness.cs" />
     <Compile Include="RouteConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteHandler.cs" />
-    <Compile Include="StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

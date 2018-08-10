@@ -12,13 +12,16 @@ using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
 using ImageView.DataContracts;
 using ImageView.Models;
+using ImageView.Services;
 using ImageView.Utility;
+using JetBrains.Annotations;
 using MoreLinq;
 using Serilog;
 using Serilog.Context;
 
 namespace ImageView.Managers
 {
+    [UsedImplicitly]
     public sealed class ThumbnailManager : ManagerBase, IDisposable
     {
         private const string DatabaseFilename = "thumbs.db";
@@ -30,10 +33,12 @@ namespace ImageView.Managers
         private Dictionary<string, ThumbnailEntry> _fileDictionary;
         private bool _isRunningThumbnailScan;
         private ThumbnailDatabase _thumbnailDatabase;
+        private readonly ImageCacheService _imageCacheService;
 
-        public ThumbnailManager(FileManager fileManager)
+        public ThumbnailManager(FileManager fileManager, ImageCacheService imageCacheService)
         {
             _fileManager = fileManager;
+            _imageCacheService = imageCacheService;
             string dataStoragePath = ApplicationBuildConfig.UserDataPath;
             _fileDictionary = new Dictionary<string, ThumbnailEntry>();
             _thumbnailDatabase = new ThumbnailDatabase
@@ -529,7 +534,7 @@ namespace ImageView.Managers
         private Image LoadImageFromFile(string filename)
         {
             const int maxSize = 512;
-            Image img = Image.FromFile(filename);
+            Image img = _imageCacheService.GetImage(filename);
             int width = img.Width;
             int height = img.Height;
 
@@ -762,7 +767,7 @@ namespace ImageView.Managers
         private class ThumbnailData
         {
             public ThumbnailEntry ThumbnailEntry { get; set; }
-            public Image Image { get; set; }
+            public JpegImage Image { get; set; }
         }
     }
 }

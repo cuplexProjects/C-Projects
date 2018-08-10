@@ -22,9 +22,12 @@ namespace ImageView.Models
 
         public bool LoadImage()
         {
+            Stream fileStream = null;
             try
             {
-                ImageObject = Image.FromFile(Filename);
+                fileStream = File.OpenRead(Filename);
+
+                ImageObject = Image.FromStream(fileStream);
                 ModifiedDate = DateTime.Now;
 
                 var fileInfo = new FileInfo(Filename);
@@ -34,7 +37,17 @@ namespace ImageView.Models
             catch (Exception ex)
             {
                 Log.Error(ex, "Error Loading image");
+                return false;
             }
+            finally
+            {
+                if (fileStream != null)
+                {
+                    fileStream.Close();
+                    fileStream.Dispose();
+                }
+            }
+
             return ImageObject != null;
         }
     }

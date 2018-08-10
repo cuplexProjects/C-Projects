@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autofac;
 using DeleteDuplicateFiles.DataModels;
@@ -15,8 +14,8 @@ using DeleteDuplicateFiles.Managers;
 using DeleteDuplicateFiles.Models;
 using DeleteDuplicateFiles.Resources;
 using DeleteDuplicateFiles.Resources.LanguageFiles;
-using DeleteDuplicateFiles.Services;
 using DeleteDuplicateFiles.WorkFlows;
+using DeleteDuplicateFiles.WorkFlows.Implementation;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Storage;
 using Serilog;
@@ -224,7 +223,7 @@ namespace DeleteDuplicateFiles
         private void SearchCompleted()
         {
             lblSearchStatus.Text = "";
-            lblFileHashesRunning.Text = "0";
+            lblFileHashesRunning.Text = @"0";
             pbFileSearch.Value = 100;
 
             CleanFileInfoUi();
@@ -264,6 +263,8 @@ namespace DeleteDuplicateFiles
                             case ApplicationSettingsModel.DeletionModes.Permanent:
                                 foreach (var duplicateFileToDelete in duplicateFilesToDelete)
                                     File.Delete(duplicateFileToDelete.FullName);
+                                break;
+                            case ApplicationSettingsModel.DeletionModes.RecycleBin:
                                 break;
                             default:
                                 foreach (var duplicateFileToDelete in duplicateFilesToDelete)
@@ -531,7 +532,7 @@ namespace DeleteDuplicateFiles
             }
         }
 
-        private void SearchForDuplicateFiles()
+        private async void SearchForDuplicateFiles()
         {
             if (!_duplicateFileFinder.IsReady)
             {
@@ -545,7 +546,7 @@ namespace DeleteDuplicateFiles
                 return;
             }
 
-            var filenameFilter = txtFilenameFilter.Text;
+            string filenameFilter = txtFilenameFilter.Text;
             if (filenameFilter == "")
                 filenameFilter = null;
 
@@ -554,6 +555,7 @@ namespace DeleteDuplicateFiles
                 lbResults.DataSource = null;
                 _hashComputeCount = 0;
 
+                // ReSharper disable once LocalizableElement standard value
                 lblSearchResults.Text = "0";
                 txtMasterFilename.Text = "";
                 lbDuplicateFiles.DataSource = null;
@@ -561,8 +563,8 @@ namespace DeleteDuplicateFiles
 
                 var searchProfile = new SearchProfileModel(filenameFilter, _scanFolders.ToList(),new List<PreferredDirectoryDataModel> ()){IncludeSubfolders = chkIncludeSubfolders.Checked };
 
-                _duplicateFileFinder.StartDuplicateSearch(searchProfile);
-                    Invoke(new EventHandler(duplicateFileFinder_OnSearchCompleteNativeThread), this, new EventArgs());
+                await _duplicateFileFinder.StartDuplicateSearchAsync(searchProfile);
+                Invoke(new EventHandler(duplicateFileFinder_OnSearchCompleteNativeThread), this, new EventArgs());
                 
             }
             catch (Exception ex)
@@ -762,7 +764,7 @@ namespace DeleteDuplicateFiles
             if (!loadSearchProfileSuccessfull)
             {
                 Log.Error("Failed to load search profile from: {loadedSearchProfile}", SettingsModel.LastProfileFilePath);
-                MessageBox.Show(this, "Failed to load search profile, perhaps its and older format version?", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, Display.FrmMain_openLastProfileMenuItem_Click_Failed_to_load_search_profile, Generics.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             

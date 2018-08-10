@@ -189,8 +189,10 @@
     <Compile Include="Managers\PasswordManager.cs" />
     <Compile Include="Managers\SettingsManager.cs" />
     <Compile Include="Managers\ManagerBase.cs" />
-    <Compile Include="WorkFlows\DuplicateFileWorkflowController.cs" />
+    <Compile Include="WorkFlows\Implementation\DuplicateFileWorkflowController.cs" />
     <Compile Include="WorkFlows\Implementation\DistributedFileScanner.cs" />
+    <Compile Include="WorkFlows\Implementation\GetDuplicateFilesComposer.cs" />
+    <Compile Include="WorkFlows\Implementation\SearchSettings.cs" />
     <Compile Include="WorkFlows\Interface\ISearchSettings.cs" />
     <Compile Include="Components\ComputeHash.cs" />
     <Compile Include="Components\ComponentBase.cs" />
@@ -260,7 +262,7 @@
     <Compile Include="Models\DuplicateFileModel.cs" />
     <Compile Include="DataModels\PreferredDirectoryDataModel.cs" />
     <Compile Include="Models\ApplicationSettingsModel.cs" />
-    <Compile Include="Models\ScanFolderListItem.cs" />
+    <Compile Include="Models\ScanFolderModel.cs" />
     <Compile Include="Models\SearchProfileModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -269,7 +271,7 @@
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="WindowsApi\SetWindowMessageFilters.cs" />
     <Compile Include="WorkFlows\Interface\IWorkflowController.cs" />
-    <Compile Include="WorkFlows\Interface\IWorkflowComponent.cs" />
+    <Compile Include="WorkFlows\Interface\IWorkflowComponenFileSearch.cs" />
     <Compile Include="WorkFlows\WorkFlowBase.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>

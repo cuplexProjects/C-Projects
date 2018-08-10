@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 using DeleteDuplicateFiles.Models;
+using DeleteDuplicateFiles.WorkFlows.Interface;
 
-namespace DeleteDuplicateFiles.WorkFlows.Interface
+namespace DeleteDuplicateFiles.WorkFlows.Implementation
 {
     /// <summary>
-    /// SearchSettings interface
+    /// 
     /// </summary>
-    public interface ISearchSettings
+    /// <seealso>
+    ///     <cref>DeleteDuplicateFiles.WorkFlows.Interface.ISearchSettings</cref>
+    /// </seealso>
+    public class SearchSettings : ISearchSettings
     {
         /// <summary>
         /// Gets or sets the directory list.
@@ -14,7 +18,7 @@ namespace DeleteDuplicateFiles.WorkFlows.Interface
         /// <value>
         /// The directory list.
         /// </value>
-        IEnumerable<ScanFolderModel> DirectoryList { get; set; }
+        public IEnumerable<ScanFolderModel> DirectoryList { get; set; }
 
         /// <summary>
         /// Gets or sets the file extention filter.
@@ -22,7 +26,7 @@ namespace DeleteDuplicateFiles.WorkFlows.Interface
         /// <value>
         /// The file extention filter.
         /// </value>
-        string FileExtentionFilter { get; set; }
+        public string FileExtentionFilter { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether [include subdirs].
@@ -30,6 +34,6 @@ namespace DeleteDuplicateFiles.WorkFlows.Interface
         /// <value>
         ///   <c>true</c> if [include subdirs]; otherwise, <c>false</c>.
         /// </value>
-        bool IncludeSubdirs { get; set; }
+        public bool IncludeSubdirs { get; set; }
     }
 }

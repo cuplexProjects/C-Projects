@@ -15,6 +15,7 @@ namespace ImageView.Services
         public const long MaxCacheSize = 268435456;
         private Dictionary<string, CachedImage> _cachedImages;
         private long _cacheSize;
+        private static readonly object CacheLock= new object(); 
 
         public ImageCacheService(ApplicationSettingsService applicationSettingsService)
         {
@@ -85,14 +86,18 @@ namespace ImageView.Services
 
         public Image GetImage(string fileName)
         {
-            if (_cachedImages.ContainsKey(fileName)) return _cachedImages[fileName].ImageObject;
-            var cachedImage = new CachedImage(fileName);
-            cachedImage.LoadImage();
-            _cachedImages.Add(fileName, cachedImage);
+            lock (CacheLock)
+            {
+                if (_cachedImages.ContainsKey(fileName)) return _cachedImages[fileName].ImageObject;
+                var cachedImage = new CachedImage(fileName);
+                cachedImage.LoadImage();
+                _cachedImages.Add(fileName, cachedImage);
 
-            Image image = _cachedImages[fileName].ImageObject;
-            TruncateCache();
-            return image;
+                Image image = _cachedImages[fileName].ImageObject;
+                TruncateCache();
+                return image;    
+            }
+            
         }
     }
 }

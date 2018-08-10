@@ -1,8 +1,10 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
+using JetBrains.Annotations;
 
 namespace Cuplex.Web.Cdn
 {
+	[UsedImplicitly]
 	public class RouteConfig
 	{
 		public static void RegisterRoutes(RouteCollection routes)

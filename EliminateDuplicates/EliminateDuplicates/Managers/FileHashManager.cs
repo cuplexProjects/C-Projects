@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DeleteDuplicateFiles.Repositories;
+﻿using DeleteDuplicateFiles.Repositories;
 using JetBrains.Annotations;
 
 namespace DeleteDuplicateFiles.Managers
