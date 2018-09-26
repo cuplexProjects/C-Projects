@@ -28,7 +28,9 @@ namespace ImageView.Library.AutofacModules
 
             var assembly = Assembly.GetExecutingAssembly();
             builder.RegisterAssemblyTypes(assembly)
-                .AssignableTo<Form>();
+                .AssignableTo<Form>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
         }
     }
 }

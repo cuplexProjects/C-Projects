@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using ImageView.Models.Interface;
 using Serilog;
 
 namespace ImageView.Models
@@ -27,7 +28,7 @@ namespace ImageView.Models
             {
                 fileStream = File.OpenRead(Filename);
 
-                ImageObject = Image.FromStream(fileStream);
+                ImageObject =  Image.FromStream(fileStream);
                 ModifiedDate = DateTime.Now;
 
                 var fileInfo = new FileInfo(Filename);

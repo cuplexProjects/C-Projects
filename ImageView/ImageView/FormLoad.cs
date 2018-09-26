@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using ImageView.Models.UserInteraction;
 using ImageView.Services;
 
 namespace ImageView
@@ -9,10 +10,12 @@ namespace ImageView
     {
         private string _baseSearchPath;
         private readonly ImageLoaderService _imageLoaderService;
+        private readonly UserInteractionService _interactionService;
 
-        public FormLoad(ImageLoaderService imageLoaderService)
+        public FormLoad(ImageLoaderService imageLoaderService, UserInteractionService interactionService)
         {
             _imageLoaderService = imageLoaderService;
+            _interactionService = interactionService;
             InitializeComponent();
             _baseSearchPath = null;
         }
@@ -60,6 +63,7 @@ namespace ImageView
                 progressBar1.Value = progressBar1.Maximum;
                 btnStart.Enabled = true;
                 btnCancel.Enabled = false;
+                MessageBox.Show(this, $@"Successfuly loaded {imagesLoaded} images", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
             }
             else
@@ -82,6 +86,11 @@ namespace ImageView
             btnCancel.Enabled = true;
             progressBar1.Value = 0;
             bool result = await _imageLoaderService.RunImageImport(_baseSearchPath);
+
+            if (!result)
+            {
+                _interactionService.InformUser(new UserInteractionInformation { Buttons = MessageBoxButtons.OK, Icon = MessageBoxIcon.Error, Message = "Image import failed", Label = "Error" }); 
+            }
 
             btnStart.Enabled = false;
         }

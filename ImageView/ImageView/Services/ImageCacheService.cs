@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using ImageView.Models;
+using ImageView.Models.Interface;
 using JetBrains.Annotations;
 
 namespace ImageView.Services
@@ -93,7 +94,7 @@ namespace ImageView.Services
                 cachedImage.LoadImage();
                 _cachedImages.Add(fileName, cachedImage);
 
-                Image image = _cachedImages[fileName].ImageObject;
+                var image = _cachedImages[fileName].ImageObject;
                 TruncateCache();
                 return image;    
             }

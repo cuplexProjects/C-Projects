@@ -295,7 +295,6 @@
       <DependentUpon>FormWindows.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Interface\IRepository.cs" />
-    <Compile Include="Models\JpegImage.cs" />
     <Compile Include="Models\ThumbnailScanProgress.cs" />
     <Compile Include="Models\UserInteraction\UserInformationEventargs.cs" />
     <Compile Include="Models\UserInteraction\UserInteractionBase.cs" />

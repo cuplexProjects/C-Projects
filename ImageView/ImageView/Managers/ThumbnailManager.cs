@@ -392,6 +392,11 @@ namespace ImageView.Managers
             var img = thumbnailData.Image;
 
             FileEntry fileEntry = _fileManager.WriteImage(img);
+            if (fileEntry == null)
+            {
+                return;
+            }
+
             thumbnail.FilePosition = fileEntry.Position;
             thumbnail.Length = fileEntry.Length;
 
@@ -449,6 +454,10 @@ namespace ImageView.Managers
                 };
 
                 FileEntry fileEntry = _fileManager.WriteImage(img);
+                if (fileEntry == null)
+                {
+                    continue;
+                }
                 thumbnail.FilePosition = fileEntry.Position;
                 thumbnail.Length = fileEntry.Length;
 
@@ -602,6 +611,12 @@ namespace ImageView.Managers
             };
 
             FileEntry fileEntry = _fileManager.WriteImage(img);
+
+            if (fileEntry == null)
+            {
+                return;
+            }
+
             thumbnail.FilePosition = fileEntry.Position;
             thumbnail.Length = fileEntry.Length;
 
@@ -767,7 +782,7 @@ namespace ImageView.Managers
         private class ThumbnailData
         {
             public ThumbnailEntry ThumbnailEntry { get; set; }
-            public JpegImage Image { get; set; }
+            public Image Image { get; set; }
         }
     }
 }

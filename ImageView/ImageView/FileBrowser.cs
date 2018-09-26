@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Autofac;
 using ImageView.Models;
 using ImageView.Properties;
 using ImageView.Services;
@@ -18,11 +19,13 @@ namespace ImageView
         private bool enableLoadFormOnEnterKey = true;
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly ImageLoaderService _imageLoaderService;
+        private readonly ILifetimeScope _scope;
 
-        public FileBrowser(ApplicationSettingsService applicationSettingsService, ImageLoaderService imageLoaderService)
+        public FileBrowser(ApplicationSettingsService applicationSettingsService, ImageLoaderService imageLoaderService, Autofac.ILifetimeScope scope)
         {
             _applicationSettingsService = applicationSettingsService;
             _imageLoaderService = imageLoaderService;
+            _scope = scope;
             InitializeComponent();
         }
 
@@ -133,9 +136,10 @@ namespace ImageView
             if (!PathCollection.Contains(SelectedPath))
                 PathCollection.Add(SelectedPath);
 
-            var formLoad = new FormLoad(_imageLoaderService);
+            FormLoad formLoad = _scope.Resolve<FormLoad>();
             formLoad.SetBasePath(SelectedPath);
             formLoad.ShowDialog(this);
+            formLoad.Dispose();
 
             if (_applicationSettingsService.Settings.EnableAutoLoadFunctionFromMenu)
             {

@@ -23,9 +23,9 @@ namespace ImageView.Storage
             ProductName = productName.Replace(" ", "");
 
             if (string.IsNullOrWhiteSpace(companyName))
-                throw new ArgumentException("Invalid argument. CompanyName cant be null or whitespace.", nameof(companyName));
+                throw new ArgumentException(@"Invalid argument. CompanyName cant be null or whitespace.", nameof(companyName));
             if (string.IsNullOrWhiteSpace(productName))
-                throw new ArgumentException("Invalid argument. productName cant be null or whitespace.", nameof(productName));
+                throw new ArgumentException(@"Invalid argument. productName cant be null or whitespace.", nameof(productName));
 
             SubKey = "SOFTWARE\\" + CompanyName.Trim() + "\\" + ProductName.Trim();
             _localStorageFilePath = Path.Combine(ApplicationBuildConfig.UserDataPath, "localRegStorage.dat");

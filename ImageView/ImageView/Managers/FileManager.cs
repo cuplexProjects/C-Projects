@@ -65,28 +65,35 @@ namespace ImageView.Managers
             _fileStream.Position = Math.Max(_fileStream.Length - 1, 0);
             long position = _fileStream.Position;
 
-
-            using (var ms = new MemoryStream())
+            try
             {
-                BitmapData data= img.
-                img.Save(ms, ImageFormat.Jpeg);
+                using (var ms = new MemoryStream())
+                {
+                    img.Save(ms, ImageFormat.Jpeg);
 
-                _fileStream.Lock(0, _fileStream.Length + ms.Length);
-                _fileStream.Flush();
-                _fileStream.Seek(0, SeekOrigin.End);
-                _fileStream.Write(ms.ToArray(), 0, (int)ms.Length);
-                _fileStream.Flush(true);
-                _fileStream.Unlock(0,_fileStream.Length);
+                    _fileStream.Lock(0, _fileStream.Length + ms.Length);
+                    _fileStream.Flush();
+                    _fileStream.Seek(0, SeekOrigin.End);
+                    _fileStream.Write(ms.ToArray(), 0, (int)ms.Length);
+                    _fileStream.Flush(true);
+                    _fileStream.Unlock(0, _fileStream.Length);
+                }
+
+
+                var fileEntry = new FileEntry
+                {
+                    Position = position,
+                    Length = Convert.ToInt32(_fileStream.Position - position)
+                };
+
+                return fileEntry;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "WriteImage Exception: {Message}", ex.Message);
             }
 
-
-            var fileEntry = new FileEntry
-            {
-                Position = position,
-                Length = Convert.ToInt32(_fileStream.Position - position)
-            };
-
-            return fileEntry;
+            return null;
         }
 
         public void RecreateDatabase(List<ThumbnailEntry> thumbnailEntries)

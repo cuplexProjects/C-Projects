@@ -484,6 +484,7 @@ namespace ImageView
             this.Name = "FormBookmarks";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bookmarks";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormBookmarks_FormClosing);
             this.Load += new System.EventHandler(this.FormBookmarks_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

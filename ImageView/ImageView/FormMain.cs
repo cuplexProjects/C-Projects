@@ -736,7 +736,7 @@ namespace ImageView
 
         private void autoLoadPreviousFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formLoad = new FormLoad(_imageLoaderService);
+            var formLoad = new FormLoad(_imageLoaderService, _interactionService);
             formLoad.SetBasePath(_applicationSettingsService.Settings.LastFolderLocation);
             formLoad.ShowDialog(this);
         }
@@ -800,9 +800,9 @@ namespace ImageView
             }
         }
 
-        private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var fileBrowser = new FileBrowser(_applicationSettingsService, _imageLoaderService);
+            var fileBrowser = _scope.Resolve<FileBrowser>();
             fileBrowser.ShowDialog(this);
         }
 

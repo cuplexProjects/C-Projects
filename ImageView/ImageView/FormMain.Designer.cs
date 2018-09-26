@@ -134,7 +134,7 @@
             this.openBrowserToolStripMenuItem.Name = "openBrowserToolStripMenuItem";
             this.openBrowserToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.openBrowserToolStripMenuItem.Text = "&Open File Browser";
-            this.openBrowserToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem_Click);
+            this.openBrowserToolStripMenuItem.Click += new System.EventHandler(this.OpenFolderToolStripMenuItem_Click);
             // 
             // menuItemOpenImage
             // 

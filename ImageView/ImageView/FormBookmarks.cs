@@ -56,6 +56,17 @@ namespace ImageView
             _overlayFormManager.HideImageDelay = 250;
             _overlayFormManager.ShowImageDelay = 500;
 
+            var settings = _applicationSettingsService.Settings;
+            if (settings.Bookmarks_ShowMaximizedImageArea)
+            {
+                Invoke(new EventHandler(maximizePreviewAreaToolStripMenuItem_Click));
+            }
+
+            if (settings.Bookmarks_ShowOverlayWindow)
+            {
+                Invoke(new EventHandler(showOverlayPreviewToolStripMenuItem_Click));
+            }
+
             if (_applicationSettingsService.Settings.PasswordProtectBookmarks)
                 using (var formgetPassword = new FormGetPassword
                 {
@@ -95,6 +106,11 @@ namespace ImageView
                 InitBookmarksDataSource();
             }
         
+        }
+
+        private void FormBookmarks_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _applicationSettingsService.SaveSettings();
         }
 
         private bool ReLoadBookmarks()
@@ -757,18 +773,21 @@ namespace ImageView
         {
             _overlayFormManager.IsEnabled = !_overlayFormManager.IsEnabled;
             showOverlayPreviewToolStripMenuItem.Checked = _overlayFormManager.IsEnabled;
+            _applicationSettingsService.Settings.Bookmarks_ShowOverlayWindow = showOverlayPreviewToolStripMenuItem.Checked;
         }
 
         private void maximizePreviewAreaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             splitContainer1.SplitterDistance = Convert.ToInt32(splitContainer1.Width * 0.75);
             splitContainer2.SplitterDistance = Convert.ToInt32(splitContainer2.Height * 0.25);
+            _applicationSettingsService.Settings.Bookmarks_ShowMaximizedImageArea = true;
         }
 
         private void restorePreviewAreaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             splitContainer1.SplitterDistance = Convert.ToInt32(splitContainer1.Width * 0.25);
             splitContainer2.SplitterDistance = Convert.ToInt32(splitContainer2.Height * 0.5);
+            _applicationSettingsService.Settings.Bookmarks_ShowMaximizedImageArea = false;
         }
 
         #endregion

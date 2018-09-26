@@ -35,6 +35,7 @@
             this.tabControlSettings = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkToggleSlidshowWithThirdMouseButton = new System.Windows.Forms.CheckBox();
             this.ChkAutomaticallyCheckForUpdates = new System.Windows.Forms.CheckBox();
             this.chkConfirmExit = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -113,7 +114,6 @@
             this.imageListSettings = new System.Windows.Forms.ImageList(this.components);
             this.backgroundImageList = new System.Windows.Forms.ImageList(this.components);
             this.toolTipUpdateDescription = new System.Windows.Forms.ToolTip(this.components);
-            this.chkToggleSlidshowWithThirdMouseButton = new System.Windows.Forms.CheckBox();
             this.tabControlSettings.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -215,6 +215,18 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
+            // 
+            // chkToggleSlidshowWithThirdMouseButton
+            // 
+            this.chkToggleSlidshowWithThirdMouseButton.AutoSize = true;
+            this.chkToggleSlidshowWithThirdMouseButton.Location = new System.Drawing.Point(256, 69);
+            this.chkToggleSlidshowWithThirdMouseButton.Name = "chkToggleSlidshowWithThirdMouseButton";
+            this.chkToggleSlidshowWithThirdMouseButton.Size = new System.Drawing.Size(157, 17);
+            this.chkToggleSlidshowWithThirdMouseButton.TabIndex = 15;
+            this.chkToggleSlidshowWithThirdMouseButton.Text = "Toggle Slideshow with MB3";
+            this.toolTipUpdateDescription.SetToolTip(this.chkToggleSlidshowWithThirdMouseButton, "If checked the program wil automatically check for updates when \r\nthe program sta" +
+        "rts if the last check was over 3 days ago.\r\n");
+            this.chkToggleSlidshowWithThirdMouseButton.UseVisualStyleBackColor = true;
             // 
             // ChkAutomaticallyCheckForUpdates
             // 
@@ -1202,18 +1214,6 @@
             this.toolTipUpdateDescription.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTipUpdateDescription.ToolTipTitle = "Automatic Updates";
             this.toolTipUpdateDescription.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTipUpdateDescription_Popup);
-            // 
-            // chkToggleSlidshowWithThirdMouseButton
-            // 
-            this.chkToggleSlidshowWithThirdMouseButton.AutoSize = true;
-            this.chkToggleSlidshowWithThirdMouseButton.Location = new System.Drawing.Point(256, 69);
-            this.chkToggleSlidshowWithThirdMouseButton.Name = "chkToggleSlidshowWithThirdMouseButton";
-            this.chkToggleSlidshowWithThirdMouseButton.Size = new System.Drawing.Size(157, 17);
-            this.chkToggleSlidshowWithThirdMouseButton.TabIndex = 15;
-            this.chkToggleSlidshowWithThirdMouseButton.Text = "Toggle Slideshow with MB3";
-            this.toolTipUpdateDescription.SetToolTip(this.chkToggleSlidshowWithThirdMouseButton, "If checked the program wil automatically check for updates when \r\nthe program sta" +
-        "rts if the last check was over 3 days ago.\r\n");
-            this.chkToggleSlidshowWithThirdMouseButton.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
