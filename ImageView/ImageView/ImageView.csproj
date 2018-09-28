@@ -186,11 +186,14 @@
     <Compile Include="Configuration\AutofacConfig.cs" />
     <Compile Include="Configuration\IApplicationBuildConfig.cs" />
     <Compile Include="DataBinding\TreeViewDataContext.cs" />
+    <Compile Include="DataContracts\AppSettingsFileStoreDataModel.cs" />
     <Compile Include="DataContracts\Bookmark.cs" />
     <Compile Include="DataContracts\BookmarkContainer.cs" />
     <Compile Include="DataContracts\BookmarkFolder.cs" />
     <Compile Include="DataContracts\ColorDataModel.cs" />
+    <Compile Include="DataContracts\FormSizeAndPositionModel.cs" />
     <Compile Include="DataContracts\PointDataModel.cs" />
+    <Compile Include="DataContracts\RectangleDataModel.cs" />
     <Compile Include="DataContracts\SizeDataModel.cs" />
     <Compile Include="DataContracts\ThumbnailDatabase.cs" />
     <Compile Include="DataContracts\ThumbnailEntry.cs" />
@@ -307,6 +310,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\AppSettingsFileRepository.cs" />
+    <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Services\ApplicationSettingsService.cs" />
     <Compile Include="FileBrowser.cs">
       <SubType>Form</SubType>

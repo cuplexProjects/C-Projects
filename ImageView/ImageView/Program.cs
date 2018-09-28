@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autofac;
 using GeneralToolkitLib.ConfigHelper;
@@ -32,24 +33,31 @@ namespace ImageView
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(true);
             bool debugMode = ApplicationBuildConfig.DebugMode;
-            GlobalSettings.Initialize(Assembly.GetExecutingAssembly().GetName().Name,!debugMode);
+            GlobalSettings.Initialize(Assembly.GetExecutingAssembly().GetName().Name, !debugMode);
 
             Log.Verbose("Application started");
 
             using (var scope = Container.BeginLifetimeScope())
             {
                 ApplicationSettingsService settingsService = scope.Resolve<ApplicationSettingsService>();
-                settingsService.LoadSettings();
+                var x = settingsService.LoadSettings().ConfigureAwait(true).GetAwaiter();
+
+                while (!x.IsCompleted)
+                {
+                    Task.Delay(10);
+                }
 
                 // Begin startup async jobs
                 var startupService = scope.Resolve<StartupService>();
                 startupService.ScheduleAndRunStartupJobs();
 
                 FormMain frmMain = scope.Resolve<FormMain>();
-        
                 Application.Run(frmMain);
-                
-                settingsService.SaveSettings();
+                var waitObj = settingsService.SaveSettings().ConfigureAwait(true).GetAwaiter();
+                while (!waitObj.IsCompleted)
+                {
+                    Task.Delay(100);
+                };
             }
 
             //Application.Run(new FormMain());

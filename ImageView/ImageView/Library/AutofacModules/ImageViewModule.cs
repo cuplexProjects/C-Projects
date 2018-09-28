@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Autofac;
 using GeneralToolkitLib.Storage.Memory;
 using ImageView.Managers;
+using ImageView.Repositories;
 using ImageView.Services;
 using Module = Autofac.Module;
 
@@ -22,6 +23,12 @@ namespace ImageView.Library.AutofacModules
 
             builder.RegisterAssemblyTypes(typeof(ServiceBase).Assembly)
                 .AssignableTo<ServiceBase>()
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .SingleInstance();
+            
+            builder.RegisterAssemblyTypes(typeof(RepositoryBase).Assembly)
+                .AssignableTo<RepositoryBase>()
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .SingleInstance();

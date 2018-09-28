@@ -381,25 +381,6 @@ namespace ImageView.DataContracts
         public bool ToggleSlideshowWithThirdMouseButton { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [bookmarks show maximized image area].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [bookmarks show maximized image area]; otherwise, <c>false</c>.
-        /// </value>
-        [DataMember(Name = "Bookmarks_ShowMaximizedImageArea", Order = 33)]
-        public bool Bookmarks_ShowMaximizedImageArea { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [bookmarks show overlay window].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [bookmarks show overlay window]; otherwise, <c>false</c>.
-        /// </value>
-        [DataMember(Name = "Bookmarks_ShowOverlayWindow", Order = 34)]
-        public bool Bookmarks_ShowOverlayWindow { get; set; }
-
-
-        /// <summary>
         /// Removes the duplicate entries with ignore case.
         /// </summary>
         public void RemoveDuplicateEntriesWithIgnoreCase()
@@ -442,17 +423,17 @@ namespace ImageView.DataContracts
         /// Sets the main form position.
         /// </summary>
         /// <param name="mainFormBounds">The main form bounds.</param>
-        public void SetMainFormPosition(Rectangle mainFormBounds)
-        {
-            Rectangle mainScreenBounds = Screen.PrimaryScreen.Bounds;
-            Rectangle intersection = Rectangle.Intersect(mainScreenBounds, mainFormBounds);
+        //public void SetMainFormPosition(Rectangle mainFormBounds)
+        //{
+        //    Rectangle mainScreenBounds = Screen.PrimaryScreen.Bounds;
+        //    Rectangle intersection = Rectangle.Intersect(mainScreenBounds, mainFormBounds);
 
-            if (intersection != Rectangle.Empty)
-            {
-                MainFormPosition = new PointDataModel(mainFormBounds.X, mainFormBounds.Y);
-                MainFormSize = new SizeDataModel(mainFormBounds.Width, mainFormBounds.Height);
-                UseSavedMainFormPosition = true;
-            }
-        }
+        //    if (intersection != Rectangle.Empty)
+        //    {
+        //        MainFormPosition = new PointDataModel(mainFormBounds.X, mainFormBounds.Y);
+        //        MainFormSize = new SizeDataModel(mainFormBounds.Width, mainFormBounds.Height);
+        //        UseSavedMainFormPosition = true;
+        //    }
+        //}
     }
 }

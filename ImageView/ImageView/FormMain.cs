@@ -459,23 +459,29 @@ namespace ImageView
             _imageLoaderService.OnImportComplete += Instance_OnImportComplete;
             _imageLoaderService.OnImageWasDeleted += Instance_OnImageWasDeleted;
 
-            if (!_applicationSettingsService.LoadSettings())
-            {
-                MessageBox.Show(Resources.Unable_To_Access_application_settings_in_registry,
-                    Resources.Faild_to_load_settings, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                _formRestartWithAdminPrivileges = new FormRestartWithAdminPrivileges();
-                if (_formRestartWithAdminPrivileges.ShowDialog(this) == DialogResult.OK)
-                {
-                    return;
-                }
-            }
+            //if (_applicationSettingsService.LoadSettings)
+            //{
+            //    MessageBox.Show(Resources.Unable_To_Access_application_settings_in_registry,
+            //        Resources.Faild_to_load_settings, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    _formRestartWithAdminPrivileges = new FormRestartWithAdminPrivileges();
+            //    if (_formRestartWithAdminPrivileges.ShowDialog(this) == DialogResult.OK)
+            //    {
+            //        return;
+            //    }
+            //}
 
             SyncUserControlStateWithAppSettings();
 
-            if (_applicationSettingsService.Settings.UseSavedMainFormPosition)
+            //if (_applicationSettingsService.Settings.UseSavedMainFormPosition)
             {
-                RestoreFormState.SetFormSizeAndPosition(this, _applicationSettingsService.Settings.MainFormSize.ToSize(),
-                    _applicationSettingsService.Settings.MainFormPosition.ToPoint(), Screen.PrimaryScreen.WorkingArea);
+                var fileConfig = _applicationSettingsService.FileStoredSettings;
+                if (fileConfig.FormStateDictionary.ContainsKey(GetType().Name))
+                {
+                    var formState = fileConfig.FormStateDictionary[GetType().Name];
+                    RestoreFormState.SetFormSizeAndPosition(this, formState);
+                }
+                //RestoreFormState.SetFormSizeAndPosition(this, _applicationSettingsService.Settings.MainFormSize.ToSize(),
+                //    _applicationSettingsService.Settings.MainFormPosition.ToPoint(), Screen.PrimaryScreen.WorkingArea);
             }
 
             _changeImageAnimation = _applicationSettingsService.Settings.NextImageAnimation;
@@ -555,7 +561,7 @@ namespace ImageView
         }
 
 
-        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        private async void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!AllowAplicatonExit())
             {
@@ -570,8 +576,8 @@ namespace ImageView
 
             timerSlideShow.Enabled = false;
             _bookmarkService.SaveBookmarks();
-            _applicationSettingsService.Settings.SetMainFormPosition(Bounds);
-            _applicationSettingsService.SaveSettings();
+            _applicationSettingsService.FileStoredSettings.UpdateOrInsertFormState(RestoreFormState.GetFormState(this));
+            await _applicationSettingsService.SaveSettings();
         }
 
         private void imageViewForm_FormClosed(object sender, FormClosedEventArgs e)

@@ -8,8 +8,8 @@ namespace ImageView.DataContracts
     /// 
     /// </summary>
     [Serializable]
-    [DataContract(Name = "PointDataModel")]
-    public class PointDataModel
+    [DataContract(Name = "RectangleDataModel")]
+    public class RectangleDataModel
     {
         /// <summary>
         /// Gets or sets the x.
@@ -30,41 +30,43 @@ namespace ImageView.DataContracts
         public int Y { get; set; }
 
         /// <summary>
-        /// To the point.
+        /// Gets or sets the width.
+        /// </summary>
+        /// <value>
+        /// The width.
+        /// </value>
+        [DataMember(Name = "Width", Order = 3)]
+        public int Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the height.
+        /// </summary>
+        /// <value>
+        /// The height.
+        /// </value>
+        [DataMember(Name = "Height", Order = 4)]
+        public int Height { get; set; }
+
+        public RectangleDataModel()
+        {
+
+        }
+
+        public RectangleDataModel(Rectangle rectangle)
+        {
+            X = rectangle.X;
+            Y = rectangle.Y;
+            Width = rectangle.Width;
+            Height = rectangle.Height;
+        }
+
+        /// <summary>
+        /// To the rectangle.
         /// </summary>
         /// <returns></returns>
-        public Point ToPoint()
+        public Rectangle ToRectangle()
         {
-            return new Point(X, Y);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PointDataModel"/> class.
-        /// </summary>
-        public PointDataModel()
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PointDataModel"/> class.
-        /// </summary>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        public PointDataModel(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
-
-        /// <summary>
-        /// Creates from point.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <returns></returns>
-        public static PointDataModel CreateFromPoint(Point point)
-        {
-            return new PointDataModel { X = point.X, Y = point.Y };
+            return new Rectangle(X, Y, Width, Height);
         }
     }
 }
