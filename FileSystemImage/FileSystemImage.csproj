@@ -90,13 +90,14 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>FileSystemImage.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>12FC74622D2E79BE0690E930C780629307196A49</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>71C6FFC4613CC73AEB8906237393AADEE29F838E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>
@@ -235,7 +236,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="FileSystemImage.pfx" />
     <None Include="GeneralToolkit.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest">

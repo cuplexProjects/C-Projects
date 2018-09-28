@@ -20,6 +20,7 @@ namespace GeneralToolkitLib.Storage
     {
         private const int BlockSize = 0x200000;
         private readonly StorageManagerSettings _settings;
+        private static readonly object FileLock = new object();
 
         public StorageManager(StorageManagerSettings settings)
         {
@@ -36,10 +37,14 @@ namespace GeneralToolkitLib.Storage
 
             if (_settings.UseEncryption)
             {
-                EncryptionManager encryptionManager = new EncryptionManager();
-                MemoryStream ms = SerializeAndCompressObjectToMemoryStream(obj, progress);
+                var encryptionManager = new EncryptionManager();
+                var ms = SerializeAndCompressObjectToMemoryStream(obj, progress);
 
-                return encryptionManager.EncryptAndSaveFile(path, ms, _settings.Password, null);
+                lock (FileLock)
+                {
+                    return encryptionManager.EncryptAndSaveFile(path, ms, _settings.Password, null);
+                }
+
             }
 
             return SerializeAndCompressObjectToFile(obj, path, progress);
@@ -50,7 +55,7 @@ namespace GeneralToolkitLib.Storage
             if (!VerifyObjectToSerialize(obj))
                 throw new ArgumentException("serializableObject is not serializable");
 
-            return await Task.Run(() => SerializeObjectToFile(obj, path, progress));
+            return await Task.Factory.StartNew(() => SerializeObjectToFile(obj, path, progress));
         }
 
         public T DeserializeObjectFromFile<T>(string path, IProgress<StorageManagerProgress> progress)
@@ -63,7 +68,7 @@ namespace GeneralToolkitLib.Storage
 
         public async Task<T> DeserializeObjectFromFileAsync<T>(string path, IProgress<StorageManagerProgress> progress)
         {
-            return await Task.Run(() => DeserializeObjectFromFile<T>(path, progress));
+            return await Task.Factory.StartNew(() => DeserializeObjectFromFile<T>(path, progress));
         }
 
         public bool CompressFile(List<string> filesToCompress, string outputFile, IProgress<StorageManagerProgress> progress)
@@ -87,7 +92,7 @@ namespace GeneralToolkitLib.Storage
             bool protoBufferCompatible = attrs.OfType<DataContractAttribute>().Any();
 
             if (progress != null)
-                progress.Report(protoBufferCompatible ? new StorageManagerProgress {ProgressPercentage = 0, Text = "Serializing using Protobuffer"} : new StorageManagerProgress {ProgressPercentage = 0, Text = "Serializing using BinaryFormatter"});
+                progress.Report(protoBufferCompatible ? new StorageManagerProgress { ProgressPercentage = 0, Text = "Serializing using Protobuffer" } : new StorageManagerProgress { ProgressPercentage = 0, Text = "Serializing using BinaryFormatter" });
 
             if (protoBufferCompatible)
                 Serializer.NonGeneric.Serialize(msInput, obj);
@@ -101,7 +106,7 @@ namespace GeneralToolkitLib.Storage
             if (progress != null)
             {
                 coderProgress = new CodeProgressImplementation(progress, CodeProgressImplementation.CodingOperations.Encoding, msInput.Length);
-                progress.Report(new StorageManagerProgress {ProgressPercentage = 0, Text = "Starting LZMA encoding of file"});
+                progress.Report(new StorageManagerProgress { ProgressPercentage = 0, Text = "Starting LZMA encoding of file" });
             }
 
             msInput.Position = 0;
@@ -128,7 +133,7 @@ namespace GeneralToolkitLib.Storage
                 bool protoBufferCompatible = attrs.OfType<DataContractAttribute>().Any();
 
                 if (progress != null)
-                    progress.Report(protoBufferCompatible ? new StorageManagerProgress {ProgressPercentage = 0, Text = "Serializing using Protobuffer"} : new StorageManagerProgress {ProgressPercentage = 0, Text = "Serializing using BinaryFormatter"});
+                    progress.Report(protoBufferCompatible ? new StorageManagerProgress { ProgressPercentage = 0, Text = "Serializing using Protobuffer" } : new StorageManagerProgress { ProgressPercentage = 0, Text = "Serializing using BinaryFormatter" });
 
                 if (protoBufferCompatible)
                     Serializer.NonGeneric.Serialize(input, obj);
@@ -144,7 +149,7 @@ namespace GeneralToolkitLib.Storage
                 if (progress != null)
                 {
                     coderProgress = new CodeProgressImplementation(progress, CodeProgressImplementation.CodingOperations.Encoding, input.Length);
-                    progress.Report(new StorageManagerProgress {ProgressPercentage = 0, Text = "Starting LZMA encoding of file"});
+                    progress.Report(new StorageManagerProgress { ProgressPercentage = 0, Text = "Starting LZMA encoding of file" });
                 }
 
                 if (_settings.UseMultithreading)
@@ -156,7 +161,7 @@ namespace GeneralToolkitLib.Storage
             }
             catch (Exception ex)
             {
-                Log.Error(ex,"Error in StorageManager.SerializeAndCompressObjectToFile()");
+                Log.Error(ex, "Error in StorageManager.SerializeAndCompressObjectToFile()");
                 return false;
             }
             finally
@@ -186,7 +191,7 @@ namespace GeneralToolkitLib.Storage
                 else
                 {
                     CodeProgressImplementation coderProgress = new CodeProgressImplementation(progress, CodeProgressImplementation.CodingOperations.Decoding);
-                    progress?.Report(new StorageManagerProgress {ProgressPercentage = 0, Text = "Starting LZMA multithreaded decoding of file"});
+                    progress?.Report(new StorageManagerProgress { ProgressPercentage = 0, Text = "Starting LZMA multithreaded decoding of file" });
                     DeflateData(input, output, input.Length, coderProgress).RunSynchronously();
                 }
 
@@ -195,23 +200,23 @@ namespace GeneralToolkitLib.Storage
             }
             catch (Exception ex)
             {
-                Log.Error(ex,"Error in StorageManager.DeSerializeAndDecompressObjectFromEncryptedFile()");
+                Log.Error(ex, "Error in StorageManager.DeSerializeAndDecompressObjectFromEncryptedFile()");
             }
             finally
             {
                 input?.Close();
             }
 
-            var attrs = Attribute.GetCustomAttributes(typeof (T));
+            var attrs = Attribute.GetCustomAttributes(typeof(T));
             bool protoBufferCompatible = attrs.OfType<DataContractAttribute>().Any();
 
-            progress?.Report(protoBufferCompatible ? new StorageManagerProgress {ProgressPercentage = 0, Text = "Deserializing using Protobuffer"} : new StorageManagerProgress {ProgressPercentage = 0, Text = "Deserializing using BinaryFormatter"});
+            progress?.Report(protoBufferCompatible ? new StorageManagerProgress { ProgressPercentage = 0, Text = "Deserializing using Protobuffer" } : new StorageManagerProgress { ProgressPercentage = 0, Text = "Deserializing using BinaryFormatter" });
 
             if (protoBufferCompatible)
                 return Serializer.Deserialize<T>(output);
 
             BinaryFormatter binaryFormatter = new BinaryFormatter();
-            return (T) binaryFormatter.Deserialize(output);
+            return (T)binaryFormatter.Deserialize(output);
         }
 
         private T DeSerializeAndDecompressObjectFromFile<T>(string path, IProgress<StorageManagerProgress> progress)
@@ -226,7 +231,7 @@ namespace GeneralToolkitLib.Storage
                 if (progress != null)
                 {
                     coderProgress = new CodeProgressImplementation(progress, CodeProgressImplementation.CodingOperations.Decoding);
-                    progress.Report(new StorageManagerProgress {ProgressPercentage = 0, Text = "Starting LZMA decoding of file"});
+                    progress.Report(new StorageManagerProgress { ProgressPercentage = 0, Text = "Starting LZMA decoding of file" });
                 }
 
                 if (_settings.UseMultithreading && CompressionFileHeader.VerifyFileHeader(inputFileStream))
@@ -239,7 +244,7 @@ namespace GeneralToolkitLib.Storage
             }
             catch (Exception ex)
             {
-                Log.Error(ex,"Error in StorageManager.DeSerializeAndDecompressObjectFromFile()");
+                Log.Error(ex, "Error in StorageManager.DeSerializeAndDecompressObjectFromFile()");
             }
             finally
             {
@@ -247,13 +252,13 @@ namespace GeneralToolkitLib.Storage
             }
 
             T deserializedObj;
-            var attrs = Attribute.GetCustomAttributes(typeof (T));
+            var attrs = Attribute.GetCustomAttributes(typeof(T));
             if (attrs.OfType<DataContractAttribute>().Any())
                 deserializedObj = Serializer.Deserialize<T>(output);
             else
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
-                deserializedObj = (T) binaryFormatter.Deserialize(output);
+                deserializedObj = (T)binaryFormatter.Deserialize(output);
             }
 
             output.Dispose();
@@ -286,7 +291,7 @@ namespace GeneralToolkitLib.Storage
                 int taskCount = 0;
                 for (int i = 0; i < tasks.Length; i++)
                 {
-                    int encodeSize = Math.Min(BlockSize, (int) bytesLeft);
+                    int encodeSize = Math.Min(BlockSize, (int)bytesLeft);
 
                     if (encodeSize <= 0)
                         break;
@@ -344,7 +349,7 @@ namespace GeneralToolkitLib.Storage
             if (progress != null)
             {
                 coderProgress = new CodeProgressImplementation(progress, CodeProgressImplementation.CodingOperations.Decoding);
-                progress.Report(new StorageManagerProgress {ProgressPercentage = 0, Text = "Starting LZMA multithreaded decoding of file"});
+                progress.Report(new StorageManagerProgress { ProgressPercentage = 0, Text = "Starting LZMA multithreaded decoding of file" });
             }
 
             CompressionFileHeader compressionFileHeader = CompressionFileHeader.DecodeHeader(inputDataStream);
@@ -363,14 +368,14 @@ namespace GeneralToolkitLib.Storage
                     outputMemoryStreams[i] = new MemoryStream();
                     var buffer = new byte[dataBlock.CompressedBlockSize];
                     inputDataStream.Read(buffer, 0, buffer.Length);
-                    MemoryStream inputStream = new MemoryStream(buffer) {Position = 0};
+                    MemoryStream inputStream = new MemoryStream(buffer) { Position = 0 };
                     decoderTasks[i] = DeflateData(inputStream, outputMemoryStreams[i], dataBlock.CompressedBlockSize, coderProgress);
                     decoderTasks[i].Start();
                     currentBlock++;
                     taskCount++;
 
                     if (progress != null)
-                        progress.Report(new StorageManagerProgress {ProgressPercentage = currentBlock / compressionFileHeader.NumberOfBlocks, Text = "Decoding block " + currentBlock});
+                        progress.Report(new StorageManagerProgress { ProgressPercentage = currentBlock / compressionFileHeader.NumberOfBlocks, Text = "Decoding block " + currentBlock });
 
                     if (currentBlock == compressionFileHeader.NumberOfBlocks)
                         break;
