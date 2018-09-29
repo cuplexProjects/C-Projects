@@ -13,17 +13,23 @@ namespace ImageView.Utility
                 return false;
 
             if (form.MinimumSize.Height > 0 && size.Height < form.MinimumSize.Height)
+            {
                 return false;
+            }
 
             if (form.MinimumSize.Width > 0 && size.Width < form.MinimumSize.Width)
                 return false;
 
             Rectangle formRect = new Rectangle(location, size);
             if (formRect.Right < screenArea.Right || formRect.Left < screenArea.Left)
+            {
                 return false;
+            }
 
             if (formRect.Top > screenArea.Bottom || formRect.Top < screenArea.Top)
+            {
                 return false;
+            }
 
             form.Size = size;
             form.Location = location;
