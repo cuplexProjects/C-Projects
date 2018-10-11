@@ -24,12 +24,12 @@ namespace WiFiPasswordGenerator
     public partial class MainForm : Form
     {
         private const int MainPanelBorderWith = 1;
-        private const int Max_Password_Length = 500;
+        private const int MaxPasswordLength = 500;
 
         private readonly ActiveSettings _activeSettings;
         private readonly Pen _innerPen;
         private readonly Pen _outerPen;
-        private Size _QROutputSize;
+        private Size _qrOutputSize;
 
         /// <summary>
         ///     Constructor
@@ -192,7 +192,7 @@ namespace WiFiPasswordGenerator
             int keyVal;
             var validData = false;
             if (int.TryParse(txtPasswordLength.Text, out keyVal))
-                validData = keyVal > 0 && keyVal <= Max_Password_Length;
+                validData = keyVal > 0 && keyVal <= MaxPasswordLength;
 
             return validData;
         }
@@ -234,12 +234,12 @@ namespace WiFiPasswordGenerator
             {
                 if (userDinened)
                 {
-                    _QROutputSize.Width = int.Parse(txtUserDefinedQRWidth.Text);
-                    _QROutputSize.Height = int.Parse(txtUserDefinedQRHeight.Text);
+                    _qrOutputSize.Width = int.Parse(txtUserDefinedQRWidth.Text);
+                    _qrOutputSize.Height = int.Parse(txtUserDefinedQRHeight.Text);
                 }
                 else
                 {
-                    _QROutputSize = Size.Empty;
+                    _qrOutputSize = Size.Empty;
                 }
             }
             catch (Exception ex)
@@ -250,9 +250,8 @@ namespace WiFiPasswordGenerator
 
         private void txtUserDefinedQRWidth_Validating(object sender, CancelEventArgs e)
         {
-            int keyVal;
             var validData = false;
-            if (int.TryParse(txtPasswordLength.Text, out keyVal))
+            if (int.TryParse(txtPasswordLength.Text, out int keyVal))
                 validData = keyVal > 0 && keyVal <= 500;
 
             if (!validData)
@@ -261,9 +260,8 @@ namespace WiFiPasswordGenerator
 
         private void txtUserDefinedQRHeight_Validating(object sender, CancelEventArgs e)
         {
-            int keyVal;
             var validData = false;
-            if (int.TryParse(txtPasswordLength.Text, out keyVal))
+            if (int.TryParse(txtPasswordLength.Text, out int keyVal))
                 validData = keyVal > 0 && keyVal <= 500;
 
             if (!validData)
@@ -272,12 +270,12 @@ namespace WiFiPasswordGenerator
 
         private void txtUserDefinedQRWidth_Validated(object sender, EventArgs e)
         {
-            _QROutputSize.Width = int.Parse(txtUserDefinedQRWidth.Text);
+            _qrOutputSize.Width = int.Parse(txtUserDefinedQRWidth.Text);
         }
 
         private void txtUserDefinedQRHeight_Validated(object sender, EventArgs e)
         {
-            _QROutputSize.Height = int.Parse(txtUserDefinedQRHeight.Text);
+            _qrOutputSize.Height = int.Parse(txtUserDefinedQRHeight.Text);
         }
 
         private void linkLabelLastQRPath_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -347,7 +345,7 @@ namespace WiFiPasswordGenerator
             if (Clipboard.ContainsText(TextDataFormat.Text))
             {
                 string txtData = Clipboard.GetText(TextDataFormat.Text);
-                if (!string.IsNullOrWhiteSpace(txtData) && txtData.Length > 0 && txtData.Length <= Max_Password_Length)
+                if (!string.IsNullOrWhiteSpace(txtData) && txtData.Length > 0 && txtData.Length <= MaxPasswordLength)
                     txtGeneratedPassword.Text = txtData;
                 else
                     MessageBox.Show("The clipboard data did not contain a string between 1 and 500 characters long", "Invalid Password", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -369,12 +367,12 @@ namespace WiFiPasswordGenerator
             {
                 MessageBox.Show(this, "Invalid password leangth or SSID", "Ivalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-                
+
         }
 
         private bool IsValidSsid()
         {
-            Regex ssidRegex = new Regex(@"^\w{8,}$");
+            Regex ssidRegex = new Regex(@"^[\w-]{8,}$");
             return txtSSId.Text.Length >= 8 && ssidRegex.IsMatch(txtSSId.Text);
         }
 
@@ -409,7 +407,7 @@ namespace WiFiPasswordGenerator
 
         private void toolStripMenuItemExportPwdStr_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(txtGeneratedPassword.Text) && txtGeneratedPassword.Text.Length > 0 && txtGeneratedPassword.Text.Length <= Max_Password_Length)
+            if (!string.IsNullOrWhiteSpace(txtGeneratedPassword.Text) && txtGeneratedPassword.Text.Length > 0 && txtGeneratedPassword.Text.Length <= MaxPasswordLength)
             {
                 Clipboard.Clear();
                 Clipboard.SetText(txtGeneratedPassword.Text);
@@ -418,12 +416,7 @@ namespace WiFiPasswordGenerator
 
         private void txtSSId_Validating(object sender, CancelEventArgs e)
         {
-            if (txtSSId.Text.Length < 8)
-            {
-                e.Cancel = true;
-            }
-
-            if (txtSSId.Text.Contains('"') || txtSSId.Text.Contains('\\'))
+            if (txtSSId.Text.Length > 0 && !IsValidSsid())
             {
                 e.Cancel = true;
             }
@@ -440,7 +433,16 @@ namespace WiFiPasswordGenerator
         {
             var secureRandomGenerator = new SecureRandomGenerator();
             txtGeneratedPassword.Text = await secureRandomGenerator.GetRandomStringFromPasswordType(_activeSettings.PasswordType, _activeSettings.PasswordLength);
+
+            // Always generate QR even if the SSID is invalid, but inform instead.
             await GnerateQrCode();
+
+            // Redundent code now that the text field validation functiction prevents entering invalid characters
+            if (!IsValidSsid() && txtSSId.Text.Length > 0)
+            {
+                txtSSId.Text = "";
+                MessageBox.Show(this, "QR Code was created with the password but The SSID is invalid", "Invalid caracters", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
 
         private async Task GnerateQrCode()
@@ -455,17 +457,17 @@ namespace WiFiPasswordGenerator
                 var qrCode = qrCodeGenerator.CreateQrCode(encoderContent, ecc);
 
                 int moduleCount = qrCode.ModuleMatrix.Count;
-                if (_QROutputSize == Size.Empty)
+                if (_qrOutputSize == Size.Empty)
                 {
                     PicBoxQRCode.Image = qrCode.GetGraphic(Math.Min(500, PicBoxQRCode.Height) / moduleCount);
                 }
                 else
                 {
-                    PicBoxQRCode.Image = qrCode.GetGraphic(_QROutputSize.Height / moduleCount);
+                    PicBoxQRCode.Image = qrCode.GetGraphic(_qrOutputSize.Height / moduleCount);
                     var b = new Bitmap(PicBoxQRCode.Image);
-                    b.SetResolution(_QROutputSize.Width, _QROutputSize.Height);
+                    b.SetResolution(_qrOutputSize.Width, _qrOutputSize.Height);
                     PicBoxQRCode.Image = b;
-                    PicBoxQRCode.Invalidate();  
+                    PicBoxQRCode.Invalidate();
                 }
             });
             PicBoxQRCode.Refresh();
@@ -504,10 +506,10 @@ namespace WiFiPasswordGenerator
                         }
 
                         var img = PicBoxQRCode.Image;
-                        if (_QROutputSize != Size.Empty)
+                        if (_qrOutputSize != Size.Empty)
                         {
                             var b = new Bitmap(img);
-                            b.SetResolution(_QROutputSize.Width, _QROutputSize.Height);
+                            b.SetResolution(_qrOutputSize.Width, _qrOutputSize.Height);
                         }
 
                         img.Save(fileName, imageCodecInfo, encoderParameters);

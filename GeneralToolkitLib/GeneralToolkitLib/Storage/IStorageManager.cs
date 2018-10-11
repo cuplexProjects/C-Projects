@@ -8,7 +8,7 @@ namespace GeneralToolkitLib.Storage
 
     public interface IStorageManager
     {
-        bool SerializeObjectToFile(object obj, string path, IProgress<StorageManagerProgress> progress);
+        bool SerializeObjectToFile(object obj, string filename, IProgress<StorageManagerProgress> progress);
         Task<bool> SerializeObjectToFileAsync(object obj, string path, IProgress<StorageManagerProgress> progress);
         T DeserializeObjectFromFile<T>(string path, IProgress<StorageManagerProgress> progress);
         Task<T> DeserializeObjectFromFileAsync<T>(string path, IProgress<StorageManagerProgress> progress);
