@@ -120,10 +120,10 @@ namespace ImageView
 
         }
 
-        private async void FormBookmarks_FormClosing(object sender, FormClosingEventArgs e)
+        private void FormBookmarks_FormClosing(object sender, FormClosingEventArgs e)
         {
             _applicationSettingsService.RegisterFormStateOnClose(this);
-            await _applicationSettingsService.SaveSettings();
+             _applicationSettingsService.SaveSettings();
         }
 
         private bool ReLoadBookmarks()

@@ -37,7 +37,7 @@ namespace ImageView.Library.AutofacModules
             builder.RegisterAssemblyTypes(assembly)
                 .AssignableTo<Form>()
                 .AsSelf()
-                .InstancePerLifetimeScope();
+                .InstancePerDependency();
         }
     }
 }

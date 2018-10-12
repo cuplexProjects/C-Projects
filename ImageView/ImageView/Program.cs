@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Anotar.Serilog;
 using Autofac;
 using GeneralToolkitLib.ConfigHelper;
 using GeneralToolkitLib.Configuration;
@@ -39,25 +40,27 @@ namespace ImageView
 
             using (var scope = Container.BeginLifetimeScope())
             {
-                ApplicationSettingsService settingsService = scope.Resolve<ApplicationSettingsService>();
-                var x = settingsService.LoadSettings().ConfigureAwait(true).GetAwaiter();
-
-                while (!x.IsCompleted)
-                {
-                    Task.Delay(10);
-                }
-
                 // Begin startup async jobs
                 var startupService = scope.Resolve<StartupService>();
-                startupService.ScheduleAndRunStartupJobs();
+                ApplicationSettingsService settingsService = scope.Resolve<ApplicationSettingsService>();
 
-                FormMain frmMain = scope.Resolve<FormMain>();
-                Application.Run(frmMain);
-                var waitObj = settingsService.SaveSettings().ConfigureAwait(true).GetAwaiter();
-                while (!waitObj.IsCompleted)
+                bool readSuccessfull = settingsService.LoadSettings();
+                
+
+                startupService.ScheduleAndRunStartupJobs();
+                try
                 {
-                    Task.Delay(100);
-                };
+                    FormMain frmMain = scope.Resolve<FormMain>();
+                    Application.Run(frmMain);
+                }
+                catch (Exception ex)
+                {
+                    LogTo.Fatal(ex, "Main program failureException: {Message}", ex.Message);
+                }
+
+
+                
+                settingsService.SaveSettings();
             }
 
             //Application.Run(new FormMain());

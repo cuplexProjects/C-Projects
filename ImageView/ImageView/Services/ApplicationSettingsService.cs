@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralToolkitLib.Configuration;
@@ -27,7 +28,10 @@ namespace ImageView.Services
 
         private readonly AppSettingsFileRepository _appSettingsFileRepository;
 
-        private static int LoadThreads = 0;
+        private static int SaveSettingsThreads = 0;
+        private static int LoadSettingsThreads = 0;
+
+        private ImageViewApplicationSettings _applicationSettings;
 
         public ApplicationSettingsService(AppSettingsFileRepository appSettingsFileRepository)
         {
@@ -62,7 +66,20 @@ namespace ImageView.Services
         }
 
 
-        public ImageViewApplicationSettings Settings { get; private set; }
+        public ImageViewApplicationSettings Settings
+        {
+            get
+            {
+                if (_applicationSettings == null)
+                {
+                    _applicationSettings = new ImageViewApplicationSettings();
+                    throw new InvalidOperationException();
+                }
+
+                return _applicationSettings;
+            }
+            private set { _applicationSettings = value; }
+        }
 
         public AppSettingsFileStoreDataModel FileStoredSettings { get; private set; }
 
@@ -71,53 +88,93 @@ namespace ImageView.Services
         public event EventHandler OnRegistryAccessDenied;
         public event ExceptionEventHandler OnUnexpectedException;
 
-        public async Task<bool> LoadSettings()
+        public bool LoadSettings()
         {
-            LoadThreads++;
-            if (LoadThreads > 1)
+            return Task.Factory.StartNew(() => LoadSettingsAsync().Result).Result;
+        }
+
+        public async Task<bool> LoadSettingsAsync()
+        {
+            Interlocked.Increment(location: ref LoadSettingsThreads);
+            if (LoadSettingsThreads > 1)
             {
+                await Task.Delay(millisecondsDelay: 10);
+                Interlocked.Decrement(location: ref LoadSettingsThreads);
                 return false;
             }
 
+            bool loadedSuccessfuly = false;
             try
             {
-                await Task.Factory.StartNew(_appSettingsFileRepository.LoadSettings);
-                _registryService.SetupSubKeyPathAndAccessRights();
+                if (SaveSettingsThreads == 1)
+                {
+                    loadedSuccessfuly = await _appSettingsFileRepository.LoadSettingsAsync();
+
+                }
+                else
+                {
+                    _registryService.SetupSubKeyPathAndAccessRights();
+
+                    Settings = _registryService.ReadObjectFromRegistry<ImageViewApplicationSettings>();
+                    OnSettingsLoaded?.Invoke(sender: this, e: EventArgs.Empty);
+                }
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "ApplicationSettingsService->LoadSettings");
-                OnRegistryAccessDenied?.Invoke(this, new EventArgs());
-                OnUnexpectedException?.Invoke(this, new ExceptionEventArgs(ex) { SourceClass = GetType(), TargetClass = _registryService.GetType(), FunctionName = "LoadSettings" });
-                LoadThreads--;
-                return false;
+                Log.Error(exception: ex, messageTemplate: "ApplicationSettingsService->LoadSettingsAsync");
+
+                OnRegistryAccessDenied?.Invoke(sender: this, e: new EventArgs());
+                OnUnexpectedException?.Invoke(sender: this, e: new ExceptionEventArgs(exception: ex) { SourceClass = GetType(), TargetClass = _registryService.GetType(), FunctionName = "LoadSettingsAsync" });
+
+
             }
-            Settings = _registryService.ReadObjectFromRegistry<ImageViewApplicationSettings>();
-            OnSettingsLoaded?.Invoke(this, EventArgs.Empty);
-            LoadThreads--;
-            return true;
+            finally
+            {
+                Interlocked.Decrement(location: ref LoadSettingsThreads);
+            }
+
+
+            return loadedSuccessfuly;
         }
 
         private void _appSettingsFileRepository_LoadSettingsCompleted(object sender, EventArgs e)
         {
             FileStoredSettings = _appSettingsFileRepository.AppSettings;
         }
-
-        public async Task SaveSettings()
+        public void SaveSettings()
         {
+            SaveSettingsAsync().ConfigureAwait(true);
+        }
+
+        public async Task SaveSettingsAsync()
+        {
+            Interlocked.Increment(ref SaveSettingsThreads);
+            if (SaveSettingsThreads > 1)
+            {
+                await Task.Delay(10);
+                Interlocked.Decrement(ref SaveSettingsThreads);
+                return;
+            }
+
             try
             {
-                await _appSettingsFileRepository.SaveSettings();
-                Settings.RemoveDuplicateEntriesWithIgnoreCase();
-                _registryService.SaveObjectToRegistry(Settings);
+                if (SaveSettingsThreads == 1)
+                {
+                    await _appSettingsFileRepository.SaveSettings();
+                    Settings.RemoveDuplicateEntriesWithIgnoreCase();
+                    _registryService.SaveObjectToRegistry(Settings);
 
-                OnSettingsSaved?.Invoke(this, new EventArgs());
+                    OnSettingsSaved?.Invoke(this, new EventArgs());
+                }
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "SaveSettings threw en exception on");
             }
-            ;
+            finally
+            {
+                Interlocked.Decrement(ref SaveSettingsThreads);
+            }
         }
 
         public void RegisterFormStateOnClose(Form form)
@@ -136,5 +193,6 @@ namespace ImageView.Services
 
             Task.Factory.StartNew(_appSettingsFileRepository.SaveSettings);
         }
+
     }
 }

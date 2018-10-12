@@ -418,22 +418,5 @@ namespace ImageView.DataContracts
                 DefaultKey = null;
             }
         }
-
-        /// <summary>
-        /// Sets the main form position.
-        /// </summary>
-        /// <param name="mainFormBounds">The main form bounds.</param>
-        //public void SetMainFormPosition(Rectangle mainFormBounds)
-        //{
-        //    Rectangle mainScreenBounds = Screen.PrimaryScreen.Bounds;
-        //    Rectangle intersection = Rectangle.Intersect(mainScreenBounds, mainFormBounds);
-
-        //    if (intersection != Rectangle.Empty)
-        //    {
-        //        MainFormPosition = new PointDataModel(mainFormBounds.X, mainFormBounds.Y);
-        //        MainFormSize = new SizeDataModel(mainFormBounds.Width, mainFormBounds.Height);
-        //        UseSavedMainFormPosition = true;
-        //    }
-        //}
     }
 }

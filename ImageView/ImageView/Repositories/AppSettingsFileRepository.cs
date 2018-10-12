@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+using Anotar.Serilog;
 using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Hashing;
 using GeneralToolkitLib.Storage;
@@ -15,11 +16,11 @@ namespace ImageView.Repositories
     {
         private const string AppSettingsFilename = "localSettings.dat";
         private const string AppSettingsPassword = "F9BB2AED-BA1D-46AF-9FFE-4B69610C9BE1";
-        private static readonly object SaveSettingsFileLock = new object();
+        private static int LoadSettingsThreadCount = 0;
 
         public AppSettingsFileRepository()
         {
-            Task.Factory.StartNew(LoadSettings);
+            LoadSettings();
         }
 
         private AppSettingsFileStoreDataModel _appSettings;
@@ -47,8 +48,32 @@ namespace ImageView.Repositories
             }
         }
 
-        public async Task LoadSettings()
+        public void LoadSettings()
         {
+            if (LoadSettingsThreadCount > 1)
+            {
+                return;
+            }
+
+            try
+            {
+                LoadSettingsAsync().GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                LogTo.Error(ex, "Exception when loading settings");
+            }
+        }
+
+        public async Task<bool> LoadSettingsAsync()
+        {
+            Interlocked.Increment(ref LoadSettingsThreadCount);
+            if (LoadSettingsThreadCount > 1)
+            {
+                return false;
+            }
+
+            bool loadsuccessful = false;
             try
             {
                 string path = GetFullPathToSettingsFile();
@@ -67,13 +92,17 @@ namespace ImageView.Repositories
                         _appSettings.InitFormDictionary();
                     }
                 }
+
+                loadsuccessful = true;
             }
             catch (Exception exception)
             {
-                Log.Error(exception, "Exception in AppSettingsFileRepository LoadSettings {Message}", exception.Message);
+                LogTo.Error(exception, "Exception in AppSettingsFileRepository LoadSettingsAsync {Message}", exception.Message);
+                loadsuccessful = false;
             }
             finally
             {
+                Interlocked.Decrement(ref LoadSettingsThreadCount);
                 if (_appSettings == null)
                 {
                     _appSettings = AppSettingsFileStoreDataModel.CreateNew();
@@ -81,6 +110,8 @@ namespace ImageView.Repositories
 
                 LoadSettingsCompleted?.Invoke(this, EventArgs.Empty);
             }
+
+            return loadsuccessful;
         }
 
         private string GetFullPathToSettingsFile()

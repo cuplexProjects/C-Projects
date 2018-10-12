@@ -36,7 +36,10 @@ namespace ImageView.Services
 
         public bool OpenBookmarks()
         {
-            return OpenBookmarks(GetDefaultPassword());
+            lock (LockObj)
+            {
+                return OpenBookmarks(GetDefaultPassword());    
+            }
         }
 
         public bool OpenBookmarks(string password)

@@ -109,9 +109,9 @@ namespace ImageView
             UpdateCacheStats();
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        private async void btnOk_Click(object sender, EventArgs e)
         {
-            ImageViewApplicationSettings settings = _applicationSettingsService.Settings;
+            var settings = _applicationSettingsService.Settings;
 
 
             if (rbImgTransformNone.Checked)
@@ -150,7 +150,7 @@ namespace ImageView
             _applicationSettingsService.Settings.AutomaticUpdateCheck = ChkAutomaticallyCheckForUpdates.Checked;
             _imageCacheService.CacheSize = _selectedCacheSize;
 
-            _applicationSettingsService.SaveSettings();
+            await _applicationSettingsService.SaveSettingsAsync();
             Close();
         }
 

@@ -30,7 +30,7 @@ namespace ImageView.Storage
             SubKey = "SOFTWARE\\" + CompanyName.Trim() + "\\" + ProductName.Trim();
             _localStorageFilePath = Path.Combine(ApplicationBuildConfig.UserDataPath, "localRegStorage.dat");
 
-            //LoadLocalDatabase();
+            LoadLocalDatabase();
         }
 
         public bool ShowError { get; set; }

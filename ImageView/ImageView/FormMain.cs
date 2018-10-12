@@ -41,7 +41,6 @@ namespace ImageView
         private ImageViewApplicationSettings.ChangeImageAnimation _changeImageAnimation;
         private bool _dataReady;
         private FormBookmarks _formBookmarks;
-        private FormRestartWithAdminPrivileges _formRestartWithAdminPrivileges;
         private FormThumbnailView _formThumbnailView;
         private FormWindows _formWindows;
         private bool _fullScreen;
@@ -446,7 +445,7 @@ namespace ImageView
 
         #region Form Events
 
-        private void FormMain_Load(object sender, EventArgs e)
+        private async void FormMain_Load(object sender, EventArgs e)
         {
             if (DesignMode)
             {
@@ -459,8 +458,45 @@ namespace ImageView
             _imageLoaderService.OnImportComplete += Instance_OnImportComplete;
             _imageLoaderService.OnImageWasDeleted += Instance_OnImageWasDeleted;
 
-            //if (_applicationSettingsService.LoadSettings)
-            //{
+            _pictureBoxAnimation.LoadCompleted += pictureBoxAnimation_LoadCompleted;
+            bool settingsLoaded = await _applicationSettingsService.LoadSettingsAsync();
+
+
+            if (!settingsLoaded)
+            {
+                // Problem. Settings could not be loaded due to deserialization error because the decryption used an invalid key which made protobuffer try to deserialize garbage.
+                _applicationSettingsService.SaveSettings();
+                _applicationSettingsService.LoadSettings();
+                SyncUserControlStateWithAppSettings();
+            }
+            else
+            {
+                SyncUserControlStateWithAppSettings();
+
+                try
+                {
+                    var fileConfig = _applicationSettingsService.FileStoredSettings;
+                    if (fileConfig.FormStateDictionary.ContainsKey(GetType().Name))
+                    {
+                        var formState = fileConfig.FormStateDictionary[GetType().Name];
+                        RestoreFormState.SetFormSizeAndPosition(this, formState);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                
+                }
+
+                _changeImageAnimation = _applicationSettingsService.Settings.NextImageAnimation;
+                timerSlideShow.Interval = _applicationSettingsService.Settings.SlideshowInterval;
+
+                addBookmarkToolStripMenuItem.Enabled = false;
+                Text = _windowTitle;
+                ToggleSlideshowMenuState();
+            }
+
+            
             //    MessageBox.Show(Resources.Unable_To_Access_application_settings_in_registry,
             //        Resources.Faild_to_load_settings, MessageBoxButtons.OK, MessageBoxIcon.Error);
             //    _formRestartWithAdminPrivileges = new FormRestartWithAdminPrivileges();
@@ -468,30 +504,10 @@ namespace ImageView
             //    {
             //        return;
             //    }
-            //}
+            
 
-            SyncUserControlStateWithAppSettings();
-
-            //if (_applicationSettingsService.Settings.UseSavedMainFormPosition)
-            {
-                var fileConfig = _applicationSettingsService.FileStoredSettings;
-                if (fileConfig.FormStateDictionary.ContainsKey(GetType().Name))
-                {
-                    var formState = fileConfig.FormStateDictionary[GetType().Name];
-                    RestoreFormState.SetFormSizeAndPosition(this, formState);
-                }
-                //RestoreFormState.SetFormSizeAndPosition(this, _applicationSettingsService.Settings.MainFormSize.ToSize(),
-                //    _applicationSettingsService.Settings.MainFormPosition.ToPoint(), Screen.PrimaryScreen.WorkingArea);
-            }
-
-            _changeImageAnimation = _applicationSettingsService.Settings.NextImageAnimation;
-            timerSlideShow.Interval = _applicationSettingsService.Settings.SlideshowInterval;
-
-
-            addBookmarkToolStripMenuItem.Enabled = false;
-            Text = _windowTitle;
-            ToggleSlideshowMenuState();
-            _pictureBoxAnimation.LoadCompleted += pictureBoxAnimation_LoadCompleted;
+            
+    
 
             //Notification Service
             _interactionService.Initialize(this);
@@ -561,7 +577,7 @@ namespace ImageView
         }
 
 
-        private async void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!AllowAplicatonExit())
             {
@@ -577,7 +593,7 @@ namespace ImageView
             timerSlideShow.Enabled = false;
             _bookmarkService.SaveBookmarks();
             _applicationSettingsService.FileStoredSettings.UpdateOrInsertFormState(RestoreFormState.GetFormState(this));
-            await _applicationSettingsService.SaveSettings();
+            _applicationSettingsService.SaveSettings();
         }
 
         private void imageViewForm_FormClosed(object sender, FormClosedEventArgs e)

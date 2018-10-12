@@ -208,7 +208,7 @@ namespace ImageView.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No valid path selected.
+        ///   Looks up a localized string similar to No valid filename selected.
         /// </summary>
         internal static string FileBrowser_OpenImporterForm_No_valid_path_selected {
             get {
