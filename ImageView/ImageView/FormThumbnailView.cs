@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Castle.Components.DictionaryAdapter;
 using ImageView.DataContracts;
 using ImageView.Models;
 using ImageView.Properties;
@@ -13,6 +15,7 @@ using ImageView.Services;
 using ImageView.UserControls;
 using ImageView.Utility;
 using Serilog;
+using ThreadState = System.Threading.ThreadState;
 
 namespace ImageView
 {
@@ -28,6 +31,7 @@ namespace ImageView
         private readonly FormAddBookmark _formAddBookmark;
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly ImageCacheService _imageCacheService;
+        private int workerThreadId = 0;
 
         public FormThumbnailView(FormAddBookmark formAddBookmark, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService, ThumbnailService thumbnailService, ImageLoaderService imageLoaderService)
         {
@@ -45,6 +49,7 @@ namespace ImageView
 
         private void _applicationSettingsService_OnSettingsSaved(object sender, EventArgs e)
         {
+            _applicationSettingsService.LoadSettings();
             ImageViewApplicationSettings appSettings = _applicationSettingsService.Settings;
             flowLayoutPanel1.BackColor = appSettings.MainWindowBackgroundColor.ToColor();
             picBoxMaximized.BackColor = appSettings.MainWindowBackgroundColor.ToColor();
@@ -90,16 +95,22 @@ namespace ImageView
 
             try
             {
-                await Task.Run(() =>
+
+
+                var awaiter = Task.Factory.StartNew(delegate
                 {
-                    _pictureBoxList = null;
-                    GC.Collect();
+                    CleanupPictureControlObjects();
+                    workerThreadId = Thread.CurrentThread.ManagedThreadId;
                     _pictureBoxList = GenerateThumbnails();
                     if (!IsDisposed)
                         Invoke(new EventHandler(UpdatePictureBoxList));
                     _thumbnailService.SaveThumbnailDatabase();
                     GC.Collect();
-                });
+                  
+                }).ConfigureAwait(true);
+
+
+
             }
             catch (Exception ex)
             {
@@ -109,6 +120,23 @@ namespace ImageView
 
             btnGenerate.Enabled = true;
             Refresh();
+        }
+
+        private void CleanupPictureControlObjects()
+        {
+            if (_pictureBoxList != null)
+            {
+                _pictureBoxList.ForEach(x =>
+                {
+                    for (var i = x.Controls.Count - 1; i >= 0; i--)
+                    {
+                        x.Controls[i].Dispose();
+                    }
+                    x.Dispose();
+                });
+                _pictureBoxList.Clear();
+            }
+            GC.Collect();
         }
 
         private void UpdatePictureBoxList(object sender, EventArgs e)

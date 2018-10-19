@@ -1,34 +1,47 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using ImageProcessor;
 using ImageView.Models.Interface;
 using Serilog;
+using ImageProcessor.Common;
 
 namespace ImageView.Models
 {
-    public class CachedImage
+    public class CachedImage : IDisposable
     {
-        public CachedImage(string filename)
+        private readonly ImageFactory _imageFactory;
+        public CachedImage(string filename, ImageFactory imageFactory)
         {
             CreatedDate = DateTime.Now;
             Filename = filename;
+            _imageFactory = imageFactory;
         }
+
+        private byte[] _imageData;
 
         public string Filename { get; }
         public DateTime CreatedDate { get; private set; }
         public DateTime ModifiedDate { get; private set; }
         public DateTime ImageCreateDate { get; private set; }
         public long Size { get; private set; }
-        public Image ImageObject { get; private set; }
+        public Image ImageObject => _imageFactory.Load(_imageData).Image;
 
         public bool LoadImage()
         {
-            Stream fileStream = null;
+            
             try
             {
-                fileStream = File.OpenRead(Filename);
+                _imageFactory.Load(Filename);
+                MemoryStream ms = new MemoryStream();
+                 _imageFactory.Save(ms);
 
-                ImageObject =  Image.FromStream(fileStream);
+                ms.Flush();
+                _imageData = ms.ToArray();
+                ms.Close();
+                ms.Dispose();
+
+
                 ModifiedDate = DateTime.Now;
 
                 var fileInfo = new FileInfo(Filename);
@@ -42,14 +55,15 @@ namespace ImageView.Models
             }
             finally
             {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                    fileStream.Dispose();
-                }
+                
             }
 
             return ImageObject != null;
+        }
+
+        public void Dispose()
+        {
+            _imageFactory?.Dispose();
         }
     }
 }

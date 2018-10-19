@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using ImageProcessor;
 using ImageView.Models;
 using ImageView.Models.Interface;
 using JetBrains.Annotations;
@@ -90,7 +91,7 @@ namespace ImageView.Services
             lock (CacheLock)
             {
                 if (_cachedImages.ContainsKey(fileName)) return _cachedImages[fileName].ImageObject;
-                var cachedImage = new CachedImage(fileName);
+                var cachedImage = new CachedImage(fileName, new ImageFactory());
                 cachedImage.LoadImage();
                 _cachedImages.Add(fileName, cachedImage);
 

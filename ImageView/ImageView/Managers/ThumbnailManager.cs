@@ -2,14 +2,18 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
+using ImageProcessor;
 using ImageView.DataContracts;
 using ImageView.Models;
 using ImageView.Services;
@@ -34,9 +38,16 @@ namespace ImageView.Managers
         private bool _isRunningThumbnailScan;
         private ThumbnailDatabase _thumbnailDatabase;
         private readonly ImageCacheService _imageCacheService;
+        private readonly Semaphore _imageLoaderSemaphore;
+        private readonly Semaphore _loadAndSaveDatabase;
+        private readonly ImageFactory _imageFactory;
+
 
         public ThumbnailManager(FileManager fileManager, ImageCacheService imageCacheService)
         {
+            _imageFactory = new ImageFactory();
+            _imageLoaderSemaphore = new Semaphore(1, 8, "ThumbnailManager");
+            _loadAndSaveDatabase = new Semaphore(1, 1, "SaveAndLoadThumbnailDatabase");
             _fileManager = fileManager;
             _imageCacheService = imageCacheService;
             string dataStoragePath = ApplicationBuildConfig.UserDataPath;
@@ -64,8 +75,15 @@ namespace ImageView.Managers
 
         public async Task StartThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
         {
-            if (_isRunningThumbnailScan || _fileManager.IsLocked)
+            if (_isRunningThumbnailScan)
+            {
                 return;
+            }
+
+            if (!_loadAndSaveDatabase.SafeWaitHandle.IsClosed)
+            {
+                _loadAndSaveDatabase.WaitOne();
+            }
 
             _fileManager.CloseStream();
 
@@ -109,10 +127,11 @@ namespace ImageView.Managers
 
         public bool SaveThumbnailDatabase()
         {
+            _loadAndSaveDatabase.WaitOne();
+
             try
             {
-                //if (_fileManager.IsLocked)
-                //    return false;
+
 
                 string filename = Path.Combine(ApplicationBuildConfig.UserDataPath, DatabaseFilename);
                 var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, DatabaseKey);
@@ -134,10 +153,16 @@ namespace ImageView.Managers
                 Log.Error(ex, "ThumbnailManager.SaveThumbnailDatabase() : " + ex.Message, ex);
                 return false;
             }
+            finally
+            {
+                _loadAndSaveDatabase.Release();
+            }
         }
 
         public bool LoadThumbnailDatabase()
         {
+            _loadAndSaveDatabase.WaitOne();
+
             try
             {
                 if (_fileManager.IsLocked)
@@ -169,17 +194,33 @@ namespace ImageView.Managers
             {
                 Log.Error(ex, "ThumbnailManager.LoadFromFile(string filename, string password) : " + ex.Message, ex);
             }
+            finally
+            {
+                _loadAndSaveDatabase.Release();
+            }
 
             return false;
         }
 
         public Image GetThumbnail(string fullPath)
         {
+            if (ThumbnailIsCached(fullPath))
+            {
+                var imgFromCache = LoadImageFromDatabase(fullPath);
+                if (imgFromCache != null)
+                {
+                    return imgFromCache.LoadImage();
+                }
+
+                // Possibly a corrupt database
+            }
+
+
             if (_fileManager.IsLocked)
             {
                 try
                 {
-                    return LoadImageFromFile(fullPath);
+                    return ImageProcessHelper.CreateThumbnailImage(fullPath, new Size(512, 512));
                 }
                 catch (Exception)
                 {
@@ -188,22 +229,13 @@ namespace ImageView.Managers
                 }
             }
 
-            if (ThumbnailIsCached(fullPath))
-            {
-                var imgFromCache = LoadImageFromCache(fullPath);
-                if (imgFromCache != null)
-                {
-                    return imgFromCache;
-                }
 
-                // Possibly a corrupt database
-            }
 
-            Image img = LoadImageFromFile(fullPath);
+            RawImageModel img = RawImageModel.CreateFromImage(Image.FromFile(fullPath), new Size(512, 512));
             string directory = GeneralConverters.GetDirectoryNameFromPath(fullPath);
             string filename = GeneralConverters.GetFileNameFromPath(fullPath);
             AddImageToCache(img, directory, filename);
-            return img;
+            return img.LoadImage();
         }
 
         public void OptimizeDatabase()
@@ -370,8 +402,8 @@ namespace ImageView.Managers
 
             string fileName = GeneralConverters.GetFileNameFromPath(fullPath);
             string directory = GeneralConverters.GetDirectoryNameFromPath(fullPath);
-            Image thumbnailImage = LoadImageFromFile(fullPath);
             var fileInfo = new FileInfo(fullPath);
+
 
             var thumbnail = new ThumbnailEntry
             {
@@ -383,15 +415,18 @@ namespace ImageView.Managers
                 UniqueId = Guid.NewGuid()
             };
 
-            thumbnailDatas.Enqueue(new ThumbnailData { ThumbnailEntry = thumbnail, Image = thumbnailImage });
+
+            var thumbnailData = new ThumbnailData {ThumbnailEntry = thumbnail};
+            thumbnailData.LoadImage(ImageProcessHelper.CreateThumbnailImage);
+
+            thumbnailDatas.Enqueue(thumbnailData);
         }
 
         private void SaveThumbnailData(ThumbnailData thumbnailData)
         {
             var thumbnail = thumbnailData.ThumbnailEntry;
-            var img = thumbnailData.Image;
 
-            FileEntry fileEntry = _fileManager.WriteImage(img);
+            FileEntry fileEntry = _fileManager.WriteImage(thumbnailData.RawImage);
             if (fileEntry == null)
             {
                 return;
@@ -431,7 +466,7 @@ namespace ImageView.Managers
 
                 try
                 {
-                    img = LoadImageFromFile(fullPath);
+                    img = ImageProcessHelper.CreateThumbnailImage(fullPath, new Size(512, 512));
                 }
                 catch (Exception exception)
                 {
@@ -453,7 +488,7 @@ namespace ImageView.Managers
                     UniqueId = Guid.NewGuid()
                 };
 
-                FileEntry fileEntry = _fileManager.WriteImage(img);
+                FileEntry fileEntry = _fileManager.WriteImage(RawImageModel.CreateFromImage(img));
                 if (fileEntry == null)
                 {
                     continue;
@@ -540,61 +575,61 @@ namespace ImageView.Managers
         /// </summary>
         /// <param name="filename">The filename.</param>
         /// <returns></returns>
-        private Image LoadImageFromFile(string filename)
-        {
-            const int maxSize = 512;
-            Image img = _imageCacheService.GetImage(filename);
-            int width = img.Width;
-            int height = img.Height;
+        //private Image LoadImageFromFile(string filename)
+        //{
+        //    const int maxSize = 512;
+        //    Image img = _imageCacheService.GetImage(filename);
+        //    int width = img.Width;
+        //    int height = img.Height;
 
-            if (width >= height)
-            {
-                if (width > maxSize)
-                {
-                    double factor = (double)width / maxSize;
-                    width = maxSize;
-                    height = Convert.ToInt32(Math.Ceiling(height / factor));
-                }
-                else
-                {
-                    return img;
-                }
-            }
-            else
-            {
-                if (height > maxSize)
-                {
-                    double factor = (double)height / maxSize;
-                    height = maxSize;
-                    width = Convert.ToInt32(Math.Ceiling(width / factor));
-                }
-                else
-                {
-                    return img;
-                }
-            }
+        //    if (width >= height)
+        //    {
+        //        if (width > maxSize)
+        //        {
+        //            double factor = (double)width / maxSize;
+        //            width = maxSize;
+        //            height = Convert.ToInt32(Math.Ceiling(height / factor));
+        //        }
+        //        else
+        //        {
+        //            return img;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (height > maxSize)
+        //        {
+        //            double factor = (double)height / maxSize;
+        //            height = maxSize;
+        //            width = Convert.ToInt32(Math.Ceiling(width / factor));
+        //        }
+        //        else
+        //        {
+        //            return img;
+        //        }
+        //    }
 
-            return ImageTransform.ResizeImage(img, width, height);
-        }
+        //    return ImageTransform.ResizeImage(img, width, height);
+        //}
 
-        private Image LoadImageFromCache(string filename)
+        private RawImageModel LoadImageFromDatabase(string filename)
         {
             ThumbnailEntry thumbnail = _fileDictionary[filename];
             try
             {
-                return _fileManager.ReadImage(Convert.ToInt32(thumbnail.FilePosition), thumbnail.Length);
+                return _fileManager.ReadImageFromDatabase(thumbnail);
             }
             catch (Exception ex)
             {
                 using (LogContext.PushProperty("Data", thumbnail))
                 {
-                    Log.Error(ex, "LoadImageFromCache failed");
+                    Log.Error(ex, "LoadImageFromDatabase failed");
                 }
             }
             return null;
         }
 
-        private void AddImageToCache(Image img, string path, string fileName)
+        private void AddImageToCache(RawImageModel img, string path, string fileName)
         {
             if (_fileManager == null)
                 return;
@@ -781,8 +816,36 @@ namespace ImageView.Managers
 
         private class ThumbnailData
         {
+            private RawImageModel _rawImageModel;
+
+            public Image LoadImage(Func<string, Size, Image> imageLoadFunc)
+            {
+                var image = imageLoadFunc(Path.Combine(ThumbnailEntry.Directory, ThumbnailEntry.FileName), new Size(512, 512));
+
+                var ms = new MemoryStream();
+                image.Save(ms, ImageFormat.Jpeg);
+                ms.Flush();
+
+                _rawImageModel = new RawImageModel(ms.ToArray());
+                ms.Close();
+                ms.Dispose();
+
+                return image;
+            }
+
+            public RawImageModel RawImage
+            {
+                get { return _rawImageModel; }
+            }
+
             public ThumbnailEntry ThumbnailEntry { get; set; }
-            public Image Image { get; set; }
+
+            public byte[] RawImageBytes => _rawImageModel?.ImageData;
+
+            public Image GetImageFromRawData()
+            {
+                return _rawImageModel?.LoadImage();
+            }
         }
     }
 }

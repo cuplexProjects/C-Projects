@@ -198,7 +198,7 @@ namespace ImageView.Services
                 return imageReferenceList;
 
             var fileInfoArray = currentDirectory.GetFiles();
-            foreach (FileInfo fileInfo in fileInfoArray)
+            foreach (var fileInfo in fileInfoArray)
             {
                 if (_fileNameRegExp.IsMatch(fileInfo.Name))
                     imageReferenceList.Add(new ImageReferenceElement

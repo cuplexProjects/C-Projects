@@ -3,8 +3,7 @@ using ImageView.DataContracts;
 
 namespace ImageView.Models
 {
-    public class ImageReferenceElement : ImageReference, IComparable<ImageReferenceElement>,
-        IEquatable<ImageReferenceElement>
+    public class ImageReferenceElement : ImageReference, IComparable<ImageReferenceElement>, IEquatable<ImageReferenceElement>
     {
         public string SizeInKb => Math.Round(Size/1024d, 1) + " kB";
 

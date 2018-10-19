@@ -607,6 +607,10 @@ namespace ImageView
             {
                 ToggleFullscreen();
             }
+            else if (e.Alt && e.KeyCode == Keys.Enter)
+            {
+                ToggleFullscreen();
+            }
 
             //if (e.KeyCode == Keys.F11)
             //{

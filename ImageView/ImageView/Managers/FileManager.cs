@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Converters;
 using ImageView.DataContracts;
@@ -20,6 +21,8 @@ namespace ImageView.Managers
         private FileStream _fileStream;
         private const string TemporaryDatabaseFilename = "temp.ibd";
         private const string DatabaseImgDataFilename = "thumbs.ibd";
+        private object _fileOperationLock = new Object();
+        private Semaphore _fileManagerSemaphore;
 
         [UsedImplicitly]
         public FileManager()
@@ -41,65 +44,75 @@ namespace ImageView.Managers
             CloseStream();
         }
 
-        public Image ReadImage(int position, int length)
+        public RawImageModel ReadImageFromDatabase(ThumbnailEntry thumbnail)
         {
-            if (_fileStream == null)
-                _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-
-            _fileStream.Position = position;
-            var buffer = new byte[length];
-            _fileStream.Read(buffer, 0, length);
-
-            var ms = new MemoryStream(buffer);
-            Image img = Image.FromStream(ms);
+            lock (_fileOperationLock)
+            {
+                if (_fileStream == null)
+                    _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
 
-            return img;
+                _fileStream.Lock(thumbnail.FilePosition, thumbnail.Length);
+                _fileStream.Position = thumbnail.FilePosition;
+
+                var ms = new MemoryStream();
+                _fileStream.CopyTo(ms, thumbnail.Length);
+
+                ms.Flush();
+                byte[] imageData = ms.ToArray();
+                ms.Close();
+                ms.Dispose();
+
+                _fileStream.Unlock(thumbnail.FilePosition, thumbnail.Length);
+
+                return new RawImageModel(imageData);
+            }
+
         }
 
-        public FileEntry WriteImage(Image img)
+        public FileEntry WriteImage(RawImageModel img)
         {
-            if (_fileStream == null)
-                _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-
-            _fileStream.Position = Math.Max(_fileStream.Length - 1, 0);
-            long position = _fileStream.Position;
-
-            try
+            lock (_fileOperationLock)
             {
-                using (var ms = new MemoryStream())
-                {
-                    img.Save(ms, ImageFormat.Jpeg);
+                if (_fileStream == null)
+                    _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
-                    _fileStream.Lock(0, _fileStream.Length + ms.Length);
+                _fileStream.Position = Math.Max(_fileStream.Length - 1, 0);
+                long position = _fileStream.Position;
+
+                try
+                {
+
+                    _fileStream.Lock(0, _fileStream.Length + img.ImageData.Length);
                     _fileStream.Flush();
                     _fileStream.Seek(0, SeekOrigin.End);
-                    _fileStream.Write(ms.ToArray(), 0, (int)ms.Length);
+                    _fileStream.Write(img.ImageData, 0, img.ImageData.Length);
                     _fileStream.Flush(true);
                     _fileStream.Unlock(0, _fileStream.Length);
+
+                    var fileEntry = new FileEntry
+                    {
+                        Position = position,
+                        Length = Convert.ToInt32(_fileStream.Position - position)
+                    };
+
+                    return fileEntry;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "WriteImage Exception: {Message}", ex.Message);
                 }
 
-
-                var fileEntry = new FileEntry
-                {
-                    Position = position,
-                    Length = Convert.ToInt32(_fileStream.Position - position)
-                };
-
-                return fileEntry;
+                return null;
             }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "WriteImage Exception: {Message}", ex.Message);
-            }
-
-            return null;
         }
 
         public void RecreateDatabase(List<ThumbnailEntry> thumbnailEntries)
         {
             if (_fileStream == null)
+            {
                 _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            }
             else
             {
                 SaveToDisk();
@@ -168,7 +181,11 @@ namespace ImageView.Managers
         {
             if (_fileStream != null)
             {
-                _fileStream.Flush(true);
+                if (_fileStream.CanWrite)
+                {
+                    _fileStream.Flush(true);
+                }
+
                 _fileStream.Close();
                 _fileStream = null;
             }
@@ -245,12 +262,16 @@ namespace ImageView.Managers
         // Deletes the current filecontainer and recreates an empty filecontainer.
         public void DeleteBinaryContainer()
         {
-            CloseStream();
-            File.Delete(_fileName);
+            lock (_fileOperationLock)
+            {
+                CloseStream();
+                File.Delete(_fileName);
 
-            var fsStream = File.Create(_fileName);
-            fsStream.Flush(true);
-            fsStream.Close();
+                var fsStream = File.Create(_fileName);
+                fsStream.Flush(true);
+                fsStream.Close();
+            }
+            
         }
     }
 }
