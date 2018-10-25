@@ -1,4 +1,4 @@
-﻿namespace ImageView.InputForms
+﻿namespace ImageViewer.InputForms
 {
     partial class FormGetPassword
     {

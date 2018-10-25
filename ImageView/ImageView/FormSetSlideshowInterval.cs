@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using ImageView.Events;
+using ImageViewer.Events;
 
-namespace ImageView
+namespace ImageViewer
 {
     public partial class FormSetSlideshowInterval : Form
     {

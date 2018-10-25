@@ -1,4 +1,6 @@
-﻿namespace ImageView
+﻿using ImageViewer.UserControls;
+
+namespace ImageViewer
 {
     partial class FormSettings
     {
@@ -92,7 +94,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.tabPageColorSettings = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.backgroundColorDropdownList = new ImageView.UserControls.ColorSelectComboBox();
+            this.backgroundColorDropdownList = new ColorSelectComboBox();
             this.label19 = new System.Windows.Forms.Label();
             this.lblColorOption1 = new System.Windows.Forms.Label();
             this.BackgroundImageDropdown = new System.Windows.Forms.ComboBox();

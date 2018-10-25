@@ -3,12 +3,12 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
-using ImageView.DataContracts;
-using ImageView.InputForms;
-using ImageView.Services;
-using ImageView.Utility;
+using ImageViewer.DataContracts;
+using ImageViewer.InputForms;
+using ImageViewer.Services;
+using ImageViewer.Utility;
 
-namespace ImageView
+namespace ImageViewer
 {
     public partial class FormSettings : Form
     {
@@ -90,7 +90,7 @@ namespace ImageView
             var colorList = UIHelper.GetSelectableBackgroundColors();
             colorList.AddRange(UIHelper.GetSelectableSystemBackgroundColors());
             backgroundColorDropdownList.DataSource = colorList;
-            BackgroundImageDropdown.DataSource = UIHelper.GetSelectableBackgroundColors(); ;
+            BackgroundImageDropdown.DataSource = UIHelper.GetSelectableBackgroundColors(); 
 
             if (backgroundColorDropdownList.Items.Count > 0)
             {
@@ -109,7 +109,7 @@ namespace ImageView
             UpdateCacheStats();
         }
 
-        private async void btnOk_Click(object sender, EventArgs e)
+        private void btnOk_Click(object sender, EventArgs e)
         {
             var settings = _applicationSettingsService.Settings;
 
@@ -150,7 +150,7 @@ namespace ImageView
             _applicationSettingsService.Settings.AutomaticUpdateCheck = ChkAutomaticallyCheckForUpdates.Checked;
             _imageCacheService.CacheSize = _selectedCacheSize;
 
-            await _applicationSettingsService.SaveSettingsAsync();
+             _applicationSettingsService.SaveSettings();
             Close();
         }
 
@@ -209,11 +209,11 @@ namespace ImageView
         private void UpdateCacheStats()
         {
             long cacheSize = _selectedCacheSize;
-            long cacheUsage = _imageCacheService.GetCacheUsage();
+            long cacheUsage = _imageCacheService.CacheSize;
             const long maxSize = ImageCacheService.MaxCacheSize;
             const long minSize = ImageCacheService.MinCacheSize;
 
-            lblCacheItems.Text = _imageCacheService.CachedItems.ToString();
+            lblCacheItems.Text = _imageCacheService.CachedImages.ToString();
             lblUsedSpace.Text = GeneralConverters.FormatFileSizeToString(cacheUsage, 2);
             lblFreeSpace.Text = GeneralConverters.FormatFileSizeToString(cacheSize - cacheUsage);
             pbarPercentUsed.Value = Convert.ToInt32((double)cacheUsage / cacheSize * 100);

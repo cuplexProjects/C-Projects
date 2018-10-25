@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Runtime.Serialization;
 
-namespace ImageView.DataContracts
+namespace ImageViewer.DataContracts
 {
     /// <summary>
     /// 

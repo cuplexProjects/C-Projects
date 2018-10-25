@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Anotar.Serilog;
 using Autofac;
 using GeneralToolkitLib.ConfigHelper;
 using GeneralToolkitLib.Configuration;
-using ImageView.Configuration;
-using ImageView.Services;
+using ImageViewer.Configuration;
+using ImageViewer.Services;
 using Serilog;
 
-namespace ImageView
+namespace ImageViewer
 {
     internal static class Program
     {
@@ -21,7 +19,7 @@ namespace ImageView
 
 
         /// <summary>
-        ///     The main entry point for the application.
+        ///     The main entryModel point for the application.
         /// </summary>
         [STAThread]
         private static void Main()
@@ -55,12 +53,12 @@ namespace ImageView
                 }
                 catch (Exception ex)
                 {
-                    LogTo.Fatal(ex, "Main program failureException: {Message}", ex.Message);
+                    Log.Fatal(ex, "Main program failureException: {Message}", ex.Message);
                 }
 
 
                 
-                settingsService.SaveSettings();
+                //settingsService.SaveSettings();
             }
 
             //Application.Run(new FormMain());

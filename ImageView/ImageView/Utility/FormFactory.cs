@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace ImageView.Utility
+namespace ImageViewer.Utility
 {
     public static class FormFactory
     {

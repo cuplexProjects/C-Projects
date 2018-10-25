@@ -6,7 +6,7 @@ using GeneralToolkitLib.Encryption;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SHA256 = GeneralToolkitLib.Hashing.SHA256;
 
-namespace ImageView.UnitTest
+namespace ImageViewer.UnitTests
 {
     /// <summary>
     /// Summary description for EncryptionUnitTest

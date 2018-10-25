@@ -1,4 +1,4 @@
-﻿namespace ImageView.Services
+﻿namespace ImageViewer.Services
 {
     /// <summary>
     /// Class ServiceBase.

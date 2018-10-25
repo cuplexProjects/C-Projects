@@ -197,6 +197,22 @@ namespace GeneralToolkitLib.Storage.Registry
             }
         }
 
+        public bool TryReadObjectFromRegistry<T>(out T objFromRegistry) where T : new()
+        {
+            objFromRegistry = default(T);
+            try
+            {
+                objFromRegistry = ReadObjectFromRegistry<T>();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error Reading obj from registry");
+                return false;
+            }
+            return true;
+        }
+
+
         public void SaveObjectToRegistry(object objToSave)
         {
             try

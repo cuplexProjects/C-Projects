@@ -7,17 +7,15 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Castle.Components.DictionaryAdapter;
-using ImageView.DataContracts;
-using ImageView.Models;
-using ImageView.Properties;
-using ImageView.Services;
-using ImageView.UserControls;
-using ImageView.Utility;
+using ImageViewer.DataContracts;
+using ImageViewer.Models;
+using ImageViewer.Properties;
+using ImageViewer.Services;
+using ImageViewer.UserControls;
+using ImageViewer.Utility;
 using Serilog;
-using ThreadState = System.Threading.ThreadState;
 
-namespace ImageView
+namespace ImageViewer
 {
     public partial class FormThumbnailView : Form
     {
@@ -196,10 +194,9 @@ namespace ImageView
 
             if (pictureBox.Tag is string filename)
             {
-                //Image fullScaleIMage = Image.FromFile(filename);
-                Image fullScaleIMage = _imageCacheService.GetImage(filename);
+                Image fullScaleImage = _imageCacheService.GetImageFromCache(filename);
                 _maximizedImgFilename = filename;
-                picBoxMaximized.Image = fullScaleIMage;
+                picBoxMaximized.Image = fullScaleImage;
             }
 
             picBoxMaximized.Visible = true;

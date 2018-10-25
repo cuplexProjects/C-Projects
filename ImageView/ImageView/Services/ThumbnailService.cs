@@ -2,11 +2,11 @@
 using System.Drawing;
 using System.Threading.Tasks;
 using GeneralToolkitLib.Configuration;
-using ImageView.Managers;
-using ImageView.Models;
+using ImageViewer.Managers;
+using ImageViewer.Models;
 using Serilog;
 
-namespace ImageView.Services
+namespace ImageViewer.Services
 {
     public sealed class ThumbnailService : ServiceBase, IDisposable
     {
@@ -55,7 +55,7 @@ namespace ImageView.Services
             }
             IsRunningScan = true;
             await _thumbnailManager.StartThumbnailScan(path, null, scanSubdirectories);
-            _thumbnailManager.SaveThumbnailDatabase();
+            _thumbnailManager.SaveDatabase();
             IsRunningScan = false;
         }
 
@@ -145,7 +145,7 @@ namespace ImageView.Services
             return _thumbnailManager.GetThumbnailDbFileSize();
         }
 
-        public bool RemoveAllNonAccessableFilesAndSaveDb()
+        public bool RemoveAllNonAccessibleFilesAndSaveDb()
         {
             try
             {

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageView", "ImageView\ImageView.csproj", "{B76D1F28-DE2C-4045-B271-41F5F9D5E5EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageViewer", "ImageView\ImageViewer.csproj", "{B76D1F28-DE2C-4045-B271-41F5F9D5E5EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralToolkitLib", "..\GeneralToolkitLib\GeneralToolkitLib\GeneralToolkitLib.csproj", "{18B7C1DC-CB9B-4B4F-B3BB-40E79B277DD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageView.UnitTest", "ImageView.UnitTest\ImageView.UnitTest.csproj", "{8E163ED3-3018-4B42-AEB9-EEFC30D2162B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageViewer.UnitTest", "ImageView.UnitTest\ImageViewer.UnitTest.csproj", "{8E163ED3-3018-4B42-AEB9-EEFC30D2162B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

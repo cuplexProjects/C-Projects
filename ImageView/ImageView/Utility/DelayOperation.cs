@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace ImageView.Utility
+namespace ImageViewer.Utility
 {
     internal static class DelayOperation
     {

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.IO;
 
-namespace ImageView.Utility
+namespace ImageViewer.Utility
 {
     public static class SystemIOHelper
     {

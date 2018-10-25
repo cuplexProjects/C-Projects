@@ -1,4 +1,6 @@
-﻿namespace ImageView
+﻿using ImageViewer.UserControls;
+
+namespace ImageViewer
 {
     partial class FormEditBookmark
     {
@@ -28,7 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.renameBookmark1 = new ImageView.UserControls.RenameBookmark();
+            this.renameBookmark1 = new RenameBookmark();
             this.SuspendLayout();
             // 
             // renameBookmark1

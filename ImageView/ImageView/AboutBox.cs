@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ImageView
+namespace ImageViewer
 {
     internal partial class AboutBox : Form
     {

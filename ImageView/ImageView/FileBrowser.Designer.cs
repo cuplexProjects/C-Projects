@@ -1,6 +1,6 @@
-﻿using ImageView.Models;
+﻿using ImageViewer.Models;
 
-namespace ImageView
+namespace ImageViewer
 {
     partial class FileBrowser
     {

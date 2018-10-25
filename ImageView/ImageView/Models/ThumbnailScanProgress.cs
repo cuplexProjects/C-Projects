@@ -1,11 +1,13 @@
 ﻿using System;
 
-namespace ImageView.Models
+namespace ImageViewer.Models
 {
     public class ThumbnailScanProgress
     {
         public int TotalAmountOfFiles { get; set; }
+
         public int ScannedFiles { get; set; }
+
         public int PercentComplete
         {
             get

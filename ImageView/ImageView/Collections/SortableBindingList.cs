@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace ImageView.Models
+namespace ImageViewer.Models
 {
     public class SortableBindingList<T> : BindingList<T>
     {

@@ -1,6 +1,6 @@
-﻿using ImageView.DataContracts;
+﻿using ImageViewer.DataContracts;
 
-namespace ImageView
+namespace ImageViewer
 {
     partial class FormBookmarks
     {
@@ -291,7 +291,7 @@ namespace ImageView
             // sizeFormatedDataGridViewTextBoxColumn
             // 
             this.sizeFormatedDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.sizeFormatedDataGridViewTextBoxColumn.DataPropertyName = "SizeFormated";
+            this.sizeFormatedDataGridViewTextBoxColumn.DataPropertyName = "SizeFormatted";
             this.sizeFormatedDataGridViewTextBoxColumn.FillWeight = 50F;
             this.sizeFormatedDataGridViewTextBoxColumn.HeaderText = "File Size";
             this.sizeFormatedDataGridViewTextBoxColumn.MinimumWidth = 20;
@@ -301,7 +301,7 @@ namespace ImageView
             // 
             // bookmarkBindingSource
             // 
-            this.bookmarkBindingSource.DataSource = typeof(ImageView.DataContracts.Bookmark);
+            this.bookmarkBindingSource.DataSource = typeof(Bookmark);
             // 
             // mainWinMenu
             // 

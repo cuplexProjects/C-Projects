@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using ImageViewer.Models;
 
-namespace ImageView.DataContracts
+namespace ImageViewer.DataContracts
 {
     /// <summary>
     /// 
     /// </summary>
     [Serializable]
-    [DataContract(Name = "ThumbnailDatabase")]
-    public class ThumbnailDatabase
+    [DataContract(Name = "ThumbnailDatabaseModel")]
+    public class ThumbnailDatabaseModel
     {
         /// <summary>
         /// Gets or sets the thumbnail entries.
@@ -18,7 +19,7 @@ namespace ImageView.DataContracts
         /// The thumbnail entries.
         /// </value>
         [DataMember(Name = "ThumbnailEntries", Order = 1)]
-        public List<ThumbnailEntry> ThumbnailEntries { get; set; }
+        public IList<ThumbnailEntryModel> ThumbnailEntries { get; set; }
 
         /// <summary>
         /// Gets or sets the database identifier.
@@ -29,22 +30,23 @@ namespace ImageView.DataContracts
         [DataMember(Name = "DatabaseId", Order = 2)]
         public string DatabaseId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the data strorage path.
-        /// </summary>
-        /// <value>
-        /// The data strorage path.
-        /// </value>
-        [DataMember(Name = "DataStroragePath", Order = 3)]
-        public string DataStroragePath { get; set; }
 
         /// <summary>
-        /// Gets or sets the laste update.
+        /// Gets or sets the data storage path.
         /// </summary>
         /// <value>
-        /// The laste update.
+        /// The data storage path.
         /// </value>
-        [DataMember(Name = "LasteUpdate", Order = 4)]
-        public DateTime LasteUpdate { get; set; }
+        [DataMember(Name = "DataStoragePath", Order = 3)]
+        public string DataStoragePath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last updated.
+        /// </summary>
+        /// <value>
+        /// The last updated.
+        /// </value>
+        [DataMember(Name = "LastUpdated", Order = 4)]
+        public DateTime LastUpdated { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
-using ImageView.DataContracts;
+using ImageViewer.DataContracts;
 
-namespace ImageView.Models
+namespace ImageViewer.Models
 {
     public class ImageReferenceElement : ImageReference, IComparable<ImageReferenceElement>, IEquatable<ImageReferenceElement>
     {

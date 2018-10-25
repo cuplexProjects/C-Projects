@@ -7,9 +7,9 @@ using GeneralToolkitLib.Storage.Models;
 using GeneralToolkitLib.Storage.Registry;
 using Serilog;
 
-namespace ImageView.Storage
+namespace ImageViewer.Storage
 {
-    public class LocalStorageRegistryAccess : IRegistryAccess
+    public class LocalStorageRegistryAccess : FileBasedProperyCollection, IRegistryAccess
     {
         private const string LocalStoragePassword = "!e#G[N8K-1?@c?]bh7QzhvQAh6pHbo-5m!RBGD6Z>DB6qOpv4@";
         private readonly string _localStorageFilePath;
@@ -30,13 +30,14 @@ namespace ImageView.Storage
             SubKey = "SOFTWARE\\" + CompanyName.Trim() + "\\" + ProductName.Trim();
             _localStorageFilePath = Path.Combine(ApplicationBuildConfig.UserDataPath, "localRegStorage.dat");
 
-            LoadLocalDatabase();
+
+            SecureLoadDatabase();
         }
 
         public bool ShowError { get; set; }
         public string SubKey { get; }
 
-        private void LoadLocalDatabase()
+        private bool LoadLocalDatabase()
         {
             if (File.Exists(_localStorageFilePath))
             {
@@ -45,7 +46,7 @@ namespace ImageView.Storage
                     var settings = new StorageManagerSettings(false, Environment.ProcessorCount, true, LocalStoragePassword);
                     var storageManager = new StorageManager(settings);
                     _storageDictionary = storageManager.DeserializeObjectFromFile<Dictionary<string, object>>(_localStorageFilePath, null);
-                    return;
+                    return true;
 
                 }
                 catch (Exception ex)
@@ -53,16 +54,27 @@ namespace ImageView.Storage
                     Log.Error(ex, "Exception when trying to deserialize LocalStorageRegistryAccess.dbfile");
                 }
             }
+            else
+            {
+                _storageDictionary = new Dictionary<string, object>();
+            }
 
-            _storageDictionary = new Dictionary<string, object>();
+            
+            return false;
         }
 
-        private void SaveLocalDatabase()
+        private bool SaveLocalDatabase()
         {
+            if (_storageDictionary == null || !IsDirty)
+            {
+                return false;
+            }
+
             if (File.Exists(_localStorageFilePath))
             {
                 File.Delete(_localStorageFilePath);
             }
+
             try
             {
                 var settings = new StorageManagerSettings(false, Environment.ProcessorCount, true, LocalStoragePassword);
@@ -73,11 +85,15 @@ namespace ImageView.Storage
                 {
                     Log.Warning("Failed to serialize and save local reg dbfile");
                 }
+
+                return res;
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Exception when trying to deserialize LocalStorageRegistryAccess.dbfile");
             }
+
+            return false;
         }
 
         public void SetupSubKeyPathAndAccessRights()
@@ -95,6 +111,20 @@ namespace ImageView.Storage
             }
 
             return new T();
+        }
+
+        public bool TryReadObjectFromRegistry<T>(out T objFromRegistry) where T : new()
+        {
+            try
+            {
+                objFromRegistry = ReadObjectFromRegistry<T>();
+                return objFromRegistry != null;
+            }
+            catch
+            {
+                objFromRegistry = default(T);
+                return false;
+            }
         }
 
         private T CreateTemplateObjFromLocalObject<T>(object objToConvert) where T : new()
@@ -125,7 +155,7 @@ namespace ImageView.Storage
                 _storageDictionary.Add(key, objToSave);
             }
 
-            SaveLocalDatabase();
+            ModelUpdated();
         }
 
         /// <summary>
@@ -135,7 +165,14 @@ namespace ImageView.Storage
         /// <returns></returns>
         public bool DeleteKey(string keyName)
         {
-            return true;
+            if (_storageDictionary.ContainsKey(keyName))
+            {
+                _storageDictionary.Remove(keyName);
+                ModelUpdated();
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -168,7 +205,17 @@ namespace ImageView.Storage
         /// <returns></returns>
         public int ValueCount()
         {
-            return 0;
+            return _storageDictionary.Count;
+        }
+
+        protected override bool LoadFromFileDatabase()
+        {
+            return LoadLocalDatabase();
+        }
+
+        protected override bool SaveToFileDatabase()
+        {
+            return SaveLocalDatabase();
         }
     }
 }

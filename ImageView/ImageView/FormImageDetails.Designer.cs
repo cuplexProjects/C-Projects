@@ -1,4 +1,6 @@
-﻿namespace ImageView
+﻿using ImageViewer.Models;
+
+namespace ImageViewer
 {
     partial class FormImageDetails
     {
@@ -96,7 +98,7 @@
             // 
             // imageInformationModelBindingSource
             // 
-            this.imageInformationModelBindingSource.DataSource = typeof(ImageView.Models.ImageInformationModel);
+            this.imageInformationModelBindingSource.DataSource = typeof(ImageInformation);
             // 
             // fileNameDataGridViewTextBoxColumn
             // 
@@ -109,16 +111,16 @@
             // imageDimenstionsDataGridViewTextBoxColumn
             // 
             this.imageDimenstionsDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.imageDimenstionsDataGridViewTextBoxColumn.DataPropertyName = "ImageDimenstions";
-            this.imageDimenstionsDataGridViewTextBoxColumn.HeaderText = "ImageDimenstions";
+            this.imageDimenstionsDataGridViewTextBoxColumn.DataPropertyName = "ImageDimensions";
+            this.imageDimenstionsDataGridViewTextBoxColumn.HeaderText = "ImageDimensions";
             this.imageDimenstionsDataGridViewTextBoxColumn.Name = "imageDimenstionsDataGridViewTextBoxColumn";
             this.imageDimenstionsDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // sizeFormatedDataGridViewTextBoxColumn
             // 
             this.sizeFormatedDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.sizeFormatedDataGridViewTextBoxColumn.DataPropertyName = "SizeFormated";
-            this.sizeFormatedDataGridViewTextBoxColumn.HeaderText = "SizeFormated";
+            this.sizeFormatedDataGridViewTextBoxColumn.DataPropertyName = "SizeFormatted";
+            this.sizeFormatedDataGridViewTextBoxColumn.HeaderText = "SizeFormatted";
             this.sizeFormatedDataGridViewTextBoxColumn.Name = "sizeFormatedDataGridViewTextBoxColumn";
             this.sizeFormatedDataGridViewTextBoxColumn.ReadOnly = true;
             // 

@@ -10,18 +10,18 @@ using System.Windows.Forms;
 using Autofac;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.WindowsApi;
-using ImageView.DataContracts;
-using ImageView.Events;
-using ImageView.Library.CustomAttributes;
-using ImageView.Models;
-using ImageView.Models.UserInteraction;
-using ImageView.Properties;
-using ImageView.Services;
-using ImageView.UserControls;
-using ImageView.Utility;
+using ImageViewer.DataContracts;
+using ImageViewer.Events;
+using ImageViewer.Library.CustomAttributes;
+using ImageViewer.Models;
+using ImageViewer.Models.UserInteraction;
+using ImageViewer.Properties;
+using ImageViewer.Services;
+using ImageViewer.UserControls;
+using ImageViewer.Utility;
 using Serilog;
 
-namespace ImageView
+namespace ImageViewer
 {
     [NotificationId("MainForm")]
     public partial class FormMain : Form
@@ -56,6 +56,8 @@ namespace ImageView
             _bookmarkService = bookmarkService;
             _formSettings = formSettings;
             _applicationSettingsService = applicationSettingsService;
+            _applicationSettingsService.LoadSettings();
+
             _imageCacheService = imageCacheService;
             _imageLoaderService = imageLoaderService;
             _scope = scope;
@@ -203,12 +205,12 @@ namespace ImageView
 
                 if (pictureBox1.Image != null && _changeImageAnimation != ImageViewApplicationSettings.ChangeImageAnimation.None)
                 {
-                    _pictureBoxAnimation.Image = _imageCacheService.GetImage(imagePath);
+                    _pictureBoxAnimation.Image = _imageCacheService.GetImageFromCache(imagePath);
                     _pictureBoxAnimation.Refresh();
                 }
                 else
                 {
-                    pictureBox1.Image = _imageCacheService.GetImage(imagePath);
+                    pictureBox1.Image = _imageCacheService.GetImageFromCache(imagePath);
                     pictureBox1.Refresh();
                 }
 
@@ -222,7 +224,7 @@ namespace ImageView
 
         private void AddNextImageToCache(string imagePath)
         {
-            _imageCacheService.GetImage(imagePath);
+            _imageCacheService.GetImageFromCache(imagePath);
         }
 
         private void SetImageReferenceCollection()
@@ -459,7 +461,7 @@ namespace ImageView
             _imageLoaderService.OnImageWasDeleted += Instance_OnImageWasDeleted;
 
             _pictureBoxAnimation.LoadCompleted += pictureBoxAnimation_LoadCompleted;
-            bool settingsLoaded = await _applicationSettingsService.LoadSettingsAsync();
+            bool settingsLoaded = _applicationSettingsService.LoadSettings();
 
 
             if (!settingsLoaded)
@@ -475,7 +477,7 @@ namespace ImageView
 
                 try
                 {
-                    var fileConfig = _applicationSettingsService.FileStoredSettings;
+                    var fileConfig = _applicationSettingsService.Settings.ExtendedAppSettings;
                     if (fileConfig.FormStateDictionary.ContainsKey(GetType().Name))
                     {
                         var formState = fileConfig.FormStateDictionary[GetType().Name];
@@ -592,7 +594,7 @@ namespace ImageView
 
             timerSlideShow.Enabled = false;
             _bookmarkService.SaveBookmarks();
-            _applicationSettingsService.FileStoredSettings.UpdateOrInsertFormState(RestoreFormState.GetFormState(this));
+            _applicationSettingsService.Settings.ExtendedAppSettings.UpdateOrInsertFormState(RestoreFormState.GetFormState(this));
             _applicationSettingsService.SaveSettings();
         }
 

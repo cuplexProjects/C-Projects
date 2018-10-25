@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace ImageView.UserControls
+namespace ImageViewer.UserControls
 {
     partial class CustomPanel
     {

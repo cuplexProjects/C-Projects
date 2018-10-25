@@ -7,11 +7,11 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using ImageView.Models;
+using ImageViewer.Models;
 using JetBrains.Annotations;
 using Serilog;
 
-namespace ImageView.Services
+namespace ImageViewer.Services
 {
     public enum ProgressStatusEnum
     {

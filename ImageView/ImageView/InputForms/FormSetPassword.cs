@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace ImageView.InputForms
+namespace ImageViewer.InputForms
 {
     public partial class FormSetPassword : Form
     {

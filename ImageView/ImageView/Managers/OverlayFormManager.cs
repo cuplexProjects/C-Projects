@@ -2,10 +2,10 @@
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ImageView.UserControls;
-using ImageView.Utility;
+using ImageViewer.UserControls;
+using ImageViewer.Utility;
 
-namespace ImageView.Managers
+namespace ImageViewer.Managers
 {
     public class OverlayFormManager : IDisposable
     {

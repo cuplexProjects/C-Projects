@@ -4,21 +4,20 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ImageView.DataBinding;
-using ImageView.DataContracts;
-using ImageView.Events;
-using ImageView.InputForms;
-using ImageView.Managers;
-using ImageView.Models.Enums;
-using ImageView.Properties;
-using ImageView.Services;
-using ImageView.UserControls;
-using ImageView.Utility;
+using ImageViewer.DataBinding;
+using ImageViewer.DataContracts;
+using ImageViewer.Events;
+using ImageViewer.InputForms;
+using ImageViewer.Managers;
+using ImageViewer.Models.Enums;
+using ImageViewer.Properties;
+using ImageViewer.Services;
+using ImageViewer.UserControls;
+using ImageViewer.Utility;
 using Serilog;
 
-namespace ImageView
+namespace ImageViewer
 {
     public partial class FormBookmarks : Form
     {
@@ -57,7 +56,7 @@ namespace ImageView
             _overlayFormManager.HideImageDelay = 250;
             _overlayFormManager.ShowImageDelay = 500;
 
-            var settings = _applicationSettingsService.FileStoredSettings;
+            var settings = _applicationSettingsService.Settings.ExtendedAppSettings;
             if (settings.BookmarksShowMaximizedImageArea)
             {
                 Invoke(new EventHandler(maximizePreviewAreaToolStripMenuItem_Click));
@@ -68,28 +67,28 @@ namespace ImageView
                 Invoke(new EventHandler(showOverlayPreviewToolStripMenuItem_Click));
             }
 
-            if (_applicationSettingsService.FileStoredSettings.FormStateDictionary.ContainsKey(GetType().Name))
+            if (_applicationSettingsService.Settings.ExtendedAppSettings.FormStateDictionary.ContainsKey(GetType().Name))
             {
-                var formState = _applicationSettingsService.FileStoredSettings.FormStateDictionary[GetType().Name];
+                var formState = settings.FormStateDictionary[GetType().Name];
                 RestoreFormState.SetFormSizeAndPosition(this, formState.Size.ToSize(), formState.Location.ToPoint(), formState.ScreenArea.ToRectangle());
             }
 
             if (_applicationSettingsService.Settings.PasswordProtectBookmarks)
-                using (var formgetPassword = new FormGetPassword
+                using (var formGetPassword = new FormGetPassword
                 {
                     PasswordDerivedString = _applicationSettingsService.Settings.PasswordDerivedString
                 })
                 {
-                    if (formgetPassword.ShowDialog() == DialogResult.OK)
+                    if (formGetPassword.ShowDialog() == DialogResult.OK)
                     {
-                        if (!formgetPassword.PasswordVerified)
+                        if (!formGetPassword.PasswordVerified)
                         {
                             MessageBox.Show(this, Resources.Invalid_password_);
                             Close();
                             return;
                         }
 
-                        if (_bookmarkService.OpenBookmarks(formgetPassword.PasswordString))
+                        if (_bookmarkService.OpenBookmarks(formGetPassword.PasswordString))
                             InitBookmarksDataSource();
                         else
                         {
@@ -786,21 +785,21 @@ namespace ImageView
         {
             _overlayFormManager.IsEnabled = !_overlayFormManager.IsEnabled;
             showOverlayPreviewToolStripMenuItem.Checked = _overlayFormManager.IsEnabled;
-            _applicationSettingsService.FileStoredSettings.BookmarksShowOverlayWindow = showOverlayPreviewToolStripMenuItem.Checked;
+            _applicationSettingsService.Settings.ExtendedAppSettings.BookmarksShowOverlayWindow = showOverlayPreviewToolStripMenuItem.Checked;
         }
 
         private void maximizePreviewAreaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             splitContainer1.SplitterDistance = Convert.ToInt32(splitContainer1.Width * 0.75);
             splitContainer2.SplitterDistance = Convert.ToInt32(splitContainer2.Height * 0.25);
-            _applicationSettingsService.FileStoredSettings.BookmarksShowMaximizedImageArea = true;
+            _applicationSettingsService.Settings.ExtendedAppSettings.BookmarksShowMaximizedImageArea = true;
         }
 
         private void restorePreviewAreaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             splitContainer1.SplitterDistance = Convert.ToInt32(splitContainer1.Width * 0.25);
             splitContainer2.SplitterDistance = Convert.ToInt32(splitContainer2.Height * 0.5);
-            _applicationSettingsService.FileStoredSettings.BookmarksShowMaximizedImageArea = false;
+            _applicationSettingsService.Settings.ExtendedAppSettings.BookmarksShowMaximizedImageArea = false;
         }
 
         #endregion

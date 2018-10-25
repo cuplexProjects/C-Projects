@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace ImageView.DataContracts
+namespace ImageViewer.DataContracts
 {
     /// <summary>
     /// AppSettings stored in a settings file instead of registry
     /// </summary>
     [Serializable]
-    [DataContract(Name = "AppSettingsFileStoreDataModel")]
-    public class AppSettingsFileStoreDataModel
+    [DataContract(Name = "AppSettingsExtendedDataModel")]
+    public class AppSettingsExtendedDataModel
     {
+        protected AppSettingsExtendedDataModel()
+        {
+
+        }
         /// <summary>
         /// Gets or sets the application settings UUID.
         /// </summary>
@@ -47,9 +51,12 @@ namespace ImageView.DataContracts
         [DataMember(Name = "BookmarksShowOverlayWindow", Order = 4)]
         public bool BookmarksShowOverlayWindow { get; set; }
 
-        public static AppSettingsFileStoreDataModel CreateNew()
+        public static AppSettingsExtendedDataModel CreateNew()
         {
-            var appSettings = new AppSettingsFileStoreDataModel { AppSettingsUUID = Guid.NewGuid(), FormStateDictionary = new Dictionary<string, FormSizeAndPositionModel>(), BookmarksShowMaximizedImageArea = false, BookmarksShowOverlayWindow = false };
+            var appSettings = new AppSettingsExtendedDataModel { AppSettingsUUID = Guid.NewGuid(), 
+                FormStateDictionary = new Dictionary<string, FormSizeAndPositionModel>(), 
+                BookmarksShowMaximizedImageArea = false, 
+                BookmarksShowOverlayWindow = false };
 
             return appSettings;
         }

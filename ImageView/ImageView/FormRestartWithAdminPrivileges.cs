@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using GeneralToolkitLib.WindowsApi;
 using GeneralToolkitLib.WindowsApi.UserAccountControl;
 
-namespace ImageView
+namespace ImageViewer
 {
     public partial class FormRestartWithAdminPrivileges : Form
     {

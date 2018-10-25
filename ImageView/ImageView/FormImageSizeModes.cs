@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using ImageView.Services;
+using ImageViewer.Services;
 using Serilog;
 
-namespace ImageView
+namespace ImageViewer
 {
     public partial class FormImageSizeModes : Form
     {

@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
-using ImageView.Services;
+using ImageViewer.Services;
 
-namespace ImageView
+namespace ImageViewer
 {
     public partial class FormThumbnailSettings : Form
     {
@@ -73,7 +73,7 @@ namespace ImageView
         private async void btnRemoveFilesNotFound_Click(object sender, EventArgs e)
         {
             btnRemoveFilesNotFound.Enabled = false;
-            bool result = await Task<bool>.Factory.StartNew(() => _thumbnailService.RemoveAllNonAccessableFilesAndSaveDb());
+            bool result = await Task<bool>.Factory.StartNew(() => _thumbnailService.RemoveAllNonAccessibleFilesAndSaveDb());
             btnRemoveFilesNotFound.Enabled = true;
 
             lblInfo.Text = result ? "Successfully removed missing files." : "No missing files where found.";

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using ImageView.DataContracts;
+using ImageViewer.DataContracts;
 
-namespace ImageView.DataBinding
+namespace ImageViewer.DataBinding
 {
     public class TreeViewDataContext
     {

@@ -1,4 +1,6 @@
-﻿namespace ImageView
+﻿using ImageViewer.UserControls;
+
+namespace ImageViewer
 {
     partial class FormRestartWithAdminPrivileges
     {
@@ -44,7 +46,7 @@
             this.btnRestartWithAdminAccess = new System.Windows.Forms.Button();
             this.toolTipStartWithAdminRights = new System.Windows.Forms.ToolTip(this.components);
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.pnlMainImage = new ImageView.UserControls.CustomPanel();
+            this.pnlMainImage = new CustomPanel();
             this.grpBoxUACElevation.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -214,7 +216,7 @@
             // 
             // pnlMainImage
             // 
-            this.pnlMainImage.BackgroundImage = global::ImageView.Properties.Resources.WindowsIcon;
+            this.pnlMainImage.BackgroundImage = global::ImageViewer.Properties.Resources.WindowsIcon;
             this.pnlMainImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pnlMainImage.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.pnlMainImage.InnerBorderColor = System.Drawing.Color.LightSkyBlue;

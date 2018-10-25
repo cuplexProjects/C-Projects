@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace ImageView.Events
+namespace ImageViewer.Events
 {
     public abstract class ImageViewFormInfoBase
     {

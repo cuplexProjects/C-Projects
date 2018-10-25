@@ -1,4 +1,4 @@
-﻿namespace ImageView.Models.Enums
+﻿namespace ImageViewer.Models.Enums
 {
     public enum TreeViewFolderStateChange
     {

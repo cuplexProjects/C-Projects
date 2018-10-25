@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Storage.Memory;
 using GeneralToolkitLib.Utility.RandomGenerator;
-using ImageView.Managers;
+using ImageViewer.Managers;
 using Serilog;
 
-namespace ImageView.Services
+namespace ImageViewer.Services
 {
     public sealed class BookmarkService : ServiceBase, IDisposable
     {

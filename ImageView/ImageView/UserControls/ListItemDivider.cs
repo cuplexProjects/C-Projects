@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace ImageView.UserControls
+namespace ImageViewer.UserControls
 {
     public class ListItemDivider
     {

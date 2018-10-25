@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace ImageView.DataContracts
+namespace ImageViewer.DataContracts
 {
     /// <summary>
     /// 
@@ -59,6 +59,8 @@ namespace ImageView.DataContracts
         /// </summary>
         /// <param name="location">The location.</param>
         /// <param name="size">The size.</param>
+        /// <param name="screenArea"></param>
+        /// <param name="formType"></param>
         public FormSizeAndPositionModel(PointDataModel location, SizeDataModel size, RectangleDataModel screenArea, string formType)
         {
             Location = location;

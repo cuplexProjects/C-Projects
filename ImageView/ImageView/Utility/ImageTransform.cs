@@ -2,10 +2,11 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
 using Serilog;
 
-namespace ImageView.Utility
+namespace ImageViewer.Utility
 {
     public static class ImageTransform
     {
@@ -15,7 +16,7 @@ namespace ImageView.Utility
             BitmapData sourceData = sourceBitmap.LockBits(new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height),
                 ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-            var pixelBuffer = new byte[sourceData.Stride*sourceData.Height];
+            var pixelBuffer = new byte[sourceData.Stride * sourceData.Height];
             Marshal.Copy(sourceData.Scan0, pixelBuffer, 0, pixelBuffer.Length);
             sourceBitmap.UnlockBits(sourceData);
 
@@ -23,7 +24,7 @@ namespace ImageView.Utility
             BitmapData blendData = blendBitmap.LockBits(new Rectangle(0, 0, blendBitmap.Width, blendBitmap.Height),
                 ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-            var blendBuffer = new byte[blendData.Stride*blendData.Height];
+            var blendBuffer = new byte[blendData.Stride * blendData.Height];
             Marshal.Copy(blendData.Scan0, blendBuffer, 0, blendBuffer.Length);
             blendBitmap.UnlockBits(blendData);
 
@@ -77,9 +78,9 @@ namespace ImageView.Utility
                     red = 255;
 
 
-                pixelBuffer[k] = (byte) blue;
-                pixelBuffer[k + 1] = (byte) green;
-                pixelBuffer[k + 2] = (byte) red;
+                pixelBuffer[k] = (byte)blue;
+                pixelBuffer[k + 1] = (byte)green;
+                pixelBuffer[k + 2] = (byte)red;
             }
 
 
@@ -101,7 +102,7 @@ namespace ImageView.Utility
         public static void MatrixBlend(Bitmap sourceBitmap, Bitmap blendBitmap, byte alpha)
         {
             // for the matrix the range is 0.0 - 1.0
-            float alphaNorm = alpha/255.0F;
+            float alphaNorm = alpha / 255.0F;
             using (Bitmap image1 = sourceBitmap)
             {
                 using (Bitmap image2 = blendBitmap)
@@ -143,19 +144,19 @@ namespace ImageView.Utility
             var result = new Bitmap(Math.Max(currentImage.Width, nextImage.Width),
                 Math.Max(currentImage.Height, nextImage.Height));
             //var result = new Bitmap(picBoxSize.Width, picBoxSize.Height);
-            int x1 = result.Width/2 - currentImage.Width/2;
+            int x1 = result.Width / 2 - currentImage.Width / 2;
             int x2 = x1 + currentImage.Width;
-            int offset = (int) (result.Width*factor);
+            int offset = (int)(result.Width * factor);
 
             if (!leftToRight)
-                offset = offset*-1;
+                offset = offset * -1;
 
             int y1 = 0;
             int y2 = 0;
             int x1Offset = Math.Min(0, x1 + offset);
 
-            float ratio1 = currentImage.Width/(float) currentImage.Height;
-            float ratio2 = nextImage.Width/(float) nextImage.Height;
+            float ratio1 = currentImage.Width / (float)currentImage.Height;
+            float ratio2 = nextImage.Width / (float)nextImage.Height;
 
             Graphics gfx = Graphics.FromImage(result);
             gfx.DrawImage(currentImage,
@@ -171,8 +172,8 @@ namespace ImageView.Utility
         {
             var result = new Bitmap(nextImage, imageSize.Width, imageSize.Height);
 
-            int verticalOffset = (int) (imageSize.Height*factor);
-            int verticalOffset2 = (int) (nextImage.Height*(1 - factor));
+            int verticalOffset = (int)(imageSize.Height * factor);
+            int verticalOffset2 = (int)(nextImage.Height * (1 - factor));
 
             using (Graphics gfx = Graphics.FromImage(result))
             {

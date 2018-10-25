@@ -5,7 +5,7 @@ using GeneralToolkitLib.Configuration;
 using Serilog;
 using Serilog.Events;
 
-namespace ImageView.Library.AutofacModules
+namespace ImageViewer.Library.AutofacModules
 {
     public class LoggingModule : Module
     {

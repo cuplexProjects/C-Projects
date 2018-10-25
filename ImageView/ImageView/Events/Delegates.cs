@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace ImageView.Events
+namespace ImageViewer.Events
 {
     public delegate void TransitionImageUpdateEventHandler(object sender, TransitionImageUpdateEventArgs e);
 
@@ -41,7 +41,7 @@ namespace ImageView.Events
         public Type BookmarkType { get; private set; }
     }
 
-    [FlagsAttribute]
+    [Flags]
     public enum BookmarkActions
     {
         CreatedBookmark = 1,

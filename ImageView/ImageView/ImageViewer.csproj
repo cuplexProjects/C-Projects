@@ -7,7 +7,7 @@
     <ProjectGuid>{B76D1F28-DE2C-4045-B271-41F5F9D5E5EC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ImageView</RootNamespace>
+    <RootNamespace>ImageViewer</RootNamespace>
     <AssemblyName>ImageViewer</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -97,7 +97,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ImageView.Program</StartupObject>
+    <StartupObject>ImageViewer.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -145,17 +145,20 @@
     <Compile Include="Configuration\AutofacConfig.cs" />
     <Compile Include="Configuration\IApplicationBuildConfig.cs" />
     <Compile Include="DataBinding\TreeViewDataContext.cs" />
-    <Compile Include="DataContracts\AppSettingsFileStoreDataModel.cs" />
+    <Compile Include="DataContracts\AppSettingsExtendedDataModel.cs" />
     <Compile Include="DataContracts\Bookmark.cs" />
     <Compile Include="DataContracts\BookmarkContainer.cs" />
     <Compile Include="DataContracts\BookmarkFolder.cs" />
     <Compile Include="DataContracts\ColorDataModel.cs" />
     <Compile Include="DataContracts\FormSizeAndPositionModel.cs" />
     <Compile Include="DataContracts\PointDataModel.cs" />
+    <Compile Include="DataContracts\RawImageDataModel.cs" />
     <Compile Include="DataContracts\RectangleDataModel.cs" />
     <Compile Include="DataContracts\SizeDataModel.cs" />
-    <Compile Include="DataContracts\ThumbnailDatabase.cs" />
-    <Compile Include="DataContracts\ThumbnailEntry.cs" />
+    <Compile Include="Library\AutomapperProfile\ImageViewMapperProfile.cs" />
+    <Compile Include="Models\ThumbnailDatabase.cs" />
+    <Compile Include="DataContracts\ThumbnailDatabaseModel.cs" />
+    <Compile Include="DataContracts\ThumbnailEntryModel.cs" />
     <Compile Include="FormEditBookmark.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,6 +184,7 @@
     <Compile Include="Managers\FileManager.cs" />
     <Compile Include="Managers\ManagerBase.cs" />
     <Compile Include="Managers\OverlayFormManager.cs" />
+    <Compile Include="Models\ThumbnailEntry.cs" />
     <Compile Include="Managers\ThumbnailManager.cs" />
     <Compile Include="Models\ApplicationVersion.cs" />
     <Compile Include="Models\CachedImage.cs" />
@@ -189,8 +193,8 @@
     <Compile Include="Models\Enums\BookmarkEnums.cs" />
     <Compile Include="Models\Enums\GeneralEnums.cs" />
     <Compile Include="Models\FileEntry.cs" />
-    <Compile Include="Models\ImageInformationModel.cs" />
-    <Compile Include="Models\ImageReferenceCollection.cs" />
+    <Compile Include="Models\ImageInformation.cs" />
+    <Compile Include="Collections\ImageReferenceCollection.cs" />
     <Compile Include="Interfaces\ImageViewFormWindow.cs" />
     <Compile Include="Events\ImageViewFormImageInfo.cs" />
     <Compile Include="Events\Delegates.cs" />
@@ -257,7 +261,8 @@
       <DependentUpon>FormWindows.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Interface\IRepository.cs" />
-    <Compile Include="Models\RawImageModel.cs" />
+    <Compile Include="Models\RawImage.cs" />
+    <Compile Include="Models\RegistryAppSettings.cs" />
     <Compile Include="Models\ThumbnailScanProgress.cs" />
     <Compile Include="Models\UserInteraction\UserInformationEventargs.cs" />
     <Compile Include="Models\UserInteraction\UserInteractionBase.cs" />
@@ -270,7 +275,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repositories\AppSettingsFileRepository.cs" />
+    <Compile Include="Repositories\ImageCacheRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
+    <Compile Include="Repositories\ThumbnailRepository.cs" />
     <Compile Include="Services\ApplicationSettingsService.cs" />
     <Compile Include="FileBrowser.cs">
       <SubType>Form</SubType>
@@ -326,6 +333,7 @@
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Services\UserInteractionService.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
+    <Compile Include="Storage\FileBasedProperyCollection.cs" />
     <Compile Include="Storage\LocalStorageRegistryAccess.cs" />
     <Compile Include="UserControls\BookmarkPreviewOverlayUserControl.cs">
       <SubType>UserControl</SubType>
@@ -397,7 +405,7 @@
     <Compile Include="Utility\ImageTransform.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\SortableBindingList.cs" />
+    <Compile Include="Collections\SortableBindingList.cs" />
     <Compile Include="Utility\RestoreFormState.cs" />
     <Compile Include="Utility\SystemIOHelper.cs" />
     <Compile Include="Utility\UIHelper.cs" />
@@ -562,9 +570,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Anotar.Serilog.Fody">
-      <Version>4.6.7</Version>
-    </PackageReference>
     <PackageReference Include="Autofac">
       <Version>4.8.1</Version>
     </PackageReference>

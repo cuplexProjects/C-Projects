@@ -5,64 +5,70 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Storage.Registry;
-using ImageView.DataContracts;
-using ImageView.Interfaces;
-using ImageView.Library.EventHandlers;
-using ImageView.Properties;
-using ImageView.Repositories;
-using ImageView.Storage;
-using ImageView.Utility;
+using ImageViewer.DataContracts;
+using ImageViewer.Interfaces;
+using ImageViewer.Library.EventHandlers;
+using ImageViewer.Models;
+using ImageViewer.Properties;
+using ImageViewer.Repositories;
+using ImageViewer.Storage;
+using ImageViewer.Utility;
 using JetBrains.Annotations;
 using Serilog;
 
-namespace ImageView.Services
+namespace ImageViewer.Services
 {
     [UsedImplicitly]
     public class ApplicationSettingsService : ServiceBase, IExceptionEventHandler
     {
-        private readonly IRegistryAccess _registryService;
+        private readonly IRegistryAccess _registryRepository;
 
-        public static string CompanyName => Application.CompanyName;
+        public string CompanyName { get; } = Application.CompanyName;
 
         public string ProductName { get; } = Application.ProductName;
 
         private readonly AppSettingsFileRepository _appSettingsFileRepository;
-
-        private static int SaveSettingsThreads = 0;
-        private static int LoadSettingsThreads = 0;
-
         private ImageViewApplicationSettings _applicationSettings;
+        private RegistryAppSettings _registryAppSettings;
 
-        public ApplicationSettingsService(AppSettingsFileRepository appSettingsFileRepository)
+
+        public ApplicationSettingsService(AppSettingsFileRepository appSettingsFileRepository, IRegistryAccess registryRepository)
         {
+            _registryRepository = registryRepository;
             _appSettingsFileRepository = appSettingsFileRepository;
             try
             {
-                // In debug mode use the local storage reg access clone
-                if (ApplicationBuildConfig.DebugMode)
+                bool result = _appSettingsFileRepository.LoadSettings();
+                if (!result)
                 {
-                    _registryService = new LocalStorageRegistryAccess(CompanyName, ProductName);
+                    
+                    _appSettingsFileRepository= new AppSettingsFileRepository();
                 }
-                else
+                result =result& _registryRepository.TryReadObjectFromRegistry(out _registryAppSettings);
+                if (!result || _registryAppSettings == null)
                 {
-                    _registryService = new RegistryAccess(CompanyName, ProductName)
-                    {
-                        ShowError = true
-                    };
+                    _registryAppSettings = RegistryAppSettings.CreateNew(ProductName, CompanyName);
+                    _registryRepository.SaveObjectToRegistry(_registryAppSettings);
                 }
+
             }
             catch (Exception ex)
             {
-                if (ex.GetType() == typeof(AccessViolationException))
-                {
-                    throw;
-                }
 
                 Log.Error(ex, "Fatal error encountered when accessing the registry settings");
-                MessageBox.Show(ex.Message, Resources.Fatal_error_encountered_when_accessing_the_registry_settings_please_restart_, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _registryAppSettings = RegistryAppSettings.CreateNew(ProductName, CompanyName);
+                //MessageBox.Show(ex.Message, Resources.Fatal_error_encountered_when_accessing_the_registry_settings_please_restart_, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
-            Settings = new ImageViewApplicationSettings();
+
             _appSettingsFileRepository.LoadSettingsCompleted += _appSettingsFileRepository_LoadSettingsCompleted;
+        }
+
+
+        // Unit tests
+        public static ApplicationSettingsService CreateService(AppSettingsFileRepository appSettingsFileRepository, LocalStorageRegistryAccess localStorageRegistry)
+        {
+            return new ApplicationSettingsService(appSettingsFileRepository, localStorageRegistry);
         }
 
 
@@ -72,7 +78,6 @@ namespace ImageView.Services
             {
                 if (_applicationSettings == null)
                 {
-                    _applicationSettings = new ImageViewApplicationSettings();
                     throw new InvalidOperationException();
                 }
 
@@ -81,7 +86,17 @@ namespace ImageView.Services
             private set { _applicationSettings = value; }
         }
 
-        public AppSettingsFileStoreDataModel FileStoredSettings { get; private set; }
+        public RegistryAppSettings RegistryAppSettings
+        {
+            get
+            {
+                if (_registryAppSettings == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                return _registryAppSettings;
+            }
+        }
 
         public event EventHandler OnSettingsLoaded;
         public event EventHandler OnSettingsSaved;
@@ -90,109 +105,71 @@ namespace ImageView.Services
 
         public bool LoadSettings()
         {
-            return Task.Factory.StartNew(() => LoadSettingsAsync().Result).Result;
-        }
+            bool loadedSuccessively = false;
 
-        public async Task<bool> LoadSettingsAsync()
-        {
-            Interlocked.Increment(location: ref LoadSettingsThreads);
-            if (LoadSettingsThreads > 1)
-            {
-                await Task.Delay(millisecondsDelay: 10);
-                Interlocked.Decrement(location: ref LoadSettingsThreads);
-                return false;
-            }
-
-            bool loadedSuccessfuly = false;
             try
             {
-                if (SaveSettingsThreads == 1)
-                {
-                    loadedSuccessfuly = await _appSettingsFileRepository.LoadSettingsAsync();
-
-                }
-                else
-                {
-                    _registryService.SetupSubKeyPathAndAccessRights();
-
-                    Settings = _registryService.ReadObjectFromRegistry<ImageViewApplicationSettings>();
-                    OnSettingsLoaded?.Invoke(sender: this, e: EventArgs.Empty);
-                }
+                OnSettingsLoaded?.Invoke(this, EventArgs.Empty);
+                loadedSuccessively = true;
             }
             catch (Exception ex)
             {
-                Log.Error(exception: ex, messageTemplate: "ApplicationSettingsService->LoadSettingsAsync");
-
-                OnRegistryAccessDenied?.Invoke(sender: this, e: new EventArgs());
-                OnUnexpectedException?.Invoke(sender: this, e: new ExceptionEventArgs(exception: ex) { SourceClass = GetType(), TargetClass = _registryService.GetType(), FunctionName = "LoadSettingsAsync" });
-
-
-            }
-            finally
-            {
-                Interlocked.Decrement(location: ref LoadSettingsThreads);
+                Log.Error(ex, "ErrorLoading Appsettings");
             }
 
-
-            return loadedSuccessfuly;
+            return loadedSuccessively;
         }
+
 
         private void _appSettingsFileRepository_LoadSettingsCompleted(object sender, EventArgs e)
         {
-            FileStoredSettings = _appSettingsFileRepository.AppSettings;
+            //FileStoredSettings = _appSettingsFileRepository.AppSettings;
         }
-        public void SaveSettings()
+        public bool SaveSettings()
         {
-            SaveSettingsAsync().ConfigureAwait(true);
-        }
+            bool result = true;
 
-        public async Task SaveSettingsAsync()
-        {
-            Interlocked.Increment(ref SaveSettingsThreads);
-            if (SaveSettingsThreads > 1)
+            if (_registryRepository is LocalStorageRegistryAccess registryAccessStorage)
             {
-                await Task.Delay(10);
-                Interlocked.Decrement(ref SaveSettingsThreads);
-                return;
+                result = registryAccessStorage.SecureSaveDatabaseToFile();
             }
 
             try
             {
-                if (SaveSettingsThreads == 1)
-                {
-                    await _appSettingsFileRepository.SaveSettings();
-                    Settings.RemoveDuplicateEntriesWithIgnoreCase();
-                    _registryService.SaveObjectToRegistry(Settings);
+                result = result & _appSettingsFileRepository.SaveSettings();
+                Settings.RemoveDuplicateEntriesWithIgnoreCase();
+                _registryRepository.SaveObjectToRegistry(Settings);
 
-                    OnSettingsSaved?.Invoke(this, new EventArgs());
-                }
+                OnSettingsSaved?.Invoke(this, new EventArgs());
+
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "SaveSettings threw en exception on");
+                return false;
             }
-            finally
-            {
-                Interlocked.Decrement(ref SaveSettingsThreads);
-            }
+
+            return result;
         }
+
 
         public void RegisterFormStateOnClose(Form form)
         {
             string formName = form.GetType().Name;
-            bool existingForm = FileStoredSettings.FormStateDictionary.Any(x => x.Key == formName);
+            var fileDbAppSettings = _appSettingsFileRepository.AppSettings;
+            bool existingForm = fileDbAppSettings.ExtendedAppSettings.FormStateDictionary.Any(x => x.Key == formName);
             if (existingForm)
             {
-                FileStoredSettings.FormStateDictionary[formName] = RestoreFormState.GetFormState(form);
+                fileDbAppSettings.ExtendedAppSettings.FormStateDictionary[formName] = RestoreFormState.GetFormState(form);
             }
             else
             {
                 var formState = RestoreFormState.GetFormState(form);
-                FileStoredSettings.FormStateDictionary.Add(formName, formState);
+                fileDbAppSettings.ExtendedAppSettings.FormStateDictionary.Add(formName, formState);
             }
 
-            Task.Factory.StartNew(_appSettingsFileRepository.SaveSettings);
+            _appSettingsFileRepository.NotifySettingsChanged();
+            _appSettingsFileRepository.SaveSettings();
         }
-
     }
 }

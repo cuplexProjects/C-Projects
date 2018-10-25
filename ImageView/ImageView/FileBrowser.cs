@@ -6,12 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Autofac;
-using ImageView.Models;
-using ImageView.Properties;
-using ImageView.Services;
-using ImageView.Utility;
+using ImageViewer.Models;
+using ImageViewer.Properties;
+using ImageViewer.Services;
+using ImageViewer.Utility;
 
-namespace ImageView
+namespace ImageViewer
 {
     public partial class FileBrowser : Form
     {

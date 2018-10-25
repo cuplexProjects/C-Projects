@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ImageView.UnitTest
+namespace ImageViewer.UnitTests
 {
     [TestClass]
     public class TestDataGridView

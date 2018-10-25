@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ImageView.Models.UserInteraction;
+using ImageViewer.Models.UserInteraction;
 using JetBrains.Annotations;
 
-namespace ImageView.Services
+namespace ImageViewer.Services
 {
     [UsedImplicitly]
     public class UserInteractionService : ServiceBase

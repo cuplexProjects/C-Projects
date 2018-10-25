@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ImageView.Models.UserInteraction;
+using ImageViewer.Models.UserInteraction;
 using JetBrains.Annotations;
 using Serilog;
 
-namespace ImageView.Services
+namespace ImageViewer.Services
 {
     [UsedImplicitly]
     public class StartupService : ServiceBase

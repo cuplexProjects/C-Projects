@@ -6,7 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace ImageView.UserControls
+namespace ImageViewer.UserControls
 {
     [Designer("System.Windows.Forms.Design.DocumentDesigner, System.Windows.Forms.Design", typeof(IRootDesigner)), DesignerCategory("Form")]
     [ComVisible(true)]

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ImageView.Library.CustomAttributes
+namespace ImageViewer.Library.CustomAttributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class NotificationIdAttribute : Attribute

@@ -1,4 +1,4 @@
-﻿namespace ImageView.Repositories
+﻿namespace ImageViewer.Repositories
 {
     /// <summary>
     /// Marker class

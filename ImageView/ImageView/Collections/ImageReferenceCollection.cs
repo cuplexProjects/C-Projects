@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using GeneralToolkitLib.Converters;
-using ImageView.Services;
+using ImageViewer.Services;
 
-namespace ImageView.Models
+namespace ImageViewer.Models
 {
     public class ImageReferenceCollection
     {

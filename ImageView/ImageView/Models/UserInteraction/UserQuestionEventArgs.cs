@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ImageView.Models.UserInteraction
+namespace ImageViewer.Models.UserInteraction
 {
     public class UserQuestionEventArgs : EventArgs
     {

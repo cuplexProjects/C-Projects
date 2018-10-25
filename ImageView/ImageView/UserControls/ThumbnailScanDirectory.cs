@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using ImageView.Models;
-using ImageView.Services;
+using ImageViewer.Models;
+using ImageViewer.Services;
 
-namespace ImageView.UserControls
+namespace ImageViewer.UserControls
 {
     public partial class ThumbnailScanDirectory : UserControl
     {

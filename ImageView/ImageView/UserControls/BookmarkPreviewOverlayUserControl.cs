@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Serilog;
 
-namespace ImageView.UserControls
+namespace ImageViewer.UserControls
 {
     public partial class BookmarkPreviewOverlayUserControl : UserControl
     {

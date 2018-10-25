@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using ImageView.Services;
+using ImageViewer.Services;
 
-namespace ImageView.UserControls
+namespace ImageViewer.UserControls
 {
     public partial class ThumbnailSettings : UserControl
     {

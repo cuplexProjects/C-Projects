@@ -2,7 +2,7 @@
 
 namespace GeneralToolkitLib.ConfigHelper
 {
-    public class AssemblyHelper
+    public static class AssemblyHelper
     {
         public static string GetNameOfThisAssembly()
         {

@@ -1,4 +1,7 @@
-﻿namespace ImageView
+﻿using ImageViewer.DataContracts;
+using ImageViewer.UserControls;
+
+namespace ImageViewer
 {
     partial class FormAddBookmark
     {
@@ -33,7 +36,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.newItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainPanel = new ImageView.UserControls.CustomPanel();
+            this.mainPanel = new CustomPanel();
             this.btnCreateFolder = new System.Windows.Forms.Button();
             this.comboBoxBookmarkFolders = new System.Windows.Forms.ComboBox();
             this.bookmarkFolderBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -129,7 +132,7 @@
             // 
             // bookmarkFolderBindingSource
             // 
-            this.bookmarkFolderBindingSource.DataSource = typeof(ImageView.DataContracts.BookmarkFolder);
+            this.bookmarkFolderBindingSource.DataSource = typeof(BookmarkFolder);
             // 
             // btnCancel
             // 

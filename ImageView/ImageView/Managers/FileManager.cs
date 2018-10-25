@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Converters;
-using ImageView.DataContracts;
-using ImageView.Models;
+using ImageProcessor;
+using ImageViewer.DataContracts;
+using ImageViewer.Models;
 using JetBrains.Annotations;
 using Serilog;
 
-namespace ImageView.Managers
+namespace ImageViewer.Managers
 {
     public sealed class FileManager : ManagerBase, IDisposable
     {
@@ -21,14 +20,15 @@ namespace ImageView.Managers
         private FileStream _fileStream;
         private const string TemporaryDatabaseFilename = "temp.ibd";
         private const string DatabaseImgDataFilename = "thumbs.ibd";
-        private object _fileOperationLock = new Object();
-        private Semaphore _fileManagerSemaphore;
+        private readonly object _fileOperationLock = new object();
+        private readonly ImageFactory _imageFactory;
 
         [UsedImplicitly]
         public FileManager()
         {
             _fileName = Path.Combine(ApplicationBuildConfig.UserDataPath, DatabaseImgDataFilename);
             _directoryAccessDictionary = new Dictionary<string, bool>();
+            _imageFactory = new ImageFactory();
         }
 
         public FileManager(string fileName)
@@ -39,12 +39,9 @@ namespace ImageView.Managers
 
         public bool IsLocked { get; private set; }
 
-        public void Dispose()
-        {
-            CloseStream();
-        }
 
-        public RawImageModel ReadImageFromDatabase(ThumbnailEntry thumbnail)
+
+        public RawImage ReadRawImageFromDatabase(ThumbnailEntry thumbnail)
         {
             lock (_fileOperationLock)
             {
@@ -65,12 +62,33 @@ namespace ImageView.Managers
 
                 _fileStream.Unlock(thumbnail.FilePosition, thumbnail.Length);
 
-                return new RawImageModel(imageData);
+                return new RawImage(imageData);
             }
 
         }
 
-        public FileEntry WriteImage(RawImageModel img)
+        public Image ReadImageFromDatabase(ThumbnailEntry thumbnail)
+        {
+            lock (_fileOperationLock)
+            {
+                if (_fileStream == null)
+                    _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+
+
+                _fileStream.Lock(thumbnail.FilePosition, thumbnail.Length);
+                _fileStream.Position = thumbnail.FilePosition;
+
+                var sr = new BinaryReader(_fileStream);
+                _imageFactory.Reset();
+                _imageFactory.Load(sr.ReadBytes(thumbnail.Length));
+                
+                _fileStream.Unlock(thumbnail.FilePosition, thumbnail.Length);
+
+                return _imageFactory.Image;
+            }
+        }
+
+        public FileEntry WriteImage(RawImage img)
         {
             lock (_fileOperationLock)
             {
@@ -177,18 +195,27 @@ namespace ImageView.Managers
             _fileStream?.Flush(true);
         }
 
-        public void CloseStream()
+        public bool WriteToDisk()
         {
+            bool result = false;
             if (_fileStream != null)
             {
                 if (_fileStream.CanWrite)
                 {
                     _fileStream.Flush(true);
+                    result = true;
                 }
 
                 _fileStream.Close();
                 _fileStream = null;
             }
+
+            return result;
+        }
+
+        private void CloseStream()
+        {
+            WriteToDisk();
         }
 
         /// <summary>
@@ -259,7 +286,7 @@ namespace ImageView.Managers
             return fileInfo.Length;
         }
 
-        // Deletes the current filecontainer and recreates an empty filecontainer.
+        // Deletes the current file-container and recreates an empty file-container.
         public void DeleteBinaryContainer()
         {
             lock (_fileOperationLock)
@@ -271,7 +298,25 @@ namespace ImageView.Managers
                 fsStream.Flush(true);
                 fsStream.Close();
             }
-            
+
+        }
+
+        public void Dispose()
+        {
+            CloseStream();
+            _fileStream?.Dispose();
+        }
+
+        public RawImage CreateRawImage(Image image)
+        {
+            _imageFactory.Reset();
+            _imageFactory.Load(image);
+            using (var ms = new MemoryStream())
+            {
+                _imageFactory.Save(ms);
+                ms.Flush();
+                return new RawImage(ms.ToArray());
+            }
         }
     }
 }

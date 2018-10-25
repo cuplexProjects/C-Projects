@@ -6,15 +6,15 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using GeneralToolkitLib.Events;
 using GeneralToolkitLib.WindowsApi;
-using ImageView.Events;
-using ImageView.Interfaces;
-using ImageView.Managers;
-using ImageView.Models;
-using ImageView.Properties;
-using ImageView.Services;
+using ImageViewer.Events;
+using ImageViewer.Interfaces;
+using ImageViewer.Managers;
+using ImageViewer.Models;
+using ImageViewer.Properties;
+using ImageViewer.Services;
 using Serilog;
 
-namespace ImageView
+namespace ImageViewer
 {
     public partial class FormImageView : Form, IObservable<ImageViewFormInfoBase>, IMageViewFormWindow
     {
@@ -136,7 +136,7 @@ namespace ImageView
         {
             try
             {
-                _currentImage = _imageCache.GetImage(imageReference.CompletePath);
+                _currentImage = _imageCache.GetImageFromCache(imageReference.CompletePath);
 
                 _imgx = 0;
                 _imgy = 0;

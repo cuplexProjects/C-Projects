@@ -7,10 +7,10 @@ using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using ImageView.Models;
+using ImageViewer.Models;
 using JetBrains.Annotations;
 
-namespace ImageView.Services
+namespace ImageViewer.Services
 {
     [UsedImplicitly]
     public class UpdateService : ServiceBase

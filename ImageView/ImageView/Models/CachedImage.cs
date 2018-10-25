@@ -1,69 +1,44 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
-using ImageProcessor;
-using ImageView.Models.Interface;
-using Serilog;
-using ImageProcessor.Common;
 
-namespace ImageView.Models
+namespace ImageViewer.Models
 {
-    public class CachedImage : IDisposable
+    public class CachedImage
     {
-        private readonly ImageFactory _imageFactory;
-        public CachedImage(string filename, ImageFactory imageFactory)
-        {
-            CreatedDate = DateTime.Now;
-            Filename = filename;
-            _imageFactory = imageFactory;
-        }
-
         private byte[] _imageData;
 
-        public string Filename { get; }
-        public DateTime CreatedDate { get; private set; }
-        public DateTime ModifiedDate { get; private set; }
-        public DateTime ImageCreateDate { get; private set; }
-        public long Size { get; private set; }
-        public Image ImageObject => _imageFactory.Load(_imageData).Image;
+        public string Filename { get; private set; }
 
-        public bool LoadImage()
+        public DateTime AddedToCacheTime { get; private set; }
+
+
+        public int Size
         {
-            
-            try
+            get
             {
-                _imageFactory.Load(Filename);
-                MemoryStream ms = new MemoryStream();
-                 _imageFactory.Save(ms);
-
-                ms.Flush();
-                _imageData = ms.ToArray();
-                ms.Close();
-                ms.Dispose();
-
-
-                ModifiedDate = DateTime.Now;
-
-                var fileInfo = new FileInfo(Filename);
-                Size = fileInfo.Length;
-                ImageCreateDate = fileInfo.CreationTime;
+                if (_imageData != null)
+                {
+                    return _imageData.Length;
+                }
+                return 0;
             }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error Loading image");
-                return false;
-            }
-            finally
-            {
-                
-            }
-
-            return ImageObject != null;
         }
 
-        public void Dispose()
+        public byte[] GetImageBytes()
         {
-            _imageFactory?.Dispose();
+            return _imageData;
+        }
+
+        public Image GetImage(Func<byte[], Image> imageConverter)
+        {
+            return imageConverter.Invoke(_imageData);
+        }
+
+        public void SetImage(Func<string, byte[]> imageConverter, string fileName)
+        {
+            _imageData = imageConverter.Invoke(fileName);
+            Filename = fileName;
+            AddedToCacheTime = DateTime.Now;
         }
     }
 }

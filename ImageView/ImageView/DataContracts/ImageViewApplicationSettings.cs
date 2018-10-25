@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
 
-namespace ImageView.DataContracts
+namespace ImageViewer.DataContracts
 {
     /// <summary>
     /// All Application settings
@@ -65,31 +64,43 @@ namespace ImageView.DataContracts
             Far = 3
         }
 
-        // Instansiate with default settings
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageViewApplicationSettings"/> class.
         /// </summary>
-        public ImageViewApplicationSettings()
+        protected ImageViewApplicationSettings()
         {
-            AlwaysOntop = false;
-            AutoRandomizeCollection = true;
-            LastUsedSearchPaths = new List<string>();
-            ShowImageViewFormsInTaskBar = true;
-            NextImageAnimation = ChangeImageAnimation.None;
-            ImageTransitionTime = 1000;
-            SlideshowInterval = 5000;
-            PrimaryImageSizeMode = (int)PictureBoxSizeMode.Zoom;
-            PasswordProtectBookmarks = false;
-            PasswordDerivedString = "";
-            ShowNextPrevControlsOnEnterWindow = true;
-            ThumbnailSize = 256;
-            MaxThumbnails = 256;
-            ConfirmApplicationShutdown = true;
-            AutomaticUpdateCheck = true;
-            LastUpdateCheck = new DateTime(2010, 1, 1);
 
-            // 128 Mb
-            ImageCacheSize = 134217728;
+        }
+
+        /// <summary>
+        /// Creates the default settings.
+        /// </summary>
+        /// <returns></returns>
+        public static ImageViewApplicationSettings CreateDefaultSettings()
+        {
+            var settings = new ImageViewApplicationSettings
+            {
+                AlwaysOntop = false,
+                AutoRandomizeCollection = true,
+                LastUsedSearchPaths = new List<string>(),
+                ShowImageViewFormsInTaskBar = true,
+                NextImageAnimation = ChangeImageAnimation.None,
+                ImageTransitionTime = 1000,
+                SlideshowInterval = 5000,
+                PrimaryImageSizeMode = (int) PictureBoxSizeMode.Zoom,
+                PasswordProtectBookmarks = false,
+                PasswordDerivedString = "",
+                ShowNextPrevControlsOnEnterWindow = true,
+                ThumbnailSize = 256,
+                MaxThumbnails = 256,
+                ConfirmApplicationShutdown = true,
+                AutomaticUpdateCheck = true,
+                LastUpdateCheck = new DateTime(2010, 1, 1),
+                ExtendedAppSettings = AppSettingsExtendedDataModel.CreateNew(),
+                ImageCacheSize = 134217728 // 128 Mb
+            };
+
+            return settings;
         }
 
         /// <summary>
@@ -379,6 +390,9 @@ namespace ImageView.DataContracts
         /// </value>
         [DataMember(Name = "ToggleSlideshowWithThirdMouseButton", Order = 32)]
         public bool ToggleSlideshowWithThirdMouseButton { get; set; }
+
+        [DataMember(Name = "ExtendedAppSettings", Order = 33)]
+        public AppSettingsExtendedDataModel ExtendedAppSettings { get; set; }
 
         /// <summary>
         /// Removes the duplicate entries with ignore case.

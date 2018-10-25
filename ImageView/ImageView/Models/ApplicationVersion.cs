@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ImageView.Models
+namespace ImageViewer.Models
 {
     /// <summary>
     /// 

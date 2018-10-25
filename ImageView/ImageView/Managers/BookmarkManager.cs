@@ -7,13 +7,13 @@ using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
-using ImageView.DataContracts;
-using ImageView.Events;
-using ImageView.Models;
-using ImageView.Utility;
+using ImageViewer.DataContracts;
+using ImageViewer.Events;
+using ImageViewer.Models;
+using ImageViewer.Utility;
 using Serilog;
 
-namespace ImageView.Managers
+namespace ImageViewer.Managers
 {
     public class BookmarkManager : ManagerBase
     {

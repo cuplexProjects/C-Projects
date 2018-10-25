@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace ImageView.DataContracts
+namespace ImageViewer.DataContracts
 {
     /// <summary>
     /// 
     /// </summary>
     [Serializable]
-    [DataContract(Name = "ThumbnailEntry")]
-    public class ThumbnailEntry
+    [DataContract(Name = "ThumbnailEntryModel")]
+    public class ThumbnailEntryModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThumbnailEntry"/> class.
+        /// Initializes a new instance of the <see cref="ThumbnailEntryModel"/> class.
         /// </summary>
-        public ThumbnailEntry()
+        public ThumbnailEntryModel()
         {
-            UniqueId = Guid.NewGuid();
+            if (UniqueId == Guid.Empty)
+            {
+                UniqueId = Guid.NewGuid();
+            }
         }
         /// <summary>
         /// Gets or sets the name of the file.
@@ -23,7 +26,10 @@ namespace ImageView.DataContracts
         /// <value>
         /// The name of the file.
         /// </value>
-        [DataMember(Name = "FileName", Order = 1)]
+        [DataMember(Name = "FullPath", Order = 1)]
+        public string FullPath { get; set; }
+
+        [DataMember(Name = "FileName", Order = 2)]
         public string FileName { get; set; }
 
         /// <summary>
@@ -32,7 +38,7 @@ namespace ImageView.DataContracts
         /// <value>
         /// The directory.
         /// </value>
-        [DataMember(Name = "Directory", Order = 2)]
+        [DataMember(Name = "Directory", Order = 3)]
         public string Directory { get; set; }
 
         /// <summary>
@@ -41,7 +47,7 @@ namespace ImageView.DataContracts
         /// <value>
         /// The file position.
         /// </value>
-        [DataMember(Name = "FilePosition", Order = 3)]
+        [DataMember(Name = "FilePosition", Order = 4)]
         public long FilePosition { get; set; }
 
         /// <summary>
@@ -50,7 +56,7 @@ namespace ImageView.DataContracts
         /// <value>
         /// The length.
         /// </value>
-        [DataMember(Name = "Length", Order = 4)]
+        [DataMember(Name = "Length", Order = 5)]
         public int Length { get; set; }
 
         /// <summary>
@@ -59,7 +65,7 @@ namespace ImageView.DataContracts
         /// <value>
         /// The date.
         /// </value>
-        [DataMember(Name = "Date", Order = 5)]
+        [DataMember(Name = "Date", Order = 6)]
         public DateTime Date { get; set; }
 
         /// <summary>
@@ -68,7 +74,7 @@ namespace ImageView.DataContracts
         /// <value>
         /// The source image date.
         /// </value>
-        [DataMember(Name = "SourceImageDate", Order = 6)]
+        [DataMember(Name = "SourceImageDate", Order = 7)]
         public DateTime SourceImageDate { get; set; }
 
         /// <summary>
@@ -77,7 +83,7 @@ namespace ImageView.DataContracts
         /// <value>
         /// The length of the source image.
         /// </value>
-        [DataMember(Name = "SourceImageLength", Order = 7)]
+        [DataMember(Name = "SourceImageLength", Order = 8)]
         public long SourceImageLength { get; set; }
 
         /// <summary>
@@ -86,7 +92,8 @@ namespace ImageView.DataContracts
         /// <value>
         /// The unique identifier.
         /// </value>
-        [DataMember(Name = "UniqueId", Order = 8)]
-        public Guid UniqueId { get; set; }
+        /// 
+        [DataMember(Name = "UniqueId", Order = 9, EmitDefaultValue = true)]
+        public Guid UniqueId { get; protected set; }
     }
 }

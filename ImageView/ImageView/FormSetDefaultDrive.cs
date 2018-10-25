@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
 using Serilog;
 
-namespace ImageView
+namespace ImageViewer
 {
     public partial class FormSetDefaultDrive : Form
     {

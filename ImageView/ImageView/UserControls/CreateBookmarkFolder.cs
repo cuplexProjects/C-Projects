@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Windows.Forms;
-using ImageView.DataBinding;
-using ImageView.DataContracts;
-using ImageView.InputForms;
-using ImageView.Managers;
-using ImageView.Models;
-using ImageView.Models.Enums;
-using ImageView.Properties;
-using ImageView.Services;
-using ImageView.Utility;
+using ImageViewer.DataBinding;
+using ImageViewer.DataContracts;
+using ImageViewer.InputForms;
+using ImageViewer.Managers;
+using ImageViewer.Models;
+using ImageViewer.Models.Enums;
+using ImageViewer.Properties;
+using ImageViewer.Services;
+using ImageViewer.Utility;
 
-namespace ImageView.UserControls
+namespace ImageViewer.UserControls
 {
     public partial class CreateBookmarkFolder : UserControl
     {

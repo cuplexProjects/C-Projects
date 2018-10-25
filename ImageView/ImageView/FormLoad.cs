@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using ImageView.Models.UserInteraction;
-using ImageView.Services;
+using ImageViewer.Models.UserInteraction;
+using ImageViewer.Services;
 
-namespace ImageView
+namespace ImageViewer
 {
     public partial class FormLoad : Form
     {

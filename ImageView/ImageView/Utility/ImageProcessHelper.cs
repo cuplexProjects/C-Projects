@@ -1,23 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
+using System.IO;
 using ImageProcessor;
 
-namespace ImageView.Utility
+namespace ImageViewer.Utility
 {
+    /// <summary>
+    /// ImageProcessHelper
+    /// </summary>
     public static class ImageProcessHelper
     {
+        /// <summary>
+        /// The img factory
+        /// </summary>
+        private static readonly ImageFactory ImgFactory = new ImageFactory();
+        /// <summary>
+        /// Creates the thumbnail image.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <param name="size">The size.</param>
+        /// <returns></returns>
         public static Image CreateThumbnailImage(string filePath, Size size)
         {
-            ImageFactory imgFactory = new ImageFactory();
-            imgFactory.Load(filePath);
-            imgFactory.Resize(size);
+            ImgFactory.Reset();
+            ImgFactory.Load(filePath);
+            ImgFactory.Resize(size);
+            var img = ImgFactory.Image;
+            ImgFactory.Reset();
 
-            return imgFactory.Image;
+            return img;
         }
 
+        /// <summary>
+        /// Gets the image from byte array.
+        /// </summary>
+        /// <param name="imageBytes">The image bytes.</param>
+        /// <returns></returns>
+        public static Image GetImageFromByteArray(byte[] imageBytes)
+        {
+            using (var ms = new MemoryStream(imageBytes))
+            {
+                return Image.FromStream(ms, true);
+            }
+        }
     }
 }

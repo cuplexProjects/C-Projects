@@ -1,4 +1,4 @@
-﻿namespace ImageView.Configuration
+﻿namespace ImageViewer.Configuration
 {
     /// <summary>
     /// Used for testing mock class

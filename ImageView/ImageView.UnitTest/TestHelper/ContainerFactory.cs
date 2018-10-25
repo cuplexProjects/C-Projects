@@ -1,13 +1,16 @@
 ﻿using System.IO;
 using System.Reflection;
 using Autofac;
-using Autofac.Core;
+using ImageViewer.Configuration;
 
-namespace ImageView.UnitTest.TestHelper
+namespace ImageViewer.UnitTests.TestHelper
 {
     public static class ContainerFactory
     {
-        private static readonly string TestDirectory = Path.Combine(Path.GetTempPath(), "ImageViewTestdata");
+        private static readonly string TestDirectory = Path.Combine(Path.GetTempPath(), "ImageViewTestdata\\");
+        public const string CompanyName = "UnitTestForImageViewer";
+        public const string ProductName = "ImageViewer";
+        public const string ThumbnailIndexFilename = "thumbs.ibd";
 
         public static IContainer BuildContainerForThumbnailTests()
         {
@@ -20,10 +23,24 @@ namespace ImageView.UnitTest.TestHelper
             return container;
         }
 
+        public static IContainer CreateGenericContainerForApp()
+        {
+            var builder = new ContainerBuilder();
+            var unitTestAssembly = Assembly.GetExecutingAssembly();
+            builder.RegisterAssemblyModules(unitTestAssembly);
+            builder.RegisterAssemblyModules(AutofacConfig.GetAssembly());
+
+
+
+            var container = builder.Build();
+
+            return container;
+
+        }
+
         public static string GetTestDirectory()
         {
             return TestDirectory;
         }
-
     }
 }

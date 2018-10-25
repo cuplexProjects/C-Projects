@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ImageView.InputForms
+namespace ImageViewer.InputForms
 {
     public partial class FormInputRow : Form
     {

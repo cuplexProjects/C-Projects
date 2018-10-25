@@ -1,4 +1,4 @@
-﻿namespace ImageView.Interfaces
+﻿namespace ImageViewer.Interfaces
 {
     public interface IMageViewFormWindow
     {

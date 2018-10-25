@@ -6,8 +6,8 @@
     <ProjectGuid>{8E163ED3-3018-4B42-AEB9-EEFC30D2162B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ImageView.UnitTest</RootNamespace>
-    <AssemblyName>ImageView.UnitTest</AssemblyName>
+    <RootNamespace>ImageViewer.UnitTests</RootNamespace>
+    <AssemblyName>ImageViewer.UnitTest</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -41,18 +41,9 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Drawing.Design" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
@@ -86,9 +77,9 @@
       <Project>{18b7c1dc-cb9b-4b4f-b3bb-40e79b277dd9}</Project>
       <Name>GeneralToolkitLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ImageView\ImageView.csproj">
+    <ProjectReference Include="..\ImageView\ImageViewer.csproj">
       <Project>{b76d1f28-de2c-4045-b271-41f5f9d5e5ec}</Project>
-      <Name>ImageView</Name>
+      <Name>ImageViewer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Resources\TestImage.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\testImg.png" />

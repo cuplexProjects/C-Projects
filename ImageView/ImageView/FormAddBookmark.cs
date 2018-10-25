@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using ImageView.DataContracts;
-using ImageView.Managers;
-using ImageView.Models;
-using ImageView.Services;
-using ImageView.UserControls;
-using ImageView.Utility;
+using ImageViewer.DataContracts;
+using ImageViewer.Managers;
+using ImageViewer.Models;
+using ImageViewer.Services;
+using ImageViewer.UserControls;
+using ImageViewer.Utility;
 using JetBrains.Annotations;
 
-namespace ImageView
+namespace ImageViewer
 {
     [UsedImplicitly]
     public partial class FormAddBookmark : Form

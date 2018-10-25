@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
 
-namespace ImageView.InputForms
+namespace ImageViewer.InputForms
 {
     public partial class FormGetPassword : Form
     {

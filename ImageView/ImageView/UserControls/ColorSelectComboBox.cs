@@ -2,7 +2,7 @@
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace ImageView.UserControls
+namespace ImageViewer.UserControls
 {
     public class ColorSelectComboBox : ComboBox
     {

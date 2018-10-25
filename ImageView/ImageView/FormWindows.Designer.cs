@@ -1,4 +1,4 @@
-﻿namespace ImageView
+﻿namespace ImageViewer
 {
     partial class FormWindows
     {
