@@ -40,10 +40,10 @@ namespace ImageViewer
             lblCachedItems.Text = thumbnailItems > 0 ? _thumbnailService.GetNumberOfCachedThumbnails().ToString() : "n/a";
         }
 
-        private void btnRunDefragmentJob_Click(object sender, EventArgs e)
+        private void BtnRunDefragJob_Click(object sender, EventArgs e)
         {
             btnRunDefragmentJob.Enabled = false;
-            _thumbnailService.OptimizeDatabase();
+            _thumbnailService.OptimizeDatabaseAsync();
             btnRunDefragmentJob.Enabled = true;
             UpdateInformationLabels();
         }

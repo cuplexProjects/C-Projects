@@ -292,7 +292,7 @@
             this.btnRunDefragmentJob.TabIndex = 2;
             this.btnRunDefragmentJob.Text = "Defrag";
             this.btnRunDefragmentJob.UseVisualStyleBackColor = true;
-            this.btnRunDefragmentJob.Click += new System.EventHandler(this.btnRunDefragmentJob_Click);
+            this.btnRunDefragmentJob.Click += new System.EventHandler(this.BtnRunDefragJob_Click);
             // 
             // btnUpdateCurrentUsage
             // 

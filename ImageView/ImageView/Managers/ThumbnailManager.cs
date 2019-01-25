@@ -3,19 +3,13 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Converters;
-using GeneralToolkitLib.Storage;
-using GeneralToolkitLib.Storage.Models;
 using ImageViewer.DataContracts;
 using ImageViewer.Models;
 using ImageViewer.Repositories;
-using ImageViewer.Utility;
 using JetBrains.Annotations;
-using MoreLinq;
 using Serilog;
 using Serilog.Context;
 
@@ -29,12 +23,14 @@ namespace ImageViewer.Managers
         private readonly Regex _fileNameRegExp;
         private bool _abortScan;
         private bool _isRunningThumbnailScan;
-        private readonly ThumbnailRepository _thumbnailRepository; 
+        private readonly ThumbnailRepository _thumbnailRepository;
+        private readonly FileManager _fileManager;
 
 
-        public ThumbnailManager(ThumbnailRepository thumbnailRepository)
+        public ThumbnailManager(ThumbnailRepository thumbnailRepository, FileManager fileManager)
         {
             _thumbnailRepository = thumbnailRepository;
+            _fileManager = fileManager;
 
             _fileNameRegExp = new Regex(ImageSearchPattern, RegexOptions.IgnoreCase);
         }
@@ -55,9 +51,6 @@ namespace ImageViewer.Managers
             {
                 return;
             }
-
-
-
             
 
             _isRunningThumbnailScan = true;
@@ -66,12 +59,12 @@ namespace ImageViewer.Managers
             if (!Directory.Exists(path))
                 return;
 
-            var dirList = scanSubdirectories ? GetSubdirectoryList(path) : new List<string>();
+            var dirList = scanSubdirectories ? GetSubDirList(path) : new List<string>();
             dirList.Add(path);
 
             //int scannedFiles = dirList.TakeWhile(directory => !_abortScan).Sum(directory => PerformThumbnailScan(directory, progress));
             int totalFileCount = GetFileCount(dirList);
-            int scannedFiles = await PerformThumbnailScanMultithreaded(dirList, totalFileCount, progress);
+            int scannedFiles = await StartThumbnailDirectoryScan(dirList, totalFileCount, progress);
 
             
             _thumbnailRepository.SaveThumbnailDatabase();
@@ -80,6 +73,31 @@ namespace ImageViewer.Managers
             progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = scannedFiles, ScannedFiles = scannedFiles, IsComplete = true });
 
         }
+
+        private async Task<int> StartThumbnailDirectoryScan(List<string> dirList, int totalFileCount, IProgress<ThumbnailScanProgress> progress)
+        {
+            int scannedFiles = 0;
+            return await Task.Factory.StartNew<int>( () => {
+
+
+
+                if (progress!=null && scannedFiles % 100 == 100)
+                {
+                    progress.Report(new ThumbnailScanProgress {IsComplete = false,ScannedFiles = scannedFiles,TotalAmountOfFiles = totalFileCount,});
+                }
+                return scannedFiles;}
+            
+            
+            );
+        
+
+
+        
+
+
+        }
+
+        
 
         public int GetFileCount(List<string> dirList)
         {
@@ -104,12 +122,7 @@ namespace ImageViewer.Managers
         {
             try
             {
-
-
-
                 IsLoaded = _thumbnailRepository.LoadThumbnailDatabase();
-
-       
             }
             catch (Exception ex)
             {
@@ -123,17 +136,18 @@ namespace ImageViewer.Managers
             return false;
         }
 
-        public Image GetThumbnail(string fullPath)
+        public Image LoadThumbnailImage(string fullPath)
         {
-            if (ThumbnailIsCached(fullPath))
+            if (_thumbnailRepository.IsCached(fullPath))
             {
-                Image imgFromCache = _thumbnailRepository.GetThumbnail(fullPath);
+                Image imgFromCache = _thumbnailRepository.GetThumbnailImage(fullPath);
                 return imgFromCache;
-                // Possibly a corrupt database
             }
 
-             return _thumbnailRepository.CreateThumbnail(fullPath);
-            
+
+
+            return _thumbnailRepository.GetThumbnailImage(fullPath);
+
         }
 
         
@@ -144,153 +158,107 @@ namespace ImageViewer.Managers
         }
 
 
-        private List<string> GetSubdirectoryList(string path)
+        private List<string> GetSubDirList(string path)
         {
-            var subdirectoryList = new List<string>();
+            var dirList = new List<string>();
             var directories = Directory.GetDirectories(path);
 
             foreach (string directory in directories)
             {
-                subdirectoryList.Add(directory);
-                subdirectoryList.AddRange(GetSubdirectoryList(directory));
+                dirList.Add(directory);
+                dirList.AddRange(GetSubDirList(directory));
             }
 
-            return subdirectoryList;
+            return dirList;
         }
 
-        private async Task<int> PerformThumbnailMultiThreadScan(IEnumerable<string> dirList, int totalNumberOfFiles, IProgress<ThumbnailScanProgress> progress)
+        //private async Task<int> PerformThumbnailMultiThreadScan(IEnumerable<string> dirList, int totalNumberOfFiles, IProgress<ThumbnailScanProgress> progress)
+        //{
+        //    Queue<string> dirQueue = new Queue<string>(dirList);
+        //    ConcurrentQueue<ThumbnailEntry> scannedThumbnailEntries = new ConcurrentQueue<ThumbnailEntry>();
+
+        //    int threads = Environment.ProcessorCount * 2;
+        //    int filesProcessed = 0;
+
+        //    /*
+        //     * Directory list contains main dir and all sub dirs
+        //     * So work must be divided into two segments but only one dedicated thread can list files per directory
+        //     */
+
+        //    // Work Scheduler Task
+        //    return await Task.Factory.StartNew(() =>
+        //    {
+        //        while (dirQueue.Count > 0 && !_abortScan)
+        //        {
+        //            var filenames = GetImageFilenamesInDirectory(dirQueue.Dequeue());
+
+        //            while (filenames.Count < threads * 4 && dirQueue.Count > 0)
+        //            {
+        //                filenames.AddRange(GetImageFilenamesInDirectory(dirQueue.Dequeue()));
+        //            }
+
+        //            filesProcessed += filenames.Count;
+        //            ParallelOptions parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = threads };
+        //            var cancellationToken = parallelOptions.CancellationToken;
+
+        //            Queue<string> filenameQueue = new Queue<string>(filenames);
+
+        //            // Create work batch 
+        //            Task dataStorageTask = null;
+        //            var taskList = new List<Task>();
+        //            while (filenameQueue.Count > 0 && !_abortScan)
+        //            {
+        //                while (taskList.Count < threads && filenameQueue.Count > 0)
+        //                {
+        //                    taskList.Add(Task.Factory.StartNew(() =>
+        //                    {
+        //                        if (filenameQueue.Count > 0)
+        //                        {
+        //                            bool result = _thumbnailRepository.CreateThumbnail(filenameQueue.Dequeue()); // (), scannedThumbnailEntries); //     GetThumbnailEntry();
+        //                            if (result)
+        //                            {
+        //                                scannedThumbnailEntries.TryDequeue()
+        //                            }
+        //                        }
+
+        //                    }, cancellationToken));
+        //                }
+
+        //                Task.WaitAny(taskList.ToArray());
+        //                taskList.RemoveAll(task => task.IsCompleted);
+
+        //                if (dataStorageTask == null || dataStorageTask.IsCompleted)
+        //                {
+        //                    if (scannedThumbnailEntries.Count > 100)
+        //                    {
+        //                        dataStorageTask = Task.Factory.StartNew(() => { ProcessThumbnailData(scannedThumbnailEntries); }, cancellationToken);
+        //                    }
+        //                }
+        //                progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = totalNumberOfFiles, ScannedFiles = filesProcessed, IsComplete = false });
+        //            }
+
+        //        }
+
+        //        ProcessThumbnailData(scannedThumbnailEntries);
+
+        //        return filesProcessed;
+        //    });
+        //}
+
+        private void ProcessThumbnailData(ConcurrentQueue<ThumbnailEntry> thumbnailDataQueue)
         {
-            Queue<string> dirQueue = new Queue<string>(dirList);
-            ConcurrentQueue<ThumbnailEntry> scannedThumbnailEntries = new ConcurrentQueue<ThumbnailEntry>();
-
-            int threads = Environment.ProcessorCount * 2;
-            int filesProcessed = 0;
-
-            /*
-             * Directory list contains main dir and all sub dirs
-             * So work must be divided into two segments but only one dedicated thread can list files per directory
-             */
-
-            // Work Scheduler Task
-            return await Task.Factory.StartNew(() =>
+            while (thumbnailDataQueue.Count > 0)
             {
-                while (dirQueue.Count > 0 && !_abortScan)
+                if (thumbnailDataQueue.TryDequeue(out var data))
                 {
-                    var filenames = GetImageFilenamesInDirectory(dirQueue.Dequeue());
-
-                    while (filenames.Count < threads * 4 && dirQueue.Count > 0)
-                    {
-                        filenames.AddRange(GetImageFilenamesInDirectory(dirQueue.Dequeue()));
-                    }
-
-                    filesProcessed += filenames.Count;
-                    ParallelOptions parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = threads };
-                    var cancellationToken = parallelOptions.CancellationToken;
-
-                    Queue<string> filenameQueue = new Queue<string>(filenames);
-
-                    // Create work batch 
-                    Task dataStorageTask = null;
-                    var taskList = new List<Task>();
-                    while (filenameQueue.Count > 0 && !_abortScan)
-                    {
-                        while (taskList.Count < threads && filenameQueue.Count > 0)
-                        {
-                            taskList.Add(Task.Factory.StartNew(() =>
-                            {
-                                if (filenameQueue.Count > 0)
-                                {
-                                    bool result = _thumbnailRepository.CreateThumbnail(filenameQueue.Dequeue()); // (), scannedThumbnailEntries); //     GetThumbnailEntry();
-                                    if (result)
-                                    {
-                                        scannedThumbnailEntries.TryDequeue()
-                                    }
-                                }
-
-                            }, cancellationToken));
-                        }
-
-                        Task.WaitAny(taskList.ToArray());
-                        taskList.RemoveAll(task => task.IsCompleted);
-
-                        if (dataStorageTask == null || dataStorageTask.IsCompleted)
-                        {
-                            if (scannedThumbnailEntries.Count > 100)
-                            {
-                                dataStorageTask = Task.Factory.StartNew(() => { ProcessThumbnailData(scannedThumbnailEntries); }, cancellationToken);
-                            }
-                        }
-                        progress?.Report(new ThumbnailScanProgress { TotalAmountOfFiles = totalNumberOfFiles, ScannedFiles = filesProcessed, IsComplete = false });
-                    }
-
-                }
-
-                ProcessThumbnailData(scannedThumbnailEntries);
-
-                return filesProcessed;
-            });
-        }
-
-        private void ProcessThumbnailData(ConcurrentQueue<ThumbnailEntry> thumbnailDatas)
-        {
-            while (thumbnailDatas.Count > 0)
-            {
-                if (thumbnailDatas.TryDequeue(out var data))
-                {
-                    if (!_thumbnailRepository.ContainsCachedThumbnail(data.FullPath))
+                    if (!_thumbnailRepository.IsCached(data.FullPath))
                     {
                         _thumbnailRepository.AddThumbnailItem(data);
                     }
                 }
             }
         }
-        
 
-        //private void GetThumbnailEntry(string fullPath, ConcurrentQueue<ThumbnailEntry> thumbnailDatas)
-        //{
-        //    if (string.IsNullOrEmpty(fullPath))
-        //    {
-        //        return;
-        //    }
-
-        //    string fileName = GeneralConverters.GetFileNameFromPath(fullPath);
-        //    string directory = GeneralConverters.GetDirectoryNameFromPath(fullPath);
-        //    var fileInfo = new FileInfo(fullPath);
-
-
-        //    var thumbnail = new ThumbnailEntryModel
-        //    {
-        //        Date = DateTime.Now,
-        //        SourceImageDate = fileInfo.LastWriteTime,
-        //        FileName = fileName,
-        //        Directory = directory,
-        //        SourceImageLength = fileInfo.Length,
-        //    };
-
-
-        //    var thumbnailData = new ThumbnailEntry {ThumbnailEntryModel = thumbnail};
-        //    thumbnailData.LoadImage(ImageProcessHelper.CreateThumbnailImage);
-
-        //    thumbnailDatas.Enqueue(thumbnailData);
-        //}
-
-        //private void SaveThumbnailData(ThumbnailEntry thumbnailDataModel)
-        //{
-        //    var thumbnail = thumbnailDataModel.ThumbnailEntryModel;
-
-        //    FileEntry fileEntry = _fileManager.WriteImage(thumbnailDataModel.RawImage);
-        //    if (fileEntry == null)
-        //    {
-        //        return;
-        //    }
-
-        //    thumbnail.FilePosition = fileEntry.Position;
-        //    thumbnail.Length = fileEntry.Length;
-
-        //    _thumbnailDatabaseModel.ThumbnailEntries.Add(thumbnail);
-        //    _fileDictionary.Add(Path.Combine(thumbnail.Directory, thumbnail.FileName), thumbnail);
-        //    IsModified = true;
-        //}
 
         private int PerformThumbnailScan(string path, IProgress<ThumbnailScanProgress> progress)
         {
@@ -313,12 +281,12 @@ namespace ImageViewer.Managers
                 if (_abortScan)
                     break;
 
-                if (!_fileNameRegExp.IsMatch(fileName) || ThumbnailIsCached(fullPath)) continue;
+                if (!_fileNameRegExp.IsMatch(fileName) || _thumbnailRepository.IsCached(fullPath)) continue;
                 Image img = null;
 
                 try
                 {
-                    img =_thumbnailRepository.CreateThumbnail(fullPath);
+                    img =_thumbnailRepository.GetThumbnailImage(fullPath);
                 }
                 catch (Exception exception)
                 {
@@ -353,61 +321,13 @@ namespace ImageViewer.Managers
             return scannedFiles;
         }
 
-        
-
-        private bool ThumbnailIsCached(string filename)
-        {
-            return _thumbnailRepository.ContainsCachedThumbnail(filename);
-        }
-
-        /// <summary>
-        ///     Loads an image from file and then returns a resized version
-        /// </summary>
-        /// <param name="filename">The filename.</param>
-        /// <returns></returns>
-        //private Image LoadImageFromFile(string filename)
-        //{
-        //    const int maxSize = 512;
-        //    Image img = _imageCacheService.GetImage(filename);
-        //    int width = img.Width;
-        //    int height = img.Height;
-
-        //    if (width >= height)
-        //    {
-        //        if (width > maxSize)
-        //        {
-        //            double factor = (double)width / maxSize;
-        //            width = maxSize;
-        //            height = Convert.ToInt32(Math.Ceiling(height / factor));
-        //        }
-        //        else
-        //        {
-        //            return img;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (height > maxSize)
-        //        {
-        //            double factor = (double)height / maxSize;
-        //            height = maxSize;
-        //            width = Convert.ToInt32(Math.Ceiling(width / factor));
-        //        }
-        //        else
-        //        {
-        //            return img;
-        //        }
-        //    }
-
-        //    return ImageTransform.ResizeImage(img, width, height);
-        //}
 
         private RawImage LoadImageFromDatabase(string filename)
         {
-            ThumbnailEntryModel thumbnail = _fileDictionary[filename];
+            ThumbnailEntryModel thumbnail = _thumbnailRepository.GeThumbnailEntry(filename);
             try
             {
-                return _fileManager.ReadImageFromDatabase(thumbnail);
+                return _fileManager.ReadRawImageFromDatabase(thumbnail);
             }
             catch (Exception ex)
             {
@@ -421,7 +341,7 @@ namespace ImageViewer.Managers
 
         private void AddImageToCache(RawImage img, string path, string fileName)
         {
-            _thumbnailRepository.
+            _thumbnailRepository.AddThumbnailItem(new ThumbnailEntry());
         }
 
         public long GetThumbnailDbFileSize()
@@ -475,6 +395,16 @@ namespace ImageViewer.Managers
             }
 
             return true;
+        }
+
+        public bool SaveThumbnailDatabase()
+        {
+            return _thumbnailRepository.SaveThumbnailDatabase();
+        }
+
+        public void OptimizeDatabase()
+        {
+            _thumbnailRepository.OptimizeDatabase();
         }
     }
 }

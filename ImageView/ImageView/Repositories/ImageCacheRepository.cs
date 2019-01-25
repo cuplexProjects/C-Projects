@@ -17,25 +17,25 @@ namespace ImageViewer.Repositories
         private readonly Dictionary<string, CachedImage> _cachedImages;
         private readonly ImageFactory _imageFactory;
         private long _cacheSize;
-        private long _maxCachSize;
-        private bool _cachSizeIsValid = false;
+        private long _maxCacheSize;
+        private bool _cacheSizeIsValid = false;
 
 
         public ImageCacheRepository()
         {
             _cachedImages = new Dictionary<string, CachedImage>();
             _imageFactory = new ImageFactory();
-            _maxCachSize = ImageCacheService.DefaultCacheSize;
+            _maxCacheSize = ImageCacheService.DefaultCacheSize;
         }
 
         public long CacheSize
         {
             get
             {
-                if (!_cachSizeIsValid)
+                if (!_cacheSizeIsValid)
                 {
                     _cacheSize = _cachedImages.Select(x => x.Value.Size).Sum();
-                    _cachSizeIsValid = true;
+                    _cacheSizeIsValid = true;
                 }
 
                 return _cacheSize;
@@ -61,7 +61,7 @@ namespace ImageViewer.Repositories
             var imageModel = new CachedImage();
             imageModel.SetImage(ImageConverter, fileName);
             _cachedImages.Add(fileName, imageModel);
-            _cachSizeIsValid = false;
+            _cacheSizeIsValid = false;
             return imageModel;
         }
 
@@ -98,13 +98,13 @@ namespace ImageViewer.Repositories
                 TruncateCache(truncatePriority);
             }
 
-            _maxCachSize = cacheSize;
+            _maxCacheSize = cacheSize;
 
         }
         private void TruncateCache(ImageCacheService.CacheTruncatePriority truncatePriority)
         {
-            _cachSizeIsValid = false;
-            long truncatedSize = Convert.ToInt64((double)_maxCachSize * 0.75d);
+            _cacheSizeIsValid = false;
+            long truncatedSize = Convert.ToInt64((double)_maxCacheSize * 0.75d);
 
             if (truncatePriority == ImageCacheService.CacheTruncatePriority.RemoveOldest)
             {
@@ -112,7 +112,7 @@ namespace ImageViewer.Repositories
                 {
                     string oldestImageFilename = _cachedImages.Values.OrderByDescending(x => x.AddedToCacheTime).First().Filename;
                     _cachedImages.Remove(oldestImageFilename);
-                    _cachSizeIsValid = false;
+                    _cacheSizeIsValid = false;
                 }
             }
             else
@@ -121,7 +121,7 @@ namespace ImageViewer.Repositories
                 {
                     string oldestImageFilename = _cachedImages.Values.OrderByDescending(x => x.Size).First().Filename;
                     _cachedImages.Remove(oldestImageFilename);
-                    _cachSizeIsValid = false;
+                    _cacheSizeIsValid = false;
                 }
             }
         }

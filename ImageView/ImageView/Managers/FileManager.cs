@@ -41,7 +41,7 @@ namespace ImageViewer.Managers
 
 
 
-        public RawImage ReadRawImageFromDatabase(ThumbnailEntry thumbnail)
+        public RawImage ReadRawImageFromDatabase(ThumbnailEntryModel thumbnail)
         {
             lock (_fileOperationLock)
             {

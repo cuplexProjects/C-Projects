@@ -11,27 +11,8 @@ namespace ImageViewer.Services
     public sealed class ThumbnailService : ServiceBase, IDisposable
     {
         private readonly ThumbnailManager _thumbnailManager;
+
         private bool _isRunningScan;
-        public event EventHandler StartedThumbnailScan;
-        public event EventHandler CompletedThumbnailScan;
-
-        public bool IsRunningScan
-        {
-            get => _isRunningScan;
-            private set
-            {
-                if (_isRunningScan && !value)
-                {
-                    CompletedThumbnailScan?.Invoke(this, new EventArgs());
-                }
-                else
-                {
-                    StartedThumbnailScan?.Invoke(this, new EventArgs());
-                }
-
-                _isRunningScan = value;
-            }
-        }
 
         public ThumbnailService(ThumbnailManager thumbnailManager)
         {
@@ -40,27 +21,42 @@ namespace ImageViewer.Services
             BasePath = databaseDirectory;
         }
 
-        public string BasePath { get; private set; }
+        public bool IsRunningScan
+        {
+            get => _isRunningScan;
+            private set
+            {
+                if (_isRunningScan && !value)
+                    CompletedThumbnailScan?.Invoke(this, new EventArgs());
+                else
+                    StartedThumbnailScan?.Invoke(this, new EventArgs());
+
+                _isRunningScan = value;
+            }
+        }
+
+        public string BasePath { get; }
 
         public void Dispose()
         {
             _thumbnailManager.Dispose();
         }
 
+        public event EventHandler StartedThumbnailScan;
+        public event EventHandler CompletedThumbnailScan;
+
         public async void ScanDirectory(string path, bool scanSubdirectories)
         {
-            if (IsRunningScan)
-            {
-                return;
-            }
+            if (IsRunningScan) return;
             IsRunningScan = true;
             await _thumbnailManager.StartThumbnailScan(path, null, scanSubdirectories);
-            _thumbnailManager.SaveDatabase();
+            _thumbnailManager.StopThumbnailScan();
             IsRunningScan = false;
         }
 
         /// <summary>
-        /// Scans the directory asynchronous. Update 2018-01-02 Implemented multithreaded scan which should decrease execution time by a factor of 10
+        ///     Scans the directory asynchronous. Update 2018-01-02 Implemented multithreaded scan which should decrease execution
+        ///     time by a factor of 10
         /// </summary>
         /// <param name="path">The path.</param>
         /// <param name="progress">The progress.</param>
@@ -68,25 +64,22 @@ namespace ImageViewer.Services
         /// <returns></returns>
         public async Task ScanDirectoryAsync(string path, IProgress<ThumbnailScanProgress> progress, bool scanSubdirectories)
         {
-            if (IsRunningScan)
-            {
-                return;
-            }
+            if (IsRunningScan) return;
 
             try
             {
                 await Task.Factory.StartNew(() =>
-               {
-                   IsRunningScan = true;
-                   var scanTask = _thumbnailManager.StartThumbnailScan(path, progress, scanSubdirectories);
-                   Task.WaitAll(scanTask);
-                   _thumbnailManager.SaveThumbnailDatabase();
-                   IsRunningScan = false;
-               });
+                {
+                    IsRunningScan = true;
+                    var scanTask = _thumbnailManager.StartThumbnailScan(path, progress, scanSubdirectories);
+                    Task.WaitAll(scanTask);
+                    _thumbnailManager.SaveThumbnailDatabase();
+                    IsRunningScan = false;
+                });
             }
             catch (Exception ex)
             {
-                _thumbnailManager.CloseFileHandle();
+                _thumbnailManager.StopThumbnailScan();
                 Log.Error(ex, "Exception in ScanDirectoryAsync()");
                 IsRunningScan = false;
             }
@@ -97,23 +90,11 @@ namespace ImageViewer.Services
             _thumbnailManager.StopThumbnailScan();
         }
 
-        public void OptimizeDatabase()
+        public async Task OptimizeDatabaseAsync()
         {
-            _thumbnailManager.OptimizeDatabase();
+            await Task.Factory.StartNew(() => { _thumbnailManager.OptimizeDatabase(); });
         }
 
-        public async void OptimizeDatabaseAsync()
-        {
-            try
-            {
-                await Task.Run(() => { _thumbnailManager.OptimizeDatabase(); });
-            }
-            catch (Exception exception)
-            {
-                _thumbnailManager.CloseFileHandle();
-                Log.Error(exception, "Error in OptimizeDatabaseAsync()");
-            }
-        }
 
         public bool SaveThumbnailDatabase()
         {
@@ -127,17 +108,14 @@ namespace ImageViewer.Services
 
         public int GetNumberOfCachedThumbnails()
         {
-            if (!_thumbnailManager.IsLoaded)
-            {
-                _thumbnailManager.LoadThumbnailDatabase();
-            }
+            if (!_thumbnailManager.IsLoaded) _thumbnailManager.LoadThumbnailDatabase();
 
             return _thumbnailManager.GetNumberOfCachedThumbnails();
         }
 
         public Image GetThumbnail(string filename)
         {
-            return _thumbnailManager.GetThumbnail(filename);
+            return _thumbnailManager.LoadThumbnailImage(filename);
         }
 
         public long GetThumbnailDbSize()
@@ -151,7 +129,7 @@ namespace ImageViewer.Services
             {
                 if (_thumbnailManager.RemoveAllMissingFilesAndRecreateDb())
                 {
-                    OptimizeDatabase();
+                    _thumbnailManager.OptimizeDatabase();
                     return true;
                 }
             }
@@ -159,11 +137,12 @@ namespace ImageViewer.Services
             {
                 Log.Error(ex, "RemoveAllNonAccessableFilesAndSaveDb Exception");
             }
+
             return false;
         }
 
         /// <summary>
-        /// Truncates the size of the cache in Mb.
+        ///     Truncates the size of the cache in Mb.
         /// </summary>
         /// <param name="maxSize">The maximum size.</param>
         public bool TruncateCacheSize(long maxSize)
@@ -171,7 +150,7 @@ namespace ImageViewer.Services
             bool result;
             try
             {
-                result = _thumbnailManager.ReduceCachSize(maxSize);
+                result = _thumbnailManager.ReduceCacheSize(maxSize);
                 SaveThumbnailDatabase();
             }
             catch (Exception ex)
@@ -185,10 +164,7 @@ namespace ImageViewer.Services
 
         public bool ClearDatabase()
         {
-            if (IsRunningScan)
-            {
-                return false;
-            }
+            if (IsRunningScan) return false;
 
             return _thumbnailManager.ClearDatabase();
         }

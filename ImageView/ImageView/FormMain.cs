@@ -513,8 +513,8 @@ namespace ImageViewer
 
             //Notification Service
             _interactionService.Initialize(this);
-            _interactionService.UserInformationRecieved += _interactionService_UserInformationRecieved;
-            _interactionService.UserQuestionRecieved += _interactionService_UserQuestionRecieved;
+            _interactionService.UserInformationReceived += InteractionServiceUserInformationReceived;
+            _interactionService.UserQuestionReceived += InteractionServiceUserQuestionReceived;
         }
 
         private void FormThumbnailView_FormClosed(object sender, FormClosedEventArgs e)
@@ -548,12 +548,12 @@ namespace ImageViewer
             SyncUserControlStateWithAppSettings();
         }
 
-        private void _interactionService_UserQuestionRecieved(object sender, UserQuestionEventArgs e)
+        private void InteractionServiceUserQuestionReceived(object sender, UserQuestionEventArgs e)
         {
             Invoke(new NativeThreadFunctinUserQuestion(ShowQuestionOnNativeThread), this, e);
         }
 
-        private void _interactionService_UserInformationRecieved(object sender, UserInformationEventArgs e)
+        private void InteractionServiceUserInformationReceived(object sender, UserInformationEventArgs e)
         {
             Invoke(new NativeThreadFunctinUserInfo(ShowInfoMessageOnNativeThread), this, e);
         }

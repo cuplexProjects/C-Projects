@@ -329,9 +329,9 @@ namespace ImageViewer
         {
             SetUpdateDatabaseEnabledState(false);
 
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
-                _thumbnailService.OptimizeDatabase();
+                await _thumbnailService.OptimizeDatabaseAsync();
                 if (!IsDisposed)
                     Invoke(new EventHandler(OptimizeDatabaseComplete));
             });

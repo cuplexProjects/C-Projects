@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autofac;
+using AutoMapper;
 using GeneralToolkitLib.Configuration;
 using ImageViewer.Configuration;
 using ImageViewer.Managers;
@@ -26,6 +27,7 @@ namespace ImageViewer.UnitTests
     {
         private static readonly string TestDirectory = ContainerFactory.GetTestDirectory();
         private static readonly string[] TestImages = { "testImg.jpg", "testImg2.jpg", "testImg3.jpg" };
+        private readonly IMapper _mapper;
 
         private static IApplicationBuildConfig _applicationBuildConfig;
         private ThumbnailService _thumbnailService;
@@ -133,7 +135,7 @@ namespace ImageViewer.UnitTests
             File.Delete(TestDirectory + TestImages[0]);
 
             // Optimize DB
-            _thumbnailService.OptimizeDatabase();
+            _thumbnailService.OptimizeDatabaseAsync();
 
             // Verify that one thumbnail was removed
             Assert.IsTrue(_thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length - 1, "The thumbnail service did not remove a cached item");
@@ -156,7 +158,7 @@ namespace ImageViewer.UnitTests
             fs.Close();
 
             // Optimize DB
-            _thumbnailService.OptimizeDatabase();
+            _thumbnailService.OptimizeDatabaseAsync();
 
             // Verify that one thumbnail was removed
             Assert.IsTrue(_thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length - 1, "The thumbnail service did not remove a cached item");
@@ -195,9 +197,12 @@ namespace ImageViewer.UnitTests
             //applicationSettingsService.CompanyName.Returns(ContainerFactory.CompanyName);
             //applicationSettingsService.ProductName.Returns(ContainerFactory.ProductName);
             //applicationSettingsService.LoadSettings();
-            
+
+
             var fileManager = new FileManager(Path.Combine(TestDirectory, ContainerFactory.ThumbnailIndexFilename));
-            var thumbnailManager = new ThumbnailManager(fileManager);
+            ThumbnailRepository repository = Substitute.For<ThumbnailRepository>();
+
+            var thumbnailManager = new ThumbnailManager(repository, fileManager);
             _thumbnailService = new ThumbnailService(thumbnailManager);
 
 

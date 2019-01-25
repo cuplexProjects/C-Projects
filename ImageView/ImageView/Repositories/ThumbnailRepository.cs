@@ -113,9 +113,14 @@ namespace ImageViewer.Repositories
             }
         }
 
-        public bool ContainsCachedThumbnail(string fullPath)
+        public bool IsCached(string fullPath)
         {
             return _thumbnailDictionary.ContainsKey(fullPath);
+        }
+
+        public ThumbnailEntry GetThumbnailEntryFromCache(string fullPath)
+        {
+            return _thumbnailDictionary.ContainsKey(fullPath) ? _thumbnailDictionary[fullPath] : null;
         }
 
         public long GetFileCacheSize()
@@ -137,9 +142,9 @@ namespace ImageViewer.Repositories
 
             //Check for duplicates
             var query = (from t in _thumbnailDatabase.ThumbnailEntries
-                group t by new {EntryFilePath = t.Directory + t.FileName}
+                         group t by new { EntryFilePath = t.Directory + t.FileName }
                 into g
-                select new {FilePath = g.Key, Count = g.Count()}).ToList();
+                         select new { FilePath = g.Key, Count = g.Count() }).ToList();
 
             var duplicateKeys = query.Where(x => x.Count > 1).Select(x => x.FilePath.EntryFilePath).ToList();
 
@@ -169,26 +174,27 @@ namespace ImageViewer.Repositories
             return storageManager;
         }
 
-        public Image CreateThumbnail(string fullPath)
+
+
+        public Image GetThumbnailImage(string fullPath)
         {
-            if (!ContainsCachedThumbnail(fullPath))
+            if (IsCached(fullPath))
+            {
+                return _fileManager.ReadImageFromDatabase(_thumbnailDictionary[fullPath]);
+            }
+            else
             {
                 var result = CreateThumbnailEntry(fullPath);
-
-                while (!_thumbnailDictionary.ContainsKey(fullPath) && _thumbnailDictionary.TryAdd(fullPath, result.Item1)) Task.Delay(10);
-
                 return result.Item2;
             }
-
-
-            var image = _fileManager.ReadImageFromDatabase(_thumbnailDictionary[fullPath]);
-
-            return image;
         }
 
-        public Image GetThumbnail(string fullPath)
+        public ThumbnailEntryModel GeThumbnailEntry(string fullPath)
         {
-            return CreateThumbnail(fullPath);
+            ThumbnailEntry entry = GetThumbnailEntryFromCache(fullPath);
+            ThumbnailEntryModel model = _mapper.Map<ThumbnailEntryModel>(entry);
+
+            return model;
         }
 
         private Tuple<ThumbnailEntry, Image> CreateThumbnailEntry(string fileName)
@@ -324,16 +330,14 @@ namespace ImageViewer.Repositories
 
         public bool RemoveAllEntriesNotLocatedOnDisk()
         {
-            var nonExistingFiles= new Queue<ThumbnailEntry>();
+            var nonExistingFiles = new Queue<ThumbnailEntry>();
 
             if (nonExistingFiles.Count > 0)
             {
                 _fileManager.LockDatabase();
-                while (nonExistingFiles.Count>0)
+                while (nonExistingFiles.Count > 0)
                 {
                     var item = nonExistingFiles.Dequeue();
-
-
                 }
 
                 _fileManager.UnlockDatabase();
