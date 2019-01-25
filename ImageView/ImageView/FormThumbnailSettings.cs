@@ -29,6 +29,7 @@ namespace ImageViewer
 
         private void FormThumbnailSettings_Load(object sender, EventArgs e)
         {
+            _thumbnailService.LoadThumbnailDatabase();
             UpdateInformationLabels();
             lblInfo.Text = "Progress Information.";
         }
@@ -40,21 +41,21 @@ namespace ImageViewer
             lblCachedItems.Text = thumbnailItems > 0 ? _thumbnailService.GetNumberOfCachedThumbnails().ToString() : "n/a";
         }
 
-        private void BtnRunDefragJob_Click(object sender, EventArgs e)
+        private async void BtnRunDefragJob_Click(object sender, EventArgs e)
         {
             btnRunDefragmentJob.Enabled = false;
-            _thumbnailService.OptimizeDatabaseAsync();
+            await _thumbnailService.OptimizeDatabaseAsync();
             btnRunDefragmentJob.Enabled = true;
             UpdateInformationLabels();
         }
 
         private void btnClearDatabase_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to completly remove the thumbnail cache?", "Confirm delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show("Are you sure you want to completely remove the thumbnail cache?", "Confirm delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
                 if (_thumbnailService.ClearDatabase())
                 {
-                    MessageBox.Show("Successfuly cleared the Thumbnail database.", "Database cleared", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Successively cleared the Thumbnail database.", "Database cleared", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {

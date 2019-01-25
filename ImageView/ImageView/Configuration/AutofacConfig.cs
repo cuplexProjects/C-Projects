@@ -10,11 +10,11 @@ namespace ImageViewer.Configuration
         {
             var builder = new ContainerBuilder();
             var thisAssembly = Assembly.GetCallingAssembly();
-            Assembly[] coreAssemlies = new Assembly[2];
+            Assembly[] coreAssemblies = new Assembly[2];
             var generalToolKitAssembly = AssemblyHelper.GetAssembly();
 
-            coreAssemlies[0] = thisAssembly;
-            coreAssemlies[1] = generalToolKitAssembly;
+            coreAssemblies[0] = thisAssembly;
+            coreAssemblies[1] = generalToolKitAssembly;
            
             if (generalToolKitAssembly != null)
             {

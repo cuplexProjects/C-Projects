@@ -98,6 +98,7 @@ namespace ImageViewer.Repositories
                 TruncateCache(truncatePriority);
             }
 
+            _cacheSize = cacheSize;
             _maxCacheSize = cacheSize;
 
         }

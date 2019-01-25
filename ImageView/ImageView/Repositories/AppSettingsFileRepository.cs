@@ -1,30 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Threading;
+using Castle.Components.DictionaryAdapter;
 using GeneralToolkitLib.Configuration;
-using GeneralToolkitLib.Hashing;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
 using ImageViewer.DataContracts;
+using ImageViewer.Utility;
 using JetBrains.Annotations;
 using Serilog;
+using SHA256 = GeneralToolkitLib.Hashing.SHA256;
 
 namespace ImageViewer.Repositories
 {
     [UsedImplicitly]
-    public class AppSettingsFileRepository : RepositoryBase
+    public sealed class AppSettingsFileRepository : RepositoryBase
     {
         private const string AppSettingsFilename = "localSettings.dat";
-        private const string AppSettingsPassword = "F9BB2AED-BA1D-46AF-9FFE-4B69610C9BE1";
+        private const string AppSettingsPassword = "kTntQYxg4eQSkDiJnev/qoO9Dm9MrpGKbp7WQ/QfaEeP9j48HtvZ8pji/YXQ2ejx";
 
-        private bool _saveInProgress;
-        private bool _loadInProgress;
+        private bool _dataFileLocked;
 
         public event EventHandler LoadSettingsCompleted;
         public event EventHandler SaveSettingsCompleted;
-        private bool _isDirty;
 
         private ImageViewApplicationSettings _appSettings;
-
+        private readonly ManualResetEvent _fileAccessWaitHandle;
 
 
         public ImageViewApplicationSettings AppSettings
@@ -33,13 +36,19 @@ namespace ImageViewer.Repositories
             {
                 if (_appSettings == null)
                 {
-                    throw new ApplicationException("AppSettingsFileStoreDataModel AppSettings was null when accessing it. Meaning fetching settings before they are loaded");
+                    LoadSettings();
                 }
                 return _appSettings;
             }
         }
 
-        public bool IsDirty { get => _isDirty; private set => _isDirty = value; }
+        public AppSettingsFileRepository()
+        {
+            _fileAccessWaitHandle = new ManualResetEvent(false);
+            _fileAccessWaitHandle.Set();
+        }
+
+        public bool IsDirty { get; private set; }
 
         public void NotifySettingsChanged()
         {
@@ -48,41 +57,62 @@ namespace ImageViewer.Repositories
 
         public bool SaveSettings()
         {
-            if (!IsDirty || _saveInProgress)
+            if (!IsDirty)
             {
                 return false;
             }
 
+            _fileAccessWaitHandle.WaitOne(TimeSpan.FromSeconds(5));
+            if (_dataFileLocked)
+                return false;
+
             return SaveSettingsInternal();
+        }
+
+        public bool LoadSettings()
+        {
+            _fileAccessWaitHandle.WaitOne(TimeSpan.FromSeconds(7.5));
+            if (_dataFileLocked)
+                return false;
+
+            return LoadSettingsInternal();
+
         }
 
         private bool SaveSettingsInternal()
         {
+            if (_dataFileLocked)
+            {
+                return false;
+            }
 
             bool result = false;
-            _saveInProgress = true;
+            _dataFileLocked = true;
+            _fileAccessWaitHandle.Reset();
 
             try
             {
                 string path = GetFullPathToSettingsFile();
 
-                var storageManager = new StorageManager(new StorageManagerSettings(false, 1, true, SHA256.GetSHA256HashAsHexString(AppSettingsPassword)));
+                var storageManager = new StorageManager(new StorageManagerSettings(false, 1, true, SecurityHelper.GetSecurePassword(AppSettingsPassword)));
                 result = storageManager.SerializeObjectToFile(_appSettings, path, null);
                 if (result)
                 {
                     IsDirty = false;
-                    SaveSettingsCompleted?.Invoke(this, EventArgs.Empty);
+                    OnSaveSettingsCompleted();
                 }
 
             }
             catch (Exception exception)
             {
                 Log.Error(exception, "AppSettingsFileRepository SaveSettings Exception: {Message}", exception.Message);
-                _saveInProgress = false;
+                _dataFileLocked = false;
             }
             finally
             {
-                _saveInProgress = false;
+
+                _dataFileLocked = false;
+                _fileAccessWaitHandle.Set();
             }
 
             return result;
@@ -94,9 +124,10 @@ namespace ImageViewer.Repositories
             {
                 string path = GetFullPathToSettingsFile();
 
-                var storageManager = new StorageManager(new StorageManagerSettings(false, 1, true, SHA256.GetSHA256HashAsHexString(AppSettingsPassword)));
+                var storageManager = new StorageManager(new StorageManagerSettings(false, 1, true, SecurityHelper.GetSecurePassword(AppSettingsPassword)));
                 storageManager.SerializeObjectToFile(_appSettings, path, null);
                 IsDirty = false;
+                OnSaveSettingsCompleted();
             }
             catch (Exception exception)
             {
@@ -105,25 +136,17 @@ namespace ImageViewer.Repositories
         }
 
 
-        public bool LoadSettings()
-        {
-            if (IsDirty && !(_saveInProgress || _loadInProgress))
-            {
-                SaveSettings();
-            }
 
-            return LoadSettingsInternal();
-
-        }
         private bool LoadSettingsInternal()
         {
-            if (_loadInProgress)
+            if (_dataFileLocked)
             {
                 return false;
             }
 
-            _loadInProgress = true;
-            bool unsuccessful;
+            _dataFileLocked = true;
+            _fileAccessWaitHandle.Reset();
+            bool result;
 
             try
             {
@@ -135,36 +158,75 @@ namespace ImageViewer.Repositories
                 }
                 else
                 {
-                    var storageManager = new StorageManager(new StorageManagerSettings(false, 1, true, SHA256.GetSHA256HashAsHexString(AppSettingsPassword)));
-                    _appSettings = storageManager.DeserializeObjectFromFile<ImageViewApplicationSettings>(path, null);
-
-                    if (_appSettings.ExtendedAppSettings.FormStateDictionary == null)
+                    while (_appSettings == null)
                     {
-                        _appSettings.ExtendedAppSettings.InitFormDictionary();
+                        try
+                        {
+
+                            var storageManager = new StorageManager(new StorageManagerSettings(false, 1, true, SecurityHelper.GetSecurePassword(AppSettingsPassword)));
+                            _appSettings = storageManager.DeserializeObjectFromFile<ImageViewApplicationSettings>(path, null);
+
+                            if (_appSettings.ExtendedAppSettings.FormStateDictionary == null)
+                            {
+                                _appSettings.ExtendedAppSettings.InitFormDictionary();
+                            }
+                        }
+                        catch
+                        {
+                            File.Delete(path);
+                            _appSettings = ImageViewApplicationSettings.CreateDefaultSettings();
+                            SaveNewSettings();
+                        }
                     }
+
                 }
 
                 IsDirty = false;
-                unsuccessful = true;
+                result = true;
             }
             catch (Exception exception)
             {
                 Log.Error(exception, "Exception in AppSettingsFileRepository LoadSettingsAsync {Message}", exception.Message);
-                unsuccessful = false;
+                result = false;
             }
             finally
             {
-                _loadInProgress = false;
-                LoadSettingsCompleted?.Invoke(this, EventArgs.Empty);
+                _dataFileLocked = false;
+                ValidateLoadedSettings();
+                _fileAccessWaitHandle.Set();
+                OnLoadSettingsCompleted();
             }
 
-            return unsuccessful;
+            return result;
+        }
+
+        private void ValidateLoadedSettings()
+        {
+            if (_appSettings.LastUsedSearchPaths == null)
+            {
+                _appSettings.LastUsedSearchPaths= new List<string>();
+            }
+
+            if (_appSettings.LastFolderLocation == null)
+            {
+                _appSettings.LastFolderLocation = "c:\\";
+            }
         }
 
 
         private string GetFullPathToSettingsFile()
         {
             return Path.Combine(ApplicationBuildConfig.UserDataPath, AppSettingsFilename);
+        }
+
+        private void OnLoadSettingsCompleted()
+        {
+            LoadSettingsCompleted?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnSaveSettingsCompleted()
+        {
+            SaveSettingsCompleted?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -19,7 +19,21 @@ namespace ImageViewer.Services
         public ImageCacheService(ApplicationSettingsService applicationSettingsService, ImageCacheRepository imageCacheRepository)
         {
             _imageCacheRepository = imageCacheRepository;
+            if (_imageCacheRepository.CacheSize < MinCacheSize)
+            {
+                _imageCacheRepository.SetCacheSize(MinCacheSize, CacheTruncatePriority.RemoveLargest);
+                applicationSettingsService.SaveSettings();
+            }
             applicationSettingsService.OnSettingsSaved += _applicationSettingsService_OnSettingsChanged;
+            applicationSettingsService.OnSettingsLoaded += ApplicationSettingsService_OnSettingsLoaded;
+        }
+
+        private void ApplicationSettingsService_OnSettingsLoaded(object sender, EventArgs e)
+        {
+            if (sender is ApplicationSettingsService appSettingsService)
+            {
+                CacheSize = appSettingsService.Settings.ImageCacheSize;
+            }
         }
 
         private void _applicationSettingsService_OnSettingsChanged(object sender, EventArgs e)

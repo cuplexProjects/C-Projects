@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Encryption;
+using ImageViewer.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SHA256 = GeneralToolkitLib.Hashing.SHA256;
 
@@ -101,6 +102,14 @@ namespace ImageViewer.UnitTests
 
             Console.WriteLine(sb.ToString());
 
+        }
+
+        [TestMethod]
+        public void GenerateArbitraryLengthOfSalt()
+        {
+            string result=SecurityHelper.GenerateSalt(128);
+
+            Console.WriteLine(result);
         }
 
         [TestMethod]

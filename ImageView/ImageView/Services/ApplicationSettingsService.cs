@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Storage.Registry;
 using ImageViewer.DataContracts;
 using ImageViewer.Interfaces;
 using ImageViewer.Library.EventHandlers;
 using ImageViewer.Models;
-using ImageViewer.Properties;
 using ImageViewer.Repositories;
 using ImageViewer.Storage;
 using ImageViewer.Utility;
@@ -22,29 +18,31 @@ namespace ImageViewer.Services
     public class ApplicationSettingsService : ServiceBase, IExceptionEventHandler
     {
         private readonly IRegistryAccess _registryRepository;
+        private AppSettingsFileRepository _fileRepository;
 
         public string CompanyName { get; } = Application.CompanyName;
 
         public string ProductName { get; } = Application.ProductName;
 
-        private readonly AppSettingsFileRepository _appSettingsFileRepository;
+        
         private ImageViewApplicationSettings _applicationSettings;
         private RegistryAppSettings _registryAppSettings;
 
 
-        public ApplicationSettingsService(AppSettingsFileRepository appSettingsFileRepository, IRegistryAccess registryRepository)
+        public ApplicationSettingsService(AppSettingsFileRepository appSettingsFileRepository, IRegistryAccess registryAccess)
         {
-            _registryRepository = registryRepository;
-            _appSettingsFileRepository = appSettingsFileRepository;
+            _registryRepository = registryAccess;
+            _fileRepository = appSettingsFileRepository;
+
             try
             {
-                bool result = _appSettingsFileRepository.LoadSettings();
+                bool result = _fileRepository.LoadSettings();
                 if (!result)
                 {
-                    
-                    _appSettingsFileRepository= new AppSettingsFileRepository();
+                    _fileRepository = new AppSettingsFileRepository();
                 }
-                result =result& _registryRepository.TryReadObjectFromRegistry(out _registryAppSettings);
+
+                result = result & _registryRepository.TryReadObjectFromRegistry(out _registryAppSettings);
                 if (!result || _registryAppSettings == null)
                 {
                     _registryAppSettings = RegistryAppSettings.CreateNew(ProductName, CompanyName);
@@ -61,14 +59,14 @@ namespace ImageViewer.Services
 
             }
 
-            _appSettingsFileRepository.LoadSettingsCompleted += _appSettingsFileRepository_LoadSettingsCompleted;
+            _fileRepository.LoadSettingsCompleted += _appSettingsFileRepository_LoadSettingsCompleted;
         }
 
 
         // Unit tests
-        public static ApplicationSettingsService CreateService(AppSettingsFileRepository appSettingsFileRepository, LocalStorageRegistryAccess localStorageRegistry)
+        public static ApplicationSettingsService CreateService(AppSettingsFileRepository appSettingsFileRepository)
         {
-            return new ApplicationSettingsService(appSettingsFileRepository, localStorageRegistry);
+            return new ApplicationSettingsService(appSettingsFileRepository,new LocalStorageRegistryAccess(Application.CompanyName,Application.ProductName));
         }
 
 
@@ -76,9 +74,12 @@ namespace ImageViewer.Services
         {
             get
             {
-                if (_applicationSettings == null)
+                while (_applicationSettings == null)
                 {
-                    throw new InvalidOperationException();
+                    if (!LoadLocalStorageSettings())
+                        throw new InvalidOperationException();
+
+                    LoadLocalStorageSettings();
                 }
 
                 return _applicationSettings;
@@ -86,13 +87,14 @@ namespace ImageViewer.Services
             private set { _applicationSettings = value; }
         }
 
-        public RegistryAppSettings RegistryAppSettings
+        public RegistryAppSettings AppSettingsRepository
         {
             get
             {
                 if (_registryAppSettings == null)
                 {
-                    throw new InvalidOperationException();
+                    if (!LoadRegistrySettings())
+                        throw new InvalidOperationException();
                 }
                 return _registryAppSettings;
             }
@@ -109,21 +111,37 @@ namespace ImageViewer.Services
 
             try
             {
+                LoadRegistrySettings();
+                LoadLocalStorageSettings();
                 OnSettingsLoaded?.Invoke(this, EventArgs.Empty);
                 loadedSuccessively = true;
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "ErrorLoading Appsettings");
+                Log.Error(ex, "ErrorLoading AppSettings");
             }
 
             return loadedSuccessively;
         }
 
+        private bool LoadRegistrySettings()
+        {
+            _registryAppSettings = _registryRepository.ReadObjectFromRegistry<RegistryAppSettings>();
+            return _registryAppSettings != null;
+        }
+
+        private bool LoadLocalStorageSettings()
+        {
+            if (_applicationSettings != null && !_fileRepository.IsDirty)
+                return true;
+
+            return _fileRepository.LoadSettings();
+        }
+
 
         private void _appSettingsFileRepository_LoadSettingsCompleted(object sender, EventArgs e)
         {
-            //FileStoredSettings = _appSettingsFileRepository.AppSettings;
+            _applicationSettings = _fileRepository.AppSettings;
         }
         public bool SaveSettings()
         {
@@ -136,7 +154,7 @@ namespace ImageViewer.Services
 
             try
             {
-                result = result & _appSettingsFileRepository.SaveSettings();
+                result = result & _fileRepository.SaveSettings();
                 Settings.RemoveDuplicateEntriesWithIgnoreCase();
                 _registryRepository.SaveObjectToRegistry(Settings);
 
@@ -156,7 +174,7 @@ namespace ImageViewer.Services
         public void RegisterFormStateOnClose(Form form)
         {
             string formName = form.GetType().Name;
-            var fileDbAppSettings = _appSettingsFileRepository.AppSettings;
+            var fileDbAppSettings = _fileRepository.AppSettings;
             bool existingForm = fileDbAppSettings.ExtendedAppSettings.FormStateDictionary.Any(x => x.Key == formName);
             if (existingForm)
             {
@@ -168,8 +186,8 @@ namespace ImageViewer.Services
                 fileDbAppSettings.ExtendedAppSettings.FormStateDictionary.Add(formName, formState);
             }
 
-            _appSettingsFileRepository.NotifySettingsChanged();
-            _appSettingsFileRepository.SaveSettings();
+            _fileRepository.NotifySettingsChanged();
+            _fileRepository.SaveSettings();
         }
     }
 }

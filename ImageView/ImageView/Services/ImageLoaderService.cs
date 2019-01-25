@@ -173,9 +173,9 @@ namespace ImageViewer.Services
         private bool UserHasReadAccessToDirectory(DirectoryInfo directoryInfo)
         {
             DirectorySecurity dSecurity = directoryInfo.GetAccessControl();
-            AuthorizationRuleCollection authorizarionRuleCollecion = dSecurity.GetAccessRules(true, true, typeof(SecurityIdentifier));
+            AuthorizationRuleCollection authorizationRuleCollection = dSecurity.GetAccessRules(true, true, typeof(SecurityIdentifier));
 
-            foreach (FileSystemAccessRule fsAccessRules  in authorizarionRuleCollecion)
+            foreach (FileSystemAccessRule fsAccessRules  in authorizationRuleCollection)
             {
                 if (_winId.UserClaims.Any(c => c.Value == fsAccessRules.IdentityReference.Value) &&
                     fsAccessRules.FileSystemRights.HasFlag(FileSystemRights.ListDirectory) &&

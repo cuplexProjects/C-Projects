@@ -212,6 +212,7 @@ namespace ImageViewer
             long cacheUsage = _imageCacheService.CacheSize;
             const long maxSize = ImageCacheService.MaxCacheSize;
             const long minSize = ImageCacheService.MinCacheSize;
+            pbarPercentUsed.Maximum = (int)cacheSize;
 
             lblCacheItems.Text = _imageCacheService.CachedImages.ToString();
             lblUsedSpace.Text = GeneralConverters.FormatFileSizeToString(cacheUsage, 2);

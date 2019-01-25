@@ -21,9 +21,9 @@ namespace ImageViewer.Services
         public async Task<bool> IsLatestVersion()
         {
             var latestVersion = await GetLatestVersion();
-            var curentVersion = ApplicationVersion.Parse(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            var currentVersion = ApplicationVersion.Parse(Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
-            return curentVersion.CompareTo(latestVersion) >= 0;
+            return currentVersion.CompareTo(latestVersion) >= 0;
         }
 
         public async Task DownloadAndRunLatestVersionInstaller()

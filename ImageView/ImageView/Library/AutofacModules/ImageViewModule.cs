@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
 using Autofac;
+using Autofac.Core;
 using AutoMapper;
 using GeneralToolkitLib.Storage.Memory;
+using GeneralToolkitLib.Storage.Registry;
 using ImageViewer.Managers;
 using ImageViewer.Repositories;
 using ImageViewer.Services;
@@ -28,12 +31,41 @@ namespace ImageViewer.Library.AutofacModules
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .SingleInstance();
-            
+
             builder.RegisterAssemblyTypes(typeof(RepositoryBase).Assembly)
                 .AssignableTo<RepositoryBase>()
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .SingleInstance();
+
+
+            builder.RegisterType<RegistryAccess>()
+                .As<IRegistryAccess>()
+                .SingleInstance()
+                .WithParameters(new List<Parameter>()
+                {
+                    new NamedParameter("companyName", Application.CompanyName), new NamedParameter("companyName", Application.ProductName),
+                    new NamedParameter("productName", Application.ProductName), new NamedParameter("productName", Application.ProductName)
+                });
+
+
+
+
+
+
+            //new ResolvedParameter(
+            //(pi, ctx) => pi.ParameterType == typeof(string) && pi.Name == "CompanyName",
+            //(pi, ctx) => Application.CompanyName),
+            //(new ResolvedParameter(
+            //    (pi, ctx) => pi.ParameterType == typeof(string) && pi.Name == "CompanyName",
+            //    (pi, ctx) => Application.CompanyName)); 
+
+
+            //builder.RegisterType<RegistryAccess>()
+            //    .As<IRegistryAccess>()
+            //    .SingleInstance()
+            //    .WithParameter("helper", new RegistryAccess(Application.CompanyName, Application.ProductName));
+
 
             builder.Register(context => context.Resolve<MapperConfiguration>()
                     .CreateMapper())
@@ -42,16 +74,21 @@ namespace ImageViewer.Library.AutofacModules
                 .SingleInstance();
 
             builder.Register(Configure)
-                .AutoActivate()
-                .AsSelf()
-                .AsImplementedInterfaces()
-                .SingleInstance();
+                            .AutoActivate()
+                            .AsSelf()
+                            .AsImplementedInterfaces()
+                            .SingleInstance();
 
             var assembly = Assembly.GetExecutingAssembly();
             builder.RegisterAssemblyTypes(assembly)
-                .AssignableTo<Form>()
-                .AsSelf()
-                .InstancePerDependency();
+                            .AssignableTo<Form>()
+                            .AsSelf()
+                            .InstancePerDependency();
+        }
+
+        private void Handler(IActivatingEventArgs<IRegistryAccess> obj)
+        {
+            obj.ReplaceInstance(new RegistryAccess(Application.CompanyName, Application.ProductName));
         }
 
         private static MapperConfiguration Configure(IComponentContext context)

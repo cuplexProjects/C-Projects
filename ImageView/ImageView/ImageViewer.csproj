@@ -156,6 +156,7 @@
     <Compile Include="DataContracts\RectangleDataModel.cs" />
     <Compile Include="DataContracts\SizeDataModel.cs" />
     <Compile Include="Library\AutomapperProfile\ImageViewMapperProfile.cs" />
+    <Compile Include="Models\Interface\IAppSettingsRepository.cs" />
     <Compile Include="Models\ThumbnailDatabase.cs" />
     <Compile Include="DataContracts\ThumbnailDatabaseModel.cs" />
     <Compile Include="DataContracts\ThumbnailEntryModel.cs" />
@@ -399,6 +400,7 @@
     <Compile Include="UserControls\ThumbnailSettings.Designer.cs">
       <DependentUpon>ThumbnailSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ContainerManager.cs" />
     <Compile Include="Utility\DelayOperation.cs" />
     <Compile Include="Utility\FormFactory.cs" />
     <Compile Include="Utility\ImageProcessHelper.cs" />
@@ -407,6 +409,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\SortableBindingList.cs" />
     <Compile Include="Utility\RestoreFormState.cs" />
+    <Compile Include="Utility\SecurityHelper.cs" />
     <Compile Include="Utility\SystemIOHelper.cs" />
     <Compile Include="Utility\UIHelper.cs" />
     <Compile Include="Utility\WindowsAPICalls.cs" />

@@ -39,11 +39,17 @@ namespace ImageViewer
             using (var scope = Container.BeginLifetimeScope())
             {
                 // Begin startup async jobs
-                var startupService = scope.Resolve<StartupService>();
                 ApplicationSettingsService settingsService = scope.Resolve<ApplicationSettingsService>();
+                var startupService = scope.Resolve<StartupService>();
 
-                bool readSuccessfull = settingsService.LoadSettings();
-                
+                bool readSuccessful = settingsService.LoadSettings();
+
+                if (!readSuccessful)
+                {
+                    string userDataPath = GlobalSettings.GetUserDataDirectoryPath();
+                    Log.Error("Failed to load application settings on program load. User data path {userDataPath}", userDataPath);
+                }
+
 
                 startupService.ScheduleAndRunStartupJobs();
                 try
@@ -57,7 +63,7 @@ namespace ImageViewer
                 }
 
 
-                
+
                 //settingsService.SaveSettings();
             }
 

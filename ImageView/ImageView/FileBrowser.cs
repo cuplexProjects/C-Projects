@@ -16,7 +16,7 @@ namespace ImageViewer
     public partial class FileBrowser : Form
     {
         private string _selectedPath;
-        private bool enableLoadFormOnEnterKey = true;
+        private bool _enableLoadFormOnEnterKey = true;
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly ImageLoaderService _imageLoaderService;
         private readonly ILifetimeScope _scope;
@@ -24,6 +24,7 @@ namespace ImageViewer
         public FileBrowser(ApplicationSettingsService applicationSettingsService, ImageLoaderService imageLoaderService, Autofac.ILifetimeScope scope)
         {
             _applicationSettingsService = applicationSettingsService;
+            _applicationSettingsService.LoadSettings();
             _imageLoaderService = imageLoaderService;
             _scope = scope;
             InitializeComponent();
@@ -149,7 +150,7 @@ namespace ImageViewer
 
             if (_imageLoaderService.ImageReferenceList != null)
                 dataGridViewLoadedImages.DataSource = GetSortableBindingSource();
-            DelayOperation.DelayAction(delegate { enableLoadFormOnEnterKey = true; }, 2000);
+            DelayOperation.DelayAction(delegate { _enableLoadFormOnEnterKey = true; }, 2000);
         }
 
         private SortableBindingList<ImageReferenceElement> GetSortableBindingSource()
@@ -235,9 +236,9 @@ namespace ImageViewer
 
         private void txtBaseDirectory_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter && enableLoadFormOnEnterKey)
+            if (e.KeyCode == Keys.Enter && _enableLoadFormOnEnterKey)
             {
-                enableLoadFormOnEnterKey = false;
+                _enableLoadFormOnEnterKey = false;
                 SelectedPath = txtBaseDirectory.Text;
                 OpenImporterForm(false);
                 e.Handled = true;

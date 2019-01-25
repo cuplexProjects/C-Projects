@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ImageViewer.DataContracts;
@@ -29,7 +28,6 @@ namespace ImageViewer
         private readonly FormAddBookmark _formAddBookmark;
         private readonly ApplicationSettingsService _applicationSettingsService;
         private readonly ImageCacheService _imageCacheService;
-        private int workerThreadId = 0;
 
         public FormThumbnailView(FormAddBookmark formAddBookmark, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService, ThumbnailService thumbnailService, ImageLoaderService imageLoaderService)
         {
@@ -93,22 +91,7 @@ namespace ImageViewer
 
             try
             {
-
-
-                var awaiter = Task.Factory.StartNew(delegate
-                {
-                    CleanupPictureControlObjects();
-                    workerThreadId = Thread.CurrentThread.ManagedThreadId;
-                    _pictureBoxList = GenerateThumbnails();
-                    if (!IsDisposed)
-                        Invoke(new EventHandler(UpdatePictureBoxList));
-                    _thumbnailService.SaveThumbnailDatabase();
-                    GC.Collect();
-                  
-                }).ConfigureAwait(true);
-
-
-
+                await Task.Factory.StartNew(BindAndLoadThumbnails);
             }
             catch (Exception ex)
             {
@@ -118,6 +101,18 @@ namespace ImageViewer
 
             btnGenerate.Enabled = true;
             Refresh();
+        }
+
+        private void BindAndLoadThumbnails()
+        {
+            CleanupPictureControlObjects();
+            _pictureBoxList = GenerateThumbnails();
+
+            if (!IsDisposed)
+                Invoke(new EventHandler(UpdatePictureBoxList));
+
+            _thumbnailService.SaveThumbnailDatabase();
+            GC.Collect();
         }
 
         private void CleanupPictureControlObjects()

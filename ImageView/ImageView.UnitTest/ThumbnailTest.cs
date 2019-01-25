@@ -189,7 +189,7 @@ namespace ImageViewer.UnitTests
         {
             var appSettingsFileRepository = new AppSettingsFileRepository();
             appSettingsFileRepository.LoadSettings();
-            var applicationSettingsService = ApplicationSettingsService.CreateService(appSettingsFileRepository, new LocalStorageRegistryAccess(ContainerFactory.CompanyName, ContainerFactory.ProductName));
+            var applicationSettingsService = ApplicationSettingsService.CreateService(appSettingsFileRepository);
             applicationSettingsService.LoadSettings();
 
 

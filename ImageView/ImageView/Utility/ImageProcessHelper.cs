@@ -24,7 +24,7 @@ namespace ImageViewer.Utility
             ImgFactory.Reset();
             ImgFactory.Load(filePath);
             ImgFactory.Resize(size);
-            var img = ImgFactory.Image;
+            var img = ImgFactory.Image.Clone() as Image;
             ImgFactory.Reset();
 
             return img;

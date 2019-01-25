@@ -56,7 +56,7 @@ namespace ImageViewer.Services
                 task.Start();
             }
 
-            await Task.WhenAll(taskList);
+            await Task.WhenAll(taskList).ConfigureAwait(false);
         }
 
         private void EnqueueUpdateRequest()
@@ -86,9 +86,10 @@ namespace ImageViewer.Services
             });
         }
 
-        private async Task UpdateProgramJobAsync()
+        [NotNull]
+        private Task UpdateProgramJobAsync()
         {
-            await _updateService.DownloadAndRunLatestVersionInstaller();
+            return _updateService.DownloadAndRunLatestVersionInstaller();
         }
 
         private async Task<bool> TestJob()
