@@ -2,6 +2,7 @@
 using System.Reflection;
 using Autofac;
 using ImageViewer.Configuration;
+using AutofacConfig = ImageViewer.UnitTests.Configuration.AutofacConfig;
 
 namespace ImageViewer.UnitTests.TestHelper
 {
@@ -14,7 +15,7 @@ namespace ImageViewer.UnitTests.TestHelper
 
         public static IContainer BuildContainerForThumbnailTests()
         {
-            var thisAssembly = Assembly.GetCallingAssembly();
+            var thisAssembly = Assembly.GetExecutingAssembly();
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyModules(thisAssembly);
 

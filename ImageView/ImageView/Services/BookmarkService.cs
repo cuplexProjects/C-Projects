@@ -6,10 +6,12 @@ using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Storage.Memory;
 using GeneralToolkitLib.Utility.RandomGenerator;
 using ImageViewer.Managers;
+using JetBrains.Annotations;
 using Serilog;
 
 namespace ImageViewer.Services
 {
+    [UsedImplicitly]
     public sealed class BookmarkService : ServiceBase, IDisposable
     {
         private const string BookmarkFileName = "ImageViewBookmarks.dat";
@@ -38,7 +40,7 @@ namespace ImageViewer.Services
         {
             lock (LockObj)
             {
-                return OpenBookmarks(GetDefaultPassword());    
+                return OpenBookmarks(GetDefaultPassword());
             }
         }
 
@@ -64,7 +66,7 @@ namespace ImageViewer.Services
             lock (LockObj)
             {
                 string password = _passwordStorage.Get(_protectedMemoryStorageKey);
-                bool result = _bookmarkManager.SaveToFile(_directory + BookmarkFileName, password);
+                bool result = _bookmarkManager.SaveToFile(Path.Combine(_directory, BookmarkFileName), password);
                 Log.Debug("SaveBookmarks called with Result: {result}, SavedAsync: {savedAsync}, ManagedThreadId: {ManagedThreadId}", result, savedAsync, Thread.CurrentThread.ManagedThreadId);
 
                 return result;

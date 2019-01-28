@@ -21,20 +21,7 @@ namespace ImageViewer.Managers
 
         public BookmarkManager()
         {
-            _bookmarkContainer = new BookmarkContainer
-            {
-                ContainerId = Guid.NewGuid().ToString(),
-                LastUpdate = DateTime.Now,
-                RootFolder = new BookmarkFolder
-                {
-                    Name = "Root",
-                    Id = Guid.NewGuid().ToString(),
-                    Bookmarks = new List<Bookmark>(),
-                    SortOrder = 0,
-                    BookmarkFolders = new List<BookmarkFolder>()
-                }
-            };
-
+            _bookmarkContainer = CreateBookmarkContainer();
             RootFolder = _bookmarkContainer.RootFolder;
         }
 
@@ -50,6 +37,23 @@ namespace ImageViewer.Managers
         {
             IsModified = true;
             OnBookmarksUpdate?.Invoke(this, e);
+        }
+
+        private BookmarkContainer CreateBookmarkContainer()
+        {
+            return new BookmarkContainer
+            {
+                ContainerId = Guid.NewGuid().ToString(),
+                LastUpdate = DateTime.Now,
+                RootFolder = new BookmarkFolder
+                {
+                    Name = "Root",
+                    Id = Guid.NewGuid().ToString(),
+                    Bookmarks = new List<Bookmark>(),
+                    SortOrder = 0,
+                    BookmarkFolders = new List<BookmarkFolder>()
+                }
+            };
         }
 
         public bool SaveToFile(string filename, string password)
@@ -610,18 +614,18 @@ namespace ImageViewer.Managers
             return bookmarks;
         }
 
-        public void UpdateSortOrder(BookmarkFolder selectedBookmarkfolder, string sortBy, SortOrder sortOrder)
+        public void UpdateSortOrder(BookmarkFolder selectedBookmarkFolder, string sortBy, SortOrder sortOrder)
         {
-            var bookmarks = sortOrder == SortOrder.Ascending ? selectedBookmarkfolder.Bookmarks.OrderBy(o => o.GetType().GetProperty(sortBy)?.GetValue(o, null)).ToList() :
-                selectedBookmarkfolder.Bookmarks.OrderByDescending(o => o.GetType().GetProperty(sortBy)?.GetValue(o, null)).ToList();
-            
+            var bookmarks = sortOrder == SortOrder.Ascending ? selectedBookmarkFolder.Bookmarks.OrderBy(o => o.GetType().GetProperty(sortBy)?.GetValue(o, null)).ToList() :
+                selectedBookmarkFolder.Bookmarks.OrderByDescending(o => o.GetType().GetProperty(sortBy)?.GetValue(o, null)).ToList();
+
             for (int i = 0; i < bookmarks.Count; i++)
             {
                 bookmarks[i].SortOrder = i;
             }
         }
 
-        private IEnumerable<Bookmark> GetAllBookmarsWithIncorrectPath(BookmarkFolder rootFolder)
+        private IEnumerable<Bookmark> GetAllBookmarksWithIncorrectPath(BookmarkFolder rootFolder)
         {
             var bookmarkList = new List<Bookmark>();
 
@@ -635,9 +639,9 @@ namespace ImageViewer.Managers
 
             foreach (var bookmarkFolder in rootFolder.BookmarkFolders)
             {
-                bookmarkList.AddRange(GetAllBookmarsWithIncorrectPath(bookmarkFolder));
+                bookmarkList.AddRange(GetAllBookmarksWithIncorrectPath(bookmarkFolder));
             }
-            
+
             return bookmarkList;
         }
 
@@ -646,7 +650,7 @@ namespace ImageViewer.Managers
             var task = Task<int>.Factory.StartNew(() =>
             {
                 int filePathsCorrected = 0;
-                var brokenLinksList = GetAllBookmarsWithIncorrectPath(RootFolder);
+                var brokenLinksList = GetAllBookmarksWithIncorrectPath(RootFolder);
 
                 foreach (var bookmark in brokenLinksList)
                 {
@@ -679,6 +683,12 @@ namespace ImageViewer.Managers
             });
 
             return task;
+        }
+
+        public void ClearBookmarks()
+        {
+            _bookmarkContainer = CreateBookmarkContainer();
+            IsModified = true;
         }
     }
 }

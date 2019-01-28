@@ -9,7 +9,7 @@ using Serilog;
 
 namespace ImageViewer.Storage
 {
-    public class LocalStorageRegistryAccess : FileBasedProperyCollection, IRegistryAccess
+    public class LocalStorageRegistryAccess : FileBasedPropertyCollection, IRegistryAccess
     {
         private const string LocalStoragePassword = "!e#G[N8K-1?@c?]bh7QzhvQAh6pHbo-5m!RBGD6Z>DB6qOpv4@";
         private readonly string _localStorageFilePath;

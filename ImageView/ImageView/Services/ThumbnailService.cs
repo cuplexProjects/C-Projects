@@ -55,7 +55,7 @@ namespace ImageViewer.Services
         }
 
         /// <summary>
-        ///     Scans the directory asynchronous. Update 2018-01-02 Implemented multithreaded scan which should decrease execution
+        ///     Scans the directory asynchronous. Update 2018-01-02 Implemented multi threaded scan which should decrease execution
         ///     time by a factor of 10
         /// </summary>
         /// <param name="path">The path.</param>

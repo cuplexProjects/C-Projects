@@ -28,13 +28,17 @@ namespace ImageViewer.UnitTests
         private static readonly string TestDirectory = ContainerFactory.GetTestDirectory();
         private static readonly string[] TestImages = { "testImg.jpg", "testImg2.jpg", "testImg3.jpg" };
         private readonly IMapper _mapper;
+        private readonly IContainer _container;
+        private readonly ILifetimeScope _lifetimeScope;
 
         private static IApplicationBuildConfig _applicationBuildConfig;
         private ThumbnailService _thumbnailService;
 
         public ThumbnailTest()
         {
-
+            ApplicationBuildConfig.SetOverrideUserDataPath(TestDirectory);
+            _container = AutofacConfig.CreateContainer();
+            _lifetimeScope = _container.BeginLifetimeScope();
         }
 
         [ClassInitialize]
@@ -77,13 +81,15 @@ namespace ImageViewer.UnitTests
         [TestInitialize]
         public void ThumbnailTestInitialize()
         {
-            CreateThumbnailService();
+            CreateThumbnailService(_lifetimeScope);
         }
 
         [TestCleanup]
         public void ThumbnailTestCleanup()
         {
             _thumbnailService.Dispose();
+            _lifetimeScope.Dispose();
+            _container.Dispose();
         }
 
         private static void ClearTestDirectory()
@@ -125,7 +131,7 @@ namespace ImageViewer.UnitTests
         }
 
         [TestMethod]
-        public void ThumbnailOptimizeDatabaseAfterFileRemoval()
+        public async void ThumbnailOptimizeDatabaseAfterFileRemoval()
         {
 
             // Verify that there are testImages.Length thumbnails created
@@ -135,7 +141,7 @@ namespace ImageViewer.UnitTests
             File.Delete(TestDirectory + TestImages[0]);
 
             // Optimize DB
-            _thumbnailService.OptimizeDatabaseAsync();
+            await _thumbnailService.OptimizeDatabaseAsync();
 
             // Verify that one thumbnail was removed
             Assert.IsTrue(_thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length - 1, "The thumbnail service did not remove a cached item");
@@ -185,30 +191,26 @@ namespace ImageViewer.UnitTests
         }
 
 
-        private void CreateThumbnailService()
+        private void CreateThumbnailService(ILifetimeScope lifetimeScope)
         {
-            var appSettingsFileRepository = new AppSettingsFileRepository();
-            appSettingsFileRepository.LoadSettings();
-            var applicationSettingsService = ApplicationSettingsService.CreateService(appSettingsFileRepository);
-            applicationSettingsService.LoadSettings();
+            using (var scope = lifetimeScope.BeginLifetimeScope())
+            {
+                var appSettingsFileRepository = new AppSettingsFileRepository();
+                appSettingsFileRepository.LoadSettings();
+                var applicationSettingsService = ApplicationSettingsService.CreateService(appSettingsFileRepository);
+                applicationSettingsService.LoadSettings();
 
 
+                var fileManager = new FileManager(Path.Combine(TestDirectory, ContainerFactory.ThumbnailIndexFilename));
+                ThumbnailRepository repository = Substitute.For<ThumbnailRepository>();
 
-            //applicationSettingsService.CompanyName.Returns(ContainerFactory.CompanyName);
-            //applicationSettingsService.ProductName.Returns(ContainerFactory.ProductName);
-            //applicationSettingsService.LoadSettings();
-
-
-            var fileManager = new FileManager(Path.Combine(TestDirectory, ContainerFactory.ThumbnailIndexFilename));
-            ThumbnailRepository repository = Substitute.For<ThumbnailRepository>();
-
-            var thumbnailManager = new ThumbnailManager(repository, fileManager);
-            _thumbnailService = new ThumbnailService(thumbnailManager);
+                var thumbnailManager = new ThumbnailManager(repository, fileManager);
+                _thumbnailService = new ThumbnailService(thumbnailManager);
 
 
-            _thumbnailService.BasePath.Returns(_applicationBuildConfig.UserDataPath);
-            _thumbnailService.ScanDirectory(TestDirectory, false);
-
+                _thumbnailService.BasePath.Returns(_applicationBuildConfig.UserDataPath);
+                _thumbnailService.ScanDirectory(TestDirectory, false);
+            }
         }
     }
 }

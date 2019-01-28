@@ -10,7 +10,7 @@ namespace ImageViewer.Storage
     /// Thread Safe read and write to a file based property collection
     /// </summary>
     /// <seealso cref="System.IDisposable" />
-    public abstract class FileBasedProperyCollection : IDisposable
+    public abstract class FileBasedPropertyCollection : IDisposable
     {
         //In Minutes
         /// <summary>
@@ -41,20 +41,26 @@ namespace ImageViewer.Storage
         private bool _isDirty;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileBasedProperyCollection"/> class.
+        /// Initializes a new instance of the <see cref="FileBasedPropertyCollection"/> class.
         /// </summary>
-        protected FileBasedProperyCollection()
+        protected FileBasedPropertyCollection()
         {
+            var property = 1;
             _lastDatabaseSave = DateTime.Now;
             _backgroundWorker = new BackgroundWorker();
             _autoResetEvent = new AutoResetEvent(true);
             _backgroundWorker.DoWork += BackgroundWorker_DoWork;
             _updateTimer = new Timer(TimerCallback, null, -1, SaveToFileDelay * 60 * 1000);
+            _backgroundWorker.WorkerSupportsCancellation = true;
         }
 
         private void TimerCallback(object state)
         {
-            if (!_backgroundWorker.IsBusy) _backgroundWorker.RunWorkerAsync();
+            Thread.CurrentThread.Join();
+            if (!_backgroundWorker.IsBusy)
+            {
+                _backgroundWorker.RunWorkerAsync();
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [file operation in progress].

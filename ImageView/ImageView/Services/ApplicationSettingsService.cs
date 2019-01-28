@@ -18,7 +18,7 @@ namespace ImageViewer.Services
     public class ApplicationSettingsService : ServiceBase, IExceptionEventHandler
     {
         private readonly IRegistryAccess _registryRepository;
-        private AppSettingsFileRepository _fileRepository;
+        private readonly AppSettingsFileRepository _fileRepository;
 
         public string CompanyName { get; } = Application.CompanyName;
 

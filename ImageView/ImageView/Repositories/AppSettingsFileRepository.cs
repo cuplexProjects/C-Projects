@@ -79,6 +79,12 @@ namespace ImageViewer.Repositories
 
         }
 
+        public bool LoadSettings(string fileName)
+        {
+            //TODO implement
+            throw new NotImplementedException();
+        }
+
         private bool SaveSettingsInternal()
         {
             if (_dataFileLocked)
@@ -209,7 +215,7 @@ namespace ImageViewer.Repositories
 
             if (_appSettings.LastFolderLocation == null)
             {
-                _appSettings.LastFolderLocation = "c:\\";
+                _appSettings.LastFolderLocation = "";
             }
         }
 

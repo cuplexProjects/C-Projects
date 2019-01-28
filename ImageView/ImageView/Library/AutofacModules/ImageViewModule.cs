@@ -48,25 +48,6 @@ namespace ImageViewer.Library.AutofacModules
                     new NamedParameter("productName", Application.ProductName), new NamedParameter("productName", Application.ProductName)
                 });
 
-
-
-
-
-
-            //new ResolvedParameter(
-            //(pi, ctx) => pi.ParameterType == typeof(string) && pi.Name == "CompanyName",
-            //(pi, ctx) => Application.CompanyName),
-            //(new ResolvedParameter(
-            //    (pi, ctx) => pi.ParameterType == typeof(string) && pi.Name == "CompanyName",
-            //    (pi, ctx) => Application.CompanyName)); 
-
-
-            //builder.RegisterType<RegistryAccess>()
-            //    .As<IRegistryAccess>()
-            //    .SingleInstance()
-            //    .WithParameter("helper", new RegistryAccess(Application.CompanyName, Application.ProductName));
-
-
             builder.Register(context => context.Resolve<MapperConfiguration>()
                     .CreateMapper())
                 .As<IMapper>()
