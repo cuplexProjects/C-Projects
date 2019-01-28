@@ -13,15 +13,18 @@ using Serilog;
 
 namespace ImageViewer.Managers
 {
+    /// <summary>
+    /// Class responsible for read and write data blocks from the thumbnail indexed blob.
+    /// </summary>
     public sealed class FileManager : ManagerBase, IDisposable
     {
-        private readonly Dictionary<string, bool> _directoryAccessDictionary;
-        private readonly string _fileName;
-        private FileStream _fileStream;
         private const string TemporaryDatabaseFilename = "temp.ibd";
         private const string DatabaseImgDataFilename = "thumbs.ibd";
+        private readonly Dictionary<string, bool> _directoryAccessDictionary;
+        private readonly string _fileName;
         private readonly object _fileOperationLock = new object();
         private readonly ImageFactory _imageFactory;
+        private FileStream _fileStream;
 
         [UsedImplicitly]
         public FileManager()
@@ -39,6 +42,11 @@ namespace ImageViewer.Managers
 
         public bool IsLocked { get; private set; }
 
+        public void Dispose()
+        {
+            CloseStream();
+            _fileStream?.Dispose();
+        }
 
 
         public RawImage ReadRawImageFromDatabase(ThumbnailEntryModel thumbnail)
@@ -56,7 +64,7 @@ namespace ImageViewer.Managers
                 _fileStream.CopyTo(ms, thumbnail.Length);
 
                 ms.Flush();
-                byte[] imageData = ms.ToArray();
+                var imageData = ms.ToArray();
                 ms.Close();
                 ms.Dispose();
 
@@ -64,7 +72,6 @@ namespace ImageViewer.Managers
 
                 return new RawImage(imageData);
             }
-
         }
 
         public Image ReadImageFromDatabase(ThumbnailEntry thumbnail)
@@ -81,7 +88,7 @@ namespace ImageViewer.Managers
                 var sr = new BinaryReader(_fileStream);
                 _imageFactory.Reset();
                 _imageFactory.Load(sr.ReadBytes(thumbnail.Length));
-                
+
                 _fileStream.Unlock(thumbnail.FilePosition, thumbnail.Length);
 
                 return _imageFactory.Image;
@@ -100,7 +107,6 @@ namespace ImageViewer.Managers
 
                 try
                 {
-
                     _fileStream.Lock(0, _fileStream.Length + img.ImageData.Length);
                     _fileStream.Flush();
                     _fileStream.Seek(0, SeekOrigin.End);
@@ -128,15 +134,11 @@ namespace ImageViewer.Managers
         public void RecreateDatabase(List<ThumbnailEntry> thumbnailEntries)
         {
             if (_fileStream == null)
-            {
                 _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            }
             else
-            {
                 SaveToDisk();
-            }
 
-            string tempFileName = GeneralConverters.GetDirectoryNameFromPath(_fileName) + TemporaryDatabaseFilename;
+            string tempFileName = Path.Combine(GeneralConverters.GetDirectoryNameFromPath(_fileName), TemporaryDatabaseFilename);
 
             FileStream temporaryDatabaseFile = null;
             try
@@ -147,22 +149,14 @@ namespace ImageViewer.Managers
                 // Verify
                 var deleteQueue = new Queue<ThumbnailEntry>();
                 foreach (var thumbnailEntry in thumbnailEntries)
-                {
                     if (thumbnailEntry.Length <= 0 || !File.Exists(Path.Combine(thumbnailEntry.Directory, thumbnailEntry.FileName)))
-                    {
                         deleteQueue.Enqueue(thumbnailEntry);
-                    }
-                }
 
-                while (deleteQueue.Count > 0)
-                {
-                    thumbnailEntries.Remove(deleteQueue.Dequeue());
-                }
+                while (deleteQueue.Count > 0) thumbnailEntries.Remove(deleteQueue.Dequeue());
 
                 temporaryDatabaseFile = File.OpenWrite(tempFileName);
-                foreach (ThumbnailEntry entry in thumbnailEntries)
+                foreach (var entry in thumbnailEntries)
                 {
-
                     var buffer = new byte[entry.Length];
                     _fileStream.Position = entry.FilePosition;
                     _fileStream.Read(buffer, 0, entry.Length);
@@ -195,7 +189,7 @@ namespace ImageViewer.Managers
             _fileStream?.Flush(true);
         }
 
-        public bool WriteToDisk()
+        public bool FlushAndCloseFileStream()
         {
             bool result = false;
             if (_fileStream != null)
@@ -215,16 +209,9 @@ namespace ImageViewer.Managers
 
         private void CloseStream()
         {
-            WriteToDisk();
+            FlushAndCloseFileStream();
         }
 
-        /// <summary>
-        ///     Verifies that the file does excist and that the physical file has not been written to after the thumbnail was
-        ///     created.
-        ///     Assumes access to the directory
-        /// </summary>
-        /// <param name="thumbnailEntry"></param>
-        /// <returns>True if the thumbnail is up to date and the original file exists</returns>
         public static bool IsUpToDate(ThumbnailEntry thumbnailEntry)
         {
             var fileInfo = new FileInfo(thumbnailEntry.Directory + thumbnailEntry.FileName);
@@ -245,7 +232,6 @@ namespace ImageViewer.Managers
             var drives = DriveInfo.GetDrives().ToList();
 
             if (drives.Any(d => d.IsReady && d.Name.Equals(volume, StringComparison.CurrentCultureIgnoreCase)))
-            {
                 try
                 {
                     var directoryInfo = new DirectoryInfo(directory);
@@ -257,7 +243,6 @@ namespace ImageViewer.Managers
                 {
                     // ignored
                 }
-            }
 
             _directoryAccessDictionary.Add(directory, false);
             return false;
@@ -282,7 +267,7 @@ namespace ImageViewer.Managers
             if (!File.Exists(_fileName))
                 return 0;
 
-            FileInfo fileInfo = new FileInfo(_fileName);
+            var fileInfo = new FileInfo(_fileName);
             return fileInfo.Length;
         }
 
@@ -298,13 +283,6 @@ namespace ImageViewer.Managers
                 fsStream.Flush(true);
                 fsStream.Close();
             }
-
-        }
-
-        public void Dispose()
-        {
-            CloseStream();
-            _fileStream?.Dispose();
         }
 
         public RawImage CreateRawImage(Image image)

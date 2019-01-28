@@ -20,8 +20,7 @@ namespace ImageViewer.Configuration
             {
                 builder.RegisterAssemblyModules(generalToolKitAssembly);
             }
-
-            //builder.RegisterAssemblyTypes(coreAssemlies);
+            
             builder.RegisterAssemblyModules(thisAssembly);
             var container = builder.Build();
 

@@ -130,7 +130,7 @@ namespace ImageViewer
             TreeNode selectedNode = bookmarksTree.SelectedNode;
 
             if (!(selectedNode.Tag is BookmarkFolder selectedBookmarkfolder)) return false;
-            _bookmarkManager.VerifyIntegrityOfBookmarFolder(selectedBookmarkfolder);
+            _bookmarkManager.VerifyIntegrityOfBookmarkFolder(selectedBookmarkfolder);
             bookmarkBindingSource.DataSource = selectedBookmarkfolder.Bookmarks.OrderBy(x => x.SortOrder).ToList();
 
             bookmarksDataGridView.Refresh();
@@ -655,7 +655,7 @@ namespace ImageViewer
 
             if (_bookmarkManager.LoadFromFileAndAppendBookmarks(filename, password))
             {
-                _bookmarkManager.BookmarkDatasourceUpdated();
+                _bookmarkManager.BookmarkDataSourceUpdated();
                 MessageBox.Show("Bookmarksfile was loaded and appended to current bookmarks", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ReLoadBookmarks();
                 InitBookmarksDataSource();
@@ -683,7 +683,7 @@ namespace ImageViewer
 
             if (_bookmarkManager.LoadFromFile(filename, password))
             {
-                _bookmarkManager.BookmarkDatasourceUpdated();
+                _bookmarkManager.BookmarkDataSourceUpdated();
                 ReLoadBookmarks();
                 InitBookmarksDataSource();
                 MessageBox.Show("Bookmarksfile was loaded succesfully", "Bookmarks", MessageBoxButtons.OK, MessageBoxIcon.Information);

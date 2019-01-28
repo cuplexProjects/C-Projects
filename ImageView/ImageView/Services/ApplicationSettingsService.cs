@@ -62,14 +62,6 @@ namespace ImageViewer.Services
             _fileRepository.LoadSettingsCompleted += _appSettingsFileRepository_LoadSettingsCompleted;
         }
 
-
-        // Unit tests
-        public static ApplicationSettingsService CreateService(AppSettingsFileRepository appSettingsFileRepository)
-        {
-            return new ApplicationSettingsService(appSettingsFileRepository,new LocalStorageRegistryAccess(Application.CompanyName,Application.ProductName));
-        }
-
-
         public ImageViewApplicationSettings Settings
         {
             get
@@ -173,7 +165,7 @@ namespace ImageViewer.Services
 
         public void RegisterFormStateOnClose(Form form)
         {
-            string formName = form.GetType().Name;
+            string formName = form.Name;
             var fileDbAppSettings = _fileRepository.AppSettings;
             bool existingForm = fileDbAppSettings.ExtendedAppSettings.FormStateDictionary.Any(x => x.Key == formName);
             if (existingForm)

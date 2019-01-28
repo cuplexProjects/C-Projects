@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Windows.Forms;
 using Autofac;
 using Autofac.Core;
+using AutoMapper;
 using GeneralToolkitLib.Storage.Memory;
 using GeneralToolkitLib.Storage.Registry;
 using ImageViewer.Managers;
@@ -11,7 +10,6 @@ using ImageViewer.Repositories;
 using ImageViewer.Services;
 using ImageViewer.Storage;
 using ImageViewer.UnitTests.TestHelper;
-using NSubstitute;
 using Module = Autofac.Module;
 
 namespace ImageViewer.UnitTests.AutofacModules
@@ -60,8 +58,35 @@ namespace ImageViewer.UnitTests.AutofacModules
             builder.RegisterAssemblyTypes(typeof(RepositoryBase).Assembly)
                 .AssignableTo<RepositoryBase>()
                 .AsSelf()
+                .AsImplementedInterfaces();
+
+            builder.Register(context => context.Resolve<MapperConfiguration>()
+                    .CreateMapper())
+                .As<IMapper>()
+                .AutoActivate()
+                .SingleInstance();
+
+            builder.Register(Configure)
+                .AutoActivate()
+                .AsSelf()
                 .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+                .SingleInstance();
+        }
+
+        private static MapperConfiguration Configure(IComponentContext context)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                var innerContext = context.Resolve<IComponentContext>();
+                cfg.ConstructServicesUsing(innerContext.Resolve);
+
+                foreach (var profile in context.Resolve<IEnumerable<Profile>>())
+                {
+                    cfg.AddProfile(profile);
+                }
+            });
+
+            return configuration;
         }
     }
 }

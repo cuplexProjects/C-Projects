@@ -1,5 +1,7 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using Autofac;
+using AutoMapper;
 using GeneralToolkitLib.ConfigHelper;
 
 namespace ImageViewer.UnitTests.Configuration

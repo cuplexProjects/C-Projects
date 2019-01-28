@@ -63,6 +63,10 @@ namespace ImageViewer.Services
 
         public bool SaveBookmarks(bool savedAsync = false)
         {
+            if (!_bookmarkManager.IsModified)
+            {
+                return false;
+            }
             lock (LockObj)
             {
                 string password = _passwordStorage.Get(_protectedMemoryStorageKey);
