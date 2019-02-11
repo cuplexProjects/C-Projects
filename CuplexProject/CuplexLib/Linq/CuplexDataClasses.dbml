@@ -1,0 +1,191 @@
+<Database Name="CuplexDB" EntityNamespace="CuplexLib.Linq" ContextNamespace="CuplexLib.Linq" Class="CuplexDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.Authentication" Member="Authentications">
+    <Type Name="Authentication">
+      <Column Name="AuthenticationRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Expires" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="AuthenticationHash" Type="System.String" DbType="VarChar(32) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Bookmark" Member="Bookmarks">
+    <Type Name="Bookmark">
+      <Column Name="BookmarkRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BookmarkData" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="UserRef" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="FK_Bookmark_User" Member="User" ThisKey="UserRef" OtherKey="UserRef" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Category" Member="Categories">
+    <Type Name="Category">
+      <Column Name="CategoryRef" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CategoryName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="FK_Link_Category" Member="Links" ThisKey="CategoryRef" OtherKey="CategoryRef" Type="Link" DeleteRule="NO ACTION" />
+      <Association Name="FK_LinkSuggestion_Category" Member="LinkSuggestions" ThisKey="CategoryRef" OtherKey="CategoryRef" Type="LinkSuggestion" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Comment" Member="Comments">
+    <Type Name="Comment">
+      <Column Name="CommentRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CommentDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LinkRef" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CommentText" Type="System.String" DbType="VarChar(5000) NOT NULL" CanBeNull="false" />
+      <Column Name="UserRef" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="FK_Comment_Link" Member="Link" ThisKey="LinkRef" OtherKey="LinkRef" Type="Link" IsForeignKey="true" />
+      <Association Name="FK_Comment_User" Member="User" ThisKey="UserRef" OtherKey="UserRef" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EventLog" Member="EventLogs">
+    <Type Name="EventLog">
+      <Column Name="EventLogRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EventLogDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UserRef" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EventText" Type="System.String" DbType="VarChar(5000) NOT NULL" CanBeNull="false" />
+      <Column Name="EventType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="FK_EventLog_User" Member="User" ThisKey="UserRef" OtherKey="UserRef" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.IpLookup" Member="IpLookups">
+    <Type Name="IpLookup">
+      <Column Name="IPFrom" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IPTo" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Registry" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Assigned" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Ctry" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
+      <Column Name="Cntry" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Country" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Link" Member="Links">
+    <Type Name="Link">
+      <Column Name="LinkRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LinkName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="LinkDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryRef" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserRef" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LinkUrl" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Clicks" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Rating" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="FK_Comment_Link" Member="Comments" ThisKey="LinkRef" OtherKey="LinkRef" Type="Comment" DeleteRule="NO ACTION" />
+      <Association Name="FK_Link_Category" Member="Category" ThisKey="CategoryRef" OtherKey="CategoryRef" Type="Category" IsForeignKey="true" />
+      <Association Name="FK_Link_User" Member="User" ThisKey="UserRef" OtherKey="UserRef" Type="User" IsForeignKey="true" />
+      <Association Name="FK_UserToLink_Link" Member="UserToLinks" ThisKey="LinkRef" OtherKey="LinkRef" Type="UserToLink" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LinkSuggestion" Member="LinkSuggestions">
+    <Type Name="LinkSuggestion">
+      <Column Name="LinkSuggestionRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LinkUrl" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryRef" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserRef" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LinkSuggestionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="FK_LinkSuggestion_Category" Member="Category" ThisKey="CategoryRef" OtherKey="CategoryRef" Type="Category" IsForeignKey="true" />
+      <Association Name="FK_LinkSuggestion_User" Member="User" ThisKey="UserRef" OtherKey="UserRef" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MenuItem" Member="MenuItems">
+    <Type Name="MenuItem">
+      <Column Name="MenuItemRef" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MenuLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentRef" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MenuText" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ResourceKey" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Visible" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PageUrl" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="FK_MenuItem_MenuItem" Member="ParentRefMenuItem" ThisKey="ParentRef" OtherKey="MenuItemRef" Type="MenuItem" IsForeignKey="true" />
+      <Association Name="FK_MenuItem_MenuItem" Member="MenuItemRefMenuItems" ThisKey="MenuItemRef" OtherKey="ParentRef" Type="MenuItem" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PasswordReset" Member="PasswordResets">
+    <Type Name="PasswordReset">
+      <Column Name="PasswordResetRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ResetIdentyfier" Type="System.String" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="UserRef" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="FK_PasswordReset_User" Member="User" ThisKey="UserRef" OtherKey="UserRef" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Poll" Member="Polls">
+    <Type Name="Poll">
+      <Column Name="PollRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PollName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="FK_PollOption_Poll" Member="PollOptions" ThisKey="PollRef" OtherKey="PollRef" Type="PollOption" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PollOption" Member="PollOptions">
+    <Type Name="PollOption">
+      <Column Name="PollOptionRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PollRef" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OptionName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SortOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Rating" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="FK_PollOption_Poll" Member="Poll" ThisKey="PollRef" OtherKey="PollRef" Type="Poll" IsForeignKey="true" />
+      <Association Name="FK_UserToPollOption_PollOption" Member="UserToPollOptions" ThisKey="PollOptionRef" OtherKey="PollOptionRef" Type="UserToPollOption" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RandomImage" Member="RandomImages">
+    <Type Name="RandomImage">
+      <Column Name="ImageRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FileName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ImageId" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Settings" Member="Settings">
+    <Type Name="Setting">
+      <Column Name="KeyType" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="DataType" Type="System.Nullable&lt;CuplexLib.SettingsDataType&gt;" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SiteLink" Member="SiteLinks">
+    <Type Name="SiteLink">
+      <Column Name="SiteLinkRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SiteLinkURL" Type="System.String" DbType="VarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="SiteLinkName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="ResourceKey" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.User" Member="Users">
+    <Type Name="User">
+      <Column Name="UserRef" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PasswordHash" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="EmailAddress" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="IsAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LastLogin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="FK_Bookmark_User" Member="Bookmarks" ThisKey="UserRef" OtherKey="UserRef" Type="Bookmark" DeleteRule="NO ACTION" />
+      <Association Name="FK_Comment_User" Member="Comments" ThisKey="UserRef" OtherKey="UserRef" Type="Comment" DeleteRule="NO ACTION" />
+      <Association Name="FK_EventLog_User" Member="EventLogs" ThisKey="UserRef" OtherKey="UserRef" Type="EventLog" DeleteRule="NO ACTION" />
+      <Association Name="FK_Link_User" Member="Links" ThisKey="UserRef" OtherKey="UserRef" Type="Link" DeleteRule="NO ACTION" />
+      <Association Name="FK_LinkSuggestion_User" Member="LinkSuggestions" ThisKey="UserRef" OtherKey="UserRef" Type="LinkSuggestion" DeleteRule="NO ACTION" />
+      <Association Name="FK_PasswordReset_User" Member="PasswordResets" ThisKey="UserRef" OtherKey="UserRef" Type="PasswordReset" DeleteRule="NO ACTION" />
+      <Association Name="FK_UserToLink_User" Member="UserToLinks" ThisKey="UserRef" OtherKey="UserRef" Type="UserToLink" DeleteRule="NO ACTION" />
+      <Association Name="FK_UserToPollOption_User" Member="UserToPollOptions" ThisKey="UserRef" OtherKey="UserRef" Type="UserToPollOption" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserToLink" Member="UserToLinks">
+    <Type Name="UserToLink">
+      <Column Name="LinkRef" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserRef" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Rating" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="FK_UserToLink_Link" Member="Link" ThisKey="LinkRef" OtherKey="LinkRef" Type="Link" IsForeignKey="true" />
+      <Association Name="FK_UserToLink_User" Member="User" ThisKey="UserRef" OtherKey="UserRef" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserToPollOption" Member="UserToPollOptions">
+    <Type Name="UserToPollOption">
+      <Column Name="PollOptionRef" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserRef" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RateDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="FK_UserToPollOption_PollOption" Member="PollOption" ThisKey="PollOptionRef" OtherKey="PollOptionRef" Type="PollOption" IsForeignKey="true" />
+      <Association Name="FK_UserToPollOption_User" Member="User" ThisKey="UserRef" OtherKey="UserRef" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

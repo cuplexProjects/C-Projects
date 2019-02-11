@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cuplex.Web.Cdn", "Cuplex.Web.Cdn\Cuplex.Web.Cdn.csproj", "{644DB58F-2E0D-4CD4-A7FF-45D627B25259}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cuplex.ImageProvider", "Cuplex.ImageProvider\Cuplex.ImageProvider\Cuplex.ImageProvider.csproj", "{8351A25E-CC25-4311-A6F4-B0C8B8298D4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{644DB58F-2E0D-4CD4-A7FF-45D627B25259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{644DB58F-2E0D-4CD4-A7FF-45D627B25259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{644DB58F-2E0D-4CD4-A7FF-45D627B25259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{644DB58F-2E0D-4CD4-A7FF-45D627B25259}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8351A25E-CC25-4311-A6F4-B0C8B8298D4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8351A25E-CC25-4311-A6F4-B0C8B8298D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8351A25E-CC25-4311-A6F4-B0C8B8298D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8351A25E-CC25-4311-A6F4-B0C8B8298D4E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7647DAE4-A1AE-4A21-A62A-55C85D99270B}
+	EndGlobalSection
+EndGlobal

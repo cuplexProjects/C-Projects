@@ -1,0 +1,1261 @@
+PROC_ERROR_ACCT_CREATE = Er is een fout gebeurd bij het maken van uw account
+PROC_WRONG_ACCT_PWD = Verkeerd paswoord
+PROC_CANT_LOG_NONDEF = Kan niet inloggen in niet-standaard account
+PROC_CANT_INS_NEW_FILTER = Kan nieuwe filter niet opslaan
+PROC_FOLDER_EXIST = Mapnaam bestaat al
+PROC_CANT_CREATE_FLD = Kan map niet maken
+PROC_CANT_INS_NEW_GROUP = Kan nieuwe groep niet opslaan
+PROC_CANT_INS_NEW_CONT = Kan nieuw contact niet opslaan
+PROC_CANT_INS_NEW_CONTS = Kan nieuwe contact(en) niet opslaan
+PROC_CANT_ADD_NEW_CONT_TO_GRP = Kan contact(en) niet toevoegen aan groep
+PROC_ERROR_ACCT_UPDATE = Er is een fout gebeurd bij het opslaan van uw account
+PROC_CANT_UPDATE_CONT_SETTINGS = Kan de contactinstellingen niet opslaan
+PROC_CANT_GET_SETTINGS = Kan de instellingen niet vinden
+PROC_CANT_UPDATE_ACCT = Kan de account niet opslaan
+PROC_ERROR_DEL_FLD = Er is een fout gebeurd bij het verwijderen van de map(pen)
+PROC_CANT_UPDATE_CONT = Kan contact niet opslaan
+PROC_CANT_GET_FLDS = Kan mappenweergave niet ophalen
+PROC_CANT_GET_MSG_LIST = Kan berichtenlijst niet ophalen
+PROC_MSG_HAS_DELETED = Dit bericht is al verwijderd van de mailserver
+PROC_CANT_LOAD_CONT_SETTINGS = Kan contactinstellingen niet ophalen
+PROC_CANT_LOAD_SIGNATURE = Kan account onderschrift niet laden
+PROC_CANT_GET_CONT_FROM_DB = Kan contact niet ophalen uit de database
+PROC_CANT_GET_CONTS_FROM_DB = Kan contact(en) niet ophalen uit de database
+PROC_CANT_DEL_ACCT_BY_ID = Kan account niet verwijderen
+PROC_CANT_DEL_FILTER_BY_ID = Kan filter niet verwijderen
+PROC_CANT_DEL_CONT_GROUPS = Kan contact(en) of groep(en) niet verwijderen
+PROC_WRONG_ACCT_ACCESS = Een poging tot niet-geauthoriseerde toegang tot andermans account werd gedetecteerd.
+PROC_SESSION_ERROR = De vorige sessie is beëindigd wegens een timeout.
+
+MailBoxIsFull = Mailbox is vol
+WebMailException = WebMail fout gebeurd
+InvalidUid = Ongeldig Bericht UID
+CantCreateContactGroup = Kan contactgroep niet maken
+CantCreateUser = Kan gebruiker niet maken
+CantCreateAccount = Kan account niet maken
+SessionIsEmpty = Sessie is leeg
+FileIsTooBig = Het bestand is te groot
+
+PROC_CANT_MARK_ALL_MSG_READ = Kan niet alle berichten als gelezen markeren
+PROC_CANT_MARK_ALL_MSG_UNREAD = Kan niet alle berichten als ongelezen markeren
+PROC_CANT_PURGE_MSGS = Kan bericht(en) niet definitief verwijderen
+PROC_CANT_DEL_MSGS = Kan bericht(en) niet verwijderen
+PROC_CANT_UNDEL_MSGS = Kan verwijderen niet ongedaan maken voor bericht(en)
+PROC_CANT_MARK_MSGS_READ = Kan bericht(en) niet als gelezen markeren
+PROC_CANT_MARK_MSGS_UNREAD = Kan bericht(en) niet als ongelezen markeren
+PROC_CANT_SET_MSG_FLAGS = Kan berichten-vlag niet zetten
+PROC_CANT_REMOVE_MSG_FLAGS = Kan berichten-vlag niet verwijderen
+PROC_CANT_CHANGE_MSG_FLD = Kan map niet wijzigen
+PROC_CANT_SEND_MSG = Kan bericht niet verzenden.
+PROC_CANT_SAVE_MSG = Kan bericht niet opslaan.
+PROC_CANT_GET_ACCT_LIST = Kan accountlijst niet ophalen
+PROC_CANT_GET_FILTER_LIST = Kan filterlijst niet ophalen
+
+PROC_CANT_LEAVE_BLANK = Gelieve alle velden gemarkeerd met * in te vullen
+
+PROC_CANT_UPD_FLD = Kan map niet opslaan
+PROC_CANT_UPD_FILTER = Kan filter niet opslaan
+
+ACCT_CANT_ADD_DEF_ACCT = De account kan niet worden toegevoegd omdat hij gebruikt wordt als standaard account door een andere gebruiker.
+ACCT_CANT_UPD_TO_DEF_ACCT = Deze account kan niet als standaard gezet worden.
+ACCT_CANT_CREATE_IMAP_ACCT = Kan nieuwe account niet maken (IMAP4 verbindingsfout)
+ACCT_CANT_DEL_LAST_DEF_ACCT = Kan laatste default account niet verwijderen
+
+LANG_LoginInfo = Login Informatie
+LANG_Email = Email
+LANG_Login = Login
+LANG_Password = Paswoord
+LANG_IncServer = Inkomende Mail
+LANG_PopProtocol = POP3
+LANG_ImapProtocol = IMAP4
+LANG_IncPort = Port
+LANG_OutServer = SMTP Server
+LANG_OutPort = Port
+LANG_UseSmtpAuth = Gebruik SMTP authenticatie
+LANG_SignMe = Automatisch inloggen
+LANG_Enter = Enter
+
+TitleLogin = Login
+TitleMessagesListView = Berichtenlijst
+TitleMessagesList = Berichtenlijst
+TitleViewMessage = Bericht bekijken
+TitleNewMessage = Nieuw bericht
+TitleSettings = Instellingen
+TitleContacts = Contacten
+
+StandardLogin = Standaard&nbsp;Login
+AdvancedLogin = Geavanceerde&nbsp;Login
+
+InfoWebMailLoading = Even geduld, bezig met laden&hellip;
+Loading = Bezig met laden&hellip;
+InfoMessagesLoad = Even geduld, bezig met ophalen van berichten
+InfoEmptyFolder = De map is leeg
+InfoPageLoading = De pagina is nog steeds aan het laden&hellip;
+InfoSendMessage = Het bericht is verzonden
+InfoSaveMessage = Het bericht is opgeslagen
+; You have imported 3 new contact(s) into your contacts list.
+InfoHaveImported = U hebt
+InfoNewContacts = nieuwe contact(en) geïmporteerd.
+InfoToDelete = Om de map
+InfoDeleteContent = te verwijderen moet u eerst al zijn inhoud verwijderen.
+InfoDeleteNotEmptyFolders = Niet-lege mappen verwijderen is niet mogelijk. Gelieve eerst de inhoud van deze mappen te verwijderen.
+InfoRequiredFields = * verplichte velden
+
+ConfirmAreYouSure = Bent u zeker?
+ConfirmDirectModeAreYouSure = De geselecteerde bericht(en) zullen PERMANENT verwijderd worden. Bent u zeker?
+ConfirmSaveSettings = De instellingen zijn niet opgeslagen. Klik OK om op te slaan.
+ConfirmSaveContactsSettings = De contactinstellingen zijn niet opgeslagen. Klik OK om op te slaan.
+ConfirmSaveAcctProp = De contact-instellingen zijn niet opgeslagen. Klik OK om op te slaan.
+ConfirmSaveFilter = De filter-instellingen zijn niet opgeslagen. Klik OK om op te slaan.
+ConfirmSaveSignature = Het onderschrift is niet opgeslagen. Klik OK om op te slaan.
+ConfirmSavefolders = De mappen zijn niet opgeslagen. Klik OK om op te slaan.
+ConfirmHtmlToPlain = Waarschuwing: Door het formaat van dit bericht te wijzigen van HTML naar plain text, zal u alle opmaak verliezen. Klik OK om verder te gaan.
+ConfirmAddFolder = Voordat u deze map kunt toevoegen moet u eerst opslaan. Klik OK om op te slaan.
+ConfirmEmptySubject = Het onderwerp-veld is leeg. Bent u zeker dat u wil verdergaan?
+
+WarningEmailBlank = U kan het <br />Email: veld niet leeg laten
+WarningLoginBlank = U kan het leave<br />Login: veld niet leeg laten
+WarningToBlank = U kan het Aan: veld niet leeg laten
+WarningServerPortBlank = U kan de POP3 en<br />SMTP server/poort velden niet leeg laten
+WarningEmptySearchLine = Leeg zoekveld. Gelieve in te vullen wat u wilt zoeken
+WarningMarkListItem = Gelieve minstens één item te markeren in de lijst
+WarningFolderMove = De map kan niet verplaatst worden omdat dit een ander niveau is
+WarningContactNotComplete = Gelieve email of naam in te vullen
+WarningGroupNotComplete = Gelieve een groepnaam in te vullen
+
+WarningEmailFieldBlank = U kan het Email veld niet leeg laten
+WarningIncServerBlank = U kan het POP3(IMAP4) Server veld niet leeg laten
+WarningIncPortBlank = U kan het POP3(IMAP4) Server Port veld niet leeg laten
+WarningIncLoginBlank = U kan het POP3(IMAP4) Login veld niet leeg laten
+WarningIncPortNumber = Gelieve een positief getal in het POP3(IMAP4) poort veld in te vullen.
+DefaultIncPortNumber = Standaard POP3(IMAP4) poort nummer is 110(143).
+WarningIncPassBlank = U kan het POP3(IMAP4) Paswoord veld niet leeg laten
+WarningOutPortBlank = U kan het SMTP Server Port veld niet leeg laten
+WarningOutPortNumber = Gelieve een positief getal in het SMTP poort veld in te vullen.
+WarningCorrectEmail = Gelieve een correct emailadres in te vullen.
+DefaultOutPortNumber = Standaard SMTP poort nummer is 25.
+
+WarningCsvExtention = Extensie moet .csv zijn
+WarningImportFileType = Gelieve de applicatie vanwaaruit u contacten wil importeren te selecteren
+WarningEmptyImportFile = Gelieve een bestand te selecteren door op de knop 'Bladeren' te klikken
+
+WarningContactsPerPage = Aantal contacten per pagina moet positief zijn
+WarningMessagesPerPage = Aantal berichten per pagina moet positief zijn
+WarningMailsOnServerDays = U moet een positief getal invullen in 'Aantal berichten op server' veld.
+WarningEmptyFilter = Gelieve een substring in te vullen
+WarningEmptyFolderName = Gelieve een mapnaam in te vullen
+
+ErrorConnectionFailed = Verbinding mislukt
+ErrorRequestFailed = De dataoverdracht is niet voltooid
+ErrorAbsentXMLHttpRequest = Het object XMLHttpRequest bestaat niet
+ErrorWithoutDesc = Een onbekende fout is gebeurd.
+ErrorParsing = Fout bij het interpreteren van de XML.
+ResponseText = Antwoordtekst:
+ErrorEmptyXmlPacket = Leeg XML pakket
+ErrorImportContacts = Fout bij het importeren van contacten
+ErrorNoContacts = Geen contacten gevonden om te importeren.
+ErrorCheckMail = Het ophalen van berichten is afgebroken wegens een fout. Waarschijnlijk zijn niet alle berichten ontvangen.
+
+LoggingToServer = Bezig met inloggen op de server&hellip;
+GettingMsgsNum = Ophalen van aantal berichten
+RetrievingMessage = Bericht ophalen
+DeletingMessage = Bericht verwijderen
+DeletingMessages = Bericht(en) verwijderen
+Of = van
+Connection = Verbinding
+Charset = Karakterset
+AutoSelect = Auto-selectie
+
+Contacts = Contacten
+ClassicVersion = Klassieke versie
+Logout = Afmelden
+Settings = Instellingen
+
+LookFor = Zoeken naar
+SearchIn = Zoeken in
+QuickSearch = Zoeken in Van, Naar en Onderwerp velden alleen (sneller).
+SlowSearch = Zoeken in volledig bericht
+AllMailFolders = Alle mailmappen
+AllGroups = Alle groepen
+
+NewMessage = Nieuw bericht
+CheckMail = Mail checken
+ReloadFolders = Mappen opnieuw laden
+EmptyTrash = Prullenbak leegmaken
+MarkAsRead = Als gelezen markeren
+MarkAsUnread = Als ongelezen markeren
+MarkFlag = Vlaggen
+MarkUnflag = Uitvlaggen
+MarkAllRead = Allemaal als gelezen markeren
+MarkAllUnread = Allemaal als ongelezen markeren
+Reply = Antwoorden
+ReplyAll = Allen antwoorden
+Delete = Verwijderen
+Undelete = Verwijderen ongedaan maken
+PurgeDeleted = Definitief verwijderen
+MoveToFolder = Verplaatsen
+Forward = Doorsturen
+
+HideFolders = Mappen verbergen
+ShowFolders = Mappen weergeven
+ManageFolders = Mappen beheren
+SyncFolder = Gesynchroniseerde map
+NewMessages = Nieuwe berichten
+Messages = Bericht(en)
+
+From = Van
+To = Aan
+Date = Datum
+Size = Grootte
+Subject = Onderwerp
+
+FirstPage = Eerste pagina
+PreviousPage = Vorige pagina
+NextPage = Volgende pagina
+LastPage = Laatste pagina
+
+SwitchToPlain = Naar plain text overschakelen
+SwitchToHTML = Naar HTML overschakelen
+AddToAddressBokk = Toevoegen aan adresboek
+ClickToDownload = Klik om te downloaden
+View = Weergeven
+ShowFullHeaders = Volledige headers tonen
+HideFullHeaders = Volledige headers verbergen
+
+MessagesInFolder = Bericht(en) in map
+YouUsing = U gebruikt
+OfYour = van uw
+Mb = MB
+Kb = KB
+B = B
+
+SendMessage = Verzenden
+SaveMessage = Opslaan
+Print = Afdrukken
+PreviousMsg = Vorig bericht
+NextMsg = Volgend bericht
+AddressBook = Adresboek
+ShowBCC = BCC weergeven
+HideBCC = BCC verbergen
+CC = CC
+BCC = BCC
+ReplyTo = Antwoorden aan
+AttachFile = Bestand koppelen
+Attach = Koppelen
+Re = Re
+OriginalMessage = Origineel bericht
+Sent = Verzonden
+Fwd = Fwd
+Low = Laag
+Normal = Normal
+High = Hoog
+Importance = Prioriteit
+Close = Sluiten
+
+Common = Gemeenschappelijk
+EmailAccounts = Email Accounts
+
+MsgsPerPage = Berichten per pagina
+DisableRTE = Uitgebreide editor uitschakelen
+Skin = Skin
+DefCharset = Standaard karakterset
+DefCharsetInc = Standaard inkomende karakterset
+DefCharsetOut = Standaard uitgaande karakterset
+DefTimeOffset = Standaard tijdzone
+DefLanguage = Standaard taal
+DefDateFormat = Standaard datumformaat
+ShowViewPane = Berichtenlijst met voorbeeldweergave
+Save = Opslaan
+Cancel = Annuleren
+OK = OK
+
+Remove = Verwijderen
+AddNewAccount = Nieuwe account toevoegen
+Signature = Onderschrift
+Filters = Filters
+Properties = Eigenschappen
+UseForLogin = Gebruik deze accounteigenschappen (login en paswoord) om in te loggen
+MailFriendlyName = Uw naam
+MailEmail = Email
+MailIncHost = Inkomende mail
+Imap4 = IMAP4
+Pop3 = POP3
+MailIncPort = Poort
+MailIncLogin = Login
+MailIncPass = Paswoord
+MailOutHost = SMTP Server
+MailOutPort = Poort
+MailOutLogin = SMTP Login
+MailOutPass = SMTP Paswoord
+MailOutAuth1 = Gebruik SMTP authenticatie
+MailOutAuth2 = (U mag SMTP login/paswoord velden leeg laten als ze hetzelfde zijn als de POP3/IMAP login/paswoorden)
+UseFriendlyNm1 = Gebruik Friendly Name in "Van:" veld
+UseFriendlyNm2 = (Uw naam &lt;sender@mail.com&gt;)
+GetmailAtLogin = Mails ophalen bij login
+MailMode0 = Ontvangen berichten verwijderen van server
+MailMode1 = Berichten op server laten staan
+MailMode2 = Berichten op server laten staan voor
+MailsOnServerDays = dag(en)
+MailMode3 = Bericht verwijderen op server als het uit de prullenbak verwijderd wordt
+InboxSyncType = Type van synchronisatie
+
+SyncTypeNo = Niet synchroniseren
+SyncTypeNewHeaders = Nieuwe headers
+SyncTypeAllHeaders = Alle headers
+SyncTypeNewMessages = Nieuwe berichten
+SyncTypeAllMessages = Alle berichten
+SyncTypeDirectMode = Direct
+
+Pop3SyncTypeEntireHeaders = Alleen headers
+Pop3SyncTypeEntireMessages = Volledige berichten
+Pop3SyncTypeDirectMode = Direct
+
+DeleteFromDb = Berichten verwijderen van database als ze niet meer op de server bestaan
+
+EditFilter = Filter bewerken
+NewFilter = Nieuwe filter toevoegen
+Field = Veld
+Condition = Voorwaarde
+ContainSubstring = Bevat substring
+ContainExactPhrase = Bevat exact woord
+NotContainSubstring = Bevat substring niet
+FilterDesc_At = op
+FilterDesc_Field = veld
+Action = Actie
+DoNothing = Doe niets
+DeleteFromServer = Verwijder onmiddellijk van server
+MarkGrey = Markeer grijs
+Add = Toevoegen
+OtherFilterSettings = Andere filterinstellingen
+ConsiderXSpam = X-Spam headers bekijken
+Apply = Toepassen
+
+InsertLink = Link toevoegen
+RemoveLink = Link verwijderen
+Numbering = Nummeren
+Bullets = Items
+HorizontalLine = Horizontale lijn
+Bold = Vet
+Italic = Cursief
+Underline = Onderlijnen
+AlignLeft = Links uitlijnen
+Center = Centreren
+AlignRight = Rechts uitlijnen
+Justify = Uitvullen
+FontColor = Lettertype kleur
+Background = Achtergrond
+SwitchToPlainMode = Schakel over naar Plain Text Mode
+SwitchToHTMLMode = Schakel over naar HTML Mode
+AddSignatures = Handtekening toevoegen aan alle uitgaande berichten
+DontAddToReplies = Geen handtekening toevoegen aan antwoordmails en doorstuurmails
+
+Folder = Map
+Msgs = Berichten
+Synchronize = Synchronizeren
+ShowThisFolder = Toon deze map
+Total = Totaal
+DeleteSelected = Verwijder geselecteerde
+AddNewFolder = Nieuwe map toevoegen
+NewFolder = Nieuwe map
+ParentFolder = Hoofdmap
+NoParent = Geen hoofdmap
+OnMailServer = Maak deze map aan in de webmail en op de mailserver
+InWebMail = Maak deze map enkel aan in de webmail
+FolderName = Mapnaam
+
+ContactsPerPage = Contacten per pagina
+WhiteList = Addresboek vanuit een lege lijst
+
+CharsetDefault = Standaard
+CharsetArabicAlphabetISO = Arabisch Alfabet (ISO)
+CharsetArabicAlphabet = Arabisch Alfabet (Windows)
+CharsetBalticAlphabetISO = Baltisch Alfabet (ISO)
+CharsetBalticAlphabet = Baltisch Alfabet (Windows)
+CharsetCentralEuropeanAlphabetISO = Centraal Europees Alfabet (ISO)
+CharsetCentralEuropeanAlphabet = Centraal Europees Alfabet (Windows)
+CharsetChineseSimplifiedEUC = Chinese Simplified (EUC)
+CharsetChineseSimplifiedGB = Chinese Simplified (GB2312)
+CharsetChineseTraditional = Chinees Traditioneel
+CharsetCyrillicAlphabetISO = Cyrillisch Alfabet (ISO)
+CharsetCyrillicAlphabetKOI8R = Cyrillisch Alfabet (KOI8-R)
+CharsetCyrillicAlphabet = Cyrillisch Alfabet (Windows)
+CharsetGreekAlphabetISO = Grieks Alfabet (ISO)
+CharsetGreekAlphabet = Grieks Alfabet (Windows)
+CharsetHebrewAlphabetISO = Hebreeuws Alfabet (ISO)
+CharsetHebrewAlphabet = Hebreeuws Alfabet (Windows)
+CharsetJapanese = Japans
+CharsetJapaneseShiftJIS = Japans (Shift-JIS)
+CharsetKoreanEUC = Koreaans (EUC)
+CharsetKoreanISO = Koreaans (ISO)
+CharsetLatin3AlphabetISO = Latin 3 Alphabet (ISO)
+CharsetTurkishAlphabet = Turks Alfabet
+CharsetUniversalAlphabetUTF7 = Universeel Alfabet (UTF-7)
+CharsetUniversalAlphabetUTF8 = Universeel Alfabet (UTF-8)
+CharsetVietnameseAlphabet = Vietnamees Alfabet (Windows)
+CharsetWesternAlphabetISO = Westers Alfabet (ISO)
+CharsetWesternAlphabet = Westers Alfabet (Windows)
+
+TimeDefault = Standaard
+TimeEniwetok = Eniwetok, Kwajalein, Dateline Time
+TimeMidwayIsland = Midway Island, Samoa
+TimeHawaii = Hawaii
+TimeAlaska = Alaska
+TimePacific = Pacific Time (US & Canada); Tijuana
+TimeArizona = Arizona
+TimeMountain = Mountain Time (US & Canada)
+TimeCentralAmerica = Central America
+TimeCentral = Central Time (US & Canada)
+TimeMexicoCity = Mexico City, Tegucigalpa
+TimeSaskatchewan = Saskatchewan
+TimeIndiana = Indiana (East)
+TimeEastern = Eastern Time (US & Canada)
+TimeBogota = Bogota, Lima, Quito
+TimeSantiago = Santiago
+TimeCaracas = Caracas, La Paz
+TimeAtlanticCanada = Atlantic Time (Canada)
+TimeNewfoundland = Newfoundland
+TimeGreenland = Greenland
+TimeBuenosAires = Buenos Aires, Georgetown
+TimeBrasilia = Brasilia
+TimeMidAtlantic = Mid-Atlantic
+TimeCapeVerde = Cape Verde Is.
+TimeAzores = Azores
+TimeMonrovia = Casablanca, Monrovia
+TimeGMT = Dublin, Edinburgh, Lisbon, London
+TimeBerlin = Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+TimePrague = Belgrade, Bratislava, Budapest, Ljubljana, Prague
+TimeParis = Brussels, Copenhagen, Madrid, Paris
+TimeSarajevo = Sarajevo, Skopje, Sofija, Vilnius, Warsaw, Zagreb
+TimeWestCentralAfrica = West Central Africa
+TimeAthens = Athens, Istanbul, Minsk
+TimeEasternEurope = Bucharest
+TimeCairo = Cairo
+TimeHarare = Harare, Pretoria
+TimeHelsinki = Helsinki, Riga, Tallinn
+TimeIsrael = Israel, Jerusalem Standard Time
+TimeBaghdad = Baghdad
+TimeArab = Arab, Kuwait, Riyadh
+TimeMoscow = Moscow, St. Petersburg, Volgograd
+TimeEastAfrica = East Africa, Nairobi
+TimeTehran = Tehran
+TimeAbuDhabi = Abu Dhabi, Muscat
+TimeCaucasus = Baku, Tbilisi, Yerevan
+TimeKabul = Kabul
+TimeEkaterinburg = Ekaterinburg
+TimeIslamabad = Islamabad, Karachi, Sverdlovsk, Tashkent
+TimeBombay = Calcutta, Chennai, Mumbai, New Delhi, India Standard Time
+TimeNepal = Kathmandu, Nepal
+TimeAlmaty = Almaty, Novosibirsk, North Central Asia
+TimeDhaka = Astana, Dhaka
+TimeSriLanka = Sri Jayawardenepura, Sri Lanka
+TimeRangoon = Rangoon
+TimeBangkok = Bangkok, Hanoi, Jakarta
+TimeKrasnoyarsk = Krasnoyarsk
+TimeBeijing = Beijing, Chongqing, Hong Kong SAR, Urumqi
+TimeIrkutsk = Irkutsk, Ulaan Bataar
+TimeSingapore = Kuala Lumpur, Singapore
+TimePerth = Perth, Western Australia
+TimeTaipei = Taipei
+TimeTokyo = Osaka, Sapporo, Tokyo
+TimeSeoul = Seoul, Korea Standard time
+TimeYakutsk = Yakutsk
+TimeAdelaide = Adelaide, Central Australia
+TimeDarwin = Darwin
+TimeBrisbane = Brisbane, East Australia
+TimeSydney = Canberra, Melbourne, Sydney, Hobart
+TimeGuam = Guam, Port Moresby
+TimeHobart = Hobart, Tasmania
+TimeVladivostock = Vladivostok
+TimeMagadan = Magadan, Solomon Is., New Caledonia
+TimeWellington = Auckland, Wellington
+TimeFiji = Fiji Islands, Kamchatka, Marshall Is.
+TimeTonga = Nuku'alofa, Tonga,
+
+DateDefault = Standaard
+DateDDMMYY = DD/MM/YY
+DateMMDDYY = MM/DD/YY
+DateDDMonth = DD Month (01 Jan)
+DateAdvanced = Geavanceerd
+
+NewContact = Nieuw contact
+NewGroup = Nieuwe groep
+AddContactsTo = Contacten toevoegen aan
+ImportContacts = Contacten importeren
+
+Name = Naam
+Email = Email
+DefaultEmail = Standaard Email
+NotSpecifiedYet = Nog niet aangepast
+ContactName = Naam
+Birthday = Verjaardag
+Month = Maand
+January = Januari
+February = Februari
+March = Maart
+April = April
+May = Mei
+June = Juni
+July = Juli
+August = Augustus
+September = September
+October = Oktober
+November = November
+December = December
+Day = Dag
+Year = Jaar
+UseFriendlyName1 = Gebruik aangepaste naam
+UseFriendlyName2 = (bv, John Doe &lt;johndoe@mail.com&gt;)
+Personal = Persoonlijk
+PersonalEmail = Persoonlijke e-mail
+StreetAddress = Straat
+City = Stad
+Fax = Fax
+StateProvince = Provincie
+Phone = Telefoon
+ZipCode = Postcode
+Mobile = Mobiel
+CountryRegion = Land/Regio
+WebPage = Webpagina
+Go = Ga
+Home = Home
+Business = Werk
+BusinessEmail = Werk e-mail
+Company = Bedrijf
+JobTitle = Job Titel
+Department = Afdeling
+Office = Kantoor
+Pager = Pager
+Other = Ander
+OtherEmail = Ander e-mail
+Notes = Notities
+Groups = Groepen
+ShowAddFields = Toon extra velden
+HideAddFields = Verberg extra velden
+EditContact = Wijzig contact informatie
+GroupName = Groepsnaam
+AddContacts = Contacten toevoegen
+CommentAddContacts = (Bij meerdere adressen, gelieve deze te scheiden met een komma)
+CreateGroup = Groep aanmaken
+Rename = Hernoemen
+MailGroup = Mailgroep
+RemoveFromGroup = Uit groep verwijderen
+UseImportTo = Gebruik importeren om je contacten van Microsoft Outlook en Microsoft Outlook Express in je webmail contactenlijst te importeren.
+Outlook1 = Microsoft Outlook 2000/XP/2003
+Outlook2 = Microsoft Outlook Express 6
+SelectImportFile = Selecteer het bestand (.CSV formaat) dat je wenst te importeren
+Import = Importeer
+ContactsMessage = Dit is de contactenpagina!!!
+ContactsCount = contact(en)
+GroupsCount = groep(en)
+
+; webmail 4.1 constants
+PicturesBlocked = Afbeeldingen in dit bericht werden voor uw veiligheid geblokkeerd.
+ShowPictures = Toon afbeeldingen
+ShowPicturesFromSender = Toon altijd afbeeldingen in berichten van deze afzender
+AlwaysShowPictures = Toon altijd afbeeldingen in berichten
+
+TreatAsOrganization = Behandel als een bedrijf
+
+WarningGroupAlreadyExist = Groep met deze naam bestaat al. Gelieve de naam aan te passen.
+WarningCorrectFolderName = Kies een correcte mapnaam.
+WarningLoginFieldBlank = Login veld kan niet leeg zijn.
+WarningCorrectLogin = Kies een correcte login.
+WarningPassBlank = Paswoord veld kan niet leeg zijn.
+WarningCorrectIncServer = Kies een correct POP3(IMAP) server adres.
+WarningCorrectSMTPServer = Kies een correct SMTP server adres.
+WarningFromBlank = Vanm veld kan niet leeg zijn.
+WarningAdvancedDateFormat = Kies een datum-tijd formaat.
+
+AdvancedDateHelpTitle = Geavanceerde datum
+AdvancedDateHelpIntro = Wanneer het veld &quot;geavanceerd&quot; geselecteerd is, kan je de textbox gebruiken om je eigen datumformaat te kiezen, dat zal getoond worden in de webmail. De volgende opties worden gebruikt ':' of '/' delimiter char:
+AdvancedDateHelpConclusion = Bv, als je kiest voor &quot;mm/dd/yyyy&quot; in de textbox &quot;geavanceerd&quot;, dan wordt de datum weergegeven als maand/dag/jaar (bv. 14/07/2007)
+AdvancedDateHelpDayOfMonth = Dag (van 1 tot 31)
+AdvancedDateHelpNumericMonth = Maand (1 tot 12)
+AdvancedDateHelpTextualMonth = Maand (Jan tot Dec)
+AdvancedDateHelpYear2 = Jaar, 2 karakters
+AdvancedDateHelpYear4 = Jaar, 4 karakters
+AdvancedDateHelpDayOfYear = Dag (1 tot 366)
+AdvancedDateHelpQuarter = Seizoen
+AdvancedDateHelpDayOfWeek = Weekdag (Maandag tot Zondag)
+AdvancedDateHelpWeekOfYear = Weeknr (1 tot 53)
+
+InfoNoMessagesFound = Geen berichten gevonden.
+ErrorSMTPConnect = Kan niet verbinden met de SMTP server. Controleer de SMTP server instellingen.
+ErrorSMTPAuth = Verkeerde gebruikersnaam en/of paswoord. Aanmelden mislukt.
+ReportMessageSent = Uw bericht is verzonden.
+ReportMessageSaved = Uw bericht werd opgeslagen.
+ErrorPOP3Connect = Kan niet verbinden met de POP3 server, Controleer de POP3 server instellingen.
+ErrorIMAP4Connect = Kan niet verbinden met de IMAP4 server, Controleer de IMAP4 server instellingen.
+ErrorPOP3IMAP4Auth = Verkeerde email/login en/of paswoord. Aanmelden mislukt.
+ErrorGetMailLimit = Sorry, de limiet van uw mailbox werd bereikt.
+
+ReportSettingsUpdatedSuccessfuly = Instellingen zijn met succes bewaard.
+ReportAccountCreatedSuccessfuly = Account is met succes aangemaakt.
+ReportAccountUpdatedSuccessfuly = Account is met succes aangepast.
+ConfirmDeleteAccount = Ben je zeker dat je deze account wil verwijderen?
+ReportFiltersUpdatedSuccessfuly = Filters werden met succes aangepast.
+ReportSignatureUpdatedSuccessfuly = Handtekening is met succes aangepast.
+ReportFoldersUpdatedSuccessfuly = Mappen zijn met succes aangepast.
+ReportContactsSettingsUpdatedSuccessfuly = Contacten' zijn met succes aangepast.
+
+ErrorInvalidCSV = CSV bestand dat je selecteerde heeft een verkeerde indeling.
+; The group "guies" was successfully added.
+ReportGroupSuccessfulyAdded1 = De groep
+ReportGroupSuccessfulyAdded2 = met succes toegevoegd.
+ReportGroupUpdatedSuccessfuly = Groep is met succes aangepast.
+ReportContactSuccessfulyAdded = Contact is met succes aangepast.
+ReportContactUpdatedSuccessfuly = Contact is met succes aangepast.
+; Contact(s) was added to group "friends".
+ReportContactAddedToGroup = Contact(s) werd toegevoegd aan de groep
+AlertNoContactsGroupsSelected = Geen contacten of groepen geselecteerd.
+
+InfoListNotContainAddress = Als deze lijst niet het gezochte adres bevat, typ dan de eerste karakters.
+
+DirectAccess = D
+DirectAccessTitle = Directe modus. Webmail benadert de berichten rechtstreeks op de mailserver.
+
+FolderInbox = Inbox
+FolderSentItems = Verzonden berichten
+FolderDrafts = Concepten
+FolderTrash = Prullenbak
+
+FileLargerAttachment = De bestandsgrootte is hoger dan toegelaten.
+FilePartiallyUploaded = Enkel een gedeelte van het bestand werd geuploaded, te wijten aan een onbekende fout.
+NoFileUploaded = Geen bestand geuploaded.
+MissingTempFolder = De tijdelijke map is onbestaande.
+MissingTempFile = Het tijdelijk bestand is onbestaande.
+UnknownUploadError = Een onbekende fout is opgetreden.
+FileLargerThan = Fout bij het uploaden. Waarschijnlijk is het bestand groter dan 
+PROC_CANT_LOAD_DB = Kan niet verbinden met de database.
+PROC_CANT_LOAD_LANG = Kan het gevraagde taalbestand niet vinden.
+PROC_CANT_LOAD_ACCT = Deze account bestaat niet, misschien werd ze juist verwijderd.
+
+DomainDosntExist = Dit domain bestaat niet op de mailserver.
+ServerIsDisable = Deze mailserver gebruiken werd verboden door de beheerder.
+
+PROC_ACCOUNT_EXISTS = Deze account kan niet worden aangemaakt omdat het al bestaat.
+PROC_CANT_GET_MESSAGES_COUNT = Kan het aantal berichten niet ophalen.
+PROC_CANT_MAIL_SIZE = Kan bestandsgrootte niet ophalen.
+
+Organization = Bedrijf
+WarningOutServerBlank = Het veld SMTP Server kan niet leeg zijn
+
+;
+Refresh = Vernieuwen
+MessagesInInbox = Bericht(en) in Postvak IN
+InfoEmptyInbox = Postvak IN is leeg
+
+; webmail 4.2 constants
+BackToList = Terug naar lijst
+InfoNoContactsGroups = Geen contacten of groepen.
+InfoNewContactsGroups = U kan nieuwe contacten of groepen aanmaken, of u kan contacten importeren uit een .CSV bestand of in MS Outlook formaat.
+DefTimeFormat = Standaard tijdsformaat
+SpellNoSuggestions = Geen suggesties
+SpellWait = Even geduld&hellip;
+
+InfoNoMessageSelected = Geen berichten geselecteerd.
+InfoSingleDoubleClick = U kan klikken op een bericht in de lijst om het voorbeeld te bekijken, of dubbelklikken om de volledige versie te bekijken.
+
+; calendar
+TitleDay = Dagweergave
+TitleWeek = Weekweergave
+TitleMonth = Maandweergave
+
+ErrorNotSupportBrowser = AfterLogic Calendar ondersteunt uw browser niet. Gelieve over te schakelen naar FireFox 2.0 of nieuwer, Opera 9.0 of nieuwer, Internet Explorer 6.0 of nieuwer, Safari 3.0.2 of nieuwer.
+ErrorTurnedOffActiveX = ActiveX is uitgeschakeld. <br/>Gelieve dit in te schakelen om deze toepassing te gebruiken.
+
+Calendar = Kalender
+
+TabDay = Dag
+TabWeek = Week
+TabMonth = Maand
+
+ToolNewEvent = Nieuwe&nbsp;gebeurtenis
+ToolBack = Terug
+ToolToday = Vandaag
+AltNewEvent = Nieuwe gebeurtenis
+AltBack = Terug
+AltToday = Vandaag
+CalendarHeader = Agenda
+CalendarsManager = Agendabeheer
+
+CalendarActionNew = Nieuwe agenda
+EventHeaderNew = Nieuwe gebeurtenis
+CalendarHeaderNew = Nieuwe agenda
+
+EventSubject = Onderwerp
+EventCalendar = Agenda
+EventFrom = Van
+EventTill = tot
+CalendarDescription = Beschrijving
+CalendarColor = Kleur
+CalendarName = Agendanaam
+CalendarDefaultName = Mijn agenda
+
+ButtonSave = Opslaan
+ButtonCancel = Annuleren
+ButtonDelete = Verwijderen
+
+AltPrevMonth = Vorige maand
+AltNextMonth = Volgende maand
+
+CalendarHeaderEdit = Agenda aanpassen
+CalendarActionEdit = Agenda aanpassen
+ConfirmDeleteCalendar = Bent u zeker dat u deze agenda wil verwijderen
+InfoDeleting = Bezig met verwijderen&hellip;
+WarningCalendarNameBlank = U kan de agendanaam niet leeg laten.
+ErrorCalendarNotCreated = Agenda niet gemaakt.
+WarningSubjectBlank = U kan het onderwerp niet leeg laten.
+WarningIncorrectTime = Het uur bevat sommige ongeldige karakters.
+WarningIncorrectFromTime = De starttijd is ongeldig.
+WarningIncorrectTillTime = De eindtijd is ongeldig.
+WarningStartEndDate = De einddatum moet groter dan of gelijk zijn aan de startdatum.
+WarningStartEndTime = De eindtijd moet groter dan of gelijk zijn aan de starttijd.
+WarningIncorrectDate = De datum moet correct zijn.
+InfoLoading = Bezig met laden&hellip;
+EventCreate = Maak gebeurtenis
+CalendarHideOther = Verberg andere agenda's
+CalendarShowOther = Toon andere agenda's
+CalendarRemove = Verwijder agenda
+EventHeaderEdit = Gebeurtenis aanpassen
+
+InfoSaving = Bezig met opslaan&hellip;
+SettingsDisplayName = Weergavenaam
+SettingsTimeFormat = Tijdsformaat
+SettingsDateFormat = Datumformaat
+SettingsShowWeekends = Weekends tonen
+SettingsWorkdayStarts = Werkdag start op
+SettingsWorkdayEnds = eindigt op
+SettingsShowWorkday = Werkdagen tonen
+SettingsWeekStartsOn = Week start op
+SettingsDefaultTab = Standaard-tab
+SettingsCountry = Land
+SettingsTimeZone = Tijdzone
+SettingsAllTimeZones = Alle tijdzones
+
+WarningWorkdayStartsEnds = De 'Werkdag eindigt op' tijd moet groter zijn dan de 'Werkdag start op' tijd
+ReportSettingsUpdated = Instellingen succesvol opgeslagen
+
+SettingsTabCalendar = Agenda
+
+FullMonthJanuary = Januari
+FullMonthFebruary = Februari
+FullMonthMarch = Maart
+FullMonthApril = April
+FullMonthMay = Mei
+FullMonthJune = Juni
+FullMonthJuly = Juli
+FullMonthAugust = Augustus
+FullMonthSeptember = September
+FullMonthOctober = Oktober
+FullMonthNovember = November
+FullMonthDecember = December
+
+ShortMonthJanuary = Jan
+ShortMonthFebruary = Feb
+ShortMonthMarch = Maa
+ShortMonthApril = Apr
+ShortMonthMay = Mei
+ShortMonthJune = Jun
+ShortMonthJuly = Jul
+ShortMonthAugust = Aug
+ShortMonthSeptember = Sep
+ShortMonthOctober = Okt
+ShortMonthNovember = Nov
+ShortMonthDecember = Dec
+
+FullDayMonday = Maandag
+FullDayTuesday = Dinsdag
+FullDayWednesday = Woensday
+FullDayThursday = Donderday
+FullDayFriday = Vrijday
+FullDaySaturday = Zaterdag
+FullDaySunday = Zondag
+
+DayToolMonday = Maa
+DayToolTuesday = Din
+DayToolWednesday = Woe
+DayToolThursday = Don
+DayToolFriday = Vri
+DayToolSaturday = Zat
+DayToolSunday = Zon
+
+CalendarTableDayMonday = M
+CalendarTableDayTuesday = D
+CalendarTableDayWednesday = W
+CalendarTableDayThursday = D
+CalendarTableDayFriday = V
+CalendarTableDaySaturday = Z
+CalendarTableDaySunday = Z
+
+ErrorParseJSON = Het JSON antwoord van de server kan niet gelezen worden.
+
+ErrorLoadCalendar = Kan agenda niet laden
+ErrorLoadEvents = Kan gebeurtenissen niet laden
+ErrorUpdateEvent = Kan gebeurtenis niet opslaan
+ErrorDeleteEvent = Kan gebeurtenis niet verwijderen
+ErrorUpdateCalendar = Kan agenda niet opslaan
+ErrorDeleteCalendar = Kan agenda niet verwijderen
+ErrorGeneral = Er is een fout gebeurd op de server. Probeer het later opnieuw.
+
+; webmail 4.3 constants
+SharedTitleEmail = E-mail
+ShareHeaderEdit = Agenda delen en publiceren
+ShareActionEdit = Agenda delen en publiceren
+CalendarPublicate = Publiceer deze agenda op internet
+CalendarPublicationLink = Link
+ShareCalendar = Deel deze agenda
+SharePermission1 = Wijzigingen maken aan items en agenda delen beheren
+SharePermission2 = Wijzigingen maken aan items
+SharePermission3 = Items bekijken
+SharePermission4 = Enkel vrij/bezet bekijken (details verbergen)
+ButtonClose = Sluiten
+WarningEmailFieldFilling = Gelieve eerst e-mail in te vullen
+EventHeaderView = Bekijk item
+ErrorUpdateSharing = Kan instellingen voor delen en publiceren niet opslaan
+ErrorUpdateSharing1 = Kan agenda niet delen met gebruiker %s omdat deze niet bestaat
+ErrorUpdateSharing2 = Kan agenda niet delen met gebruiker %s 
+ErrorUpdateSharing3 = Deze agenda is al gedeeld met gebruiker %s
+Title_MyCalendars = Mijn agenda's
+Title_SharedCalendars = Gedeelde agenda's
+ErrorGetPublicationHash = Kan publicatie-link niet maken
+ErrorGetSharing = Kan niet delen
+CalendarPublishedTitle = Deze agenda is gedeeld
+RefreshSharedCalendars = Vernieuwen Gedeelde Agenda's
+Title_CheckSharedCalendars = Vernieuwen Gedeelde Agenda's
+
+GroupMembers = Leden
+
+ReportMessagePartDisplayed = Merk op dat slechts een deel van het bericht weergegeven is
+ReportViewEntireMessage = Om het hele bericht te zien,
+ReportClickHere = klik hier
+ErrorContactExists = Een contact met deze naam en e-mail bestaat reeds.
+
+Attachments = Attachments
+
+InfoGroupsOfContact = De groepen waarvan het contact reeds lid is, zijn aangevinkt.
+AlertNoContactsSelected = Geen contacten geselecteerd.
+MailSelected = Mail geselecteerd adres
+CaptionSubscribed = Geabonneerd
+
+OperationSpam = Spam
+OperationNotSpam = Geen spam
+FolderSpam = Spam
+
+; webmail 4.4 contacts
+ContactMail = Mail contactpersoon
+ContactViewAllMails = Alle mails van deze contactpersoon bekijken
+ContactsMailThem = Mail contactpersonen
+DateToday = Vandaag
+DateYesterday = Gisteren
+MessageShowDetails = Meer details
+MessageHideDetails = Verberg details
+MessageNoSubject = Geen onderwerp
+; john@gmail.com to nadine@gmail.com
+MessageForAddr = aan
+SearchClear = Zoektermen wissen
+; Search results for "search string" in Inbox folder:
+; Search results for "search string" in all mail folders:
+SearchResultsInFolder = Zoekresultaten voor "#s" in map #f:
+SearchResultsInAllFolders = Zoekresultaten voor "#s" in alle mappen:
+AutoresponderTitle = Bericht bij afwezigheid
+AutoresponderEnable = Bericht bij afwezigheid instellen
+AutoresponderSubject = Onderwerp
+AutoresponderMessage = Bericht
+ReportAutoresponderUpdatedSuccessfuly = Bericht succesvol ingesteld.
+FolderQuarantine = Quarantaine
+
+;calendar
+EventRepeats = Terugkerend
+NoRepeats = Niet terugkerend
+DailyRepeats = Dagelijks
+WorkdayRepeats = Elke weekdag (Ma. - Vr.)
+OddDayRepeats = Elke Ma., Wo. and Vr.
+EvenDayRepeats = Elke Di. and Do.
+WeeklyRepeats = Wekelijks
+MonthlyRepeats = Maandelijks
+YearlyRepeats = Jaarlijks
+RepeatsEvery = Keert terug elke
+ThisInstance = Enkel deze gebeurtenis
+AllEvents = Alle gebeurtenissen
+AllFollowing = Alle toekomstige gebeurtenissen
+ConfirmEditRepeatEvent = Bent u zeker dat u enkel deze gebeurtenis, alle gebeurtenissen of alle toekomstige gebeurtenissen in de reeks?
+RepeatEventHeaderEdit = Terugkerende gebeurtenis aanpassen
+First = Eerste
+Second = Tweede
+Third = Derde
+Fourth = Vierde
+Last = Laatste
+Every = Elke
+SetRepeatEventEnd = Einddatum
+NoEndRepeatEvent = Geen einddatum
+EndRepeatEventAfter = Einde na
+Occurrences = gebeurtenissen
+EndRepeatEventBy = Eindigen op
+EventCommonDataTab = Algemene details
+EventRepeatDataTab = Terugkeer-details
+RepeatEventNotPartOfASeries = Deze gebeurtenis is gewijzigd en maakt niet langer deel uit van een reeks.
+UndoRepeatExclusion = Opname in reeks ongedaan maken.
+
+MonthMoreLink = %d meer...
+NoNewSharedCalendars = Geen nieuwe agenda's
+NNewSharedCalendars = %d agenda's gevonden
+OneNewSharedCalendars = 1 nieuwe agenda gevonden
+ConfirmUndoOneRepeat = Wil u deze gebeurtenis in de reeks herstellen?
+
+RepeatEveryDayInfin = Elke dag
+RepeatEveryDayTimes = Elke dag, %TIMES% keer
+RepeatEveryDayUntil = Elke dag, tot %UNTIL%
+RepeatDaysInfin = Elke %PERIOD% dagen
+RepeatDaysTimes = Elke %PERIOD% dagen, %TIMES% keer
+RepeatDaysUntil = Elke %PERIOD% dagen, tot %UNTIL%
+
+RepeatEveryWeekWeekdaysInfin = Elke week op weekdagen
+RepeatEveryWeekWeekdaysTimes = Elke week op weekdagen, %TIMES% keer
+RepeatEveryWeekWeekdaysUntil = Elke week op weekdagen, tot %UNTIL%
+RepeatWeeksWeekdaysInfin = Elke %PERIOD% weken op weekdagen
+RepeatWeeksWeekdaysTimes = Elke %PERIOD% weken op weekdagen, %TIMES% keer
+RepeatWeeksWeekdaysUntil = Elke %PERIOD% weken op weekdagen, tot %UNTIL%
+
+RepeatEveryWeekInfin = Elke week on %DAYS%
+RepeatEveryWeekTimes = Elke week on %DAYS%, %TIMES% times
+RepeatEveryWeekUntil = Elke week on %DAYS%, tot %UNTIL%
+RepeatWeeksInfin = Elke %PERIOD% weken op %DAYS%
+RepeatWeeksTimes = Elke %PERIOD% weken op %DAYS%, %TIMES% keer
+RepeatWeeksUntil = Elke %PERIOD% weken op %DAYS%, tot %UNTIL%
+
+RepeatEveryMonthDateInfin = Elke month op dag %DATE%
+RepeatEveryMonthDateTimes = Elke month op dag %DATE%, %TIMES% keer
+RepeatEveryMonthDateUntil = Elke month op dag %DATE%, tot %UNTIL%
+RepeatMonthsDateInfin = Elke %PERIOD% months op dag %DATE%
+RepeatMonthsDateTimes = Elke %PERIOD% months op dag %DATE%, %TIMES% keer
+RepeatMonthsDateUntil = Elke %PERIOD% months op dag %DATE%, tot %UNTIL%
+
+RepeatEveryMonthWDInfin = Elke maand op %NUMBER% %DAY%
+RepeatEveryMonthWDTimes = Elke maand op %NUMBER% %DAY%, %TIMES% keer
+RepeatEveryMonthWDUntil = Elke maand op %NUMBER% %DAY%, tot %UNTIL%
+RepeatMonthsWDInfin = Elke %PERIOD% maanden op %NUMBER% %DAY%
+RepeatMonthsWDTimes = Elke %PERIOD% maanden op %NUMBER% %DAY%, %TIMES% keer
+RepeatMonthsWDUntil = Elke %PERIOD% maanden op %NUMBER% %DAY%, tot %UNTIL%
+
+RepeatEveryYearDateInfin = Elk jaar op dag %DATE%
+RepeatEveryYearDateTimes = Elk jaar op dag %DATE%, %TIMES% keer
+RepeatEveryYearDateUntil = Elk jaar op dag %DATE%, tot %UNTIL%
+RepeatYearsDateInfin = Elke %PERIOD% jaren op dag %DATE%
+RepeatYearsDateTimes = Elke %PERIOD% jaren op dag %DATE%, %TIMES% keer
+RepeatYearsDateUntil = Elke %PERIOD% jaren op dag %DATE%, tot %UNTIL%
+
+RepeatEveryYearWDInfin = Elk jaar op %NUMBER% %DAY%
+RepeatEveryYearWDTimes = Elk jaar op %NUMBER% %DAY%, %TIMES% keer
+RepeatEveryYearWDUntil = Elk jaar op %NUMBER% %DAY%, tot %UNTIL%
+RepeatYearsWDInfin = Elke %PERIOD% jaren op %NUMBER% %DAY%
+RepeatYearsWDTimes = Elke %PERIOD% jaren op %NUMBER% %DAY%, %TIMES% keer
+RepeatYearsWDUntil = Elke %PERIOD% jaren op %NUMBER% %DAY%, tot %UNTIL%
+
+RepeatDescDay = dag
+RepeatDescWeek = week
+RepeatDescMonth = maand
+RepeatDescYear = jaar
+
+; webmail 4.5 contacts
+WarningUntilDateBlank = Gelieve de einddatum aan te duiden
+WarningWrongUntilDate = Einddatum moet later zijn dan startdatum
+
+OnDays = Op dagen
+CancelRecurrence = Annuleer herhaalde gebeurtenis
+RepeatEvent = Deze gebeurtenis herhalen
+
+Spellcheck = Controge = Taals
+LoginLanguage = Language
+LanguageDefault = Standaard
+
+; webmail 4.5.x new
+EmptySpam = Empty Spam
+Saving = Saving&hellip;
+Sending = Sending&hellip;
+LoggingOffFromServer = Logging off from server&hellip;
+
+;webmail 4.6
+PROC_CANT_SET_MSG_AS_SPAM = Can't mark message(s) as spam
+PROC_CANT_SET_MSG_AS_NOTSPAM = Can't mark message(s) as non-spam
+ExportToICalendar = Export to iCalendar
+ErrorMaximumUsersLicenseIsExceeded = Your account is disabled because maximum number of users allowed by license is exceeded. Please contact your system administrator.
+RepliedMessageTitle = Replied Message
+ForwardedMessageTitle = Forwarded Message
+RepliedForwardedMessageTitle = Replied and Forwarded Message
+ErrorDomainExist = The user cannot be created because corresponding domain doesn't exist. You should create the domain first.
+
+; webmail 4.7
+RequestReadConfirmation = Vraag leesbevestiging
+FolderTypeDefault = Standaard
+ShowFoldersMapping = Toestaan een andere map te gebruiken als systeem-map (b.v. gebruik MijnMap als Verzonden Items)
+ShowFoldersMappingNote = Bijvoorbeeld, om Verzonden items te wijzigen van Verzonden Items naar MijnMap, kies "Verzonden Items" in "Gebruik voor" van het menu van "MijnMap".
+FolderTypeMapTo = Gebruik voor
+
+ReminderEmailExplanation = Dit bericht is naar uw account %EMAIL% verzonden omdat u koos om verwittigd te worden in uw agenda %CALENDAR_NAME%
+ReminderOpenCalendar = Open agenda
+
+AddReminder = Herinner me voor deze gebeurtenis
+AddReminderBefore = Herinner me % voor deze gebeurtenis
+AddReminderAnd = en % voor
+AddReminderAlso = en ook % voor
+AddMoreReminder = Meer herinneringen
+RemoveAllReminders = Verwijder alle herinneringen
+ReminderNone = Geen
+ReminderMinutes = minuten
+ReminderHour = uur
+ReminderHours = uren
+ReminderDay = dag
+ReminderDays = dagen
+ReminderWeek = week
+ReminderWeeks = weken
+Allday = Hele dag
+
+Folders = Mappen
+NoSubject = Geen onderwerp
+SearchResultsFor = Zoekresultaten voor
+
+Back = Terug
+Next = Volgende
+Prev = Vorige
+
+MsgList = Messages
+Use24HTimeFormat = Use 24 hour time format
+UseCalendars = Use calendars
+Event = Event
+CalendarSettingsNullLine = No calendars
+CalendarEventNullLine = No events
+ChangeAccount = Change account
+
+TitleCalendar = Calendar
+TitleEvent = Event
+TitleFolders = Folders
+TitleConfirmation = Confirmation
+
+Yes = Yes
+No = No
+
+EditMessage = Edit Message
+
+AccountNewPassword = New password
+AccountConfirmNewPassword = Confirm new password
+AccountPasswordsDoNotMatch = Passwords do not match.
+
+ContactTitle = Title
+ContactFirstName = First name
+ContactSurName = Surname
+ContactNickName = Nickname
+
+CaptchaTitle = Captcha
+CaptchaReloadLink = reload
+CaptchaError = Captcha text is incorrect.
+
+WarningInputCorrectEmails = Please specify correct emails.
+WrongEmails = Incorrect emails:
+
+ConfirmBodySize1 = Sorry, but text messages are max.
+ConfirmBodySize2 = characters long. Everything beyond the limit will be truncated. Click "Cancel" if you want to edit the message.
+BodySizeCounter = Counter
+InsertImage = Insert Image
+ImagePath = Image Path
+ImageUpload = Insert
+WarningImageUpload = The file being attached is not an image. Please choose an image file.
+
+ConfirmExitFromNewMessage = Changes will be lost if you leave the page. Would you like to save draft before leaving the page?
+
+SensivityConfidential = Please treat this message as Confidential
+SensivityPrivate = Please treat this message as Private
+SensivityPersonal = Please treat this message as Personal
+
+ReturnReceiptTopText = The sender of this message has asked to be notified when you receive this message.
+ReturnReceiptTopLink = Click here to notify the sender.
+ReturnReceiptSubject = Return Receipt (displayed)
+ReturnReceiptMailText1 = This is a Return Receipt for the mail that you sent to
+ReturnReceiptMailText2 = Note: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.
+ReturnReceiptMailText3 = with subject
+
+SensivityMenu = Sensitivity
+SensivityNothingMenu = Nothing
+SensivityConfidentialMenu = Confidential
+SensivityPrivateMenu = Private
+SensivityPersonalMenu = Personal
+
+ErrorLDAPonnect = Can't connect to ldap server.
+
+MessageSizeExceedsAccountQuota = This message size exceeds your account quota.
+MessageCannotSent = The message cannot be sent.
+MessageCannotSaved = The message cannot be saved.
+
+ContactFieldTitle = Field
+ContactDropDownTO = TO
+ContactDropDownCC = CC
+ContactDropDownBCC = BCC
+
+; 4.9 
+NoMoveDelete = Message(s) can't be moved to Trash. Most likely your message box is full. Should this unmoved message(s) be deleted?
+
+WarningFieldBlank = This field cannot be empty.
+WarningPassNotMatch = Passwords do not match, please check.
+PasswordResetTitle = Password recovery - step %d
+NullUserNameonReset = user
+IndexResetLink = Forgot password?
+IndexRegLink = Account Registration
+
+RegDomainNotExist = Domain does not exist.
+RegAnswersIncorrect = Answers are incorrect.
+RegUnknownAdress = Unknown email address.
+RegUnrecoverableAccount = Password recovery cannot be applied for this email address.
+RegAccountExist = This address is already used.
+RegRegistrationTitle = Registration
+RegName = Name
+RegEmail = e-mail address
+RegEmailDesc = For example, myname@domain.com. This information will be used to enter the system.
+RegSignMe = Remember me
+RegSignMeDesc = Do not ask for login and password on next login to the system on this PC.
+RegPass1 = Password
+RegPass2 = Repeat password 
+RegQuestionDesc = Please, provide two secret questions and answers which know only you. In case of password lost you can use these questions in order to recover the password.
+RegQuestion1 = Secret question 1
+RegAnswer1 = Answer 1
+RegQuestion2 = Secret question 2
+RegAnswer2 = Answer 2
+RegTimeZone = Time zone
+RegLang = Interface language
+RegCaptcha = Captcha
+RegSubmitButtonValue = Register
+
+ResetEmail = Please provide your email
+ResetEmailDesc = Provide emails address used for registration.
+ResetCaptcha = CAPTCHA
+ResetSubmitStep1 = Send
+ResetQuestion1 = Secret question 1
+ResetAnswer1 = Answer
+ResetQuestion2 = Secret question 2
+ResetAnswer2 = Answer
+ResetSubmitStep2 = Send
+
+ResetTopDesc1Step2 = Providede email address
+ResetTopDesc2Step2 = Please confirm correctness.
+
+ResetTopDescStep3 = please specify below new password for your email.
+
+ResetPass1 = New password
+ResetPass2 = Repeat password
+ResetSubmitStep3 = Send
+ResetDescStep4 = Your password has been changed.
+ResetSubmitStep4 = Return
+
+RegReturnLink = Return to login screen
+ResetReturnLink = Return to login screen
+
+; Appointments 
+AppointmentAddGuests = Add guests
+AppointmentRemoveGuests = Cancel Meeting
+AppointmentListEmails = Enter email addresses separated by commas and press Save
+AppointmentParticipants = Participants
+AppointmentRefuse = Refuse
+AppointmentAwaitingResponse = Awaiting response
+AppointmentInvalidGuestEmail = The following guest email addresses are invalid:
+AppointmentOwner = Owner
+
+AppointmentMsgTitleInvite = Invite to event.
+AppointmentMsgTitleUpdate = Event was modified.
+AppointmentMsgTitleCancel = Event was cancelled.
+AppointmentMsgTitleRefuse = Guest %guest% is refuse invitation
+AppointmentMoreInfo = More info
+AppointmentOrganizer = Organizer
+AppointmentEventInformation = Event information
+AppointmentEventWhen = When
+AppointmentEventParticipants = Participants
+AppointmentEventDescription = Description
+AppointmentEventWillYou = Will you participate
+AppointmentAdditionalParameters = Additional parameters
+AppointmentHaventRespond = Not responded yet
+AppointmentRespondYes = I will participate
+AppointmentRespondMaybe = Not sure yet
+AppointmentRespondNo = Will not participate
+AppointmentGuestsChangeEvent = Guests can change event
+
+AppointmentSubjectAddStart = You've received invitation to event 
+AppointmentSubjectAddFrom =  from 
+AppointmentSubjectUpdateStart = Modification of event 
+AppointmentSubjectDeleteStart = Cancellation of event 
+ErrorAppointmentChangeRespond = Unable to change appointment respond
+SettingsAutoAddInvitation = Add invitations into calendar automatically
+ReportEventSaved = Your event has been saved
+ReportAppointmentSaved =  and notifications were send
+ErrorAppointmentSend = Can't send invitations.
+AppointmentEventName = Name:
+
+; End appointments
+
+ErrorCantUpdateFilters = Can't update filters
+
+FilterPhrase = If there's %field header %condition %string then %action
+FiltersAdd = Add Filter
+FiltersCondEqualTo = equal to
+FiltersCondContainSubstr = containing substring
+FiltersCondNotContainSubstr = not containing substring
+FiltersActionDelete = delete message
+FiltersActionMove = move
+FiltersActionToFolder = to %folder folder
+FiltersNo = No filters specified yet
+
+ReminderEmailFriendly = reminder
+ReminderEventBegin = starts at: 
+
+FiltersLoading = Loading Filters...
+ConfirmMessagesPermanentlyDeleted = All messages in this folder will be permanently deleted.
+
+InfoNoNewMessages = There are no new messages.
+TitleImportContacts = Import Contacts
+TitleSelectedContacts = Selected Contacts
+TitleNewContact = New Contact
+TitleViewContact = View Contact
+TitleEditContact = Edit Contact
+TitleNewGroup = New Group
+TitleViewGroup = View Group
+
+AttachmentPending = Pending...
+AttachmentUploading = Uploading...
+AttachmentComplete = Complete.
+AttachmentCancelled = Cancelled.
+AttachmentStopped = Stopped.
+AttachmentsUpload = Attach Files
+AttachmentsUploadPadding = 34
+
+TestButton = TEST
+AutoCheckMailIntervalLabel = Autocheck interval
+AutoCheckMailIntervalDisableName = Disable
+ReportCalendarSaved = Calendar has been saved.
+
+ContactSyncError = Sync failed
+ReportContactSyncDone = Sync complete
+
+MobileSyncUrlTitle = Mobile sync URL
+MobileSyncLoginTitle = Mobile sync login
+
+QuickReply = Quick Reply
+SwitchToFullForm = Switch To Full Form
+SortFieldDate = Date
+SortFieldFrom = From
+SortFieldSize = Size
+SortFieldSubject = Subject
+SortFieldFlag = Flag
+SortFieldAttachments = Attachments
+SortOrderAscending = Ascending
+SortOrderDescending = Descending
+ArrangedBy = Arranged by
+
+MessagePaneToRight = The message pane is to the right of the message list, rather than below
+
+SettingsTabMobileSync = Mobile Sync
+
+MobileSyncContactDataBaseTitle = Mobile sync contact database
+MobileSyncCalendarDataBaseTitle = Mobile sync calendar database
+MobileSyncTitleText = If you'd like to synchronize your SyncML-enabled handheld device with WebMail, you can use these parameters.<br />"Mobile Sync URL" specifies path to SyncML Data Synchronization server, "Mobile Sync Login" is your login on SyncML Data Synchronization Server and use your own password upon request. Also, some devices need to specify database name for contact and calendar data.<br />Use "Mobile sync contact database" and "Mobile sync calendar database" respectively.
+MobileSyncEnableLabel = Enable mobile sync
+
+SearchInputText = search
+
+AppointmentEmailExplanation = This message has come to your account %EMAIL% because you was invited to the event by %ORGANAZER%

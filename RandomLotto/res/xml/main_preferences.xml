@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+        android:title="@string/setting_title_general_lotto_gen">
+        <ListPreference
+            android:key="setting_number_count"
+            android:title="@string/setting_number_count"
+            android:entries="@array/setting_number_count_entries"
+            android:entryValues="@array/setting_number_count_values"
+            android:dialogTitle="Default 7"            
+            android:summary="-"
+            android:defaultValue="@string/setting_number_count_default" />
+
+        <ListPreference
+            android:key="setting_grid_max_value"
+            android:title="@string/setting_grid_max_value"
+            android:entries="@array/setting_grid_max_value_entries"
+            android:entryValues="@array/setting_grid_max_value_values"
+            android:defaultValue="@string/setting_grid_max_value_default"
+            android:dialogTitle="Default 35"            
+            android:summary="-" />
+        
+        <ListPreference
+            android:key="setting_rnd_algorithm"
+            android:title="@string/setting_rnd_algorithm_title"
+            android:entries="@array/setting_rnd_algorithm_entries"            
+            android:entryValues="@array/setting_rnd_algorithm_values"
+            android:defaultValue="@string/setting_rnd_algorithm_default_value"
+            android:dialogTitle="@string/setting_rnd_algorithm_default_text"
+            android:summary="-" />
+    </PreferenceCategory>
+</PreferenceScreen>

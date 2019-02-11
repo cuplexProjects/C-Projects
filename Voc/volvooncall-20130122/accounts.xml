@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<account>
+  <agents-can-create-users type="boolean">true</agents-can-create-users>
+  <allowed-api-requests-per-minute type="integer">5</allowed-api-requests-per-minute>
+  <cc-blacklist></cc-blacklist>
+  <created-at type="datetime">2012-07-11T10:14:37+02:00</created-at>
+  <display-pinned-entries type="boolean">true</display-pinned-entries>
+  <display-pinned-entry-content type="boolean">false</display-pinned-entry-content>
+  <domain-blacklist></domain-blacklist>
+  <domain-whitelist></domain-whitelist>
+  <forum-title>Topics</forum-title>
+  <help-desk-size>5000+</help-desk-size>
+  <host>zendesk.com</host>
+  <host-mapping nil="true"></host-mapping>
+  <id type="integer">190822</id>
+  <is-active type="boolean">true</is-active>
+  <is-attaching-enabled type="boolean">true</is-attaching-enabled>
+  <is-collaboration-enabled type="boolean">true</is-collaboration-enabled>
+  <is-collaborators-addable-only-by-agents type="boolean">false</is-collaborators-addable-only-by-agents>
+  <is-comment-public-by-default type="boolean">true</is-comment-public-by-default>
+  <is-email-comment-public-by-default type="boolean">true</is-email-comment-public-by-default>
+  <is-end-user-password-change-visible type="boolean">true</is-end-user-password-change-visible>
+  <is-end-user-profile-visible type="boolean">true</is-end-user-profile-visible>
+  <is-open type="boolean">true</is-open>
+  <is-openid-enabled type="boolean">true</is-openid-enabled>
+  <is-pass-through-addressing-enabled type="boolean">true</is-pass-through-addressing-enabled>
+  <is-personalized-reply-enabled type="boolean">false</is-personalized-reply-enabled>
+  <is-serviceable type="boolean">true</is-serviceable>
+  <is-signup-required type="boolean">true</is-signup-required>
+  <is-ssl-enabled type="boolean">true</is-ssl-enabled>
+  <is-twitter-login-enabled type="boolean">true</is-twitter-login-enabled>
+  <is-welcome-email-when-agent-register-enabled type="boolean">true</is-welcome-email-when-agent-register-enabled>
+  <locale-id type="integer">1</locale-id>
+  <lock-state type="integer">0</lock-state>
+  <loop-threshold type="integer">20</loop-threshold>
+  <mail-delimiter>{{txt.email.delimiter}}</mail-delimiter>
+  <name>Volvo On Call Self Service Portal</name>
+  <owner-id type="integer">235984458</owner-id>
+  <reply-address>support@volvooncall.zendesk.com</reply-address>
+  <sandbox-master-id type="integer" nil="true"></sandbox-master-id>
+  <shard-id type="integer">35</shard-id>
+  <source>http://www.google.com/url?sa=t&amp;rct=j&amp;q=can%20zendesk%20montior%20social%20media&amp;source=web&amp;cd=3&amp;ved=0CGcQFjAC&amp;url=http%3A%2F%2Fwww.zendesk.com%2Fblog%2Ffive-new-june-integrations&amp;ei=1MLxT9u8F4qG4gTuq5zADQ&amp;usg=AFQjCNFro5Np77tNqHH_0r-SplzVcO44gg&amp;sig2=QOcaBaLqucKdLUq5h6GSjQ</source>
+  <subdomain>volvooncall</subdomain>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2013-01-22T13:41:29+01:00</updated-at>
+  <uses-12-hour-clock type="boolean">false</uses-12-hour-clock>
+</account>

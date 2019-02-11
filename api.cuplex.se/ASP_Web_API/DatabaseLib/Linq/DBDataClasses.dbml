@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="CuplexApi" EntityNamespace="DatabaseLib.Linq" ContextNamespace="DatabaseLib.Linq" Class="DBDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.GeoIPCity" Member="GeoIPCities">
+    <Type Name="GeoIPCity">
+      <Column Name="LocationId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CountryCode" Type="System.String" DbType="Char(2) NOT NULL" CanBeNull="false" />
+      <Column Name="RegionCode" Type="System.String" DbType="Char(2) NOT NULL" CanBeNull="false" />
+      <Column Name="CityName" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PostalCode" Type="System.String" DbType="VarChar(8) NOT NULL" CanBeNull="false" />
+      <Column Name="Latitude" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Longitude" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="MetroCode" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="AreaCode" Type="System.String" DbType="Char(3)" CanBeNull="true" />
+      <Association Name="FK_GeoIPCity_GeoIPBlock" Member="Location" ThisKey="LocationId" OtherKey="LocationId" Type="GeoIPCity" IsForeignKey="true" />
+      <Association Name="FK_GeoIPCity_GeoIPBlock" Member="GeoIPCity_GeoIPBlock" ThisKey="LocationId" OtherKey="LocationId" Type="GeoIPCity" Cardinality="One" DeleteRule="NO ACTION" />
+      <Association Name="FK_GeoIPCityBlock_GeoIPCity" Member="GeoIPCityBlocks" ThisKey="LocationId" OtherKey="LocationId" Type="GeoIPCityBlock" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GeoIPCityBlock" Member="GeoIPCityBlocks">
+    <Type Name="GeoIPCityBlock">
+      <Column Name="LocationId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IPFrom" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IPTo" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="FK_GeoIPCityBlock_GeoIPCity" Member="GeoIPCity" ThisKey="LocationId" OtherKey="LocationId" Type="GeoIPCity" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GeoIPCountry" Member="GeoIPCountries">
+    <Type Name="GeoIPCountry">
+      <Column Name="IPFrom" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IPTo" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IPAddressFrom" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="IPAddressTo" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryCode" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Language" Member="Languages">
+    <Type Name="Language">
+      <Column Name="id" Member="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ISOCode" Type="System.String" DbType="Char(2) NOT NULL" CanBeNull="false" />
+      <Association Name="FK_WordDictionary_Language" Member="WordDictionaries" ThisKey="Id" OtherKey="LanguageId" Type="WordDictionary" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SecureChatMessage" Member="SecureChatMessages">
+    <Type Name="SecureChatMessage">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="VarChar(8000) NOT NULL" CanBeNull="false" />
+      <Column Name="ReceiverUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SenderUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="FK_SecureChatMessage_SecureChatUser_Receiver" Member="SecureChatUser" ThisKey="ReceiverUserId" OtherKey="Id" Type="SecureChatUser" IsForeignKey="true" />
+      <Association Name="FK_SecureChatMessage_SecureChatUser_Sender" Member="SenderUser" ThisKey="SenderUserId" OtherKey="Id" Type="SecureChatUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SecureChatSettings" Member="SecureChatSettings">
+    <Type Name="SecureChatSetting">
+      <Column Name="KeyType" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(8000) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="DataType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SecureChatUser" Member="SecureChatUsers">
+    <Type Name="SecureChatUser">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nickname" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GUID" Type="System.String" DbType="Char(36) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="FK_SecureChatMessage_SecureChatUser_Receiver" Member="SecureChatMessages" ThisKey="Id" OtherKey="ReceiverUserId" Type="SecureChatMessage" DeleteRule="NO ACTION" />
+      <Association Name="FK_SecureChatMessage_SecureChatUser_Sender" Member="SecureChatMessage_SecureChatUser_Senders" ThisKey="Id" OtherKey="SenderUserId" Type="SecureChatMessage" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WordDictionary" Member="WordDictionaries">
+    <Type Name="WordDictionary">
+      <Column Name="id" Member="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Word" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WordLength" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="FK_WordDictionary_Language" Member="Language" ThisKey="LanguageId" OtherKey="Id" Type="Language" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

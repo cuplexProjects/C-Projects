@@ -1,0 +1,43 @@
+html {
+	margin:0;
+	padding:0;
+}
+body {
+	margin:0;
+	padding:0 15px;
+	font-family: Arial,Helvetica, sans-serif;
+	font-size:10pt;
+	color:#555;
+}
+h1 {
+	margin:5px 0;
+}
+h2 {
+	font-size:1.6em;
+}
+h1,h2,h3 {
+	font-family: volvo_sans_pro, Arial, Helvetica, sans-serif;
+	font-weight:normal;
+	-webkit-font-smoothing: antialiased;
+	-webkit-text-stroke: 0px;
+	text-shadow: none;
+	color: #333;
+}
+h1,h2,h3,p {	
+	-webkit-margin-after: 0.43em;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+}
+
+h1,h2,h3 {
+	-webkit-margin-before: 0.83em;
+}
+
+p {
+	-webkit-margin-before: 0.43em;	
+}
+
+#content-body {
+	overflow-y:auto;
+	overflow-x:hidden;
+}

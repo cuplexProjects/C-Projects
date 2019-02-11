@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:background="#FF000000">
+    
+    <RelativeLayout 
+        android:id="@+id/about_header"
+        android:layout_width="fill_parent" 
+        android:layout_height="48dp"
+        android:background="@drawable/shape_background_grey">
+
+	    <ImageView
+	        android:id="@+id/about_icon"
+	        android:src="@drawable/ic_launcher"
+	        android:layout_width="32dp"
+	        android:layout_height="32dp"
+	        android:scaleType="fitCenter"
+	        android:layout_margin="10dp"
+	        android:contentDescription="@string/app_name" />
+    
+	    <TextView
+	        android:id="@+id/about_header_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/about_icon"
+	        android:layout_centerVertical="true"
+	        android:text="@string/main_about_header_text"
+	        android:textStyle="bold"
+	        android:textSize="16sp"
+	        android:textColor="#FF00caee" />
+    </RelativeLayout>
+    
+    <ScrollView
+        android:id="@+id/about_scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+	            
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:textColor="#FFFFFFFF"
+            android:autoLink="web"
+            android:text="@string/main_about_text" />
+    </ScrollView>
+    
+    <TextView
+        android:id="@+id/about_version"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/main_version_text"
+        android:textColor="#FFFFFFFF" />
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/rate_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+			android:textColor="#FFFFFFFF"
+            android:text="@string/button_rate" />
+        <Button
+            android:id="@+id/close_button"
+            android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:textColor="#FFFFFFFF"	                
+            android:text="@string/button_close" />
+    </LinearLayout>
+</LinearLayout>

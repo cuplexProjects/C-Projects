@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users report_date="20130122">
+<user>
+  <created-at type="datetime">2012-07-11T16:06:07+02:00</created-at>
+  <details>Johan works for HiQ G&#246;teborg AB.</details>
+  <external-id nil="true"></external-id>
+  <id type="integer">234666187</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime">2012-09-12T18:37:42+02:00</last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Johan Sanneblad</name>
+  <notes></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer">21943198</organization-id>
+  <phone></phone>
+  <restriction-id type="integer">0</restriction-id>
+  <roles type="integer">2</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-11-29T15:19:30+01:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-07-11T12:38:34+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">235950746</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime">2012-07-11T12:38:34+02:00</last-login>
+  <locale-id type="integer">1</locale-id>
+  <name>Anders Granfeldt</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-07-11T12:49:11+02:00</updated-at>
+  <email>anders.granfeldt@gmail.com</email>
+  <is-verified type="boolean">true</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-07-11T10:14:37+02:00</created-at>
+  <details>Joel works for HiQ G&#246;teborg AB.</details>
+  <external-id nil="true"></external-id>
+  <id type="integer">235984458</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime">2013-01-09T12:12:02+01:00</last-login>
+  <locale-id type="integer">1</locale-id>
+  <name>Joel Lundgren</name>
+  <notes></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer">21943198</organization-id>
+  <phone></phone>
+  <restriction-id type="integer">0</restriction-id>
+  <roles type="integer">2</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-07-12T13:33:44+02:00</updated-at>
+  <email>joel.lundgren@hiq.se</email>
+  <is-verified type="boolean">true</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/system/photos/4413/7482/20051001_0358_small_thumb.JPG</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-07-12T14:02:23+02:00</created-at>
+  <details>Joels facebook anv&#228;ndare</details>
+  <external-id nil="true"></external-id>
+  <id type="integer">236783221</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime">2012-08-17T13:41:05+02:00</last-login>
+  <locale-id type="integer">92</locale-id>
+  <name>Joel Lundgren (customer)</name>
+  <notes></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-20T10:33:08+02:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-15T10:02:13+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">248727817</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime" nil="true"></last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Joel L.</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-15T10:02:13+02:00</updated-at>
+  <email>85c2c172-e6af-11e1-852f-40402134dd9c@tasknotifications.postmark.sproutsocial.com</email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-13T10:33:57+02:00</created-at>
+  <details></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">249591971</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime">2012-08-17T16:21:55+02:00</last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Magnus Sp&#229;ngg&#229;rd</name>
+  <notes></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer">21943198</organization-id>
+  <phone></phone>
+  <restriction-id type="integer">0</restriction-id>
+  <roles type="integer">2</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-20T10:53:39+02:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-15T14:23:38+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">249914953</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime">2012-08-15T14:24:11+02:00</last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Magnus</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-20T11:00:41+02:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-20T10:34:30+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">250529807</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime">2012-08-20T10:36:32+02:00</last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>First time registering</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-20T10:43:10+02:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-20T10:40:59+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">250531417</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime">2012-08-20T10:40:59+02:00</last-login>
+  <locale-id type="integer">1</locale-id>
+  <name>joellundgren</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-20T11:00:54+02:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-20T12:51:08+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">250557787</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime">2012-08-20T12:51:08+02:00</last-login>
+  <locale-id type="integer">1</locale-id>
+  <name>Skapa nytt konto fr&#229;n scratch</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-20T12:53:55+02:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-15T14:33:40+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">250814691</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime">2012-08-17T16:15:26+02:00</last-login>
+  <locale-id type="integer">1</locale-id>
+  <name>Mats Edel</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone>555-12345</phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-20T10:54:02+02:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-21T09:00:51+02:00</created-at>
+  <details>Andreas works at Volvo Cars</details>
+  <external-id nil="true"></external-id>
+  <id type="integer">250912937</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime">2012-11-22T09:05:05+01:00</last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Andreas Andersson</name>
+  <notes></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer">21943198</organization-id>
+  <phone>0708-826229</phone>
+  <restriction-id type="integer">1</restriction-id>
+  <roles type="integer">4</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-11-29T15:19:59+01:00</updated-at>
+  <email>aanders3@volvocars.com</email>
+  <is-verified type="boolean">true</is-verified>
+  <custom-role-id type="integer">488306</custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-17T14:35:32+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">251768591</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime">2012-08-28T16:34:50+02:00</last-login>
+  <locale-id type="integer">92</locale-id>
+  <name>Klas Benjaminsson</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">0</restriction-id>
+  <roles type="integer">2</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-11-22T09:03:18+01:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-20T10:43:54+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">252421146</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime">2012-08-20T10:43:54+02:00</last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Joel Lundgren</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-20T10:59:36+02:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-20T11:11:10+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">252428066</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime" nil="true"></last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Joellundgren74</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-20T12:49:30+02:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-20T14:12:04+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">252598201</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime">2012-12-12T15:50:04+01:00</last-login>
+  <locale-id type="integer">1</locale-id>
+  <name>Joellundgren74</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-10-17T10:20:32+02:00</updated-at>
+  <email>joellundgren74@hotmail.com</email>
+  <is-verified type="boolean">true</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-23T14:11:47+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">254920008</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime">2012-08-23T14:36:13+02:00</last-login>
+  <locale-id type="integer">1</locale-id>
+  <name>Andreas Andersson</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-23T14:11:54+02:00</updated-at>
+  <email>andreassagalily@gmail.com</email>
+  <is-verified type="boolean">true</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-08-27T14:23:57+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">256266566</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime" nil="true"></last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Joel L.</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-08-27T14:23:57+02:00</updated-at>
+  <email>12e9440e-f042-11e1-9111-4040065f2a09@tasknotifications.postmark.sproutsocial.com</email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-10-17T10:19:39+02:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">276586997</id>
+  <is-active type="boolean">false</is-active>
+  <last-login type="datetime">2012-10-17T10:19:39+02:00</last-login>
+  <locale-id type="integer">92</locale-id>
+  <name>joellundgren</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-10-17T10:19:59+02:00</updated-at>
+  <email nil="true"></email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-11-22T09:02:37+01:00</created-at>
+  <details></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">292544753</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime">2013-01-22T14:06:17+01:00</last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Linn&#233;a Holmgren</name>
+  <notes></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer">21943198</organization-id>
+  <phone></phone>
+  <restriction-id type="integer">0</restriction-id>
+  <roles type="integer">2</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-11-22T09:05:04+01:00</updated-at>
+  <email>linnea.holmgren@volvocars.com</email>
+  <is-verified type="boolean">true</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-11-29T15:20:54+01:00</created-at>
+  <details></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">294854412</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime">2013-01-22T13:51:32+01:00</last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Martin Dahl</name>
+  <notes></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer">21943198</organization-id>
+  <phone></phone>
+  <restriction-id type="integer">0</restriction-id>
+  <roles type="integer">2</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2013-01-22T15:02:13+01:00</updated-at>
+  <email>martin.dahl@hiq.se</email>
+  <is-verified type="boolean">true</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/system/photos/6098/2128/15-daily-gifdump-41_thumb.gif</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-11-29T15:21:23+01:00</created-at>
+  <details></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">295341407</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime">2012-12-06T10:36:48+01:00</last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Daniel Leinerud</name>
+  <notes></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer">21943198</organization-id>
+  <phone></phone>
+  <restriction-id type="integer">0</restriction-id>
+  <roles type="integer">2</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-11-30T08:15:31+01:00</updated-at>
+  <email>daniel.leinerud@hiq.se</email>
+  <is-verified type="boolean">true</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-11-29T15:59:30+01:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">295810193</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime" nil="true"></last-login>
+  <locale-id type="integer">1</locale-id>
+  <name>Testulf Johansson</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-11-29T15:59:30+01:00</updated-at>
+  <email>brandstedt@gmail.com</email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-11-29T09:29:54+01:00</created-at>
+  <details></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">297188596</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime">2013-01-16T18:36:12+01:00</last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Johan Brandstedt</name>
+  <notes></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer">21943198</organization-id>
+  <phone></phone>
+  <restriction-id type="integer">0</restriction-id>
+  <roles type="integer">2</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-11-29T09:59:00+01:00</updated-at>
+  <email>johan.brandstedt@hiq.se</email>
+  <is-verified type="boolean">true</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-12-03T16:01:26+01:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">299424136</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime" nil="true"></last-login>
+  <locale-id type="integer">1</locale-id>
+  <name>Joellundgren74</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-12-03T16:01:26+01:00</updated-at>
+  <email>joellundgren74@gmail.com</email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+<user>
+  <created-at type="datetime">2012-12-14T16:44:12+01:00</created-at>
+  <details nil="true"></details>
+  <external-id nil="true"></external-id>
+  <id type="integer">307776893</id>
+  <is-active type="boolean">true</is-active>
+  <last-login type="datetime" nil="true"></last-login>
+  <locale-id type="integer">92</locale-id>
+  <name>Zen</name>
+  <notes nil="true"></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer" nil="true"></organization-id>
+  <phone nil="true"></phone>
+  <restriction-id type="integer">4</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Stockholm</time-zone>
+  <updated-at type="datetime">2012-12-14T16:44:12+01:00</updated-at>
+  <email>zen@mailinator.com</email>
+  <is-verified type="boolean">false</is-verified>
+  <custom-role-id nil="true"></custom-role-id>
+  <photo-url>https://volvooncall.zendesk.com/images/types/user_sm.png</photo-url>
+  <uses-12-hour-clock>false</uses-12-hour-clock>
+</user>
+</users>

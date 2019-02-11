@@ -1,0 +1,61 @@
+﻿html {
+    width: 100%;
+	
+}
+body {
+	background-color:#f8f8f8;
+    font-family: 'Noto Sans', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size:1.2em;
+}
+.main-menubar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+	/*background-color:#606060;	
+	background: linear-gradient(180deg, #888 , #555); */
+	font-weight:bold;
+	font-size:1.4em;
+    z-index: 100;
+}
+.main-menubar li a{
+	color:#111;
+}
+.page-container {
+	width:600px;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    top: 60px;
+}
+
+.page {
+    display: none;
+}
+.page.active {
+    display: block!important;
+}
+.html-encode-textarea {
+    width: 600px;
+    height: 400px;
+}
+.random-output-textarea{
+    width: 600px;
+    min-height: 100px;
+}
+.util-block div, .util-block button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.page-header {
+    margin-left: -25px;
+}
+
+.page-header h1 {
+    font-weight: bold;
+}
+
+.page-header-buttons button{
+    margin-right: 10px;
+}

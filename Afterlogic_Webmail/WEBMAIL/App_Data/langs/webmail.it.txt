@@ -1,0 +1,1262 @@
+PROC_ERROR_ACCT_CREATE = Si è verificato un errore durante la creazione dell'account
+PROC_WRONG_ACCT_PWD = Password errata
+PROC_CANT_LOG_NONDEF = Impossibile entrare nell'account non predefinito
+PROC_CANT_INS_NEW_FILTER = Impossibile inserire il nuovo filtro
+PROC_FOLDER_EXIST = Esiste già una cartella con lo stesso nome
+PROC_CANT_CREATE_FLD = Impossibile creare la cartella
+PROC_CANT_INS_NEW_GROUP = Impossibile inserire il nuovo gruppo
+PROC_CANT_INS_NEW_CONT = Impossibile inserire il nuovo contatto
+PROC_CANT_INS_NEW_CONTS = Impossibile inserire il nuovo contatto(i)
+PROC_CANT_ADD_NEW_CONT_TO_GRP = Impossibile aggiungere il contatto(i) al gruppo
+PROC_ERROR_ACCT_UPDATE = Si è verificato un errore durante l'aggiornamento dell'account
+PROC_CANT_UPDATE_CONT_SETTINGS = Impossibile aggiornare le impostazioni dell'account
+PROC_CANT_GET_SETTINGS = Impossibile ricevere le impostazioni
+PROC_CANT_UPDATE_ACCT = Impossibile aggiornare l'account
+PROC_ERROR_DEL_FLD = Si è verificato un errore durante la cancellazione della cartella(e)
+PROC_CANT_UPDATE_CONT = Impossibile aggiornare il contatto
+PROC_CANT_GET_FLDS = Impossibile ottenere la lista delle cartelle
+PROC_CANT_GET_MSG_LIST = Impossibile ottenere la lista dei messaggi
+PROC_MSG_HAS_DELETED = Questo messaggio è già stato cancellato dal server mail
+PROC_CANT_LOAD_CONT_SETTINGS = Impossibile caricare le impostazioni dei contatti
+PROC_CANT_LOAD_SIGNATURE = Impossibile caricare la firma dell'account
+PROC_CANT_GET_CONT_FROM_DB = Impossibile ottenere il contatto dal database
+PROC_CANT_GET_CONTS_FROM_DB = Impossibile ottenere il contatto(i) dal database
+PROC_CANT_DEL_ACCT_BY_ID = Impossibile cancellare l'account dall'id
+PROC_CANT_DEL_FILTER_BY_ID = Impossibile cancellare il filtro dall'id
+PROC_CANT_DEL_CONT_GROUPS = Impossibile cancellare il contatto(i) e/o i gruppi
+PROC_WRONG_ACCT_ACCESS = Rilevato un tentativo di accesso da parte di un utente non autorizzato.
+PROC_SESSION_ERROR = La sessione precedente è stata terminata a causa di un timeout.
+
+MailBoxIsFull = La casella email è piena
+WebMailException = Si è verificata un'eccezione della webmail
+InvalidUid = Messaggio UID non valido
+CantCreateContactGroup = Impossibile creare gruppo di contatti
+CantCreateUser = Impossibile creare l'utente
+CantCreateAccount = Impossibile creare l'account
+SessionIsEmpty = La sessione è occupata
+FileIsTooBig = Il file è troppo grosso
+
+PROC_CANT_MARK_ALL_MSG_READ = Impossibile segnare tutti i messaggi come letti
+PROC_CANT_MARK_ALL_MSG_UNREAD = Impossibile segnare tutti i messaggi come non letti
+PROC_CANT_PURGE_MSGS = Impossibile eliminare il messaggio(i)
+PROC_CANT_DEL_MSGS = Impossibile cancellare il messaggio(i)
+PROC_CANT_UNDEL_MSGS = Impossibile recuperare il messaggio(i)
+PROC_CANT_MARK_MSGS_READ = Impossibile segnare il messaggio(i) come letto
+PROC_CANT_MARK_MSGS_UNREAD = Impossibile segnare il messaggio(i) come non-letto
+PROC_CANT_SET_MSG_FLAGS = Impossibile impostare la bandierina(e) sul messaggio
+PROC_CANT_REMOVE_MSG_FLAGS = Impossibile rimuovere la bandierina(e) sul messaggio
+PROC_CANT_CHANGE_MSG_FLD = Impossibile cambiare la cartella del messaggio(i)
+PROC_CANT_SEND_MSG = Impossibile inviare il messaggio.
+PROC_CANT_SAVE_MSG = Impossibile salvare il messaggio.
+PROC_CANT_GET_ACCT_LIST = Impossibile ottenere la lista degli account
+PROC_CANT_GET_FILTER_LIST = Impossibile ottenere la lista dei filtri
+
+PROC_CANT_LEAVE_BLANK = Non puoi lasciare i campi * vuoti
+
+PROC_CANT_UPD_FLD = Impossibile aggiornare la cartella
+PROC_CANT_UPD_FILTER = Impossibile aggiornare il filtro
+
+ACCT_CANT_ADD_DEF_ACCT = Questa account non può venire aggiunto in quanto è utilizzato come account predefinito da un altro utente.
+ACCT_CANT_UPD_TO_DEF_ACCT = Lo stato di questo account non può essere trasformato in account predefinito
+ACCT_CANT_CREATE_IMAP_ACCT = Impossibile creare nuovo account (IMAP4 errore di connessione)
+ACCT_CANT_DEL_LAST_DEF_ACCT = Impossibile cancellare l'ultimo account predefinito
+
+LANG_LoginInfo = Informazioni di login
+LANG_Email = Email
+LANG_Login = Login
+LANG_Password = Password
+LANG_IncServer = Incoming&nbsp;Mail
+LANG_PopProtocol = POP3
+LANG_ImapProtocol = IMAP4
+LANG_IncPort = Porta
+LANG_OutServer = Outgoing&nbsp;Mail
+LANG_OutPort = Porta
+LANG_UseSmtpAuth = Use&nbsp;SMTP&nbsp;authentication
+LANG_SignMe = Accedi automaticamente
+LANG_Enter = Entra
+
+; interface strings
+
+TitleLogin = Login
+TitleMessagesListView = Lista messaggi
+TitleMessagesList = Lista messaggi
+TitleViewMessage = Guarda messaggio
+TitleNewMessage = Nuovo messaggio
+TitleSettings = Impostazioni
+TitleContacts = Contatti
+
+StandardLogin = Standard&nbsp;Login
+AdvancedLogin = Advanced&nbsp;Login
+
+InfoWebMailLoading = Attendi il caricamento della webMail&hellip;
+Loading = Caricamento&hellip;
+InfoMessagesLoad = Attendi il caricamento della lista dei messaggi
+InfoEmptyFolder = La cartella è vuota
+InfoPageLoading = La pagina sta caricando&hellip;
+InfoSendMessage = Il messaggio è stato inviato
+InfoSaveMessage = Il messaggio è stato salvato
+InfoHaveImported = Importazione completata
+InfoNewContacts = Nuovo contatto(i) nella tua lista dei contatti.
+InfoToDelete = Per cancellare
+InfoDeleteContent = Eliminare prima il contenuto delle cartelle per cancellarle.
+InfoDeleteNotEmptyFolders = Non è permesso cancellare le cartelle non-vuote. Per cancellare le cartelle non selezionabili, cancella prima il loro contenuto.
+InfoRequiredFields = * campi richiesti
+
+ConfirmAreYouSure = Sei sicuro?
+ConfirmDirectModeAreYouSure = Il messaggio selezionato(i) sarà PERMANENTEMENTE cancellato! Sei sicuro?
+ConfirmSaveSettings = Le impostazioni non sono state salvate. Clicca su OK per salvare.
+ConfirmSaveContactsSettings = Le impostazioni dei contatti non sono state salvate. Clicca su OK per salvare.
+ConfirmSaveAcctProp = Le proprietà dell'account non sono state salvate. Clicca su OK per salvare.
+ConfirmSaveFilter = Le proprietà dei filtri non sono state salvate. Clicca su OK per salvare.
+ConfirmSaveSignature = La firma non è stata salvata. Clicca su OK per salvare.
+ConfirmSavefolders = Le cartelle non sono state salvate. Clicca su OK per salvare.
+ConfirmHtmlToPlain = Attenzione: Cambiando la formattazione di questo messaggio da HTML a testo, andrà persa ogni formattazione del messaggio. Clicca su OK per continuare.
+ConfirmAddFolder = Prima di aggiungere la cartella è necessario applicare i cambiamenti. Clicca su OK per salvare.
+ConfirmEmptySubject = Il campo dell'Oggetto è vuoto. Vuoi continuare?
+
+WarningEmailBlank = Non puoi lasciare il campo<br />Email: vuoto
+WarningLoginBlank = Non puoi lasciare il campo<br />Login: vuoto
+WarningToBlank = Non puoi lasciare: il campo vuoto
+WarningServerPortBlank = Non puoi lasciare i campi POP3 e<br />SMTP server/port vuoti
+WarningEmptySearchLine = Campo di ricerca vuoto. Per piacere inserisci la stringa che hai bisogno di trovare
+WarningMarkListItem = Per piacere seleziona almeno un oggetto della lista
+WarningFolderMove = La cartella non può venire spostata poichè questo è un altro livello
+WarningContactNotComplete = Per piacere inserisci l'email o il nome
+WarningGroupNotComplete = Per piacere inserisci il nome del gruppo
+
+WarningEmailFieldBlank = Non puoi lasciare il campo Email vuoto
+WarningIncServerBlank = Non puoi lasciare il campo POP3(IMAP4) Server vuoto
+WarningIncPortBlank = Non puoi lasciare il campo POP3(IMAP4) Server Port vuoto
+WarningIncLoginBlank = Non puoi lasciare il campo POP3(IMAP4) Login vuoto
+WarningIncPortNumber = Devi specificare un numero positivo nel campo POP3(IMAP4) port.
+DefaultIncPortNumber = Il numero di porta predefinita per il POP3(IMAP4) è 110(143).
+WarningIncPassBlank = Non puoi lasciare il campo POP3(IMAP4) Password vuoto
+WarningOutPortBlank = Non puoi lasciare il campo SMTP Server Port vuoto
+WarningOutPortNumber = Devi specificare un numero positivo nel campo SMTP port.
+WarningCorrectEmail = Devi specificare un indirizzo e-mail valido.
+DefaultOutPortNumber = La porta predefinita per l'SMTP è la porta 25.
+
+WarningCsvExtention = L'estensione deve essere .csv
+WarningImportFileType = Per favore seleziona l'applicazione da cui vuoi copiare i tuoi contatti
+WarningEmptyImportFile = Per favore seleziona un file cliccando il bottone browse
+
+WarningContactsPerPage = Il valore dei contatti per pagina è un numero positivo
+WarningMessagesPerPage = Il valore dei messaggi per pagina è un numero positivo
+WarningMailsOnServerDays = Devi specificare un numero positivo nel campo giorni dei messaggi.
+WarningEmptyFilter = Per favore inserisci una stringa
+WarningEmptyFolderName = Per favore inserisci il nome della cartella
+
+ErrorConnectionFailed = La connessione non è riuscita
+ErrorRequestFailed = Il trasferimento dati non è stato completato
+ErrorAbsentXMLHttpRequest = L'oggetto XMLHttpRequest è assente
+ErrorWithoutDesc = Si è verificato un errore senza descrizione
+ErrorParsing = Si è verificato un errore analizzando XML.
+ResponseText = Testo di risposta:
+ErrorEmptyXmlPacket = Pacchetto XML vuoto
+ErrorImportContacts = Errore durante l'importazione dei contatti
+ErrorNoContacts = Nessun contatto da importare
+ErrorCheckMail = La ricezione dei messaggi è terminata a causa di un errore.Probabilmente non tutti i messaggi sono stati ricevuti.
+
+LoggingToServer = Accesso al server&hellip;
+GettingMsgsNum = Ricezione del numero dei messaggi in corso
+RetrievingMessage = Ricezione messaggio in corso
+DeletingMessage = Eliminazione messaggio in corso
+DeletingMessages = Eliminazione messaggio(i) in corso
+Of = of
+Connection = Connessione
+Charset = Charset
+AutoSelect = Auto-Selezione
+
+Contacts = Contatti
+ClassicVersion = Versione Standard
+Logout = Esci
+Settings = Impostazioni
+
+LookFor = Cerca: 
+SearchIn = Cerca in: 
+QuickSearch = Cerca solo nei campi Da, A e Oggetto (modalità veloce).
+SlowSearch = Cerca nell'intero messaggio
+AllMailFolders = Tutte le cartelle Email
+AllGroups = Tutti i gruppi
+
+NewMessage = Nuovo messaggio
+CheckMail = Controlla Arrivo Nuove Mail
+ReloadFolders = Ricarica lista cartelle
+EmptyTrash = Svuota cestino
+MarkAsRead = Segna come già letto
+MarkAsUnread = Segna come non letto
+MarkFlag = Segna bandierina
+MarkUnflag = Togli bandierina
+MarkAllRead = Segna tutti come letti
+MarkAllUnread = Segna tutti come non letti
+Reply = Rispondi
+ReplyAll = Rispondi a tutti
+Delete = Cancella
+Undelete = Recupera
+PurgeDeleted = Cancella i messaggi rigati
+MoveToFolder = Sposta nella cartella
+Forward = Inoltra
+
+HideFolders = Nascondi cartelle
+ShowFolders = Mosta cartelle
+ManageFolders = Gestisci cartelle
+SyncFolder = Sincronizza cartella
+NewMessages = Nuovi Messaggi
+Messages = Messaggio(i)
+
+From = Da
+To = A
+Date = Data
+Size = Dimensione
+Subject = Oggetto
+
+FirstPage = Prima pagina
+PreviousPage = Pagina precedente
+NextPage = Pagina successiva
+LastPage = Ultima pagina
+
+SwitchToPlain = Visualizza in formato testo
+SwitchToHTML = Visualizza in formato HTML
+AddToAddressBokk = Aggiungi al libro degli indirizzi
+ClickToDownload = Clicca per scaricare
+View = Visualizza
+ShowFullHeaders = Visualizza intestazione completa
+HideFullHeaders = Nascondi intestazione completa
+
+MessagesInFolder = Messaggio(i) nella cartella
+YouUsing = Stai utilizzando
+OfYour = del tuo
+Mb = MB
+Kb = KB
+B = B
+
+SendMessage = Invia
+SaveMessage = Salva
+Print = Stampa
+PreviousMsg = Messaggio precedente
+NextMsg = Messaggio successivo
+AddressBook = Libro indirizzi
+ShowBCC = Mostra BCC
+HideBCC = Nascondi BCC
+CC = CC
+BCC = BCC
+ReplyTo = Rispondi&nbsp;A
+AttachFile = Allega file
+Attach = Allega
+Re = Re
+OriginalMessage = Messaggio originale
+Sent = Inviato
+Fwd = Inoltra
+Low = Bassa
+Normal = Normale
+High = Alta
+Importance = Importanza
+Close = Chiudi
+
+Common = Generali
+EmailAccounts = Account E-mail
+
+MsgsPerPage = Messaggi per pagina
+DisableRTE = Disabilita il rich-text editor
+Skin = Sfondo
+DefCharset = charset Predefinito
+DefCharsetInc = Default charset d'ingresso
+DefCharsetOut = Default charset d'uscita
+DefTimeOffset = Default time offset
+DefLanguage = Lingua predefinita
+DefDateFormat = Formato data predefinito
+ShowViewPane = Lista messaggi con pannello anteprima
+Save = Salva
+Cancel = Annulla
+OK = OK
+
+Remove = Rimuovi
+AddNewAccount = Aggiungi nuovo account
+Signature = Firma
+Filters = Filtri
+Properties = Proprietà
+UseForLogin = Usa le proprietà di questo account (login e password) per il login
+MailFriendlyName = Tuo nome
+MailEmail = Email
+MailIncHost = Mail in ingresso
+Imap4 = IMAP4
+Pop3 = POP3
+MailIncPort = Porta
+MailIncLogin = Login
+MailIncPass = Password
+MailOutHost = Mail in uscita
+MailOutPort = Port
+MailOutLogin = SMTP Login
+MailOutPass = SMTP Password
+MailOutAuth1 = Usa autenticazione SMTP
+MailOutAuth2 = (Puo lasciare i campi SMTP login/password vuoti, se sono uguali ai campi POP3/IMAP4 login/password)
+UseFriendlyNm1 = Usa il Friendly Name nel campo "Da:"
+UseFriendlyNm2 = (Tuo nome &lt;sender@mail.com&gt;)
+GetmailAtLogin = Ricevi/Sincronizza Mails nella fase di Login
+MailMode0 = Cancella dal server i messaggi ricevuti
+MailMode1 = Tieni i messaggi sul server
+MailMode2 = Conserva i messaggi sul server per
+MailsOnServerDays = Giorno(i)
+MailMode3 = Cancella i messaggi dal server quando vengono rimossi dal Cestino
+InboxSyncType = Tipo di Sincronizzazione della Inbox
+
+SyncTypeNo = Non Sincronizzare
+SyncTypeNewHeaders = Nuove Intestazioni
+SyncTypeAllHeaders = Tutte le Intestazioni
+SyncTypeNewMessages = Nuovi Messaggi
+SyncTypeAllMessages = Tutti i Messaggi
+SyncTypeDirectMode = Modalità Diretta
+
+Pop3SyncTypeEntireHeaders = Solo intestazioni
+Pop3SyncTypeEntireMessages = I messaggi per intero
+Pop3SyncTypeDirectMode = Modalità Diretta
+
+DeleteFromDb = Cancella i messaggi dal database se non sono più presenti sul server
+
+EditFilter = Modifica Filtro
+NewFilter = Aggiungi Nuovo Filtro
+Field = Campo
+Condition = Condizione
+ContainSubstring = Contiene la stringa
+ContainExactPhrase = Contiene la frase esatta
+NotContainSubstring = Non contiene la stringa
+FilterDesc_At = A
+FilterDesc_Field = Campo
+Action = Azione
+DoNothing = Non fare niente
+DeleteFromServer = Cancella dal server Immediatamente
+MarkGrey = Contrassegna in Grigio
+Add = Aggiungi
+OtherFilterSettings = Altre impostazioni del filtro
+ConsiderXSpam = Considera X-Spam intestazioni
+Apply = Applica
+
+InsertLink = Inserisci Link
+RemoveLink = Rimuovi Link
+Numbering = Numerazione
+Bullets = Bullets
+HorizontalLine = Linea Orizzontale
+Bold = Grassetto
+Italic = Corsivo
+Underline = Sottolineato
+AlignLeft = Allinea a Sinistra
+Center = Centra
+AlignRight = Allinea a Destra
+Justify = Giustifica
+FontColor = Colore Carattere
+Background = Sfondo
+SwitchToPlainMode = Converti in formato Plain Text
+SwitchToHTMLMode = Converti in formato HTML
+AddSignatures = Aggiungi firma a tutti i messaggi in uscita
+DontAddToReplies = Non aggiungere firma ai messaggi di risposta e ai messaggi inoltrati
+
+Folder = Cartella
+Msgs = Messaggi
+Synchronize = Sincronizza
+ShowThisFolder = Mostra Questa Cartella
+Total = Totale
+DeleteSelected = Cancella selezionati
+AddNewFolder = Aggiungi Nuova Cartella
+NewFolder = Nuova Cartella
+ParentFolder = Sottocartella
+NoParent = No Sottocartella
+OnMailServer = Crea questa Cartella nella webmail e all'interno del Server
+InWebMail = Crea questa cartella SOLO nella webmail
+FolderName = Nome Cartella
+
+ContactsPerPage = Contatti per pagina
+WhiteList = Libro dei contatti come White List
+
+CharsetDefault = Default
+CharsetArabicAlphabetISO = Arabic Alphabet (ISO)
+CharsetArabicAlphabet = Arabic Alphabet (Windows)
+CharsetBalticAlphabetISO = Baltic Alphabet (ISO)
+CharsetBalticAlphabet = Baltic Alphabet (Windows)
+CharsetCentralEuropeanAlphabetISO = Central European Alphabet (ISO)
+CharsetCentralEuropeanAlphabet = Central European Alphabet (Windows)
+CharsetChineseSimplifiedEUC = Chinese Simplified (EUC)
+CharsetChineseSimplifiedGB = Chinese Simplified (GB2312)
+CharsetChineseTraditional = Chinese Traditional (Big5)
+CharsetCyrillicAlphabetISO = Cyrillic Alphabet (ISO)
+CharsetCyrillicAlphabetKOI8R = Cyrillic Alphabet (KOI8-R)
+CharsetCyrillicAlphabet = Cyrillic Alphabet (Windows)
+CharsetGreekAlphabetISO = Greek Alphabet (ISO)
+CharsetGreekAlphabet = Greek Alphabet (Windows)
+CharsetHebrewAlphabetISO = Hebrew Alphabet (ISO)
+CharsetHebrewAlphabet = Hebrew Alphabet (Windows)
+CharsetJapanese = Japanese
+CharsetJapaneseShiftJIS = Japanese (Shift-JIS)
+CharsetKoreanEUC = Korean (EUC)
+CharsetKoreanISO = Korean (ISO)
+CharsetLatin3AlphabetISO = Latin 3 Alphabet (ISO)
+CharsetTurkishAlphabet = Turkish Alphabet
+CharsetUniversalAlphabetUTF7 = Universal Alphabet (UTF-7)
+CharsetUniversalAlphabetUTF8 = Universal Alphabet (UTF-8)
+CharsetVietnameseAlphabet = Vietnamese Alphabet (Windows)
+CharsetWesternAlphabetISO = Western Alphabet (ISO)
+CharsetWesternAlphabet = Western Alphabet (Windows)
+
+TimeDefault = Default
+TimeEniwetok = Eniwetok, Kwajalein, Dateline Time
+TimeMidwayIsland = Midway Island, Samoa
+TimeHawaii = Hawaii
+TimeAlaska = Alaska
+TimePacific = Pacific Time (US & Canada); Tijuana
+TimeArizona = Arizona
+TimeMountain = Mountain Time (US & Canada)
+TimeCentralAmerica = Central America
+TimeCentral = Central Time (US & Canada)
+TimeMexicoCity = Mexico City, Tegucigalpa
+TimeSaskatchewan = Saskatchewan
+TimeIndiana = Indiana (East)
+TimeEastern = Eastern Time (US & Canada)
+TimeBogota = Bogota, Lima, Quito
+TimeSantiago = Santiago
+TimeCaracas = Caracas, La Paz
+TimeAtlanticCanada = Atlantic Time (Canada)
+TimeNewfoundland = Newfoundland
+TimeGreenland = Greenland
+TimeBuenosAires = Buenos Aires, Georgetown
+TimeBrasilia = Brasilia
+TimeMidAtlantic = Mid-Atlantic
+TimeCapeVerde = Cape Verde Is.
+TimeAzores = Azores
+TimeMonrovia = Casablanca, Monrovia
+TimeGMT = Dublin, Edinburgh, Lisbon, London
+TimeBerlin = Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+TimePrague = Belgrade, Bratislava, Budapest, Ljubljana, Prague
+TimeParis = Brussels, Copenhagen, Madrid, Paris
+TimeSarajevo = Sarajevo, Skopje, Sofija, Vilnius, Warsaw, Zagreb
+TimeWestCentralAfrica = West Central Africa
+TimeAthens = Athens, Istanbul, Minsk
+TimeEasternEurope = Bucharest
+TimeCairo = Cairo
+TimeHarare = Harare, Pretoria
+TimeHelsinki = Helsinki, Riga, Tallinn
+TimeIsrael = Israel, Jerusalem Standard Time
+TimeBaghdad = Baghdad
+TimeArab = Arab, Kuwait, Riyadh
+TimeMoscow = Moscow, St. Petersburg, Volgograd
+TimeEastAfrica = East Africa, Nairobi
+TimeTehran = Tehran
+TimeAbuDhabi = Abu Dhabi, Muscat
+TimeCaucasus = Baku, Tbilisi, Yerevan
+TimeKabul = Kabul
+TimeEkaterinburg = Ekaterinburg
+TimeIslamabad = Islamabad, Karachi, Sverdlovsk, Tashkent
+TimeBombay = Calcutta, Chennai, Mumbai, New Delhi, India Standard Time
+TimeNepal = Kathmandu, Nepal
+TimeAlmaty = Almaty, Novosibirsk, North Central Asia
+TimeDhaka = Astana, Dhaka
+TimeSriLanka = Sri Jayawardenepura, Sri Lanka
+TimeRangoon = Rangoon
+TimeBangkok = Bangkok, Hanoi, Jakarta
+TimeKrasnoyarsk = Krasnoyarsk
+TimeBeijing = Beijing, Chongqing, Hong Kong SAR, Urumqi
+TimeIrkutsk = Irkutsk, Ulaan Bataar
+TimeSingapore = Kuala Lumpur, Singapore
+TimePerth = Perth, Western Australia
+TimeTaipei = Taipei
+TimeTokyo = Osaka, Sapporo, Tokyo
+TimeSeoul = Seoul, Korea Standard time
+TimeYakutsk = Yakutsk
+TimeAdelaide = Adelaide, Central Australia
+TimeDarwin = Darwin
+TimeBrisbane = Brisbane, East Australia
+TimeSydney = Canberra, Melbourne, Sydney, Hobart
+TimeGuam = Guam, Port Moresby
+TimeHobart = Hobart, Tasmania
+TimeVladivostock = Vladivostok
+TimeMagadan = Magadan, Solomon Is., New Caledonia
+TimeWellington = Auckland, Wellington
+TimeFiji = Fiji Islands, Kamchatka, Marshall Is.
+TimeTonga = Nuku'alofa, Tonga
+
+DateDefault = Default
+DateDDMMYY = DD/MM/YY
+DateMMDDYY = MM/DD/YY
+DateDDMonth = DD Mese (01 Gen)
+DateAdvanced = Avanzato
+
+NewContact = New Contact
+NewGroup = New Group
+AddContactsTo = Add Contacts to
+ImportContacts = Import Contacts
+
+Name = Nome
+Email = Email
+DefaultEmail = Email Predefinita
+NotSpecifiedYet = Non ancora specificato
+ContactName = Nome
+Birthday = Data di nascita
+Month = Mese
+January = Gennaio
+February = Febbraio
+March = Marzo
+April = Aprile
+May = Maggio
+June = Giugno
+July = Luglio
+August = Agosto
+September = Settembre
+October = Ottobre
+November = Novembre
+December = Dicembre
+Day = Giorno
+Year = Anno
+UseFriendlyName1 = Usa Friendly Name
+UseFriendlyName2 = (per esempio, John Doe &lt;johndoe@mail.com&gt;)
+Personal = Personale
+PersonalEmail = E-mail Personale
+StreetAddress = Indirizzo
+City = Città
+Fax = Fax
+StateProvince = Stato/Provincia
+Phone = Telefono
+ZipCode = CAP
+Mobile = Cellulare
+CountryRegion = Paese/Regione
+WebPage = Pagina Web
+Go = Vai
+Home = Casa
+Business = Lavoro
+BusinessEmail = E-mail di Lavoro
+Company = Società
+JobTitle = Professione
+Department = Reparto
+Office = Ufficio
+Pager = Impaginatore
+Other = Altro
+OtherEmail = E-mail alternativa
+Notes = Note
+Groups = Gruppi
+ShowAddFields = Mostra campi aggiuntivi
+HideAddFields = Nascondi campi aggiuntivi
+EditContact = Modifica informazioni di contatto
+GroupName = Nome del gruppo
+AddContacts = Aggiungi contatti
+CommentAddContacts = (Se stai per inserire piu di un indirizzo, per favore separali con la virgola)
+CreateGroup = Crea Gruppo
+Rename = rinomina
+MailGroup = Gruppo Mail
+RemoveFromGroup = Rimuovi dal Gruppo
+UseImportTo = Usa "Importa" per copiare i tuoi contatti da Microsoft Outlook o Microsoft Outlook Express nella tua lista dei contatti.
+Outlook1 = Microsoft Outlook 2000/XP/2003
+Outlook2 = Microsoft Outlook Express 6
+SelectImportFile = Seleziona il file (con formato .CSV) che desideri importare
+Import = Importa
+ContactsMessage = Questa è la pagina dei contatti!!!
+ContactsCount = contatto(i)
+GroupsCount = gruppo(i)
+
+; webmail 4.1 constants
+PicturesBlocked = Per una questione di sicurezza le immagini nel messaggio sono state bloccate.
+ShowPictures = Mostra immagini
+ShowPicturesFromSender = Mostra sempre le immagini nei messaggi ricevuti da parte di questo mittente
+AlwaysShowPictures = Mostra sempre le immagini nei messaggi
+
+TreatAsOrganization = Treat as an organization
+
+WarningGroupAlreadyExist = Un gruppo con questo nome è già presente. Per favore inserisci un altro nome.
+WarningCorrectFolderName = E' necessario specificare un nome corretto per la cartella.
+WarningLoginFieldBlank = Non è possibile lasciare il campo Login vuoto.
+WarningCorrectLogin = Devi specificare un nome di Login corretto.
+WarningPassBlank = Non è possibile lasciare il campo Password vuoto.
+WarningCorrectIncServer = E' necessario specificare un indirizzo POP3(IMAP) server corretto.
+WarningCorrectSMTPServer = E' necessario specificare un indirizzo di Mail in uscita corretto.
+WarningFromBlank = Non è possibile lasciare il campo Da: vuoto.
+WarningAdvancedDateFormat = Per piacere specifica un formato Data-Ora.
+
+AdvancedDateHelpTitle = Data Avanzata
+AdvancedDateHelpIntro = Quando il campo &quot;Avanzate&quot; è selezionato, è possibile utilizzare la casella di testo per impostare il formato della data, che sarà visualizzato sull'AfterLogic WebMail Pro. Le seguenti opzioni sono utilizzate per questo proposito con il carattere delimitatore ':' o '/':
+AdvancedDateHelpConclusion = Per esempio, se è stato specificato il valore &quot;mm/dd/yyyy&quot; nella casella di testo &quot;Advanzate&quot; campo, la data viene visualizzata con formato mese/giorno/anno (i.e. 11/23/2005)
+AdvancedDateHelpDayOfMonth = Giorno del mese (da 1 a 31)
+AdvancedDateHelpNumericMonth = Mese (da 1 a 12)
+AdvancedDateHelpTextualMonth = Mese (da Gen a Dic)
+AdvancedDateHelpYear2 = Anno, 2 cifre
+AdvancedDateHelpYear4 = Anno, 4 cifre
+AdvancedDateHelpDayOfYear = Giorno dell'Anno (da 1 a 366)
+AdvancedDateHelpQuarter = Quarto
+AdvancedDateHelpDayOfWeek = Giorno della Settimana (da Lun a Dom)
+AdvancedDateHelpWeekOfYear = Settimana dell'Anno (da 1 a 53)
+
+InfoNoMessagesFound = Nessun messaggio trovato.
+ErrorSMTPConnect = Impossibile connettersi al server SMTP. Controlla le impostazioni del server SMTP.
+ErrorSMTPAuth = Username o Password errate. Autenticazione fallita.
+ReportMessageSent = Il tuo messaggio è stato inviato.
+ReportMessageSaved = Il tuo messaggio è stato salvato.
+ErrorPOP3Connect = Impossibile connettersi al server POP3, controllare le impostazioni del server POP3.
+ErrorIMAP4Connect = Impossibile connettersi al server IMAP4, controllare le impostazioni del server IMAP4.
+ErrorPOP3IMAP4Auth = email/login e/o password sbagliata. Autenticazione fallita.
+ErrorGetMailLimit = Spiacente, la tua casella email è piena.
+
+ReportSettingsUpdatedSuccessfuly = Le impostazioni sono state aggiornate correttamente.
+ReportAccountCreatedSuccessfuly = L'Account è stato creato correttamente.
+ReportAccountUpdatedSuccessfuly = L'Account è stato aggiornato correttamente.
+ConfirmDeleteAccount = Sei sicuro di voler cancellare l'Account?
+ReportFiltersUpdatedSuccessfuly = I filtri sono stati aggiornati correttamente.
+ReportSignatureUpdatedSuccessfuly = La firma è stata aggiornata correttamente.
+ReportFoldersUpdatedSuccessfuly = Le cartelle sono state aggiornate correttamente.
+ReportContactsSettingsUpdatedSuccessfuly = Le impostazioni dei contatti sono state aggiornate correttamente.
+
+ErrorInvalidCSV = Il file CSV che hai selezionato ha un formato non valido.
+;Il gruppo "guies" è stato aggiunto correttamente.
+ReportGroupSuccessfulyAdded1 = Il gruppo
+ReportGroupSuccessfulyAdded2 = E' stato aggiunto correttamente.
+ReportGroupUpdatedSuccessfuly = Il gruppo è stato aggiornato correttamente.
+ReportContactSuccessfulyAdded = Il contatto è stato aggiunto correttamente.
+ReportContactUpdatedSuccessfuly = Il contatto è stato aggiornato correttamente.
+;Contatto(i) è stato aggiunto al gruppo "friends".
+ReportContactAddedToGroup = Contatto(i) è stato aggiunto al gruppo
+AlertNoContactsGroupsSelected = Nessun contatto o gruppo selezionato.
+
+InfoListNotContainAddress = Se la lista non contiente l'indirizzo che stai cercando, prova a inserire le iniziali.
+
+DirectAccess = D
+DirectAccessTitle = Modalità Diretta. La WebMail accede direttamente al Server Mail.
+
+FolderInbox = Posta in arrivo
+FolderSentItems = Posta inviata
+FolderDrafts = Bozze
+FolderTrash = Posta eliminata
+
+FileLargerAttachment = La dimensione del file supera la dimensione massima dei file allegati.
+FilePartiallyUploaded = Solo una parte del file è stata caricata a causa di un errore sconosciuto.
+NoFileUploaded = Nessun file è stato caricato.
+MissingTempFolder = La cartella temporanea non è presente.
+MissingTempFile = Il file temporaneo non è presente.
+UnknownUploadError = Si è verificato un errore di caricamento sconosciuto.
+FileLargerThan = Errore di caricamento file. Molto probabilmente, il file è più grosso di 
+PROC_CANT_LOAD_DB = Impossibile connettersi al database.
+PROC_CANT_LOAD_LANG = Impossibile trovare il file richiesto.
+PROC_CANT_LOAD_ACCT = L'account non esiste, potrebbe esser stato cancellato.
+
+DomainDosntExist = Il seguente dominio non esiste sul mail server.
+ServerIsDisable = L'utilizzo del server mail è stato proibito dall'amministratore.
+
+PROC_ACCOUNT_EXISTS = L'account non può venir creato in quanto già esistente.
+PROC_CANT_GET_MESSAGES_COUNT = Impossibile ottenere il numero dei messaggi nella cartella.
+PROC_CANT_MAIL_SIZE = Impossibile ottenere le dimensioni di immagazzinamento dell'email.
+
+Organization = Organizzazione
+WarningOutServerBlank = Non è possibile lasciare il campo Mail in Uscita vuoto
+
+;
+Refresh = Aggiorna
+MessagesInInbox = Messaggio(i) in Posta in arrivo
+InfoEmptyInbox = Posta in arrivo vuota
+
+; webmail 4.2 constants
+BackToList = Torna alla Lista
+InfoNoContactsGroups = Nessun contatto o gruppo.
+InfoNewContactsGroups = E' possibile creare i nuovi contatti/gruppi o importarli da un file con estensione .CSV in formato MS Outlook.
+DefTimeFormat = Formato data/tempo predefinito
+SpellNoSuggestions = Nessun suggerimento
+SpellWait = Attendi&hellip;
+
+InfoNoMessageSelected = Nessun messaggio selezionato.
+InfoSingleDoubleClick = Cliccando sul messaggio una volta è possibile visualizzarlo nel formato di anteprima, oppure è sufficiente eseguire un doppio click per visualizzarlo in formato schermo intero.
+
+; calendar
+TitleDay = Visualizzazione Giorno
+TitleWeek = Visualizzazione Settimana
+TitleMonth = Visualizzazione Mese
+
+ErrorNotSupportBrowser = Il Calendario AfterLogic non è supportato dal tuo browser. Per piacere usa FireFox 2.0 o una versione successiva , Opera 9.0 o una versione successiva, Internet Explorer 6.0 o una versione successiva, Safari 3.0.2 o una versione successiva.
+ErrorTurnedOffActiveX = Il supporto ActiveX è disabilitato. <br/>E' necessario attivarlo per utilizzare questa applicazione.
+
+Calendar = Calendario
+
+TabDay = Giorno
+TabWeek = Settimana
+TabMonth = Mese
+
+ToolNewEvent = Nuovo&nbsp;Evento
+ToolBack = Indietro
+ToolToday = Oggi
+AltNewEvent = Nuovo Evento
+AltBack = Indietro
+AltToday = Oggi
+CalendarHeader = Calendario
+CalendarsManager = Gestione Calendario
+
+CalendarActionNew = Nuovo Calendario
+EventHeaderNew = Nuovo Evento
+CalendarHeaderNew = Nuovo Calendario
+
+EventSubject = Oggetto
+EventCalendar = Calendario
+EventFrom = Da
+EventTill = A
+CalendarDescription = Descrizione
+CalendarColor = Colore
+CalendarName = Nome Calendario
+CalendarDefaultName = Mio Calendario
+
+ButtonSave = Salva
+ButtonCancel = Annulla
+ButtonDelete = Elimina
+
+AltPrevMonth = Mese Precedente
+AltNextMonth = Mese Successivo
+
+CalendarHeaderEdit = Personalizza Calendario
+CalendarActionEdit = Personalizza Calendario
+ConfirmDeleteCalendar = Sei sicuro di voler cancellare il calendario
+InfoDeleting = Eliminazione in corso&hellip;
+WarningCalendarNameBlank = Non è possibile lasciare il campo Nome Calendario vuoto.
+ErrorCalendarNotCreated = Calendario non creato.
+WarningSubjectBlank = Non è possibile lasciare il campo Oggetto vuoto.
+WarningIncorrectTime = La data specificata contiene caratteri non supportati.
+WarningIncorrectFromTime = La data Da non è corretta.
+WarningIncorrectTillTime = La data A non è corretta.
+WarningStartEndDate = La data di fine deve essere maggiore o uguale a quella di inizio.
+WarningStartEndTime = L'ora di fine deve essere maggiore di quella di inizio.
+WarningIncorrectDate = La data deve essere corretta.
+InfoLoading = Caricamento&hellip;
+EventCreate = Crea evento
+CalendarHideOther = Nascondi gli altri calendari
+CalendarShowOther = Visualizza gli altri calendari
+CalendarRemove = Elimina Calendario
+EventHeaderEdit = Personalizza Evento
+
+InfoSaving = Salvataggio in corso&hellip;
+SettingsDisplayName = Visualizza Nome
+SettingsTimeFormat = Formato Ora
+SettingsDateFormat = Formato Data
+SettingsShowWeekends = Visualizza fine settimana
+SettingsWorkdayStarts = Inizio giorno feriale
+SettingsWorkdayEnds = fine
+SettingsShowWorkday = Mostra giorno feriale
+SettingsWeekStartsOn = La settimana inizia il
+SettingsDefaultTab = Tab Predefinita
+SettingsCountry = Paese
+SettingsTimeZone = Fascia oraria
+SettingsAllTimeZones = Tutte le fasce orarie
+
+WarningWorkdayStartsEnds = L'ora del 'giorno feriale finale' deve essere maggiore dell'ora del 'giorno feriale finale'
+ReportSettingsUpdated = Le impostazioni sono state aggiornate correttamente.
+
+SettingsTabCalendar = Calendario
+
+FullMonthJanuary = Gennaio
+FullMonthFebruary = Febbraio
+FullMonthMarch = Marzo
+FullMonthApril = Aprile
+FullMonthMay = Maggio
+FullMonthJune = Giugno
+FullMonthJuly = Luglio
+FullMonthAugust = Agosto
+FullMonthSeptember = Settembre
+FullMonthOctober = Ottobre
+FullMonthNovember = Novembre
+FullMonthDecember = Dicembre
+
+ShortMonthJanuary = Gen
+ShortMonthFebruary = Feb
+ShortMonthMarch = Mar
+ShortMonthApril = Apr
+ShortMonthMay = Mag
+ShortMonthJune = Giu
+ShortMonthJuly = Lug
+ShortMonthAugust = Ago
+ShortMonthSeptember = Set
+ShortMonthOctober = Ott
+ShortMonthNovember = Nov
+ShortMonthDecember = Dic
+
+FullDayMonday = Lunedi
+FullDayTuesday = Martedi
+FullDayWednesday = Mercoledi
+FullDayThursday = Giovedi
+FullDayFriday = Venerdi
+FullDaySaturday = Sabato
+FullDaySunday = Domenica
+
+DayToolMonday = Lun
+DayToolTuesday = Mar
+DayToolWednesday = Mer
+DayToolThursday = Gio
+DayToolFriday = Ven
+DayToolSaturday = Sab
+DayToolSunday = Dom
+
+CalendarTableDayMonday = L
+CalendarTableDayTuesday = M
+CalendarTableDayWednesday = M
+CalendarTableDayThursday = G
+CalendarTableDayFriday = V
+CalendarTableDaySaturday = S
+CalendarTableDaySunday = D
+
+ErrorParseJSON = La risposta JSON ricevuta dal server non può essere analizzata.
+
+ErrorLoadCalendar = Impossibile caricare i calendari
+ErrorLoadEvents = Impossibile caricare gli eventi
+ErrorUpdateEvent = Impossibile salvare gli eventi
+ErrorDeleteEvent = Impossibile cancellare gli eventi
+ErrorUpdateCalendar = Impossibile salvare il calendario
+ErrorDeleteCalendar = Impossibile eliminare il calendario
+ErrorGeneral = Si è verificato un errore sul server. Riprova piu tardi.
+
+; webmail 4.3 constants
+SharedTitleEmail = E-mail
+ShareHeaderEdit = Condividi e pubblica calendario
+ShareActionEdit = Condividi e pubblica calendario
+CalendarPublicate = Consenti accesso pubblico a questo calendario
+CalendarPublicationLink = Collegamento
+ShareCalendar = Condividi questo calendario
+SharePermission1 = E' possibile effettuare modifiche e gestire la condivisione
+SharePermission2 = E' possibile personalizzare gli eventi
+SharePermission3 = E' possibile visualizzare tutti i dettagli degli eventi
+SharePermission4 = E' possibile visualizzare solo liberi/occupati (nascondi dettagli)
+ButtonClose = Chiudi
+WarningEmailFieldFilling = Come prima cosa compilare il campo e-mail
+EventHeaderView = Visualizza Evento
+ErrorUpdateSharing = Impossibile salvare i dati condivisi e pubblicati
+ErrorUpdateSharing1 = Impossibile condividere con l'utente %s in quanto non esiste
+ErrorUpdateSharing2 = Impossibile condividere questo calendario con l'utente %s
+ErrorUpdateSharing3 = Questo calendario risulta già condiviso con l'utente %s
+Title_MyCalendars = Miei Calendari
+Title_SharedCalendars = Calendari condivisi
+ErrorGetPublicationHash = Impossibile creare il collegamento di pubblicazione
+ErrorGetSharing = Impossibile aggiungere condivisione
+CalendarPublishedTitle = Questo calendario è pubblicato
+RefreshSharedCalendars = Aggiorna calendari condivisi
+Title_CheckSharedCalendars = Verifica calendari condivisi
+
+GroupMembers = Membri
+
+ReportMessagePartDisplayed = Tenere conto del fatto che solo una parte del messaggio viene visualizzato.
+ReportViewEntireMessage = Per visualizzare il contenuto dell'intero messaggio,
+ReportClickHere = Clicca qui
+ErrorContactExists = Un contatto con lo stesso nome ed indirizzo e-mail risulta già esistente.
+
+Attachments = Allegati
+
+InfoGroupsOfContact = I gruppi di cui il contatto è membro sono contrassegnati con i checkmarks.
+AlertNoContactsSelected = Nessun contatto selezionato.
+MailSelected = Indirizzi Mail selezionati
+CaptionSubscribed = Sottoscritto
+
+OperationSpam = Spam
+OperationNotSpam = Non è Spam
+FolderSpam = Spam
+
+; webmail 4.4 contacts
+ContactMail = Contatto Mail
+ContactViewAllMails = Visualizza tutte le email con questo indirizzo
+ContactsMailThem = Invia loro e-mail
+DateToday = Oggi
+DateYesterday = Ieri
+MessageShowDetails = Visualizza dettagli
+MessageHideDetails = Nascondi dettagli
+MessageNoSubject = Nessun oggetto
+; john@gmail.com to nadine@gmail.com
+MessageForAddr = A
+SearchClear = Ricerca Pulita
+; Search results for "search string" in Inbox folder:
+; Search results for "search string" in all mail folders:
+SearchResultsInFolder = Ricerca per "#s" nella cartella #f:
+SearchResultsInAllFolders = Risultati della ricerca per "#s" in tutte le cartelle:
+AutoresponderTitle = Autorisponditore
+AutoresponderEnable = Abilita autorisponditore
+AutoresponderSubject = Oggetto
+AutoresponderMessage = Messaggio
+ReportAutoresponderUpdatedSuccessfuly = L'autorisponditore è stato aggiornato correttamente.
+FolderQuarantine = Quarantena
+
+;calendar
+EventRepeats = Ripeti
+NoRepeats = Non ripetere
+DailyRepeats = Giornalmente
+WorkdayRepeats = Ogni settimana (Lun. - Ven.)
+OddDayRepeats = Ogni Lun., Mer. e Ven.
+EvenDayRepeats = Every Tues. and Thurs.
+WeeklyRepeats = Settimanalmente
+MonthlyRepeats = Mensilmente
+YearlyRepeats = Annualmente
+RepeatsEvery = Ripeti ogni
+ThisInstance = Solo questa istanza
+AllEvents = Tutti gli eventi della serie
+AllFollowing = Tutti i seguenti
+ConfirmEditRepeatEvent = Vuoi cambiare solo questo evento, tutti gli eventi, o questo eventi e gli eventi futuri nella serie?
+RepeatEventHeaderEdit = Modifica evento ricorrente
+First = Primo
+Second = Secondo
+Third = Terzo
+Fourth = Quarto
+Last = Ultimo
+Every = Tutti
+SetRepeatEventEnd = Imposta data di fine
+NoEndRepeatEvent = Nessuna data di fine
+EndRepeatEventAfter = Finisci dopo
+Occurrences = Ricorrenze
+EndRepeatEventBy = Finisci da
+EventCommonDataTab = Dettagli principali
+EventRepeatDataTab = Dettagli ricorrenze
+RepeatEventNotPartOfASeries = Questo evento è cambiato e non fa parte di una serie.
+UndoRepeatExclusion = Annulla cambiamenti da includere nella serie.
+
+MonthMoreLink = %d in piu...
+NoNewSharedCalendars = Nessun nuovo calendario
+NNewSharedCalendars = %d nuovi calendari trovati
+OneNewSharedCalendars = 1 nuovo calendario trovato
+ConfirmUndoOneRepeat = Vuoi ripristinare questo evento nella serie?
+
+RepeatEveryDayInfin = Ogni giorno
+RepeatEveryDayTimes = Ogni giorno, %TIMES% volte
+RepeatEveryDayUntil = Ogni giorno, fino a %UNTIL%
+RepeatDaysInfin = Ogni %PERIOD% giorni
+RepeatDaysTimes = Ogni %PERIOD% giorni, %TIMES% volte
+RepeatDaysUntil = Ogni %PERIOD% giorno, fino a %UNTIL%
+
+RepeatEveryWeekWeekdaysInfin = Ogni settimana nei giorni della settimana
+RepeatEveryWeekWeekdaysTimes = Ogni settimana nei giorni della settimana, %TIMES% volte
+RepeatEveryWeekWeekdaysUntil = Ogni settimana nei giorni della settimana, fino a %UNTIL%
+RepeatWeeksWeekdaysInfin = Ogni %PERIOD% settimane nei giorni della settimana
+RepeatWeeksWeekdaysTimes = Ogni %PERIOD% settimane nei giorni della settimana, %TIMES% volte
+RepeatWeeksWeekdaysUntil = Ogni %PERIOD% settimane nei giorni della settimana, fino a %UNTIL%
+
+RepeatEveryWeekInfin = Ogni settimana nel giorno di %DAYS%
+RepeatEveryWeekTimes = Ogni settimana nel giorno di %DAYS%, %TIMES% volte
+RepeatEveryWeekUntil = Ogni settimana nel giorno di %DAYS%, fino a %UNTIL%
+RepeatWeeksInfin = Ogni %PERIOD% settimane nel giorno di %DAYS%
+RepeatWeeksTimes = Ogni %PERIOD% settimane nel giorno di %DAYS%, %TIMES% volte
+RepeatWeeksUntil = Ogni %PERIOD% settimane nel giorno di %DAYS%, fino a %UNTIL%
+
+RepeatEveryMonthDateInfin = Ogni mese nel giorno di %DATE%
+RepeatEveryMonthDateTimes = Ogni mese nel giorno di %DATE%, %TIMES% volte
+RepeatEveryMonthDateUntil = Ogni mese nel giorno di %DATE%, fino a %UNTIL%
+RepeatMonthsDateInfin = Ogni %PERIOD% mesi nel giorno di %DATE%
+RepeatMonthsDateTimes = Ogni %PERIOD% mesi nel giorno di %DATE%, %TIMES% volte
+RepeatMonthsDateUntil = Ogni %PERIOD% mesi nel giorno di %DATE%, fino a %UNTIL%
+
+RepeatEveryMonthWDInfin = Ogni mese nei giorni %NUMBER% %DAY%
+RepeatEveryMonthWDTimes = Ogni mese nei giorni %NUMBER% %DAY%, %TIMES% volte
+RepeatEveryMonthWDUntil = Ogni mese nei giorni %NUMBER% %DAY%, fino a %UNTIL%
+RepeatMonthsWDInfin = Ogni %PERIOD% mesi nel giorno di %NUMBER% %DAY%
+RepeatMonthsWDTimes = Ogni %PERIOD% mesi nel giorno di %NUMBER% %DAY%, %TIMES% volte
+RepeatMonthsWDUntil = Ogni %PERIOD% mesi nel giorno di %NUMBER% %DAY%, fino a %UNTIL%
+
+RepeatEveryYearDateInfin = Ogni anno nel giorno %DATE%
+RepeatEveryYearDateTimes = Ogni anno nel giorno %DATE%, %TIMES% volte
+RepeatEveryYearDateUntil = Ogni anno nel giorno %DATE%, fino a %UNTIL%
+RepeatYearsDateInfin = Ogni %PERIOD% anni nel giorno di %DATE%
+RepeatYearsDateTimes = Ogni %PERIOD% anni nel giorno di %DATE%, %TIMES% volte
+RepeatYearsDateUntil = Ogni %PERIOD% anni nel giorno di %DATE%, fino a %UNTIL%
+
+RepeatEveryYearWDInfin = Ogni anno nei giorni di %NUMBER% %DAY%
+RepeatEveryYearWDTimes = Ogni anno nei giorni di %NUMBER% %DAY%, %TIMES% volte
+RepeatEveryYearWDUntil = Ogni anno nei giorni di %NUMBER% %DAY%, fino a %UNTIL%
+RepeatYearsWDInfin = Ogni %PERIOD% anni nel giorno di %NUMBER% %DAY%
+RepeatYearsWDTimes = Ogni %PERIOD% anni nel giorno di  %NUMBER% %DAY%, %TIMES% volte
+RepeatYearsWDUntil = Ogni %PERIOD% anni nel giorno di  %NUMBER% %DAY%, fino a %UNTIL%
+
+RepeatDescDay = giorno
+RepeatDescWeek = settimana
+RepeatDescMonth = mese
+RepeatDescYear = anno
+
+; webmail 4.5 contacts
+WarningUntilDateBlank = Per piacere specifica la data di fine ricorrenza
+WarningWrongUntilDate = La data di fine ricorrenza deve essere successiva alla data di inizio ricorrenza
+
+OnDays = Nei giorni
+CancelRecurrence = Cancella ricorrenza
+RepeatEvent = Ripeti questo evento
+
+Spellcheck = Controlla l'ortografia
+LoginLanguage = Lingua
+LanguageDefault = Default
+
+; webmail 4.5.x new
+EmptySpam = Svuota Spam
+Saving = Salvataggio in corso&hellip;
+Sending = Invio in corso&hellip;
+LoggingOffFromServer = Disconnessione dal server&hellip;
+
+;webmail 4.6
+PROC_CANT_SET_MSG_AS_SPAM = Impossibile contrassegnare il/i messaggio/i come spam
+PROC_CANT_SET_MSG_AS_NOTSPAM = Impossibile contrassegnare il/i messaggio/i come non-spam
+ExportToICalendar = Esporta a iCalendar
+ErrorMaximumUsersLicenseIsExceeded = Il Suo account è stato disabilitato in quanto il numero massimo di utenti consentiti dalla licenza è stato superato. Per piacere contatti il suo amministratore di sistema.
+RepliedMessageTitle = Messaggio risposto
+ForwardedMessageTitle = Messaggio inoltrato
+RepliedForwardedMessageTitle = Messaggio risposto e inoltrato
+ErrorDomainExist = L'utente non può venir creato in quanto il dominio corrispondente non esiste. E' necessario creare prima il dominio.
+
+; webmail 4.7
+RequestReadConfirmation = Richiedi Conferma di Lettura
+FolderTypeDefault = Default
+ShowFoldersMapping = Permettimi di utilizzare come cartella di sistema un'altra cartella (e.g. usa MiaCartella come Posta Inviata)
+ShowFoldersMappingNote = Ad esempio, per cambiare la posizione della Posta Inviata da Posta Inviata a MiaCartella, specificare "Posta Inviata" in "Utilizzo di" "MiaCartella".
+FolderTypeMapTo = Utilizzo di
+
+ReminderEmailExplanation = Questo messaggio è arrivato al tuo account %EMAIL% in quanto hai impostato la notifica di eventi nel calendario %CALENDAR_NAME%
+ReminderOpenCalendar = Apri Calendario
+
+AddReminder = Ricordami questo evento
+AddReminderBefore = Ricordami % prima di questo evento
+AddReminderAnd = e % prima
+AddReminderAlso = e anche % prima
+AddMoreReminder = Più promemoria
+RemoveAllReminders = Rimuovi tutti i promemoria
+ReminderNone = Nessuno
+ReminderMinutes = minuti
+ReminderHour = ora
+ReminderHours = ore
+ReminderDay = giorno
+ReminderDays = giorni
+ReminderWeek = settimana
+ReminderWeeks = settimane
+Allday = intero giorno
+
+Folders = Cartelle
+NoSubject = Nessun Oggetto
+SearchResultsFor = Cerca risultati per
+
+Back = Indietro
+Next = Prossimo
+Prev = Precedente
+
+MsgList = Messages
+Use24HTimeFormat = Use 24 hour time format
+UseCalendars = Use calendars
+Event = Event
+CalendarSettingsNullLine = No calendars
+CalendarEventNullLine = No events
+ChangeAccount = Change account
+
+TitleCalendar = Calendar
+TitleEvent = Event
+TitleFolders = Folders
+TitleConfirmation = Confirmation
+
+Yes = Yes
+No = No
+
+EditMessage = Edit Message
+	
+AccountNewPassword = New password
+AccountConfirmNewPassword = Confirm new password
+AccountPasswordsDoNotMatch = Passwords do not match.
+
+ContactTitle = Title
+ContactFirstName = First name
+ContactSurName = Surname
+ContactNickName = Nickname
+
+CaptchaTitle = Captcha
+CaptchaReloadLink = reload
+CaptchaError = Captcha text is incorrect.
+
+WarningInputCorrectEmails = Please specify correct emails.
+WrongEmails = Incorrect emails:
+
+ConfirmBodySize1 = Sorry, but text messages are max.
+ConfirmBodySize2 = characters long. Everything beyond the limit will be truncated. Click "Cancel" if you want to edit the message.
+BodySizeCounter = Counter
+InsertImage = Insert Image
+ImagePath = Image Path
+ImageUpload = Insert
+WarningImageUpload = The file being attached is not an image. Please choose an image file.
+
+ConfirmExitFromNewMessage = Changes will be lost if you leave the page. Would you like to save draft before leaving the page?
+
+SensivityConfidential = Please treat this message as Confidential
+SensivityPrivate = Please treat this message as Private
+SensivityPersonal = Please treat this message as Personal
+
+ReturnReceiptTopText = The sender of this message has asked to be notified when you receive this message.
+ReturnReceiptTopLink = Click here to notify the sender.
+ReturnReceiptSubject = Return Receipt (displayed)
+ReturnReceiptMailText1 = This is a Return Receipt for the mail that you sent to
+ReturnReceiptMailText2 = Note: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.
+ReturnReceiptMailText3 = with subject
+
+SensivityMenu = Sensitivity
+SensivityNothingMenu = Nothing
+SensivityConfidentialMenu = Confidential
+SensivityPrivateMenu = Private
+SensivityPersonalMenu = Personal
+
+ErrorLDAPonnect = Can't connect to ldap server.
+
+MessageSizeExceedsAccountQuota = This message size exceeds your account quota.
+MessageCannotSent = The message cannot be sent.
+MessageCannotSaved = The message cannot be saved.
+
+ContactFieldTitle = Field
+ContactDropDownTO = TO
+ContactDropDownCC = CC
+ContactDropDownBCC = BCC
+
+; 4.9 
+NoMoveDelete = Message(s) can't be moved to Trash. Most likely your message box is full. Should this unmoved message(s) be deleted?
+
+WarningFieldBlank = This field cannot be empty.
+WarningPassNotMatch = Passwords do not match, please check.
+PasswordResetTitle = Password recovery - step %d
+NullUserNameonReset = user
+IndexResetLink = Forgot password?
+IndexRegLink = Account Registration
+
+RegDomainNotExist = Domain does not exist.
+RegAnswersIncorrect = Answers are incorrect.
+RegUnknownAdress = Unknown email address.
+RegUnrecoverableAccount = Password recovery cannot be applied for this email address.
+RegAccountExist = This address is already used.
+RegRegistrationTitle = Registration
+RegName = Name
+RegEmail = e-mail address
+RegEmailDesc = For example, myname@domain.com. This information will be used to enter the system.
+RegSignMe = Remember me
+RegSignMeDesc = Do not ask for login and password on next login to the system on this PC.
+RegPass1 = Password
+RegPass2 = Repeat password 
+RegQuestionDesc = Please, provide two secret questions and answers which know only you. In case of password lost you can use these questions in order to recover the password.
+RegQuestion1 = Secret question 1
+RegAnswer1 = Answer 1
+RegQuestion2 = Secret question 2
+RegAnswer2 = Answer 2
+RegTimeZone = Time zone
+RegLang = Interface language
+RegCaptcha = Captcha
+RegSubmitButtonValue = Register
+
+ResetEmail = Please provide your email
+ResetEmailDesc = Provide emails address used for registration.
+ResetCaptcha = CAPTCHA
+ResetSubmitStep1 = Send
+ResetQuestion1 = Secret question 1
+ResetAnswer1 = Answer
+ResetQuestion2 = Secret question 2
+ResetAnswer2 = Answer
+ResetSubmitStep2 = Send
+
+ResetTopDesc1Step2 = Providede email address
+ResetTopDesc2Step2 = Please confirm correctness.
+
+ResetTopDescStep3 = please specify below new password for your email.
+
+ResetPass1 = New password
+ResetPass2 = Repeat password
+ResetSubmitStep3 = Send
+ResetDescStep4 = Your password has been changed.
+ResetSubmitStep4 = Return
+
+RegReturnLink = Return to login screen
+ResetReturnLink = Return to login screen
+
+; Appointments 
+AppointmentAddGuests = Add guests
+AppointmentRemoveGuests = Cancel Meeting
+AppointmentListEmails = Enter email addresses separated by commas and press Save
+AppointmentParticipants = Participants
+AppointmentRefuse = Refuse
+AppointmentAwaitingResponse = Awaiting response
+AppointmentInvalidGuestEmail = The following guest email addresses are invalid:
+AppointmentOwner = Owner
+
+AppointmentMsgTitleInvite = Invite to event.
+AppointmentMsgTitleUpdate = Event was modified.
+AppointmentMsgTitleCancel = Event was cancelled.
+AppointmentMsgTitleRefuse = Guest %guest% is refuse invitation
+AppointmentMoreInfo = More info
+AppointmentOrganizer = Organizer
+AppointmentEventInformation = Event information
+AppointmentEventWhen = When
+AppointmentEventParticipants = Participants
+AppointmentEventDescription = Description
+AppointmentEventWillYou = Will you participate
+AppointmentAdditionalParameters = Additional parameters
+AppointmentHaventRespond = Not responded yet
+AppointmentRespondYes = I will participate
+AppointmentRespondMaybe = Not sure yet
+AppointmentRespondNo = Will not participate
+AppointmentGuestsChangeEvent = Guests can change event
+
+AppointmentSubjectAddStart = You've received invitation to event 
+AppointmentSubjectAddFrom =  from 
+AppointmentSubjectUpdateStart = Modification of event 
+AppointmentSubjectDeleteStart = Cancellation of event 
+ErrorAppointmentChangeRespond = Unable to change appointment respond
+SettingsAutoAddInvitation = Add invitations into calendar automatically
+ReportEventSaved = Your event has been saved
+ReportAppointmentSaved =  and notifications were send
+ErrorAppointmentSend = Can't send invitations.
+AppointmentEventName = Name:
+
+; End appointments
+
+ErrorCantUpdateFilters = Can't update filters
+
+FilterPhrase = If there's %field header %condition %string then %action
+FiltersAdd = Add Filter
+FiltersCondEqualTo = equal to
+FiltersCondContainSubstr = containing substring
+FiltersCondNotContainSubstr = not containing substring
+FiltersActionDelete = delete message
+FiltersActionMove = move
+FiltersActionToFolder = to %folder folder
+FiltersNo = No filters specified yet
+
+ReminderEmailFriendly = reminder
+ReminderEventBegin = starts at: 
+
+FiltersLoading = Loading Filters...
+ConfirmMessagesPermanentlyDeleted = All messages in this folder will be permanently deleted.
+
+InfoNoNewMessages = There are no new messages.
+TitleImportContacts = Import Contacts
+TitleSelectedContacts = Selected Contacts
+TitleNewContact = New Contact
+TitleViewContact = View Contact
+TitleEditContact = Edit Contact
+TitleNewGroup = New Group
+TitleViewGroup = View Group
+
+AttachmentPending = Pending...
+AttachmentUploading = Uploading...
+AttachmentComplete = Complete.
+AttachmentCancelled = Cancelled.
+AttachmentStopped = Stopped.
+AttachmentsUpload = Attach Files
+AttachmentsUploadPadding = 34
+
+TestButton = TEST
+AutoCheckMailIntervalLabel = Autocheck interval
+AutoCheckMailIntervalDisableName = Disable
+ReportCalendarSaved = Calendar has been saved.
+
+ContactSyncError = Sync failed
+ReportContactSyncDone = Sync complete
+
+MobileSyncUrlTitle = Mobile sync URL
+MobileSyncLoginTitle = Mobile sync login
+
+QuickReply = Quick Reply
+SwitchToFullForm = Switch To Full Form
+SortFieldDate = Date
+SortFieldFrom = From
+SortFieldSize = Size
+SortFieldSubject = Subject
+SortFieldFlag = Flag
+SortFieldAttachments = Attachments
+SortOrderAscending = Ascending
+SortOrderDescending = Descending
+ArrangedBy = Arranged by
+
+MessagePaneToRight = The message pane is to the right of the message list, rather than below
+
+SettingsTabMobileSync = Mobile Sync
+
+MobileSyncContactDataBaseTitle = Mobile sync contact database
+MobileSyncCalendarDataBaseTitle = Mobile sync calendar database
+MobileSyncTitleText = If you'd like to synchronize your SyncML-enabled handheld device with WebMail, you can use these parameters.<br />"Mobile Sync URL" specifies path to SyncML Data Synchronization server, "Mobile Sync Login" is your login on SyncML Data Synchronization Server and use your own password upon request. Also, some devices need to specify database name for contact and calendar data.<br />Use "Mobile sync contact database" and "Mobile sync calendar database" respectively.
+MobileSyncEnableLabel = Enable mobile sync
+
+SearchInputText = search
+
+AppointmentEmailExplanation = This message has come to your account %EMAIL% because you was invited to the event by %ORGANAZER%

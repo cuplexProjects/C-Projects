@@ -1,0 +1,1262 @@
+PROC_ERROR_ACCT_CREATE = Den skjedde en feil under oppretting av konto
+PROC_WRONG_ACCT_PWD = Feil passord
+PROC_CANT_LOG_NONDEF = Kan ikke logge inn på en ikke-standard konto
+PROC_CANT_INS_NEW_FILTER = Kan ikke lage nytt filter
+PROC_FOLDER_EXIST = Mappenavn eksisterer
+PROC_CANT_CREATE_FLD = Kan ikke opprette mappe 
+PROC_CANT_INS_NEW_GROUP = Kan ikke lage ny gruppe
+PROC_CANT_INS_NEW_CONT = Kan ikke lage ny kontakt
+PROC_CANT_INS_NEW_CONTS = Kan ikke lage ny(e) kontakt(er)
+PROC_CANT_ADD_NEW_CONT_TO_GRP = Kan ikke legge inn kontakt(ene) i gruppe
+PROC_ERROR_ACCT_UPDATE = Det skjedde en feil under oppdatering av kontakt 
+PROC_CANT_UPDATE_CONT_SETTINGS = Kan ikke oppdatere kontaktinnstillinger
+PROC_CANT_GET_SETTINGS = Kan ikke hente inn innstillinger
+PROC_CANT_UPDATE_ACCT = Kan ikke oppdatere konto
+PROC_ERROR_DEL_FLD = Det skjedde en feil under sletting av mappe(r)
+PROC_CANT_UPDATE_CONT = Kan ikke oppdatere kontakt
+PROC_CANT_GET_FLDS = Kan ikke hente mappestruktur
+PROC_CANT_GET_MSG_LIST = Kan ikke hente meldingsliste
+PROC_MSG_HAS_DELETED = Denne meldingen har alt blitt slettet fra eposttjeneren
+PROC_CANT_LOAD_CONT_SETTINGS = Kan ikke laste inn kontaktinnstillinger 
+PROC_CANT_LOAD_SIGNATURE = Kan ikke laste epostsignatur
+PROC_CANT_GET_CONT_FROM_DB = Kan ikke hente kontakt fra DB
+PROC_CANT_GET_CONTS_FROM_DB = Kan ikke hente kontakt(er) fra DB
+PROC_CANT_DEL_ACCT_BY_ID = Kan ikke slette konto med id
+PROC_CANT_DEL_FILTER_BY_ID = Kan ikke slette filter med id
+PROC_CANT_DEL_CONT_GROUPS = Kan ikke sletter kontakt(er) og/eller grupp(er)
+PROC_WRONG_ACCT_ACCESS = Et forsøkt på uautorisert tilgang til kontoen av en annen bruker ble oppdaget.
+PROC_SESSION_ERROR = Den forrige sesjonen ble avsluttet grunnet for lang inaktivitet. 
+
+MailBoxIsFull = Epostkontoen er full 
+WebMailException = WebMail feil oppstod 
+InvalidUid = Feil meldings-UID
+CantCreateContactGroup = Kan ikke opprette kontaktgruppe 
+CantCreateUser = Kan ikke opprette bruker
+CantCreateAccount = Kan ikke opprette konto
+SessionIsEmpty = Sesjonen er tom
+FileIsTooBig = Den valgte filen er for stor
+
+PROC_CANT_MARK_ALL_MSG_READ = Kan ikke merke alle meldingene som lest
+PROC_CANT_MARK_ALL_MSG_UNREAD = Kan ikke merke alle meldingene som ulest
+PROC_CANT_PURGE_MSGS = Kunne ikke fjerne meldinger
+PROC_CANT_DEL_MSGS = Kan ikke slette meldinger
+PROC_CANT_UNDEL_MSGS = Kan ikke gjennopprette meldinger
+PROC_CANT_MARK_MSGS_READ = Kan ikke sette melding(ene) som lest
+PROC_CANT_MARK_MSGS_UNREAD = Kan ikke sette melding(ene) som ulest
+PROC_CANT_SET_MSG_FLAGS = Kan ikke merke melding(ene)
+PROC_CANT_REMOVE_MSG_FLAGS = Kan ikke fjerne merking(er)
+PROC_CANT_CHANGE_MSG_FLD = Kan ikke endre meldingsmappe
+PROC_CANT_SEND_MSG = Kan ikke sende melding(ene)
+PROC_CANT_SAVE_MSG = Kan ikke lagre melding(ene)
+PROC_CANT_GET_ACCT_LIST = Kan ikke hente konto liste
+PROC_CANT_GET_FILTER_LIST = Kan ikke hente filter liste
+
+PROC_CANT_LEAVE_BLANK = Kan ikke la felt merket med * stå tomme 
+
+PROC_CANT_UPD_FLD = Kan ikke oppdatere mappe
+PROC_CANT_UPD_FILTER = Kan ikke oppdatere filter
+
+ACCT_CANT_ADD_DEF_ACCT = Denne kontoen kan ikke bli lagt til. Dette fordi den blir brukt som standard konto av en annen bruker. 
+ACCT_CANT_UPD_TO_DEF_ACCT = Denne kontostatusen kan ikke bli endret til standard. 
+ACCT_CANT_CREATE_IMAP_ACCT = Kan ikke opprette ny konto. (IMAP4 tilkobling feilet) 
+ACCT_CANT_DEL_LAST_DEF_ACCT = Kan ikke slette siste standardkonto
+
+LANG_LoginInfo = Logg inn informasjon
+LANG_Email = Epost
+LANG_Login = Logg inn
+LANG_Password = Passord
+LANG_IncServer = Innkommende&nbsp;Epost
+LANG_PopProtocol = POP3
+LANG_ImapProtocol = IMAP4
+LANG_IncPort = Port
+LANG_OutServer = SMTP&nbsp;Server
+LANG_OutPort = Port
+LANG_UseSmtpAuth = Benytt&nbsp;SMTP&nbsp;godkjenning
+LANG_SignMe = Logg meg inn automatisk
+LANG_Enter = Logg inn
+
+; interface strings
+
+TitleLogin = Logg inn
+TitleMessagesListView = Epostliste
+TitleMessagesList = Epostliste
+TitleViewMessage = Vis epost
+TitleNewMessage = Ny Epost
+TitleSettings = Innstillinger
+TitleContacts = Kontakter
+
+StandardLogin = Standard&nbsp;Logg Inn
+AdvancedLogin = Avansert&nbsp;Logg Inn
+
+InfoWebMailLoading = Vennligst vent mens WebMail laster&hellip;
+Loading = Laster&hellip;
+InfoMessagesLoad = Vennligst vent mens WebMail laster epostliste 
+InfoEmptyFolder = Mappen er tom
+InfoPageLoading = Siden laster fortsatt&hellip;
+InfoSendMessage = Beskjeden ble ikke sendt
+InfoSaveMessage = Beskjeden ble lagret
+InfoHaveImported = Du har importert
+InfoNewContacts = ny(e) kontakt(er) inn til din kontakt liste.
+InfoToDelete = Til sletting
+InfoDeleteContent = mappe innhold burde slettes først.
+InfoDeleteNotEmptyFolders = Slette mapper med innhold er ikke tillatt. For og slette ikke merkbare mapper, slett innholdet i mappen først. 
+InfoRequiredFields = * påkrevde felter
+
+ConfirmAreYouSure = Er du sikker?
+ConfirmDirectModeAreYouSure = De(n) valgte melding(en) vil bli PERMANENT slettet! Er du sikker? 
+ConfirmSaveSettings = Innstillingene ble ikke lagret. Klikk OK for lagring. 
+ConfirmSaveContactsSettings = Kontakt innstillingene ble ikke lagret. Klikk OK for lagring.
+ConfirmSaveAcctProp = Konto egenskapene ble ikke lagret. Klikk OK for lagring.
+ConfirmSaveFilter = Filterets egenskaper ble ikke lagret. Klikk OK for lagring.
+ConfirmSaveSignature = Signaturen ble ikke lagret. Klikk OK for lagring.
+ConfirmSavefolders = Mappen ble ikke lagret. Klikk OK for lagring.
+ConfirmHtmlToPlain = ADVARSEL: Å endre formateringen av denne meldingen fra HTML til ren tekst, vil gjøre at du mister nåværende formatering på eposten. Velg OK for å fortsette.
+ConfirmAddFolder = Før du legger til mappe(r) er det nødvendig å godkjenne endringer. Velg OK for å lagre.
+ConfirmEmptySubject = Emne ble ikke skrevet. Ønsker du å fortsette?
+
+WarningEmailBlank = Du kan ikke la<br />Epost: være tomt
+WarningLoginBlank = Du kan ikke la <br />Login: være tomt
+WarningToBlank = Du kan ikke la To: være tomt
+WarningServerPortBlank = Du kan ikke la POP3 og<br />SMTP server/port feltene være tomme
+WarningEmptySearchLine = Tom søkelinje. Skriv inn det/de ord(ene) du ønsker å finne 
+WarningMarkListItem = Vær vennlig og mer minst ett element i listen  //FIXME
+WarningFolderMove = Mappene kan ikke bli flyttet, da dette er et annet nivå 
+WarningContactNotComplete = Vær vennlig og skriv inn epostadresse eller navn 
+WarningGroupNotComplete = Vær vennlig og skriv inn gruppenavn 
+
+WarningEmailFieldBlank = Du kan ikke la Epost-feltet være blankt
+WarningIncServerBlank = Du kan ikke la POP3(IMAP4) Server feltet være blankt
+WarningIncPortBlank = Du kan ikke la POP3(IMAP4) Server Port feltet være blankt
+WarningIncLoginBlank = Du kan ikke la POP3(IMAP4) Logg inn feltet være blankt 
+WarningIncPortNumber = Du burde spesifisere et positivt nummer i POP3(IMAP4) port feltet. 
+DefaultIncPortNumber = Standard POP3(IMAP4) port nummer er 110(143). 
+WarningIncPassBlank = Du kan ikke la POP3(IMAP4) Passord feltet være blankt 
+WarningOutPortBlank = Du kan ikke la SMTP Server Port feltet være blankt 
+WarningOutPortNumber = Du burde spesifisere et positivt nummer i SMTP port feltet.
+WarningCorrectEmail = Du burde spesifisere en korrekt epostadresse.
+DefaultOutPortNumber = Standard SMTP port nummer er 25. 
+
+WarningCsvExtention = Utvidelsen skal være .csv
+WarningImportFileType = Vennligst velg den applikasjonen som du ønsker å kopiere dine kontakter fra 
+WarningEmptyImportFile = Vær vennlig og velg fil ved å klikke bla gjennom knappen 
+
+WarningContactsPerPage = Kontakter per side verdien er ett prositivt nummer 
+WarningMessagesPerPage = Meldinger per side verdien er ett positivt nummer
+WarningMailsOnServerDays = Du burde spesifisere et positivt nummer i meldinger på server i dager feltet.
+WarningEmptyFilter = Vær vennlig og legg inn under verdi
+WarningEmptyFolderName = Vær vennlig og skriv inn mappenavn
+
+ErrorConnectionFailed = Tilkopling mislyktes
+ErrorRequestFailed = Overføringen av data ble ikke fullført
+ErrorAbsentXMLHttpRequest = Objektet XMLHttpRequest er fraværende
+ErrorWithoutDesc = En feil uten beskrivelse fant sted
+ErrorParsing = Feil under parsing av XML.
+ResponseText = Svar tekst:
+ErrorEmptyXmlPacket = Tom XML pakke
+ErrorImportContacts = Feil under importering av kontakter
+ErrorNoContacts = Ingen kontakter til importering
+ErrorCheckMail = Mottak av meldinger ble avbrutt grunnet en feil. Trolig ble ikke alle dine meldinger mottatt.
+
+LoggingToServer = Logger inn på server&hellip;
+GettingMsgsNum = Mottar antall meldinger
+RetrievingMessage = Mottar melding
+DeletingMessage = Sletter melding
+DeletingMessages = Sletter melding(er)
+Of = av
+Connection = Tilkobling
+Charset = Tegnsett
+AutoSelect = Auto valg
+
+Contacts = Kontakter
+ClassicVersion = Klassisk Versjon
+Logout = Logg Ut
+Settings = Innstillinger
+
+LookFor = Let etter: 
+SearchIn = Søk i: 
+QuickSearch = Søk kun i fra, til og emne feltene (raskere søk).
+SlowSearch = Søk i hele melding(ene)
+AllMailFolders = Alle epost mapper
+AllGroups = Alle Grupper
+
+NewMessage = Ny epost
+CheckMail = Sjekk epost
+ReloadFolders = Oppdater mappestruktur
+EmptyTrash = Tøm søppelbøtte
+MarkAsRead = _Marker som lest
+MarkAsUnread = Marker som ulest
+MarkFlag = Merk
+MarkUnflag = Fjern Merking
+MarkAllRead = Marker alle som lest
+MarkAllUnread = Marker alle som ulest
+Reply = Svar
+ReplyAll = Svar til alle
+Delete = Slett
+Undelete = Gjennopprett
+PurgeDeleted = Fjern slettede
+MoveToFolder = Flytt til mappe
+Forward = Videresend
+
+HideFolders = Skjul Mapper
+ShowFolders = Vis mapper
+ManageFolders = Administrer Mapper
+SyncFolder = Synkronisert mappe
+NewMessages = Ny(e) melding(er)
+Messages = Beskjed(er)
+
+From = Fra
+To = Til
+Date = Dato
+Size = Størrelse
+Subject = Emne
+
+FirstPage = Første Side
+PreviousPage = Forrige Side
+NextPage = Neste Side
+LastPage = Siste Side
+
+SwitchToPlain = Bytt til ren tekstvisning
+SwitchToHTML = Bytt til HTML-visning
+AddToAddressBokk = Legg til i adressebok
+ClickToDownload = Klikk for å laste ned
+View = Vis
+ShowFullHeaders = Vis meldingshode
+HideFullHeaders = Skjul meldingshode
+
+MessagesInFolder = Beskjed(er) i mappe
+YouUsing = Du benytter
+OfYour = av din
+Mb = MB
+Kb = KB
+B = B
+
+SendMessage = Send
+SaveMessage = Lagre
+Print = Skriv Ut
+PreviousMsg = Forrige
+NextMsg = Neste
+AddressBook = Adressebok
+ShowBCC = Vis BCC
+HideBCC = Skjul BCC
+CC = CC
+BCC = BCC
+ReplyTo = Svar&nbsp;Til
+AttachFile = Legg Ved Fil
+Attach = Legg Ved
+Re = Sv
+OriginalMessage = Original Beskjed
+Sent = Sent
+Fwd = Vds
+Low = Lav
+Normal = Normal
+High = Høy
+Importance = Viktighet
+Close = Steng
+
+Common = Generelt
+EmailAccounts = Epostkontoer
+
+MsgsPerPage = Meldinger per side
+DisableRTE = Deaktiver rik tekst redigering
+Skin = Utseende
+DefCharset = Standard tegnsett
+DefCharsetInc = Standard innkommende tegnsett
+DefCharsetOut = Standard utgående tegnsett
+DefTimeOffset = Standard tidsinnstilling
+DefLanguage = Standard Språk
+DefDateFormat = Standard datoformat
+ShowViewPane = Meldinger med forhåndsvisning
+Save = Lagre
+Cancel = Avbryt
+OK = OK
+
+Remove = Fjern
+AddNewAccount = Legg Til Ny Konto
+Signature = Signatur
+Filters = Filter(e)
+Properties = Egenskaper
+UseForLogin = Benytt disse kontoegenskapene (brukernavn og passord) for å logge inn
+MailFriendlyName = Ditt Navn
+MailEmail = Epost
+MailIncHost = Innkommende epost
+Imap4 = IMAP4
+Pop3 = POP3
+MailIncPort = Port
+MailIncLogin = Logg Inn
+MailIncPass = Passord
+MailOutHost = SMTP Server
+MailOutPort = Port
+MailOutLogin = SMTP Logg Inn
+MailOutPass = SMTP Passord
+MailOutAuth1 = Benytt SMTP godkjenning
+MailOutAuth2 = (Du kan la SMTP logg inn/passord feltene være blanke dersom det er det samme som benyttes på POP3/IMAP4 for logg inn og passord)
+UseFriendlyNm1 = Bruk vennlig navn i "Fra:" feltet
+UseFriendlyNm2 = (Ditt navn &lt;sender@mail.com&gt;)
+GetmailAtLogin = Motta/Synkroniser meldinger ved innlogging
+MailMode0 = Slett mottatte meldinger fra server
+MailMode1 = Behold kopi på server
+MailMode2 = Behold meldinger på server i
+MailsOnServerDays = dag(er)
+MailMode3 = Slett melding fra server når den er fjernet fra søppelbøtten
+InboxSyncType = Type innboks-synkronisering
+
+SyncTypeNo = Ikke Synkroniser
+SyncTypeNewHeaders = Nye headere
+SyncTypeAllHeaders = Alle headere
+SyncTypeNewMessages = Nye Meldinger
+SyncTypeAllMessages = Alle Meldinger
+SyncTypeDirectMode = Direkte Modus
+
+Pop3SyncTypeEntireHeaders = Kun Headere
+Pop3SyncTypeEntireMessages = Hele Meldinger
+Pop3SyncTypeDirectMode = Direkte Modus
+
+DeleteFromDb = Slett melding fra database dersom den ikke ekisterer på eposttjeneren
+
+EditFilter = Rediger filter
+NewFilter = Legg til filter
+Field = Felt
+Condition = Betingelse
+ContainSubstring = Inneholder substring
+ContainExactPhrase = Inneholder nøyaktig frase
+NotContainSubstring = Ikke inkluder substring
+FilterDesc_At = at
+FilterDesc_Field = felt
+Action = Handling
+DoNothing = Ikke gjør noe
+DeleteFromServer = Slett fra server umiddelbart
+MarkGrey = Marker grå
+Add = Legg Til
+OtherFilterSettings = andre filter innstillinger
+ConsiderXSpam = Vurder X-Spam headers
+Apply = Bruk
+
+InsertLink = Sett inn link
+RemoveLink = Fjern link
+Numbering = Nummerering
+Bullets = Kuler
+HorizontalLine = Horisontal linje
+Bold = Fet
+Italic = Kursiv
+Underline = Understrek
+AlignLeft = Venstrejuster
+Center = Sentrer
+AlignRight = Høyrejuster
+Justify = Justify
+FontColor = Skriftfarge
+Background = Bakgrunn
+SwitchToPlainMode = Bytt til enkel tekst modus
+SwitchToHTMLMode = Bytt til HTML modus
+AddSignatures = Legg signatur til på alle utgående meldinger
+DontAddToReplies = Legg ikke til signatur på besvarelser eller vidresendinger
+Folder = Mappe
+Msgs = Msg's
+Synchronize = Synkroniser
+ShowThisFolder = Vis denne mappen
+Total = Totalt
+DeleteSelected = Slett Markert(e)
+AddNewFolder = Legg til ny mappe
+NewFolder = Ny mappe
+ParentFolder = Forrige mappe
+NoParent = Ingen Forrige
+OnMailServer = Opprett denne mappen i WebMail og på eposttjeneren
+InWebMail = Opprett denne mappen kun i WebMail
+FolderName = Mappenavn
+
+ContactsPerPage = Kontakter per side
+WhiteList = Adressebok som hvitliste
+
+CharsetDefault = Standard
+CharsetArabicAlphabetISO = Arabisk Alfabet (ISO)
+CharsetArabicAlphabet = Arabisk Alfabet (Windows)
+CharsetBalticAlphabetISO = Baltisk Alfabet (ISO)
+CharsetBalticAlphabet = Baltisk Alfabet(Windows)
+CharsetCentralEuropeanAlphabetISO = Sentral Europeisk Alfabet (ISO)
+CharsetCentralEuropeanAlphabet = Sentral Europeisk Alfabet (Windows)
+CharsetChineseSimplifiedEUC = Kinesisk, Enkelt (EUC)
+CharsetChineseSimplifiedGB = Kinesisk, Enkelt (GB2312)
+CharsetChineseTraditional = Kinesisk, Tradisjonelt (Big5)
+CharsetCyrillicAlphabetISO = Cyrillic Alfabet (ISO)
+CharsetCyrillicAlphabetKOI8R = Cyrillic Alfabet (KOI8-R)
+CharsetCyrillicAlphabet = Cyrillic Alfabet (Windows)
+CharsetGreekAlphabetISO = Gresk Alfabet (ISO)
+CharsetGreekAlphabet = Greek Alfabet (Windows)
+CharsetHebrewAlphabetISO = Hebrisk Alfabet (ISO)
+CharsetHebrewAlphabet = Hebrisk Alfabet (Windows)
+CharsetJapanese = Japansk
+CharsetJapaneseShiftJIS = Japansk (Shift-JIS)
+CharsetKoreanEUC = Koreansk (EUC)
+CharsetKoreanISO = Koreansk (ISO)
+CharsetLatin3AlphabetISO = Latinsk 3 Alfabet (ISO)
+CharsetTurkishAlphabet = Tyrkisk Alfabet
+CharsetUniversalAlphabetUTF7 = Universalt Alfabet (UTF-7)
+CharsetUniversalAlphabetUTF8 = Universalt Alfabet (UTF-8)
+CharsetVietnameseAlphabet = Vietnamisk Alfabet (Windows)
+CharsetWesternAlphabetISO = Western Alfabet (ISO)
+CharsetWesternAlphabet = Western Alfabet (Windows)
+
+TimeDefault = Standard
+TimeEniwetok = Eniwetok, Kwajalein, Datolinje Tid
+TimeMidwayIsland = Midway Island, Samoa
+TimeHawaii = Hawaii
+TimeAlaska = Alaska
+TimePacific = Pasifisk Tid (US & Canada); Tijuana
+TimeArizona = Arisona
+TimeMountain = Fjell Tid (US & Canada)
+TimeCentralAmerica = Sentral Amerika
+TimeCentral = Sentral Tid (US & Canada)
+TimeMexicoCity = Mexico City, Tegucigalpa
+TimeSaskatchewan = Saskatchewan
+TimeIndiana = Indiana (Øst)
+TimeEastern = Øst Tid (US & Canada)
+TimeBogota = Bogota, Lima, Quito
+TimeSantiago = Santiago
+TimeCaracas = Caracas, La Paz
+TimeAtlanticCanada = Atlantisk Tid (Canada)
+TimeNewfoundland = Newfoundland
+TimeGreenland = Grønnland
+TimeBuenosAires = Buenos Aires, Georgetown
+TimeBrasilia = Brasil
+TimeMidAtlantic = Mid-Atlantic
+TimeCapeVerde = Cape Verde Is.
+TimeAzores = Asorene
+TimeMonrovia = Casablanca, Monrovia
+TimeGMT = Dublin, Edinburgh, Lisboa, London
+TimeBerlin = Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+TimePrague = Belgrade, Bratislava, Budapest, Ljubljana, Prague
+TimeParis = Brussels, Kjøbenhavn, Madrid, Paris
+TimeSarajevo = Sarajevo, Skopje, Sofija, Vilnius, Warsaw, Zagreb
+TimeWestCentralAfrica = Vest Sentral Afrika
+TimeAthens = Aten, Istanbul, Minsk
+TimeEasternEurope = Bucharest
+TimeCairo = Cairo
+TimeHarare = Harare, Pretoria
+TimeHelsinki = Helsinki, Riga, Tallinn
+TimeIsrael = Israel, Jerusalem Standard Tid
+TimeBaghdad = Baghdad
+TimeArab = Arab, Kuwait, Riyadh
+TimeMoscow = Moscow, St. Petersburg, Volgograd
+TimeEastAfrica = Øst Afrika, Nairobi
+TimeTehran = Tehran
+TimeAbuDhabi = Abu Dhabi, Muscat
+TimeCaucasus = Baku, Tbilisi, Yerevan
+TimeKabul = Kabul
+TimeEkaterinburg = Ekaterinburg
+TimeIslamabad = Islamabad, Karachi, Sverdlovsk, Tashkent
+TimeBombay = Calcutta, Chennai, Mumbai, New Delhi, India Standard Tid
+TimeNepal = Kathmandu, Nepal
+TimeAlmaty = Almaty, Novosibirsk, Nord Sentral Asia
+TimeDhaka = Astana, Dhaka
+TimeSriLanka = Sri Jayawardenepura, Sri Lanka
+TimeRangoon = Rangoon
+TimeBangkok = Bangkok, Hanoi, Jakarta
+TimeKrasnoyarsk = Krasnoyarsk
+TimeBeijing = Beijing, Chongqing, Hong Kong SAR, Urumqi
+TimeIrkutsk = Irkutsk, Ulaan Bataar
+TimeSingapore = Kuala Lumpur, Singapore
+TimePerth = Perth, Vest Australia
+TimeTaipei = Taipei
+TimeTokyo = Osaka, Sapporo, Tokyo
+TimeSeoul = Seoul, Korea Standard tid
+TimeYakutsk = Yakutsk
+TimeAdelaide = Adelaide, Sentral Australia
+TimeDarwin = Darwin
+TimeBrisbane = Brisbane, Øst Australia
+TimeSydney = Canberra, Melbourne, Sydney, Hobart
+TimeGuam = Guam, Port Moresby
+TimeHobart = Hobart, Tasmania
+TimeVladivostock = Vladivostok
+TimeMagadan = Magadan, Solomon Is., New Caledonia
+TimeWellington = Auckland, Wellington
+TimeFiji = Fiji Islands, Kamchatka, Marshall Is.
+TimeTonga = Nuku'alofa, Tonga
+
+DateDefault = Standard
+DateDDMMYY = DD/MM/YY
+DateMMDDYY = MM/DD/YY
+DateDDMonth = DD Måned (01 Jan)
+DateAdvanced = Avansert
+
+NewContact = Ny Kontakt
+NewGroup = Ny Gruppe
+AddContactsTo = Legg Kontakter Til
+ImportContacts = Importer kontakter
+
+Name = Navn
+Email = Epost
+DefaultEmail = Standard Epostadresse
+NotSpecifiedYet = Enda Ikke Spesifisert
+ContactName = Navn
+Birthday = Bursdag
+Month = Måned
+January = Januar
+February = Februar
+March = Mars
+April = April
+May = Mai
+June = Juni
+July = Juli
+August = August
+September = September
+October = Oktober
+November = November
+December = Desember
+Day = Dag
+Year = År
+UseFriendlyName1 = Benytt Vennlig Navn
+UseFriendlyName2 = (f.Eks., Ola Nordmann &lt;olanordmann@fastname.no&gt;)
+Personal = Personlig
+PersonalEmail = Personlig Epost
+StreetAddress = Adresse
+City = By
+Fax = Fax
+StateProvince = Fylke
+Phone = Telefon
+ZipCode = Postnummer
+Mobile = Mobil
+CountryRegion = Land
+WebPage = Webside
+Go = Gå
+Home = Hjem
+Business = Jobb
+BusinessEmail = Jobb Epost
+Company = Firma
+JobTitle = Tittel
+Department = Avdeling
+Office = Kontor
+Pager = Personsøker
+Other = Annet
+OtherEmail = Annen Epost
+Notes = Notater
+Groups = Grupper
+ShowAddFields = Vis tilleggsfelt
+HideAddFields = Skjul tilleggsfelt
+EditContact = Rediger kontaktinformasjon
+GroupName = Gruppe Navn
+AddContacts = Legg Til Kontakter
+CommentAddContacts = (Dersom du skal spesifisere mer enn en adresse, vær vennlig og skill de med komme (,))
+CreateGroup = Opprett Gruppe
+Rename = Gi Nytt Navn
+MailGroup = Beskjed Gruppe
+RemoveFromGroup = Fjern fra gruppe
+UseImportTo = Benytt importer funksjonen til og kopiere kontakter i fra Microsoft Outlook, Microsoft Outlook Express inn til WebMailens adressebok.
+Outlook1 = Microsoft Outlook 2000/XP/2003
+Outlook2 = Microsoft Outlook Express 6
+SelectImportFile = Velg den filen du ønsker å importere (.CSV format)
+Import = Importer
+ContactsMessage = Dette er kontakt siden!!!
+ContactsCount = kontakt(er)
+GroupsCount = grupp(er)
+
+; webmail 4.1 constants
+PicturesBlocked = Bilder i denne meldingen er blitt blokert for din sikkerhet.
+ShowPictures = Vis Bilder
+ShowPicturesFromSender = Alltid vis bilder i meldinger fra denne avsender
+AlwaysShowPictures = Alltid vis bilder i meldinger
+
+TreatAsOrganization = Oppfatt som en organisasjon
+
+WarningGroupAlreadyExist = En gruppe med dette navnet eksisterer alt. Velg et annet navn.
+WarningCorrectFolderName = Du burde velge et korrekt navn på gruppen
+WarningLoginFieldBlank = Du kan ikke la Logg Inn felt være blanke
+WarningCorrectLogin = Du må ha korrekt Logg Inn
+WarningPassBlank = Du kan ikke la passord feltet være tomt.
+WarningCorrectIncServer = Du burde spesifisere en korrekt adresse til server for POP3(IMAP).
+WarningCorrectSMTPServer = Du burde spesifisere korrekt adresse til server for SMTP.
+WarningFromBlank = Du kan ikke la Fra: feltet være blankt.
+WarningAdvancedDateFormat = Vær vennlig og spesifiser dato- og tidsformat.
+
+AdvancedDateHelpTitle = Avansert Dato
+AdvancedDateHelpIntro = Når &quot;Advanced&quot; feltet er valgt, kan du benytte tekstboksen til og spesifisere ditt eget datoformat, som da vil bli vist i WebMail Pro. Følgende valg er benyttet i denne mening sammen med ':' eller '/':
+AdvancedDateHelpConclusion = F.eks., dersom du har spesifisert &quot;mm/dd/yyyy&quot; verdier i tekstboksen &quot;Advanced&quot; felter, blir datoen vist som måned/dag/år (11/23/2005)
+AdvancedDateHelpDayOfMonth = Dag i måneden (1 til 31)
+AdvancedDateHelpNumericMonth = Måned (1 til 12)
+AdvancedDateHelpTextualMonth = Måned (Jan til Des)
+AdvancedDateHelpYear2 = År, 2 tall
+AdvancedDateHelpYear4 = År, 4 tall
+AdvancedDateHelpDayOfYear = Dag i året (1 ttil 366)
+AdvancedDateHelpQuarter = Kvartal
+AdvancedDateHelpDayOfWeek = Dag i uken (Man ttil Søn)
+AdvancedDateHelpWeekOfYear = Uke i året (1 til 53)
+
+InfoNoMessagesFound = Ingen Meldinger Funnet.
+ErrorSMTPConnect = Kan ikke koble til SMTP server. Kontroller dine SMTP server innstillinger.
+ErrorSMTPAuth = Feil brukenavn og/eller passord. Godkjenning feilet.
+ReportMessageSent = Din melding er sendt.
+ReportMessageSaved = Din melding er blitt lagret.
+ErrorPOP3Connect = Kan ikke koble til POP3 server, sjekk POP3 severinnstillinger.
+ErrorIMAP4Connect = Kan ikke koble til IMAP4 server, sjekk IMAP4 serverinnstillinger.
+ErrorPOP3IMAP4Auth = Feil epost/logg inn og/eller passord. Godkjenning feilet.
+ErrorGetMailLimit = Beklager, din innboks er full.
+
+ReportSettingsUpdatedSuccessfuly = Dine innstillinger har blitt vellykket oppdatert.
+ReportAccountCreatedSuccessfuly = Konto har blitt opprett vellykket.
+ReportAccountUpdatedSuccessfuly = Din konto ble vellykket oppdatert.
+ConfirmDeleteAccount = Er du sikker på du vil slette denne kontoen?
+ReportFiltersUpdatedSuccessfuly = Filtere har blitt vellykket oppdatert.
+ReportSignatureUpdatedSuccessfuly = Signaturen har blitt vellykket oppdatert.
+ReportFoldersUpdatedSuccessfuly = Mapper har blitt vellykket oppdatert.
+ReportContactsSettingsUpdatedSuccessfuly = Kontaktinnstillinger har blitt vellykket oppdatert.
+
+ErrorInvalidCSV = CSV filen du valgte har feil format.
+;Gruppen "guies" ble vellykket lagt til.
+ReportGroupSuccessfulyAdded1 = Gruppen
+ReportGroupSuccessfulyAdded2 = Ble vellykket lagt til.
+ReportGroupUpdatedSuccessfuly = Gruppen har blitt vellykket oppdatert.
+ReportContactSuccessfulyAdded = Kontakt ble lagt til.
+ReportContactUpdatedSuccessfuly = Kontakten har vellykket blitt oppdatert.
+;Kontakt(er) ble lagt til gruppen "venner".
+ReportContactAddedToGroup = Kontakt(er) ble lagt til gruppen
+AlertNoContactsGroupsSelected = Ingen Kontakt eller grupper valgt.
+
+InfoListNotContainAddress = Dersom listen ikke inneholder adressen du leter etter, forsøk å skriv inn dens første tegn.
+
+DirectAccess = D
+DirectAccessTitle = Direkte Modus. WebMail leser meldingen direkte fra server.
+
+FolderInbox = Innboks
+FolderSentItems = Sendte Elementer
+FolderDrafts = Utkast
+FolderTrash = Søppel
+
+FileLargerAttachment = Filen overskriver Vedleggets maksimalt tillatte størrelse.
+FilePartiallyUploaded = Bare en del av filen ble lastet opp grunnet en ukjent feil.
+NoFileUploaded = Ingen fil ble lastet opp.
+MissingTempFolder = Den midlertidige mappen mangler.
+MissingTempFile = Den midlertidige filen mangler.
+UnknownUploadError = En ukjent opplastingsfeil inntraff.
+FileLargerThan = Filopplastningsfeil. Mest trolig er filen større enn 
+PROC_CANT_LOAD_DB = Kan ikke koble til database
+PROC_CANT_LOAD_LANG = Kan ikke finne den nødvendige språkfilen.
+PROC_CANT_LOAD_ACCT = Kontoen eksisterer ikke, kanskje har den blitt slettet.
+
+DomainDosntExist = Dette domenet eksisterer ikke på vår server.
+ServerIsDisable = Benyttelse av eporttjener er begrenset til Administrator.
+
+PROC_ACCOUNT_EXISTS = Kontoen kan ikke bli opprettet. Den ekisterer fra før.
+PROC_CANT_GET_MESSAGES_COUNT = Kan ikke hente mappe og antall meldinger.
+PROC_CANT_MAIL_SIZE = Kan ikke hente ut epostkvote.
+
+Organization = Organisasjon
+WarningOutServerBlank = Du kan ikke la SMTP serverfeltet være blankt
+
+;
+Refresh = Oppdater
+MessagesInInbox = Beskjed(er) i innboksen
+InfoEmptyInbox = Din innboks er tom
+
+; webmail 4.2 constants
+BackToList = Tilbake til liste
+InfoNoContactsGroups = Ingen kontakter eller grupper.
+InfoNewContactsGroups = Du kan lage nye kontakter/grupper eller importere kontakter i fra en .CSV fil i MS Outlook format.
+DefTimeFormat = Standard tidsformat
+SpellNoSuggestions = Ingen forslag
+SpellWait = Vennligst vent&hellip;
+
+InfoNoMessageSelected = Ingen meldinger valgt.
+InfoSingleDoubleClick = Du kan enkelt klikke på meldingen for forhåndsvisningen her, eller dobbelklikke for å se den i full størrelse.	
+
+; calendar
+TitleDay = Dag Visning
+TitleWeek = Ukes Visning
+TitleMonth = Månedlig Visning
+
+ErrorNotSupportBrowser = Etter logisk kalender støtter ikke din nettleser. Vennligst benytt 2.0 eller nyere, Opera 9.0 eller      nyere, Internet Explorer 6.0 eller nyere, Safari 3.0.2 eller nyere.
+ErrorTurnedOffActiveX = ActiveX-støtte er deaktivert. <br/>Du må skru på dette for å benytte denne applikasjonen.
+
+Calendar = Kalender
+
+TabDay = Dag
+TabWeek = Uke
+TabMonth = Måned
+
+ToolNewEvent = Ny&nbsp;hendelse
+ToolBack = tilbake
+ToolToday = I Dag
+AltNewEvent = Ny hendelse
+AltBack = Tilbake
+AltToday = I Dag
+CalendarHeader = Kalender
+CalendarsManager = Administrer Kalender
+
+CalendarActionNew = Ny Kalender
+EventHeaderNew = Ny Hendelse
+CalendarHeaderNew = Ny Kalender
+
+EventSubject = Emne
+EventCalendar = Kalender
+EventFrom = Fra
+EventTill = til
+CalendarDescription = Beskrivelse
+CalendarColor = Farge
+CalendarName = Kalender navn
+CalendarDefaultName = Min Kalender
+
+ButtonSave = Lagre
+ButtonCancel = Avbryt
+ButtonDelete = Slett
+
+AltPrevMonth = Forrige måned
+AltNextMonth = Neste måned
+
+CalendarHeaderEdit = Rediger kalender
+CalendarActionEdit = Rediger Kalender
+ConfirmDeleteCalendar = Er du sikker på at du ønsker å slette kalenderen
+InfoDeleting = Sletter&hellip;
+WarningCalendarNameBlank = Du kan ikke la kalendernavnet være blankt.
+ErrorCalendarNotCreated = Kalender ikke opprettet
+WarningSubjectBlank = Du kan ikke la emnet være blankt.
+WarningIncorrectTime = Den spesifiserte tiden inneholder ikke tillatte tegn.
+WarningIncorrectFromTime = Fra tiden er feil.
+WarningIncorrectTillTime = Til tiden er feil.
+WarningStartEndDate = Sluttdatoen må være større eller lik startdatoen.
+WarningStartEndTime = Sluttiden må være større eller lik starttiden.
+WarningIncorrectDate = Datoen må være korrekt.
+InfoLoading = Laster&hellip;
+EventCreate = Opprett hendelse
+CalendarHideOther = Skjul andre kalendere
+CalendarShowOther = Vis andre kalendere
+CalendarRemove = Fjern kalender
+EventHeaderEdit = Rediger hendelse
+
+InfoSaving = Lagrer&hellip;
+SettingsDisplayName = Vis Navn
+SettingsTimeFormat = Tids format
+SettingsDateFormat = Dato format
+SettingsShowWeekends = Vis helger
+SettingsWorkdayStarts = Arbeidsdagen starter
+SettingsWorkdayEnds = slutter
+SettingsShowWorkday = Vis arbeidsdag
+SettingsWeekStartsOn = Uke starter på
+SettingsDefaultTab = Standard Tab
+SettingsCountry = Land
+SettingsTimeZone = Tidssone
+SettingsAllTimeZones = Alle tidssoner
+
+WarningWorkdayStartsEnds = Arbeidsdagen slutter tiden må være større enn arbeidsdagen starter tiden.
+ReportSettingsUpdated = Innstillinger ble vellykket oppdatert.
+
+SettingsTabCalendar = Kalender
+
+FullMonthJanuary = Januar
+FullMonthFebruary = Februar
+FullMonthMarch = Mars
+FullMonthApril = April
+FullMonthMay = Mai
+FullMonthJune = Juni
+FullMonthJuly = Juli
+FullMonthAugust = August
+FullMonthSeptember = September
+FullMonthOctober = Oktober
+FullMonthNovember = November
+FullMonthDecember = Desember
+
+ShortMonthJanuary = Jan
+ShortMonthFebruary = Feb
+ShortMonthMarch = Mar
+ShortMonthApril = Apr
+ShortMonthMay = Mai
+ShortMonthJune = Jun
+ShortMonthJuly = Jul
+ShortMonthAugust = Aug
+ShortMonthSeptember = Sep
+ShortMonthOctober = Okt
+ShortMonthNovember = Nov
+ShortMonthDecember = Des
+
+FullDayMonday = Mandag
+FullDayTuesday = Tirsdag
+FullDayWednesday = Onsdag
+FullDayThursday = Torsdag
+FullDayFriday = Fredag
+FullDaySaturday = Lørdag
+FullDaySunday = Søndag
+
+DayToolMonday = Man
+DayToolTuesday = Tir
+DayToolWednesday = Ons
+DayToolThursday = Tor
+DayToolFriday = Fre
+DayToolSaturday = Lør
+DayToolSunday = Søn
+
+CalendarTableDayMonday = M
+CalendarTableDayTuesday = T
+CalendarTableDayWednesday = O
+CalendarTableDayThursday = T
+CalendarTableDayFriday = F
+CalendarTableDaySaturday = L
+CalendarTableDaySunday = S
+
+ErrorParseJSON = JSON svaret fra server kan ikke bli parset.
+
+ErrorLoadCalendar = Kan ikke laste kalender(e)
+ErrorLoadEvents = Kan ikke laste hendelse(r)
+ErrorUpdateEvent = Kan ikke lagre hendelse(r)
+ErrorDeleteEvent = Kan ikke slette hendelse(r)
+ErrorUpdateCalendar = Kan ikke lagre kalender
+ErrorDeleteCalendar = Kan ikke slette kalender
+ErrorGeneral = En feil skjedde på server. Prøv igjen senere.
+
+; webmail 4.3 constants
+SharedTitleEmail = Epost
+ShareHeaderEdit = Del og publiser kalender
+ShareActionEdit = Del og publiser kalender
+CalendarPublicate = Gi tilgang til kalender over internett
+CalendarPublicationLink = Link
+ShareCalendar = Del denne kalenderen
+SharePermission1 = Kan gjøre endringer og administrere deling
+SharePermission2 = Kan gjøre endringer i hendelser
+SharePermission3 = Kan se alle hendelsesdetaljer
+SharePermission4 = Kan kun se opptatt/ledig (skjul detaljer)
+ButtonClose = Lukk
+WarningEmailFieldFilling = Du må fylle ut epostfeltet først
+EventHeaderView = Se hendelser
+ErrorUpdateSharing = Kan ikke lagre data
+ErrorUpdateSharing1 = Kan ikke dele til %s brukeren da den ikke eksisterer
+ErrorUpdateSharing2 = Kan ikke dele denne kalenderen med bruker %s
+ErrorUpdateSharing3 = Denne kalenderen er allerede delt med bruker %s
+Title_MyCalendars = Mine kalendere
+Title_SharedCalendars = Delte kalendere
+ErrorGetPublicationHash = Kan ikke opprette link
+ErrorGetSharing = Kan ikke legge til deling
+CalendarPublishedTitle = Denne kalenderen er publisert
+RefreshSharedCalendars = Oppdater Delte Kalendere
+Title_CheckSharedCalendars = Oppdater Delte Kalendere
+
+GroupMembers = Medlemmer
+
+ReportMessagePartDisplayed = Merk: Kun deler av meldingen er vist.
+ReportViewEntireMessage = For å se hele meldingen,
+ReportClickHere = klikk her
+ErrorContactExists = En kontakt med ønsket navn/epostadresse eksisterer.
+
+Attachments = Vedlegg
+
+InfoGroupsOfContact = Gruppene kontakten er medlem av er avmerket.
+AlertNoContactsSelected = Ingen kontakter valgt.
+MailSelected = Send epost til valgt adresse
+CaptionSubscribed = Abonnert til
+
+OperationSpam = Spam
+OperationNotSpam = Ikke Spam
+FolderSpam = Spam
+
+; webmail 4.4 contacts
+ContactMail = Mail contact
+ContactViewAllMails = View all mails with this contact
+ContactsMailThem = Mail them
+DateToday = Today
+DateYesterday = Yesterday
+MessageShowDetails = Show details
+MessageHideDetails = Hide details
+MessageNoSubject = No subject
+; john@gmail.com to nadine@gmail.com
+MessageForAddr = to
+SearchClear = Clear search
+; Search results for "search string" in Inbox folder:
+; Search results for "search string" in all mail folders:
+SearchResultsInFolder = Search results for "#s" in #f folder:
+SearchResultsInAllFolders = Search results for "#s" in all mail folders:
+AutoresponderTitle = Autoresponder
+AutoresponderEnable = Enable autoresponder
+AutoresponderSubject = Subject
+AutoresponderMessage = Message
+ReportAutoresponderUpdatedSuccessfuly = Autoresponder has been updated successfully.
+FolderQuarantine = Quarantine
+
+;calendar
+EventRepeats = Repeats
+NoRepeats = Does not repeat
+DailyRepeats = Daily
+WorkdayRepeats = Every weekday (Mon. - Fri.)
+OddDayRepeats = Every Mon., Wed. and Fri.
+EvenDayRepeats = Every Tues. and Thurs.
+WeeklyRepeats = Weekly
+MonthlyRepeats = Monthly
+YearlyRepeats = Yearly
+RepeatsEvery = Repeats every
+ThisInstance = Only this instance
+AllEvents = All events in the series
+AllFollowing = All following
+ConfirmEditRepeatEvent = Would you like to change only this event, all events, or this and all future events in the series?
+RepeatEventHeaderEdit = Edit Recurring Event
+First = First
+Second = Second
+Third = Third
+Fourth = Fourth
+Last = Last
+Every = Every
+SetRepeatEventEnd = Set end date
+NoEndRepeatEvent = No end date
+EndRepeatEventAfter = End after
+Occurrences = occurrences
+EndRepeatEventBy = End by
+EventCommonDataTab = Main details
+EventRepeatDataTab = Recurrence details
+RepeatEventNotPartOfASeries = This event has been changed and is no longer part of a series.
+UndoRepeatExclusion = Undo changes to include in the series.
+
+MonthMoreLink = %d more...
+NoNewSharedCalendars = No new calendars
+NNewSharedCalendars = %d new calendars found
+OneNewSharedCalendars = 1 new calendar found
+ConfirmUndoOneRepeat = Would you like to restore this event in the series?
+
+RepeatEveryDayInfin = Every day
+RepeatEveryDayTimes = Every day, %TIMES% times
+RepeatEveryDayUntil = Every day, until %UNTIL%
+RepeatDaysInfin = Every %PERIOD% days
+RepeatDaysTimes = Every %PERIOD% days, %TIMES% times
+RepeatDaysUntil = Every %PERIOD% days, until %UNTIL%
+
+RepeatEveryWeekWeekdaysInfin = Every week on weekdays
+RepeatEveryWeekWeekdaysTimes = Every week on weekdays, %TIMES% times
+RepeatEveryWeekWeekdaysUntil = Every week on weekdays, until %UNTIL%
+RepeatWeeksWeekdaysInfin = Every %PERIOD% weeks on weekdays
+RepeatWeeksWeekdaysTimes = Every %PERIOD% weeks on weekdays, %TIMES% times
+RepeatWeeksWeekdaysUntil = Every %PERIOD% weeks on weekdays, until %UNTIL%
+
+RepeatEveryWeekInfin = Every week on %DAYS%
+RepeatEveryWeekTimes = Every week on %DAYS%, %TIMES% times
+RepeatEveryWeekUntil = Every week on %DAYS%, until %UNTIL%
+RepeatWeeksInfin = Every %PERIOD% weeks on %DAYS%
+RepeatWeeksTimes = Every %PERIOD% weeks on %DAYS%, %TIMES% times
+RepeatWeeksUntil = Every %PERIOD% weeks on %DAYS%, until %UNTIL%
+
+RepeatEveryMonthDateInfin = Every month on day %DATE%
+RepeatEveryMonthDateTimes = Every month on day %DATE%, %TIMES% times
+RepeatEveryMonthDateUntil = Every month on day %DATE%, until %UNTIL%
+RepeatMonthsDateInfin = Every %PERIOD% months on day %DATE%
+RepeatMonthsDateTimes = Every %PERIOD% months on day %DATE%, %TIMES% times
+RepeatMonthsDateUntil = Every %PERIOD% months on day %DATE%, until %UNTIL%
+
+RepeatEveryMonthWDInfin = Every month on %NUMBER% %DAY%
+RepeatEveryMonthWDTimes = Every month on %NUMBER% %DAY%, %TIMES% times
+RepeatEveryMonthWDUntil = Every month on %NUMBER% %DAY%, until %UNTIL%
+RepeatMonthsWDInfin = Every %PERIOD% months on %NUMBER% %DAY%
+RepeatMonthsWDTimes = Every %PERIOD% months on %NUMBER% %DAY%, %TIMES% times
+RepeatMonthsWDUntil = Every %PERIOD% months on %NUMBER% %DAY%, until %UNTIL%
+
+RepeatEveryYearDateInfin = Every year on day %DATE%
+RepeatEveryYearDateTimes = Every year on day %DATE%, %TIMES% times
+RepeatEveryYearDateUntil = Every year on day %DATE%, until %UNTIL%
+RepeatYearsDateInfin = Every %PERIOD% years on day %DATE%
+RepeatYearsDateTimes = Every %PERIOD% years on day %DATE%, %TIMES% times
+RepeatYearsDateUntil = Every %PERIOD% years on day %DATE%, until %UNTIL%
+
+RepeatEveryYearWDInfin = Every year on %NUMBER% %DAY%
+RepeatEveryYearWDTimes = Every year on %NUMBER% %DAY%, %TIMES% times
+RepeatEveryYearWDUntil = Every year on %NUMBER% %DAY%, until %UNTIL%
+RepeatYearsWDInfin = Every %PERIOD% years on %NUMBER% %DAY%
+RepeatYearsWDTimes = Every %PERIOD% years on %NUMBER% %DAY%, %TIMES% times
+RepeatYearsWDUntil = Every %PERIOD% years on %NUMBER% %DAY%, until %UNTIL%
+
+RepeatDescDay = day
+RepeatDescWeek = week
+RepeatDescMonth = month
+RepeatDescYear = year
+
+; webmail 4.5 contacts
+WarningUntilDateBlank = Please specify end recurrence date
+WarningWrongUntilDate = End recurrence date must be later than the start recurrence date
+
+OnDays = On days
+CancelRecurrence = Cancel recurrence
+RepeatEvent = Repeat this event
+
+Spellcheck = Check Spelling
+LoginLanguage = Language
+LanguageDefault = Standard
+
+; webmail 4.5.x new
+EmptySpam = Tøm Spam
+Saving = Lagrer&hellip;
+Sending = Sender&hellip;
+LoggingOffFromServer = Logger av server&hellip;
+
+;webmail 4.6
+PROC_CANT_SET_MSG_AS_SPAM = Avmerkede meldinger kan ikke settes som spam
+PROC_CANT_SET_MSG_AS_NOTSPAM = Avmerkede meldinger kan ikke settes som hvitelistet
+ExportToICalendar = Eksporter til iCalendar
+ErrorMaximumUsersLicenseIsExceeded = Din konto er deaktivert grunnet antall brukere i henhold til lisensavtale. Vennligst kontakt Systemadministrator.
+
+RepliedMessageTitle = Besvart melding
+ForwardedMessageTitle = Videresendt melding
+RepliedForwardedMessageTitle = Besvart og videresendt melding
+ErrorDomainExist = Brukeren kan ikke opprettes fordi domenet ikke eksisterer. Opprett domenet først
+
+; webmail 4.6.x or 4.7
+RequestReadConfirmation = Request Return Confirmation
+FolderTypeDefault = Default
+ShowFoldersMapping = Let me use another folder as a system folder (e.g. use MyFolder as Sent Items)
+ShowFoldersMappingNote = For instance, to change Sent Items location from Sent Items to MyFolder, specify "Sent Items" in "Use for" dropdown of "MyFolder".
+FolderTypeMapTo = Use for
+
+ReminderEmailExplanation = This message has come to your account %EMAIL% because you ordered event notification in your calendar %CALENDAR_NAME%
+ReminderOpenCalendar = Open calendar
+
+AddReminder = Remind me about this event
+AddReminderBefore = Remind me % before this event
+AddReminderAnd = and % before
+AddReminderAlso = and also % before
+AddMoreReminder = More reminders
+RemoveAllReminders = Remove all reminders
+ReminderNone = None
+ReminderMinutes = minutes
+ReminderHour = hour
+ReminderHours = hours
+ReminderDay = day
+ReminderDays = days
+ReminderWeek = week
+ReminderWeeks = weeks
+Allday = All day
+
+Folders = Folders
+NoSubject = No Subject
+SearchResultsFor = Search results for
+
+Back = Back
+Next = Next
+Prev = Prev
+
+MsgList = Messages
+Use24HTimeFormat = Use 24 hour time format
+UseCalendars = Use calendars
+Event = Event
+CalendarSettingsNullLine = No calendars
+CalendarEventNullLine = No events
+ChangeAccount = Change account
+
+TitleCalendar = Calendar
+TitleEvent = Event
+TitleFolders = Folders
+TitleConfirmation = Confirmation
+
+Yes = Yes
+No = No
+
+EditMessage = Edit Message
+
+AccountNewPassword = New password
+AccountConfirmNewPassword = Confirm new password
+AccountPasswordsDoNotMatch = Passwords do not match.
+
+ContactTitle = Title
+ContactFirstName = First name
+ContactSurName = Surname
+ContactNickName = Nickname
+
+CaptchaTitle = Captcha
+CaptchaReloadLink = reload
+CaptchaError = Captcha text is incorrect.
+
+WarningInputCorrectEmails = Please specify correct emails.
+WrongEmails = Incorrect emails:
+
+ConfirmBodySize1 = Sorry, but text messages are max.
+ConfirmBodySize2 = characters long. Everything beyond the limit will be truncated. Click "Cancel" if you want to edit the message.
+BodySizeCounter = Counter
+InsertImage = Insert Image
+ImagePath = Image Path
+ImageUpload = Insert
+WarningImageUpload = The file being attached is not an image. Please choose an image file.
+
+ConfirmExitFromNewMessage = Changes will be lost if you leave the page. Would you like to save draft before leaving the page?
+
+SensivityConfidential = Please treat this message as Confidential
+SensivityPrivate = Please treat this message as Private
+SensivityPersonal = Please treat this message as Personal
+
+ReturnReceiptTopText = The sender of this message has asked to be notified when you receive this message.
+ReturnReceiptTopLink = Click here to notify the sender.
+ReturnReceiptSubject = Return Receipt (displayed)
+ReturnReceiptMailText1 = This is a Return Receipt for the mail that you sent to
+ReturnReceiptMailText2 = Note: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.
+ReturnReceiptMailText3 = with subject
+
+SensivityMenu = Sensitivity
+SensivityNothingMenu = Nothing
+SensivityConfidentialMenu = Confidential
+SensivityPrivateMenu = Private
+SensivityPersonalMenu = Personal
+
+ErrorLDAPonnect = Can't connect to ldap server.
+
+MessageSizeExceedsAccountQuota = This message size exceeds your account quota.
+MessageCannotSent = The message cannot be sent.
+MessageCannotSaved = The message cannot be saved.
+
+ContactFieldTitle = Field
+ContactDropDownTO = TO
+ContactDropDownCC = CC
+ContactDropDownBCC = BCC
+
+; 4.9 
+NoMoveDelete = Message(s) can't be moved to Trash. Most likely your message box is full. Should this unmoved message(s) be deleted?
+
+WarningFieldBlank = This field cannot be empty.
+WarningPassNotMatch = Passwords do not match, please check.
+PasswordResetTitle = Password recovery - step %d
+NullUserNameonReset = user
+IndexResetLink = Forgot password?
+IndexRegLink = Account Registration
+
+RegDomainNotExist = Domain does not exist.
+RegAnswersIncorrect = Answers are incorrect.
+RegUnknownAdress = Unknown email address.
+RegUnrecoverableAccount = Password recovery cannot be applied for this email address.
+RegAccountExist = This address is already used.
+RegRegistrationTitle = Registration
+RegName = Name
+RegEmail = e-mail address
+RegEmailDesc = For example, myname@domain.com. This information will be used to enter the system.
+RegSignMe = Remember me
+RegSignMeDesc = Do not ask for login and password on next login to the system on this PC.
+RegPass1 = Password
+RegPass2 = Repeat password 
+RegQuestionDesc = Please, provide two secret questions and answers which know only you. In case of password lost you can use these questions in order to recover the password.
+RegQuestion1 = Secret question 1
+RegAnswer1 = Answer 1
+RegQuestion2 = Secret question 2
+RegAnswer2 = Answer 2
+RegTimeZone = Time zone
+RegLang = Interface language
+RegCaptcha = Captcha
+RegSubmitButtonValue = Register
+
+ResetEmail = Please provide your email
+ResetEmailDesc = Provide emails address used for registration.
+ResetCaptcha = CAPTCHA
+ResetSubmitStep1 = Send
+ResetQuestion1 = Secret question 1
+ResetAnswer1 = Answer
+ResetQuestion2 = Secret question 2
+ResetAnswer2 = Answer
+ResetSubmitStep2 = Send
+
+ResetTopDesc1Step2 = Providede email address
+ResetTopDesc2Step2 = Please confirm correctness.
+
+ResetTopDescStep3 = please specify below new password for your email.
+
+ResetPass1 = New password
+ResetPass2 = Repeat password
+ResetSubmitStep3 = Send
+ResetDescStep4 = Your password has been changed.
+ResetSubmitStep4 = Return
+
+RegReturnLink = Return to login screen
+ResetReturnLink = Return to login screen
+
+; Appointments 
+AppointmentAddGuests = Add guests
+AppointmentRemoveGuests = Cancel Meeting
+AppointmentListEmails = Enter email addresses separated by commas and press Save
+AppointmentParticipants = Participants
+AppointmentRefuse = Refuse
+AppointmentAwaitingResponse = Awaiting response
+AppointmentInvalidGuestEmail = The following guest email addresses are invalid:
+AppointmentOwner = Owner
+
+AppointmentMsgTitleInvite = Invite to event.
+AppointmentMsgTitleUpdate = Event was modified.
+AppointmentMsgTitleCancel = Event was cancelled.
+AppointmentMsgTitleRefuse = Guest %guest% is refuse invitation
+AppointmentMoreInfo = More info
+AppointmentOrganizer = Organizer
+AppointmentEventInformation = Event information
+AppointmentEventWhen = When
+AppointmentEventParticipants = Participants
+AppointmentEventDescription = Description
+AppointmentEventWillYou = Will you participate
+AppointmentAdditionalParameters = Additional parameters
+AppointmentHaventRespond = Not responded yet
+AppointmentRespondYes = I will participate
+AppointmentRespondMaybe = Not sure yet
+AppointmentRespondNo = Will not participate
+AppointmentGuestsChangeEvent = Guests can change event
+
+AppointmentSubjectAddStart = You've received invitation to event 
+AppointmentSubjectAddFrom =  from 
+AppointmentSubjectUpdateStart = Modification of event 
+AppointmentSubjectDeleteStart = Cancellation of event 
+ErrorAppointmentChangeRespond = Unable to change appointment respond
+SettingsAutoAddInvitation = Add invitations into calendar automatically
+ReportEventSaved = Your event has been saved
+ReportAppointmentSaved =  and notifications were send
+ErrorAppointmentSend = Can't send invitations.
+AppointmentEventName = Name:
+
+; End appointments
+
+ErrorCantUpdateFilters = Can't update filters
+
+FilterPhrase = If there's %field header %condition %string then %action
+FiltersAdd = Add Filter
+FiltersCondEqualTo = equal to
+FiltersCondContainSubstr = containing substring
+FiltersCondNotContainSubstr = not containing substring
+FiltersActionDelete = delete message
+FiltersActionMove = move
+FiltersActionToFolder = to %folder folder
+FiltersNo = No filters specified yet
+
+ReminderEmailFriendly = reminder
+ReminderEventBegin = starts at: 
+
+FiltersLoading = Loading Filters...
+ConfirmMessagesPermanentlyDeleted = All messages in this folder will be permanently deleted.
+
+InfoNoNewMessages = There are no new messages.
+TitleImportContacts = Import Contacts
+TitleSelectedContacts = Selected Contacts
+TitleNewContact = New Contact
+TitleViewContact = View Contact
+TitleEditContact = Edit Contact
+TitleNewGroup = New Group
+TitleViewGroup = View Group
+
+AttachmentPending = Pending...
+AttachmentUploading = Uploading...
+AttachmentComplete = Complete.
+AttachmentCancelled = Cancelled.
+AttachmentStopped = Stopped.
+AttachmentsUpload = Attach Files
+AttachmentsUploadPadding = 34
+
+TestButton = TEST
+AutoCheckMailIntervalLabel = Autocheck interval
+AutoCheckMailIntervalDisableName = Disable
+ReportCalendarSaved = Calendar has been saved.
+
+ContactSyncError = Sync failed
+ReportContactSyncDone = Sync complete
+
+MobileSyncUrlTitle = Mobile sync URL
+MobileSyncLoginTitle = Mobile sync login
+
+QuickReply = Quick Reply
+SwitchToFullForm = Switch To Full Form
+SortFieldDate = Date
+SortFieldFrom = From
+SortFieldSize = Size
+SortFieldSubject = Subject
+SortFieldFlag = Flag
+SortFieldAttachments = Attachments
+SortOrderAscending = Ascending
+SortOrderDescending = Descending
+ArrangedBy = Arranged by
+
+MessagePaneToRight = The message pane is to the right of the message list, rather than below
+
+SettingsTabMobileSync = Mobile Sync
+
+MobileSyncContactDataBaseTitle = Mobile sync contact database
+MobileSyncCalendarDataBaseTitle = Mobile sync calendar database
+MobileSyncTitleText = If you'd like to synchronize your SyncML-enabled handheld device with WebMail, you can use these parameters.<br />"Mobile Sync URL" specifies path to SyncML Data Synchronization server, "Mobile Sync Login" is your login on SyncML Data Synchronization Server and use your own password upon request. Also, some devices need to specify database name for contact and calendar data.<br />Use "Mobile sync contact database" and "Mobile sync calendar database" respectively.
+MobileSyncEnableLabel = Enable mobile sync
+
+SearchInputText = search
+
+AppointmentEmailExplanation = This message has come to your account %EMAIL% because you was invited to the event by %ORGANAZER%

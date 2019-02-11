@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsModelFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfileModel="(Default)" GeneratedClassNamespace="DeleteDuplicateFiles.Properties" GeneratedClassName="SettingsModel">
+  <Profiles />
+  <SettingsModel>
+    <Setting Name="TestZ" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ssss</Value>
+    </Setting>
+  </SettingsModel>
+</SettingsModelFile>

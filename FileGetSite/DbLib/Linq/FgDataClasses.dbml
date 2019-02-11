@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="FileGet" EntityNamespace="FileGetDbLib.Linq" ContextNamespace="FileGetDbLib.Linq" Class="FgDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.FileDownload" Member="FileDownloads">
+    <Type Name="FileDownload">
+      <Column Name="FileDownloadId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FileShareId" Type="System.String" DbType="Char(64) NOT NULL" CanBeNull="false" />
+      <Column Name="FilePath" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="TimeStamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FileShare" Member="FileShares">
+    <Type Name="FileShare">
+      <Column Name="FileShareId" Type="System.String" DbType="Char(64) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FilePath" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="ValidUntil" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IsDirectory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IncludeSubdirs" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

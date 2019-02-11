@@ -1,0 +1,38 @@
+﻿@using Apps.cuplex.se.Utilities
+@model Apps.cuplex.se.Models.AppsListViewModel
+
+
+<h2>@ViewBag.Title</h2>
+
+
+<div class="row">
+    <div class="col-lg-10">
+        <h3>@Model.ListDescription</h3>
+        
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Application Name</th>
+                <th>Version</th>
+                <th>Date</th>
+                <th>Size</th>
+                <th>Download url</th>
+            </tr>
+            </thead>
+            <tbody>
+            @{
+                foreach (var appViewModel in Model.ApplicationsList)
+                {
+                    <tr>
+                        <td>@appViewModel.Name</td>
+                        <td>@appViewModel.Version</td>
+                        <td>@appViewModel.FileDate.ToString("d")</td>
+                        <td>@Converters.GetFriendlyFileSize( appViewModel.FileSize,2)</td>
+                        <td><a class="btn" href="@appViewModel.DownloadUrl">@appViewModel.Filename</a></td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

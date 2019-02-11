@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geo-IpImport", "Geo-IpImport\Geo-IpImport.csproj", "{B46B3F3B-C269-4328-825E-7EB2FBFAF214}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLib", "..\api.cuplex.se\ASP_Web_API\DatabaseLib\DatabaseLib.csproj", "{3824B05C-A050-452F-BEA6-8B4574FD2ED9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CuplexApiCommon", "..\api.cuplex.se\ASP_Web_API\CuplexApiCommon\CuplexApiCommon.csproj", "{D0D6EB51-7CDA-4132-8CB2-EA28E5FB5216}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalServices", "..\api.cuplex.se\ASP_Web_API\InternalServices\InternalServices.csproj", "{0738765D-C906-4E87-B367-2329A10A620E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B46B3F3B-C269-4328-825E-7EB2FBFAF214}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B46B3F3B-C269-4328-825E-7EB2FBFAF214}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B46B3F3B-C269-4328-825E-7EB2FBFAF214}.Debug|x64.ActiveCfg = Debug|x64
+		{B46B3F3B-C269-4328-825E-7EB2FBFAF214}.Debug|x64.Build.0 = Debug|x64
+		{B46B3F3B-C269-4328-825E-7EB2FBFAF214}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B46B3F3B-C269-4328-825E-7EB2FBFAF214}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B46B3F3B-C269-4328-825E-7EB2FBFAF214}.Release|x64.ActiveCfg = Release|x64
+		{B46B3F3B-C269-4328-825E-7EB2FBFAF214}.Release|x64.Build.0 = Release|x64
+		{3824B05C-A050-452F-BEA6-8B4574FD2ED9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3824B05C-A050-452F-BEA6-8B4574FD2ED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3824B05C-A050-452F-BEA6-8B4574FD2ED9}.Debug|x64.ActiveCfg = Debug|x64
+		{3824B05C-A050-452F-BEA6-8B4574FD2ED9}.Debug|x64.Build.0 = Debug|x64
+		{3824B05C-A050-452F-BEA6-8B4574FD2ED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3824B05C-A050-452F-BEA6-8B4574FD2ED9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3824B05C-A050-452F-BEA6-8B4574FD2ED9}.Release|x64.ActiveCfg = Release|x64
+		{3824B05C-A050-452F-BEA6-8B4574FD2ED9}.Release|x64.Build.0 = Release|x64
+		{D0D6EB51-7CDA-4132-8CB2-EA28E5FB5216}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0D6EB51-7CDA-4132-8CB2-EA28E5FB5216}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0D6EB51-7CDA-4132-8CB2-EA28E5FB5216}.Debug|x64.ActiveCfg = Debug|x64
+		{D0D6EB51-7CDA-4132-8CB2-EA28E5FB5216}.Debug|x64.Build.0 = Debug|x64
+		{D0D6EB51-7CDA-4132-8CB2-EA28E5FB5216}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0D6EB51-7CDA-4132-8CB2-EA28E5FB5216}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0D6EB51-7CDA-4132-8CB2-EA28E5FB5216}.Release|x64.ActiveCfg = Release|x64
+		{D0D6EB51-7CDA-4132-8CB2-EA28E5FB5216}.Release|x64.Build.0 = Release|x64
+		{0738765D-C906-4E87-B367-2329A10A620E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0738765D-C906-4E87-B367-2329A10A620E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0738765D-C906-4E87-B367-2329A10A620E}.Debug|x64.ActiveCfg = Debug|x64
+		{0738765D-C906-4E87-B367-2329A10A620E}.Debug|x64.Build.0 = Debug|x64
+		{0738765D-C906-4E87-B367-2329A10A620E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0738765D-C906-4E87-B367-2329A10A620E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0738765D-C906-4E87-B367-2329A10A620E}.Release|x64.ActiveCfg = Release|x64
+		{0738765D-C906-4E87-B367-2329A10A620E}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

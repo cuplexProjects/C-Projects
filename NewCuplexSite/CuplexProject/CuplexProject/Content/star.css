@@ -1,0 +1,47 @@
+﻿.ratingStarBlock
+{
+	display:block;
+	padding:0;
+	margin:0;
+	width:80px;	
+	height:16px;
+}
+.ratingStarBlock div
+{
+	float:left;
+}
+.userActive
+{
+	cursor:pointer;
+}
+
+.cancel,
+.star {
+    float: left;
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+    text-indent: -999em;
+    cursor: pointer;
+}
+
+div.done, div.done a {
+  cursor: default;
+}
+
+.star,
+.star a {background: url('../images/stars16.png') no-repeat 0 0px;}
+
+.star a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-position: 0 0px;
+}
+
+div.ratingStarBlock div.on a {
+    background-position: 0 -16px;
+}
+div.ratingStarBlock div.hover a {
+	background-position: 0 -32px;
+}

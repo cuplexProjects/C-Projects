@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Weekday" xml:space="preserve">
+    <value>Vardag</value>
+  </data>
+  <data name="WeekDay0" xml:space="preserve">
+    <value>Söndag</value>
+  </data>
+  <data name="WeekDay1" xml:space="preserve">
+    <value>Måndag</value>
+  </data>
+  <data name="WeekDay2" xml:space="preserve">
+    <value>Tisdag</value>
+  </data>
+  <data name="WeekDay3" xml:space="preserve">
+    <value>Onsdag</value>
+  </data>
+  <data name="WeekDay4" xml:space="preserve">
+    <value>Torsdag</value>
+  </data>
+  <data name="WeekDay5" xml:space="preserve">
+    <value>Fredag</value>
+  </data>
+  <data name="WeekDay6" xml:space="preserve">
+    <value>Lördag</value>
+  </data>
+  <data name="WeekDay7" xml:space="preserve">
+    <value>Söndag</value>
+  </data>
+  <data name="NextButton" xml:space="preserve">
+    <value>Nästa</value>
+  </data>
+  <data name="PrevButton" xml:space="preserve">
+    <value>Föregående</value>
+  </data>
+  <data name="AboutLabel" xml:space="preserve">
+    <value>Om Cuplex.se</value>
+  </data>
+  <data name="AboutPageText" xml:space="preserve">
+    <value>På Cuplex.se hittar du nya roliga länkar och bilder som uppdateras nästan dagligen.&lt;br/&gt;Vid frågor eller förslag på förbättringar så kan jag nås på &lt;a href="mailto:admin@cuplex.se"&gt;admin@cuplex.se&lt;/a&gt;</value>
+  </data>
+  <data name="SiteLinksHeaderText" xml:space="preserve">
+    <value>Länkar</value>
+  </data>
+  <data name="IncorrectUserName" xml:space="preserve">
+    <value>&lt;b&gt;Felaktigt användarnamn. &lt;/b&gt;&lt;BR/&gt;Användarnamnet får bara innehålla a-z 0-9 samt _ (Regexp [^a-zA-Zå-öÅ-Ö0-9_-])</value>
+  </data>
+  <data name="PasswordCapitalLettersCountToLow" xml:space="preserve">
+    <value>Lösenordet innehåller inte tillräckligt med versaler.</value>
+  </data>
+  <data name="PasswordDigitCountToLow" xml:space="preserve">
+    <value>Lösenordet innehåller inte tillräckligt många siffror</value>
+  </data>
+  <data name="PasswordIsNullOrEmpty" xml:space="preserve">
+    <value>Lösenordet är tomt eller null</value>
+  </data>
+  <data name="PasswordIsOk" xml:space="preserve">
+    <value>Lösenordet är ok</value>
+  </data>
+  <data name="PasswordIsToShort" xml:space="preserve">
+    <value>Lösenordet är för kort</value>
+  </data>
+  <data name="PasswordRules" xml:space="preserve">
+    <value>Lösenordet måste vara minst {0} tecken långt och innehålla minst {1} versaler och minst {2} siffertecken</value>
+  </data>
+  <data name="RegisterUserIncorrectEmailAddress" xml:space="preserve">
+    <value>Epostadressen är felaktig!</value>
+  </data>
+  <data name="RegisterUserPasswordMissmatch" xml:space="preserve">
+    <value>Lösenorden matchar inte!</value>
+  </data>
+  <data name="RegisterUserUsernameTaken" xml:space="preserve">
+    <value>Användaren finns redan registrerad!</value>
+  </data>
+  <data name="SearchForLinkText" xml:space="preserve">
+    <value>Sök efter länk</value>
+  </data>
+  <data name="SiteLinksDescription" xml:space="preserve">
+    <value>Vill du ha en länk till din sida här eller har du ett bra länkförslag. Skicka då ett mail till admin@cuplex.se</value>
+  </data>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Spara</value>
+  </data>
+  <data name="BookmarksDescriptionText" xml:space="preserve">
+    <value>På den här sidan kan du ladda upp Firefox Json bokmärksfiler för att kunna komma åt dina bokmärken oberoende av vilken dator du för tillfället använder. Efter att du har laddat upp en Json fil så kommer den att behandlas och sedan sparas om i krypterat format på webservern. Krypteringsalgoritmen som används är AES 256bit. </value>
+  </data>
+  <data name="BookmarksRegularExpressionValidatorText" xml:space="preserve">
+    <value>Endast Json filer är tillåtna!</value>
+  </data>
+  <data name="NoFileSelectedText" xml:space="preserve">
+    <value>Du har inte valt en fil</value>
+  </data>
+  <data name="NotLoggedInText" xml:space="preserve">
+    <value>För att kunna använda den här sidans funktioner så behöver du logga in först.</value>
+  </data>
+  <data name="ToLargeFileUploadText" xml:space="preserve">
+    <value>Filen som du försöker ladda upp är för stor</value>
+  </data>
+  <data name="UploadButton" xml:space="preserve">
+    <value>Ladda upp</value>
+  </data>
+</root>

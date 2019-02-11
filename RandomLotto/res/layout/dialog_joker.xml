@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:background="#FF000000">
+    
+    <RelativeLayout 
+        android:id="@+id/about_header"
+        android:layout_width="200dp"         
+        android:layout_height="48dp"
+        android:background="@drawable/shape_background_grey">
+
+	    <ImageView
+	        android:id="@+id/about_icon"
+	        android:src="@drawable/ic_launcher"
+	        android:layout_width="32dp"
+	        android:layout_height="32dp"
+	        android:scaleType="fitCenter"
+	        android:layout_margin="10dp"
+	        android:contentDescription="@string/app_name" />
+    
+	    <TextView
+	        android:id="@+id/about_header_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/about_icon"
+	        android:layout_centerVertical="true"
+	        android:text="@string/dialog_joker_header_text"
+	        android:textStyle="bold"
+	        android:textSize="16sp"
+	        android:textColor="#FF00caee" />
+    </RelativeLayout>
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+	    
+   	    <ImageView
+	        android:id="@+id/joker_icon"
+	        android:src="@drawable/joker"
+	        android:layout_width="64dp"
+	        android:layout_height="64dp"
+	        android:scaleType="fitCenter"
+	        android:layout_margin="10dp"
+	        android:layout_gravity="center_horizontal"
+	        android:contentDescription="@string/app_name" />
+   	    
+   	     <TextView
+	        android:id="@+id/joker_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:text="@string/dialog_joker_init_text"	        
+	        android:textStyle="bold"
+	        android:textSize="20sp"
+	        android:textColor="#FFFFFFFF" />
+    </LinearLayout>    
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/new_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+			android:textColor="#FFFFFFFF"
+            android:text="@string/button_new" />
+        <Button
+            android:id="@+id/close_button"
+            android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:textColor="#FFFFFFFF"	                
+            android:text="@string/button_close" />
+    </LinearLayout>
+</LinearLayout>

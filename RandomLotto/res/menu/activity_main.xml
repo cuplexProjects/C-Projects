@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_joker"
+        android:title="@string/menu_joker"
+        android:orderInCategory="90"
+        android:showAsAction="never" />
+    <item android:id="@+id/menu_settings"
+        android:title="@string/menu_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:visible="true" />
+    <item android:id="@+id/menu_about"
+        android:title="@string/menu_about"
+        android:orderInCategory="200"
+        android:showAsAction="never" />
+</menu>

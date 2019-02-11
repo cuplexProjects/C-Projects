@@ -1,0 +1,916 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BEEDF15E-9D22-4541-BD0F-740BFA1CC760}</ProjectGuid>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>WebMail</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>WebMail</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LitJson, Version=0.5.0.1, Culture=neutral, PublicKeyToken=830a7288bc42523e, processorArchitecture=MSIL" />
+    <Reference Include="MailApi, Version=6.0.2.220, Culture=neutral, PublicKeyToken=cd85b70fb26f9fc1, processorArchitecture=MSIL" />
+    <Reference Include="MailServerApi, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7795db04536a1a7a, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=5.0.8.1, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NetSpell.SpellChecker, Version=2.1.7.41329, Culture=neutral, PublicKeyToken=318b389f0db66e46" />
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AccountsList.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="adminpanel\core\AdminPanel.ascx" />
+    <Content Include="adminpanel\core\Menu.ascx" />
+    <Content Include="adminpanel\default.aspx" />
+    <Content Include="adminpanel\install.aspx" />
+    <Content Include="adminpanel\install\CheckConnection.ascx" />
+    <Content Include="adminpanel\install\CheckSettings.ascx" />
+    <Content Include="adminpanel\install\CommonSettings.ascx" />
+    <Content Include="adminpanel\install\DatabaseSettings.ascx" />
+    <Content Include="adminpanel\install\EndOfInstallation.ascx" />
+    <Content Include="adminpanel\install\License.ascx" />
+    <Content Include="adminpanel\install\LicenseKeySettings.ascx" />
+    <Content Include="adminpanel\core\Login.ascx" />
+    <Content Include="adminpanel\plugins\Domains\domains.ascx" />
+    <Content Include="adminpanel\plugins\Domains\domain-edit.ascx" />
+    <Content Include="adminpanel\plugins\Domains\domain-toolbar.ascx" />
+    <Content Include="adminpanel\plugins\Domains\main.ascx" />
+    <Content Include="adminpanel\plugins\Security\main.ascx" />
+    <Content Include="adminpanel\plugins\Security\security-settings.ascx" />
+    <Content Include="adminpanel\plugins\Upgrade\Controls\WebMail.ascx" />
+    <Content Include="adminpanel\plugins\Upgrade\Controls\XMail.ascx" />
+    <Content Include="adminpanel\plugins\Upgrade\main.ascx" />
+    <Content Include="adminpanel\plugins\WebMailLite\Controls\database.ascx" />
+    <Content Include="adminpanel\plugins\WebMailLite\Controls\debug.ascx" />
+    <Content Include="adminpanel\plugins\WebMailLite\Controls\interface.ascx" />
+    <Content Include="adminpanel\plugins\WebMailLite\Controls\login.ascx" />
+    <Content Include="adminpanel\plugins\WebMailLite\Controls\menu.ascx" />
+    <Content Include="adminpanel\plugins\WebMailLite\Controls\server-integration.ascx" />
+    <Content Include="adminpanel\plugins\WebMailLite\Controls\webmail.ascx" />
+    <Content Include="adminpanel\plugins\WebMailLite\main.ascx" />
+    <Content Include="adminpanel\plugins\WebMailLite\js\login.js" />
+    <Content Include="adminpanel\plugins\WebMailLite\show-log.aspx" />
+    <Content Include="adminpanel\plugins\WebMailLite\updatedb.aspx" />
+    <Content Include="adminpanel\js\check-symbols.js" />
+    <Content Include="adminpanel\js\common.js" />
+    <Content Include="adminpanel\js\errorShow.js" />
+    <Content Include="adminpanel\js\functions.js" />
+    <Content Include="adminpanel\js\install.js" />
+    <Content Include="adminpanel\js\pageswitcher.js" />
+    <Content Include="adminpanel\js\reports.js" />
+    <Content Include="adminpanel\js\resizer.js" />
+    <Content Include="adminpanel\js\selection.js" />
+    <Content Include="adminpanel\js\tooltip.js" />
+    <Content Include="adminpanel\js\user.js" />
+    <Content Include="adminpanel\styles\styles.css" />
+    <Content Include="bin\LitJson.dll" />
+    <Content Include="bin\MailApi.dll" />
+    <Content Include="bin\MailServerApi.dll" />
+    <Content Include="bin\MySql.Data.dll" />
+    <Content Include="bin\NetSpell.SpellChecker.dll" />
+    <Content Include="check-mail.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="Copyright.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="default.aspx" />
+    <Content Include="download-view-attachment.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="edit-area.aspx" />
+    <Content Include="empty.html" />
+    <Content Include="flash-detect.ascx" />
+    <Content Include="get-attachment-binary.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="Global.asax">
+      <SubType>Component</SubType>
+    </Content>
+    <Content Include="go.aspx" />
+    <Content Include="history-storage.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="import.aspx" />
+    <Content Include="Integration\integr.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="js\common\common-helpers.js" />
+    <Content Include="js\common\calendar-screen.js" />
+    <Content Include="js\common\common-handlers.js" />
+    <Content Include="js\common\data-source.js" />
+    <Content Include="js\common\loaders.js" />
+    <Content Include="js\common\page-switcher.js" />
+    <Content Include="js\common\popups.js" />
+    <Content Include="js\common\toolbar.js" />
+    <Content Include="js\contacts\contact-line.js" />
+    <Content Include="js\contacts\contacts-data.js" />
+    <Content Include="js\contacts\contacts-handlers.js" />
+    <Content Include="js\contacts\contacts-screen.js" />
+    <Content Include="js\contacts\edit-group.js" />
+    <Content Include="js\contacts\import.js" />
+    <Content Include="js\contacts\view-contact.js" />
+    <Content Include="js\mail\autocomplete-recipients.js" />
+    <Content Include="js\mail\html-editor.js" />
+    <Content Include="js\login\login-screen.js" />
+    <Content Include="js\login\password-reset-screen.js" />
+    <Content Include="js\login\reg-screen.js" />
+    <Content Include="js\common\variable-table.js" />
+    <Content Include="js\common\webmail.js" />
+    <Content Include="js\mail\mini-webmail-window.js" />
+    <Content Include="js\settings\account-list.js" />
+    <Content Include="js\settings\autoresponder.js" />
+    <Content Include="js\settings\calendar.js" />
+    <Content Include="js\settings\defines-calendar.js" />
+    <Content Include="js\mail\folders-pane.js" />
+    <Content Include="js\mail\mail-data.js" />
+    <Content Include="js\mail\mail-handlers.js" />
+    <Content Include="js\mail\message-headers.js" />
+    <Content Include="js\mail\message-info.js" />
+    <Content Include="js\mail\message-list-central-pane.js" />
+    <Content Include="js\mail\message-list-display.js" />
+    <Content Include="js\mail\message-list-prototype.js" />
+    <Content Include="js\mail\message-list-top-screen.js" />
+    <Content Include="js\mail\message-reply-pane.js" />
+    <Content Include="js\mail\resizers.js" />
+    <Content Include="js\mail\message-line.js" />
+    <Content Include="js\mail\message-list-central-screen.js" />
+    <Content Include="js\settings\filters.js" />
+    <Content Include="js\settings\folders.js" />
+    <Content Include="js\settings\mobile-sync.js" />
+    <Content Include="js\settings\settings-data.js" />
+    <Content Include="js\settings\signature.js" />
+    <Content Include="js\mail\swfupload.js" />
+    <Content Include="js\settings\account-properties.js" />
+    <Content Include="js\settings\common.js" />
+    <Content Include="js\mail\new-message-screen.js" />
+    <Content Include="js\settings\user-settings-screen.js" />
+    <Content Include="js\contacts\edit-contact.js" />
+    <Content Include="js\mail\view-message-screen.js" />
+    <Content Include="js\mail\swfupload.swf" />
+    <Content Include="js\common\defines.js" />
+    <Content Include="js\common\functions.js" />
+    <Content Include="langs-js.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="linkcreator.html" />
+    <Content Include="Logo.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="mini-webmail.aspx" />
+    <Content Include="skins\AfterLogic\button-link-right.png" />
+    <Content Include="skins\AfterLogic\button-link.png" />
+    <Content Include="skins\AfterLogic\editor.png" />
+    <Content Include="skins\AfterLogic\gradients.png" />
+    <Content Include="skins\AfterLogic\header.png" />
+    <Content Include="skins\AfterLogic\login_form_refl.png" />
+    <Content Include="skins\AfterLogic\mail.png" />
+    <Content Include="skins\AfterLogic\pda-gradients.gif" />
+    <Content Include="skins\AfterLogic\pda-gradients.png" />
+    <Content Include="skins\AfterLogic\pda-icons.png" />
+    <Content Include="skins\AfterLogic\pda-styles.css" />
+    <Content Include="skins\AfterLogic\reg-styles.css" />
+    <Content Include="skins\AfterLogic\reply-button.png" />
+    <Content Include="skins\AfterLogic\search-icon.gif" />
+    <Content Include="skins\AfterLogic\styles-rtl.css" />
+    <Content Include="skins\AfterLogic\styles.css" />
+    <Content Include="skins\AfterLogic\wait.gif" />
+    <Content Include="skins\AfterLogic\webmail-icon.png" />
+    <Content Include="skins\AfterLogic\wm-logo.gif" />
+    <Content Include="skins\AfterLogic_Dark\bullet.png" />
+    <Content Include="skins\AfterLogic_Dark\button-link-right.png" />
+    <Content Include="skins\AfterLogic_Dark\button-link.png" />
+    <Content Include="skins\AfterLogic_Dark\editor.png" />
+    <Content Include="skins\AfterLogic_Dark\gradients.png" />
+    <Content Include="skins\AfterLogic_Dark\item_left.png" />
+    <Content Include="skins\AfterLogic_Dark\item_right.png" />
+    <Content Include="skins\AfterLogic_Dark\mail.png" />
+    <Content Include="skins\AfterLogic_Dark\ornament.png" />
+    <Content Include="skins\AfterLogic_Dark\pda-styles.css" />
+    <Content Include="skins\AfterLogic_Dark\reg-styles.css" />
+    <Content Include="skins\AfterLogic_Dark\reply-button.png" />
+    <Content Include="skins\AfterLogic_Dark\styles-rtl.css" />
+    <Content Include="skins\AfterLogic_Dark\styles.css" />
+    <Content Include="skins\AfterLogic_Dark\wait.gif" />
+    <Content Include="skins\AfterLogic_Dark\webmail-icon.png" />
+    <Content Include="skins\Alice\button-link-right.png" />
+    <Content Include="skins\Alice\button-link.png" />
+    <Content Include="skins\Alice\demo_note_bg.png" />
+    <Content Include="skins\Alice\editor.png" />
+    <Content Include="skins\Alice\gradients.png" />
+    <Content Include="skins\Alice\header.png" />
+    <Content Include="skins\Alice\login_form_refl.png" />
+    <Content Include="skins\Alice\mail.png" />
+    <Content Include="skins\Alice\pda-gradients.gif" />
+    <Content Include="skins\Alice\pda-gradients.png" />
+    <Content Include="skins\Alice\pda-icons.png" />
+    <Content Include="skins\Alice\pda-styles.css" />
+    <Content Include="skins\Alice\reg-styles.css" />
+    <Content Include="skins\Alice\reply-button.png" />
+    <Content Include="skins\Alice\search-icon.gif" />
+    <Content Include="skins\Alice\styles-rtl.css" />
+    <Content Include="skins\Alice\styles.css" />
+    <Content Include="skins\Alice\wait.gif" />
+    <Content Include="skins\Alice\webmail-icon.png" />
+    <Content Include="skins\Alice\wm-logo.gif" />
+    <Content Include="skins\Barbie\button-link-right.png" />
+    <Content Include="skins\Barbie\button-link.png" />
+    <Content Include="skins\Barbie\editor.png" />
+    <Content Include="skins\Barbie\flower_left.gif" />
+    <Content Include="skins\Barbie\flower_login.gif" />
+    <Content Include="skins\Barbie\flower_right.gif" />
+    <Content Include="skins\Barbie\flower_set.gif" />
+    <Content Include="skins\Barbie\flower_top.gif" />
+    <Content Include="skins\Barbie\gradients.png" />
+    <Content Include="skins\Barbie\mail.png" />
+    <Content Include="skins\Barbie\reg-styles.css" />
+    <Content Include="skins\Barbie\reply-button.png" />
+    <Content Include="skins\Barbie\styles-rtl.css" />
+    <Content Include="skins\Barbie\styles.css" />
+    <Content Include="skins\Barbie\wait.gif" />
+    <Content Include="skins\cancelbutton.gif" />
+    <Content Include="skins\login.css" />
+    <Content Include="skins\redline.gif" />
+    <Content Include="skins\upload_attachments.png" />
+    <Content Include="skins\Ya-Ya\button-link-right.png" />
+    <Content Include="skins\Ya-Ya\button-link.png" />
+    <Content Include="skins\Ya-Ya\editor.png" />
+    <Content Include="skins\Ya-Ya\gradients.png" />
+    <Content Include="skins\Ya-Ya\mail.png" />
+    <Content Include="skins\Ya-Ya\reg-styles.css" />
+    <Content Include="skins\Ya-Ya\reply-button.png" />
+    <Content Include="skins\Ya-Ya\styles-rtl.css" />
+    <Content Include="skins\Ya-Ya\styles.css" />
+    <Content Include="skins\Ya-Ya\wait.gif" />
+    <Content Include="view-full-msg.aspx" />
+    <Content Include="print-msg.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="session-saver.aspx" />
+    <Content Include="spellcheck.aspx" />
+    <Content Include="upload.aspx" />
+    <Content Include="view-embedded-msg.aspx" />
+    <Content Include="Web.config" />
+    <Content Include="webmail.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="xml-processing.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Compile Include="AccountsList.ascx.cs">
+      <DependentUpon>AccountsList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AccountsList.ascx.designer.cs">
+      <DependentUpon>AccountsList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\core\AdminPanel.ascx.cs">
+      <DependentUpon>AdminPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\core\AdminPanel.ascx.designer.cs">
+      <DependentUpon>AdminPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\core\Menu.ascx.cs">
+      <DependentUpon>Menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\core\Menu.ascx.designer.cs">
+      <DependentUpon>Menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\install.aspx.cs">
+      <DependentUpon>install.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\install.aspx.designer.cs">
+      <DependentUpon>install.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\install\CheckConnection.ascx.cs">
+      <DependentUpon>CheckConnection.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\install\CheckConnection.ascx.designer.cs">
+      <DependentUpon>CheckConnection.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\install\CheckSettings.ascx.cs">
+      <DependentUpon>CheckSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\install\CheckSettings.ascx.designer.cs">
+      <DependentUpon>CheckSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\install\CommonSettings.ascx.cs">
+      <DependentUpon>CommonSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\install\CommonSettings.ascx.designer.cs">
+      <DependentUpon>CommonSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\install\DatabaseSettings.ascx.cs">
+      <DependentUpon>DatabaseSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\install\DatabaseSettings.ascx.designer.cs">
+      <DependentUpon>DatabaseSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\install\EndOfInstallation.ascx.cs">
+      <DependentUpon>EndOfInstallation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\install\EndOfInstallation.ascx.designer.cs">
+      <DependentUpon>EndOfInstallation.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\install\License.ascx.cs">
+      <DependentUpon>License.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\install\License.ascx.designer.cs">
+      <DependentUpon>License.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\install\LicenseKeySettings.ascx.cs">
+      <DependentUpon>LicenseKeySettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\install\LicenseKeySettings.ascx.designer.cs">
+      <DependentUpon>LicenseKeySettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\core\Login.ascx.cs">
+      <DependentUpon>Login.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\core\Login.ascx.designer.cs">
+      <DependentUpon>Login.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Domains\domains.ascx.cs">
+      <DependentUpon>domains.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Domains\domains.ascx.designer.cs">
+      <DependentUpon>domains.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Domains\domain-edit.ascx.cs">
+      <DependentUpon>domain-edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Domains\domain-edit.ascx.designer.cs">
+      <DependentUpon>domain-edit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Domains\domain-toolbar.ascx.cs">
+      <DependentUpon>domain-toolbar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Domains\domain-toolbar.ascx.designer.cs">
+      <DependentUpon>domain-toolbar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Domains\main.ascx.cs">
+      <DependentUpon>main.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Domains\main.ascx.designer.cs">
+      <DependentUpon>main.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Security\main.ascx.cs">
+      <DependentUpon>main.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Security\main.ascx.designer.cs">
+      <DependentUpon>main.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Security\security-settings.ascx.cs">
+      <DependentUpon>security-settings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Security\security-settings.ascx.designer.cs">
+      <DependentUpon>security-settings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Upgrade\Controls\WebMail.ascx.cs">
+      <DependentUpon>WebMail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Upgrade\Controls\WebMail.ascx.designer.cs">
+      <DependentUpon>WebMail.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Upgrade\Controls\XMail.ascx.cs">
+      <DependentUpon>XMail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Upgrade\Controls\XMail.ascx.designer.cs">
+      <DependentUpon>XMail.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Upgrade\main.ascx.cs">
+      <DependentUpon>main.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\Upgrade\main.ascx.designer.cs">
+      <DependentUpon>main.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\database.ascx.cs">
+      <DependentUpon>database.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\database.ascx.designer.cs">
+      <DependentUpon>database.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\debug.ascx.cs">
+      <DependentUpon>debug.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\debug.ascx.designer.cs">
+      <DependentUpon>debug.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\interface.ascx.cs">
+      <DependentUpon>interface.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\interface.ascx.designer.cs">
+      <DependentUpon>interface.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\login.ascx.cs">
+      <DependentUpon>login.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\login.ascx.designer.cs">
+      <DependentUpon>login.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\menu.ascx.cs">
+      <DependentUpon>menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\menu.ascx.designer.cs">
+      <DependentUpon>menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\server-integration.ascx.cs">
+      <DependentUpon>server-integration.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\server-integration.ascx.designer.cs">
+      <DependentUpon>server-integration.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\webmail.ascx.cs">
+      <DependentUpon>webmail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\Controls\webmail.ascx.designer.cs">
+      <DependentUpon>webmail.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\main.ascx.cs">
+      <DependentUpon>main.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\main.ascx.designer.cs">
+      <DependentUpon>main.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\show-log.aspx.cs">
+      <DependentUpon>show-log.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\show-log.aspx.designer.cs">
+      <DependentUpon>show-log.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\updatedb.aspx.cs">
+      <DependentUpon>updatedb.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminpanel\plugins\WebMailLite\updatedb.aspx.designer.cs">
+      <DependentUpon>updatedb.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Code\AddressBook.cs" />
+    <Compile Include="App_Code\AddressBookDBStorage.cs" />
+    <Compile Include="App_Code\AddressBookStorage.cs" />
+    <Compile Include="App_Code\adminpanel\Constants.cs" />
+    <Compile Include="App_Code\adminpanel\ControlAccounts.cs" />
+    <Compile Include="App_Code\adminpanel\Plugin.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="App_Code\adminpanel\Settings.cs" />
+    <Compile Include="App_Code\adminpanel\Subadmin.cs" />
+    <Compile Include="App_Code\adminpanel\Utils.cs" />
+    <Compile Include="App_Code\adminpanel\XMServer.cs" />
+    <Compile Include="App_Code\Domain.cs" />
+    <Compile Include="App_Code\DublicatedKeyDictionary.cs" />
+    <Compile Include="App_Code\FileMessage.cs" />
+    <Compile Include="App_Code\CommandCreatorPostgreSql.cs" />
+    <Compile Include="App_Code\DbManagerPostgreSql.cs" />
+    <Compile Include="App_Code\HMailServer.cs" />
+    <Compile Include="App_Code\SmtpXMail.cs" />
+    <Compile Include="App_Code\XmlPacket.cs" />
+    <Compile Include="App_Code\XmlPacketHelper.cs" />
+    <Compile Include="check-mail.aspx.designer.cs">
+      <DependentUpon>check-mail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Code\Account.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\BaseWebMailActions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Content Include="App_Code\CalendarObjects.cs" />
+    <Compile Include="App_Code\CommandCreator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\Constants.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\CsvParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\DbManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\DbManagerCreator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\DbStorage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\Enumerations.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\Exceptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\FileSystem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\Filter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\Folder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\FolderCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\MailStorageImap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\Log.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\MailProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\MailStorage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\CommandCreatorMsAccess.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\DbManagerMsAccess.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\DbStorageMsSql.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\CommandCreatorMySql.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\DbManagerMySql.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\MailStoragePop3.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\SettingsManagement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\Smtp.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\TempRow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\User.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\UsersData.cs" />
+    <Compile Include="App_Code\Utils.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\WebMailMessage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\WebMailMessageCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\WebmailResourceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\MailStorageWMServer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Code\XmlPacketManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="check-mail.aspx.cs">
+      <DependentUpon>check-mail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Copyright.ascx.cs">
+      <DependentUpon>Copyright.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Copyright.ascx.designer.cs">
+      <DependentUpon>Copyright.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="download-view-attachment.aspx.cs">
+      <DependentUpon>download-view-attachment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="download-view-attachment.aspx.designer.cs">
+      <DependentUpon>download-view-attachment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="edit-area.aspx.cs">
+      <DependentUpon>edit-area.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="edit-area.aspx.designer.cs">
+      <DependentUpon>edit-area.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="flash-detect.ascx.cs">
+      <DependentUpon>flash-detect.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="flash-detect.ascx.designer.cs">
+      <DependentUpon>flash-detect.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="get-attachment-binary.aspx.cs">
+      <DependentUpon>get-attachment-binary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="get-attachment-binary.aspx.designer.cs">
+      <DependentUpon>get-attachment-binary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="go.aspx.cs">
+      <DependentUpon>go.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="go.aspx.designer.cs">
+      <DependentUpon>go.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="history-storage.aspx.cs">
+      <DependentUpon>history-storage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="history-storage.aspx.designer.cs">
+      <DependentUpon>history-storage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="import.aspx.cs">
+      <DependentUpon>import.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="import.aspx.designer.cs">
+      <DependentUpon>import.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Integration\integr.aspx.cs">
+      <DependentUpon>integr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Integration\integr.aspx.designer.cs">
+      <DependentUpon>integr.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Integration\Integration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="jsbuilder.cs" />
+    <Compile Include="langs-js.aspx.cs">
+      <DependentUpon>langs-js.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="langs-js.aspx.designer.cs">
+      <DependentUpon>langs-js.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logo.ascx.cs">
+      <DependentUpon>Logo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logo.ascx.designer.cs">
+      <DependentUpon>Logo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="mini-webmail.aspx.cs">
+      <DependentUpon>mini-webmail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="mini-webmail.aspx.designer.cs">
+      <DependentUpon>mini-webmail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="view-full-msg.aspx.cs">
+      <DependentUpon>view-full-msg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="view-full-msg.aspx.designer.cs">
+      <DependentUpon>view-full-msg.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="print-msg.aspx.cs">
+      <DependentUpon>print-msg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="print-msg.aspx.designer.cs">
+      <DependentUpon>print-msg.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="session-saver.aspx.cs">
+      <DependentUpon>session-saver.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="session-saver.aspx.designer.cs">
+      <DependentUpon>session-saver.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="spellcheck.aspx.cs">
+      <DependentUpon>spellcheck.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="spellcheck.aspx.designer.cs">
+      <DependentUpon>spellcheck.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="upload.aspx.cs">
+      <DependentUpon>upload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="upload.aspx.designer.cs">
+      <DependentUpon>upload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="view-embedded-msg.aspx.cs">
+      <DependentUpon>view-embedded-msg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="view-embedded-msg.aspx.designer.cs">
+      <DependentUpon>view-embedded-msg.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="webmail.aspx.cs">
+      <DependentUpon>webmail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="webmail.aspx.designer.cs">
+      <DependentUpon>webmail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="xml-processing.aspx.cs">
+      <DependentUpon>xml-processing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="xml-processing.aspx.designer.cs">
+      <DependentUpon>xml-processing.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\HomeGroupShare.pubxml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>23550</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/wm47</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v11.0\WebApplications\Microsoft.WebApplication.targets" />
+</Project>

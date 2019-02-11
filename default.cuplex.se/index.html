@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<title>Not existing subdomain</title>
+<script src="http://default.cuplex.se/js/jquery-2.2.0.min.js">
+</script>
+
+<link rel="stylesheet" type="text/css" href="css/general.css">
+
+<link
+</head>
+<body>
+<div id="header"><h1>The domain: &quot;<span id="domain-name"></span>&quot; does not exist!</h1></div>
+<div id="content">
+	<a href="http://cuplex.se">Return to Cuplex.se</a>;
+	<div class="container">	
+		<div id="globe" class="show-front">			
+		</div>
+	</div>
+ </div>
+</div>
+
+<script>	
+	var rotationY=0;	
+	var minRotY=-60;
+	var maxRotY=60;
+	
+	$(function() {
+		// Document is ready
+		var url = document.location.hostname;		
+		$("#domain-name").text(url);
+		
+		
+		$("#globe").mousemove( function (event) {		
+			var x = event.offsetX;			
+			//var y = event.offsetY;
+			
+			// Rotate to the left and right
+			if (x < 125) {
+				rotationY--;
+			}
+			else if (x > 125) {
+				rotationY++;
+			}	
+
+			if ((rotationY < minRotY) ) {
+				rotationY = minRotY;
+			}
+			else if (rotationY > maxRotY) {
+				rotationY  = maxRotY;
+			}			
+				
+			$("#globe").attr("style","transform: translateZ(-100px);  transform:rotateY("+rotationY+"deg);");
+			
+		});
+		
+		
+	});	
+	
+			$("#globe").mouseleave( function (event) {			
+			normalize();
+		});
+		
+		function normalize() {
+			if (rotationY > 0) {
+				rotationY--;
+			}
+			else if (rotationY < 0) {
+				rotationY++;
+			}
+			else {
+				return;
+			}
+		
+			$("#globe").attr("style","transform: translateZ(-100px);  transform:rotateY("+rotationY+"deg);");
+			
+			setTimeout("normalize();",25);
+		}
+</script>
+</body>
+</html>
