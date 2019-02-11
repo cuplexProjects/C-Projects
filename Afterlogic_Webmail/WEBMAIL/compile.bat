@@ -1,1 +1,0 @@
-%SystemRoot%\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe WebMail.csproj /p:Configuration=Release

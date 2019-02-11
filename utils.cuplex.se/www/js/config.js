@@ -1,1 +1,0 @@
-var apiBaseURL="http://localhost/ASP_Web_API/api/";

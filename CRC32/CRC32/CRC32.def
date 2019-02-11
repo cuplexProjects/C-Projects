@@ -1,5 +1,0 @@
-LIBRARY	"CRC32"
-EXPORTS
-CalculateCRC32 @1
-CalculateMD5 @2
-GetCRC32FromString @3
