@@ -64,7 +64,7 @@ namespace ImageViewer
 
 
 
-                settingsService.SaveSettings();
+                //settingsService.SaveSettings();
             }
 
             //Application.Run(new FormMain());

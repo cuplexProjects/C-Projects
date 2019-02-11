@@ -71,9 +71,9 @@ namespace ImageViewer
         private bool ImageSourceDataAvailable => _dataReady && _imageLoaderService.ImageReferenceList != null;
 
 
-        private void DisplaySlideShowStatus()
+        private void DisplaySlideshowStatus()
         {
-            string tooltipText = timerSlideShow.Enabled ? $"Sideshow started with a delay of {_applicationSettingsService.Settings.SlideshowInterval / 1000} seconds per image." : "Slideshow stopped";
+            string tooltipText = timerSlideShow.Enabled ? $"Slideshow started with a delay of {_applicationSettingsService.Settings.SlideshowInterval / 1000} seconds per image." : "Slideshow stoped";
 
             toolTipSlideshowState.Active = true;
             toolTipSlideshowState.InitialDelay = 150;
@@ -110,7 +110,7 @@ namespace ImageViewer
             return true;
         }
 
-        private bool AllowApplicationExit()
+        private bool AllowAplicatonExit()
         {
             if (!_applicationSettingsService.Settings.ConfirmApplicationShutdown)
             {
@@ -149,14 +149,6 @@ namespace ImageViewer
             {
                 pictureBox1.BackColor = settings.MainWindowBackgroundColor.ToColor();
                 BackColor = settings.MainWindowBackgroundColor.ToColor();
-            }
-
-            if (settings.ExtendedAppSettings.FormStateDictionary.ContainsKey(Name))
-            {
-                var formProperties = settings.ExtendedAppSettings.FormStateDictionary[Name];
-                Location = formProperties.Location.ToPoint();
-                Width = formProperties.ScreenArea.Width;
-                Height = formProperties.ScreenArea.Height;
             }
         }
 
@@ -455,7 +447,7 @@ namespace ImageViewer
 
         #region Form Events
 
-        private void FormMain_Load(object sender, EventArgs e)
+        private async void FormMain_Load(object sender, EventArgs e)
         {
             if (DesignMode)
             {
@@ -505,7 +497,20 @@ namespace ImageViewer
                 Text = _windowTitle;
                 ToggleSlideshowMenuState();
             }
+
             
+            //    MessageBox.Show(Resources.Unable_To_Access_application_settings_in_registry,
+            //        Resources.Faild_to_load_settings, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    _formRestartWithAdminPrivileges = new FormRestartWithAdminPrivileges();
+            //    if (_formRestartWithAdminPrivileges.ShowDialog(this) == DialogResult.OK)
+            //    {
+            //        return;
+            //    }
+            
+
+            
+    
+
             //Notification Service
             _interactionService.Initialize(this);
             _interactionService.UserInformationReceived += InteractionServiceUserInformationReceived;
@@ -576,7 +581,7 @@ namespace ImageViewer
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!AllowApplicationExit())
+            if (!AllowAplicatonExit())
             {
                 e.Cancel = true;
                 return;
@@ -588,8 +593,8 @@ namespace ImageViewer
             }
 
             timerSlideShow.Enabled = false;
-            _applicationSettingsService.RegisterFormStateOnClose(this);
             _bookmarkService.SaveBookmarks();
+            _applicationSettingsService.Settings.ExtendedAppSettings.UpdateOrInsertFormState(RestoreFormState.GetFormState(this));
             _applicationSettingsService.SaveSettings();
         }
 
@@ -657,7 +662,7 @@ namespace ImageViewer
                 case MouseButtons.Middle:
                     if (settings.ToggleSlideshowWithThirdMouseButton && ToggleSlideshow())
                     {
-                        DisplaySlideShowStatus();
+                        DisplaySlideshowStatus();
                     }
 
                     break;

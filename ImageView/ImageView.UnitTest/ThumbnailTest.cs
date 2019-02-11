@@ -1,16 +1,23 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Autofac;
+using AutoMapper;
 using GeneralToolkitLib.Configuration;
 using ImageViewer.Configuration;
+using ImageViewer.Managers;
 using ImageViewer.Repositories;
 using ImageViewer.Services;
+using ImageViewer.Storage;
 using ImageViewer.UnitTests.Properties;
 using ImageViewer.UnitTests.TestHelper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using NSubstitute.Proxies.CastleDynamicProxy;
+using NSubstitute.Proxies.DelegateProxy;
 
 namespace ImageViewer.UnitTests
 {
@@ -18,12 +25,14 @@ namespace ImageViewer.UnitTests
     [ExcludeFromCodeCoverage]
     public class ThumbnailTest
     {
-        private static readonly string TestDirectory = "c:\\temp\\";
+        private static readonly string TestDirectory = ContainerFactory.GetTestDirectory();
         private static readonly string[] TestImages = { "testImg.jpg", "testImg2.jpg", "testImg3.jpg" };
+        private readonly IMapper _mapper;
         private readonly IContainer _container;
         private readonly ILifetimeScope _lifetimeScope;
-        private static IApplicationBuildConfig _applicationBuildConfig;
 
+        private static IApplicationBuildConfig _applicationBuildConfig;
+        private ThumbnailService _thumbnailService;
 
         public ThumbnailTest()
         {
@@ -46,7 +55,7 @@ namespace ImageViewer.UnitTests
                 ClearTestDirectory();
             }
 
-            //ApplicationBuildConfig.SetOverrideUserDataPath(TestDirectory);
+            ApplicationBuildConfig.SetOverrideUserDataPath(TestDirectory);
 
             // Create test data
             Image img = Resources.testImg;
@@ -78,6 +87,7 @@ namespace ImageViewer.UnitTests
         [TestCleanup]
         public void ThumbnailTestCleanup()
         {
+            _thumbnailService.Dispose();
             _lifetimeScope.Dispose();
             _container.Dispose();
         }
@@ -94,96 +104,90 @@ namespace ImageViewer.UnitTests
         [TestMethod]
         public void ThumbnailScanDirectory()
         {
-            using (var scope = _lifetimeScope.BeginLifetimeScope())
-            {
-                var thumbnailService = scope.Resolve<ThumbnailService>();
+            _thumbnailService.ScanDirectory(TestDirectory, false);
 
-                thumbnailService.ScanDirectory(TestDirectory, false);
+            var thumbNailImage = _thumbnailService.GetThumbnail(TestDirectory + TestImages[0]);
+            Assert.IsNotNull(thumbNailImage, "Thumbnail image 1 was null");
 
-                var thumbNailImage = thumbnailService.GetThumbnail(TestDirectory + TestImages[0]);
-                Assert.IsNotNull(thumbNailImage, "Thumbnail image 1 was null");
+            thumbNailImage = _thumbnailService.GetThumbnail(TestDirectory + TestImages[1]);
+            Assert.IsNotNull(thumbNailImage, "Thumbnail image 2 was null");
 
-                thumbNailImage = thumbnailService.GetThumbnail(TestDirectory + TestImages[1]);
-                Assert.IsNotNull(thumbNailImage, "Thumbnail image 2 was null");
+            thumbNailImage = _thumbnailService.GetThumbnail(TestDirectory + TestImages[2]);
+            Assert.IsNotNull(thumbNailImage, "Thumbnail image 3 was null");
 
-                thumbNailImage = thumbnailService.GetThumbnail(TestDirectory + TestImages[2]);
-                Assert.IsNotNull(thumbNailImage, "Thumbnail image 3 was null");
-            }
-
+            _thumbnailService.Dispose();
         }
 
         [TestMethod]
         public void ThumbnailLoadDatabase()
         {
-            using (var scope = _lifetimeScope.BeginLifetimeScope())
-            {
-                var thumbnailService = scope.Resolve<ThumbnailService>();
+            CreateThumbnailDatabase(_thumbnailService).Wait();
+            bool result = _thumbnailService.LoadThumbnailDatabase();
 
-                CreateThumbnailDatabase(thumbnailService);
-                bool result = thumbnailService.LoadThumbnailDatabase();
+            Assert.IsTrue(result, "Load thumbnail database failed");
+            Assert.AreEqual(_thumbnailService.GetNumberOfCachedThumbnails(), 3, "Database did not contain 3 items");
 
-                Assert.IsTrue(result, "Load thumbnail database failed");
-                Assert.AreEqual(thumbnailService.GetNumberOfCachedThumbnails(), 3, "Database did not contain 3 items");
-            }
-
+            _thumbnailService.Dispose();
         }
 
         [TestMethod]
-        public void ThumbnailOptimizeDatabaseAfterFileRemoval()
+        public async void ThumbnailOptimizeDatabaseAfterFileRemoval()
         {
-            using (var scope = _lifetimeScope.BeginLifetimeScope())
-            {
-                var thumbnailService = scope.Resolve<ThumbnailService>();
 
+            // Verify that there are testImages.Length thumbnails created
+            Assert.IsTrue(_thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length, "The thumbnail cache did not contain thhe right amount of images");
 
-                // Verify that there are testImages.Length thumbnails created
-                Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length, "The thumbnail cache did not contain thhe right amount of images");
+            //Remove the first file
+            File.Delete(TestDirectory + TestImages[0]);
 
-                //Remove the first file
-                File.Delete(TestDirectory + TestImages[0]);
+            // Optimize DB
+            await _thumbnailService.OptimizeDatabaseAsync();
 
-                // Optimize DB
-                thumbnailService.OptimizeDatabaseAsync().Wait();
+            // Verify that one thumbnail was removed
+            Assert.IsTrue(_thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length - 1, "The thumbnail service did not remove a cached item");
 
-                // Verify that one thumbnail was removed
-                Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length - 1, "The thumbnail service did not remove a cached item");
-
-
-                thumbnailService.Dispose();
-            }
+            _thumbnailService.Dispose();
         }
 
         [TestMethod]
         public void ThumbnailOptimizeDatabaseAfterFileUpdated()
         {
-            using (var scope = _lifetimeScope.BeginLifetimeScope())
-            {
-                var thumbnailService = scope.Resolve<ThumbnailService>();
+            // Verify that there are testImages.Length thumbnails created
+            Assert.IsTrue(_thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length, "The thumbnail cache did not contain thhe right amount of images");
 
-                // Verify that there are testImages.Length thumbnails created
-                Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length, "The thumbnail cache did not contain thhe right amount of images");
+            //Modify the first file
+            var fs = File.OpenWrite(TestDirectory + TestImages[0]);
+            var buffer = new byte[1];
+            buffer[0] = 0xff;
+            fs.Write(buffer, 0, 1);
+            fs.Flush(true);
+            fs.Close();
 
-                //Modify the first file
-                var fs = File.OpenWrite(TestDirectory + TestImages[0]);
-                var buffer = new byte[1];
-                buffer[0] = 0xff;
-                fs.Write(buffer, 0, 1);
-                fs.Flush(true);
-                fs.Close();
+            // Optimize DB
+            _thumbnailService.OptimizeDatabaseAsync();
 
-                // Optimize DB
-                thumbnailService.OptimizeDatabaseAsync();
+            // Verify that one thumbnail was removed
+            Assert.IsTrue(_thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length - 1, "The thumbnail service did not remove a cached item");
 
-                // Verify that one thumbnail was removed
-                Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length - 1, "The thumbnail service did not remove a cached item");
-
-            }
+            _thumbnailService.Dispose();
         }
 
-        private bool CreateThumbnailDatabase(ThumbnailService thumbnailService)
+        private async Task<bool> CreateThumbnailDatabase(ThumbnailService thumbnailService)
         {
-            thumbnailService.ScanDirectory(TestDirectory, false);
-            return thumbnailService.SaveThumbnailDatabase();
+            return await CreateThumbnailDatabaseAsync(thumbnailService);
+        }
+
+        private async Task<bool> CreateThumbnailDatabaseAsync(ThumbnailService thumbnailService)
+        {
+            var scanTask = Task.Factory.StartNew(() =>
+            {
+                _thumbnailService.ScanDirectory(TestDirectory, false);
+                return _thumbnailService.SaveThumbnailDatabase();
+
+
+            });
+
+            return await scanTask;
         }
 
 
@@ -192,13 +196,20 @@ namespace ImageViewer.UnitTests
             using (var scope = lifetimeScope.BeginLifetimeScope())
             {
                 var appSettingsFileRepository = new AppSettingsFileRepository();
-                var thumbnailService = scope.Resolve<ThumbnailService>();
                 appSettingsFileRepository.LoadSettings();
-                var applicationSettingsService = scope.Resolve<ApplicationSettingsService>();
+                var applicationSettingsService = ApplicationSettingsService.CreateService(appSettingsFileRepository);
                 applicationSettingsService.LoadSettings();
 
-                thumbnailService.BasePath.Returns(_applicationBuildConfig.UserDataPath);
-                thumbnailService.ScanDirectory(TestDirectory, false);
+
+                var fileManager = new FileManager(Path.Combine(TestDirectory, ContainerFactory.ThumbnailIndexFilename));
+                ThumbnailRepository repository = Substitute.For<ThumbnailRepository>();
+
+                var thumbnailManager = new ThumbnailManager(repository, fileManager);
+                _thumbnailService = new ThumbnailService(thumbnailManager);
+
+
+                _thumbnailService.BasePath.Returns(_applicationBuildConfig.UserDataPath);
+                _thumbnailService.ScanDirectory(TestDirectory, false);
             }
         }
     }

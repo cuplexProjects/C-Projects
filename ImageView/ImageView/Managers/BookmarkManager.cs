@@ -11,12 +11,10 @@ using ImageViewer.DataContracts;
 using ImageViewer.Events;
 using ImageViewer.Models;
 using ImageViewer.Utility;
-using JetBrains.Annotations;
 using Serilog;
 
 namespace ImageViewer.Managers
 {
-    [UsedImplicitly]
     public class BookmarkManager : ManagerBase
     {
         private BookmarkContainer _bookmarkContainer;
@@ -65,8 +63,11 @@ namespace ImageViewer.Managers
                 //Make a copy of the original file if the original file is above 1 kb
                 if (File.Exists(filename) && SystemIOHelper.GetFileSize(filename) > 1024)
                 {
-                    string copyFilename = GeneralConverters.GetDirectoryNameFromPath(filename) + "BookmarksCopy.dat";
-                    if (File.Exists(copyFilename)) File.Delete(copyFilename);
+                    string copyFilename = GeneralConverters.GetDirectoryNameFromPath(filename, true) + "BookmarksCopy.dat";
+                    if (File.Exists(copyFilename))
+                    {
+                        File.Delete(copyFilename);
+                    }
                     File.Copy(filename, copyFilename);
                 }
 
@@ -74,7 +75,10 @@ namespace ImageViewer.Managers
                 var storageManager = new StorageManager(settings);
                 bool successful = storageManager.SerializeObjectToFile(_bookmarkContainer, filename, null);
 
-                if (successful) IsModified = false;
+                if (successful)
+                {
+                    IsModified = false;
+                }
 
                 return successful;
             }
@@ -95,14 +99,17 @@ namespace ImageViewer.Managers
                 var storageManager = new StorageManager(settings);
                 var bookmarkContainer = storageManager.DeserializeObjectFromFile<BookmarkContainer>(filename, null);
 
-                if (bookmarkContainer?.RootFolder == null || string.IsNullOrEmpty(bookmarkContainer.ContainerId)) return false;
+                if (bookmarkContainer?.RootFolder == null || string.IsNullOrEmpty(bookmarkContainer.ContainerId))
+                {
+                    return false;
+                }
 
                 int changesMade = PrepareContainer(bookmarkContainer);
                 _bookmarkContainer = bookmarkContainer;
                 RootFolder = _bookmarkContainer.RootFolder;
                 if (changesMade > 0)
                 {
-                    Log.Information("Loaded BookmarksFile which had {changesMade} number of issues like faulty links. Re-saving fixed file", changesMade);
+                    Log.Information("Loaded Bookmaeksfile which had {changesMade} number of issues like faulty links. Resaving fixed file", changesMade);
                     SaveToFile(filename, password);
                 }
 
@@ -132,15 +139,19 @@ namespace ImageViewer.Managers
                 //just in case bookmarkContainer is null
                 if (bookmarkContainer?.RootFolder == null || string.IsNullOrEmpty(bookmarkContainer.ContainerId))
                 {
-                    throw new InvalidDataException("LoadFromFileAndAppendBookmarks failed, bookmarkContainer was null");
+                    throw new Exception("LoadFromFileAndAppendBookmarks failed, bookmarkContainer was null");
                 }
 
                 PrepareContainer(bookmarkContainer);
 
                 if (_bookmarkContainer == null)
+                {
                     _bookmarkContainer = bookmarkContainer;
+                }
                 else
+                {
                     RecursiveAdd(_bookmarkContainer.RootFolder, bookmarkContainer.RootFolder);
+                }
 
                 RootFolder = _bookmarkContainer.RootFolder;
                 IsModified = true;
@@ -172,7 +183,10 @@ namespace ImageViewer.Managers
                 changes++;
             }
 
-            if (rootFolder.BookmarkFolders == null) rootFolder.BookmarkFolders = new List<BookmarkFolder>();
+            if (rootFolder.BookmarkFolders == null)
+            {
+                rootFolder.BookmarkFolders = new List<BookmarkFolder>();
+            }
 
             return RecursiveValidationOnContainer(rootFolder, null) + changes;
         }
@@ -180,7 +194,10 @@ namespace ImageViewer.Managers
         private int RecursiveValidationOnContainer(BookmarkFolder folder, string parentId)
         {
             int changes = 0;
-            if (folder.Bookmarks == null) folder.Bookmarks = new List<Bookmark>();
+            if (folder.Bookmarks == null)
+            {
+                folder.Bookmarks = new List<Bookmark>();
+            }
 
             if (folder.ParentFolderId != parentId)
             {
@@ -190,13 +207,18 @@ namespace ImageViewer.Managers
 
             string folderId = folder.Id;
             foreach (var bookmark in folder.Bookmarks)
+            {
                 if (bookmark.ParentFolderId != folderId)
                 {
                     bookmark.ParentFolderId = folderId;
                     changes++;
                 }
+            }
 
-            if (folder.BookmarkFolders == null) folder.BookmarkFolders = new List<BookmarkFolder>();
+            if (folder.BookmarkFolders == null)
+            {
+                folder.BookmarkFolders = new List<BookmarkFolder>();
+            }
 
             foreach (var bookmarkFolder in folder.BookmarkFolders)
             {
@@ -216,11 +238,13 @@ namespace ImageViewer.Managers
         private void RecursiveAdd(BookmarkFolder source, BookmarkFolder appendFrom)
         {
             foreach (var bookmark in appendFrom.Bookmarks)
+            {
                 if (!source.Bookmarks.Any(x => x.CompletePath == bookmark.CompletePath && x.Size == bookmark.Size))
                 {
                     bookmark.ParentFolderId = source.Id;
                     source.Bookmarks.Add(bookmark);
                 }
+            }
 
             foreach (var folder in appendFrom.BookmarkFolders)
             {
@@ -231,11 +255,16 @@ namespace ImageViewer.Managers
                 }
 
                 if (folder.BookmarkFolders.Any())
+                {
                     foreach (var subFolder in folder.BookmarkFolders)
                     {
                         var sFolder = source.BookmarkFolders.FirstOrDefault(x => x.Name == folder.Name);
-                        if (sFolder != null) RecursiveAdd(sFolder, subFolder);
+                        if (sFolder != null)
+                        {
+                            RecursiveAdd(sFolder, subFolder);
+                        }
                     }
+                }
             }
         }
 
@@ -244,7 +273,10 @@ namespace ImageViewer.Managers
             if (reIndexFolders)
             {
                 var folderList = _bookmarkContainer.RootFolder.BookmarkFolders.OrderBy(f => f.SortOrder).ToList();
-                for (int i = 0; i < folderList.Count; i++) folderList[i].SortOrder = i + 1;
+                for (int i = 0; i < folderList.Count; i++)
+                {
+                    folderList[i].SortOrder = i + 1;
+                }
 
                 _bookmarkContainer.RootFolder.BookmarkFolders.Sort((f1, f2) => f1.SortOrder.CompareTo(f2.SortOrder));
             }
@@ -252,19 +284,18 @@ namespace ImageViewer.Managers
             if (reIndexBookmarks)
             {
                 var bookmarkList = _bookmarkContainer.RootFolder.Bookmarks.OrderBy(f => f.SortOrder).ToList();
-                for (int i = 0; i < bookmarkList.Count; i++) bookmarkList[i].SortOrder = i + 1;
+                for (int i = 0; i < bookmarkList.Count; i++)
+                {
+                    bookmarkList[i].SortOrder = i + 1;
+                }
 
                 _bookmarkContainer.RootFolder.Bookmarks.Sort((b1, b2) => b1.SortOrder.CompareTo(b2.SortOrder));
             }
         }
 
-        /// <summary>Adds the bookmark folder.</summary>
-        /// <param name="parentId">The parent identifier.</param>
-        /// <param name="folderName">Name of the folder.</param>
-        /// <returns>BookmarkFolder</returns>
         public BookmarkFolder AddBookmarkFolder(string parentId, string folderName)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentId);
             if (parentFolder == null)
                 return null;
 
@@ -285,7 +316,7 @@ namespace ImageViewer.Managers
 
         public BookmarkFolder InsertBookmarkFolder(string parentId, string folderName, int index)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentId);
             if (parentFolder == null)
                 return null;
 
@@ -304,7 +335,10 @@ namespace ImageViewer.Managers
 
             var postItems =
                 parentFolder.BookmarkFolders.Where(b => b.SortOrder >= index).OrderBy(b => b.SortOrder).ToList();
-            foreach (var item in postItems) item.SortOrder = item.SortOrder + 1;
+            foreach (BookmarkFolder item in postItems)
+            {
+                item.SortOrder = item.SortOrder + 1;
+            }
 
             parentFolder.BookmarkFolders.Add(folder);
             parentFolder.BookmarkFolders.Sort((f1, f2) => f1.SortOrder.CompareTo(f2.SortOrder));
@@ -314,7 +348,7 @@ namespace ImageViewer.Managers
 
         public Bookmark AddBookmark(string parentFolderId, string boookmarkName, ImageReferenceElement imgRef)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
             if (parentFolder == null)
                 return null;
 
@@ -339,7 +373,7 @@ namespace ImageViewer.Managers
 
         public Bookmark InsertBookmark(string parentFolderId, string boookmarkName, ImageReferenceElement imgRef, int index)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
             if (parentFolder == null)
                 return null;
 
@@ -361,7 +395,10 @@ namespace ImageViewer.Managers
             };
 
             var postItems = parentFolder.Bookmarks.Where(b => b.SortOrder >= index).OrderBy(b => b.SortOrder).ToList();
-            foreach (var item in postItems) item.SortOrder = item.SortOrder + 1;
+            foreach (Bookmark item in postItems)
+            {
+                item.SortOrder = item.SortOrder + 1;
+            }
 
             parentFolder.Bookmarks.Add(bookmark);
             parentFolder.Bookmarks.Sort((b1, b2) => b1.SortOrder.CompareTo(b2.SortOrder));
@@ -371,8 +408,8 @@ namespace ImageViewer.Managers
 
         public bool MoveBookmark(Bookmark bookmark, string destinationFolderId)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmark.ParentFolderId);
-            var destinationFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, destinationFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmark.ParentFolderId);
+            BookmarkFolder destinationFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, destinationFolderId);
 
             if ((parentFolder == null) | (destinationFolder == null) || parentFolder == destinationFolder)
                 return false;
@@ -386,7 +423,7 @@ namespace ImageViewer.Managers
 
         public bool DeleteBookmark(Bookmark bookmark)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmark.ParentFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmark.ParentFolderId);
 
             if (parentFolder == null)
                 return false;
@@ -397,23 +434,24 @@ namespace ImageViewer.Managers
                 ReindexSortOrder(false, true);
                 BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.DeletedBookmark, typeof(Bookmark)));
             }
-
             return success;
         }
 
         public bool DeleteBookmarkByFilename(string parentFolderId, string fileName)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, parentFolderId);
             if (parentFolder == null)
                 return false;
 
             Bookmark bookmarkToDelete = null;
-            foreach (var bookmark in parentFolder.Bookmarks)
+            foreach (Bookmark bookmark in parentFolder.Bookmarks)
+            {
                 if (bookmark.FileName == fileName)
                 {
                     bookmarkToDelete = bookmark;
                     break;
                 }
+            }
 
             if (bookmarkToDelete != null)
             {
@@ -429,7 +467,7 @@ namespace ImageViewer.Managers
 
         public bool DeleteBookmarkFolder(BookmarkFolder folder)
         {
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, folder.ParentFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, folder.ParentFolderId);
             if (parentFolder == null)
                 return false;
 
@@ -439,18 +477,17 @@ namespace ImageViewer.Managers
                 ReindexSortOrder(false, true);
                 BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.DeletedBookmarkFolder, typeof(Bookmark)));
             }
-
             return success;
         }
 
         public bool DeleteBookmarkFolderById(string folderId)
         {
-            var bookmarkFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, folderId);
+            BookmarkFolder bookmarkFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, folderId);
 
             if (bookmarkFolder?.ParentFolderId == null)
                 return false;
 
-            var parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmarkFolder.ParentFolderId);
+            BookmarkFolder parentFolder = GetBookmarkFolderById(_bookmarkContainer.RootFolder, bookmarkFolder.ParentFolderId);
             bool result = parentFolder.BookmarkFolders.Remove(bookmarkFolder);
             ReindexSortOrder(true, false);
             if (result)
@@ -465,9 +502,12 @@ namespace ImageViewer.Managers
             if (rootFolder.Id == id)
                 return rootFolder;
 
-            foreach (var bookmarkFolder in rootFolder.BookmarkFolders)
+            foreach (BookmarkFolder bookmarkFolder in rootFolder.BookmarkFolders)
             {
-                if (bookmarkFolder.Id == id) return bookmarkFolder;
+                if (bookmarkFolder.Id == id)
+                {
+                    return bookmarkFolder;
+                }
                 if (bookmarkFolder.BookmarkFolders != null && bookmarkFolder.BookmarkFolders.Count > 0)
                     subFolder = GetBookmarkFolderById(bookmarkFolder, id);
 
@@ -490,6 +530,7 @@ namespace ImageViewer.Managers
             var removeQueue = new Queue<Bookmark>();
 
             foreach (var duplicateGroup in allBookmarks.GroupBy(x => x.CompletePath))
+            {
                 if (duplicateGroup.Count() > 1)
                 {
                     var duplicateList = duplicateGroup.OrderBy(x => x.ParentFolderId).ToList();
@@ -497,11 +538,18 @@ namespace ImageViewer.Managers
                     var itemToKeep = duplicateList.FirstOrDefault(x => x.ParentFolderId != rootFolder.Id) ?? duplicateList.First();
                     duplicateList.Remove(itemToKeep);
 
-                    foreach (var bookmark in duplicateList) removeQueue.Enqueue(bookmark);
+                    foreach (var bookmark in duplicateList)
+                    {
+                        removeQueue.Enqueue(bookmark);
+                    }
                 }
+            }
 
             int removedItems = removeQueue.Count;
-            while (removeQueue.Count > 0) DeleteBookmark(removeQueue.Dequeue());
+            while (removeQueue.Count > 0)
+            {
+                DeleteBookmark(removeQueue.Dequeue());
+            }
 
             return removedItems;
         }
@@ -510,26 +558,35 @@ namespace ImageViewer.Managers
         {
             var bookmarks = new List<Bookmark>(rootFolder.Bookmarks);
 
-            foreach (var folder in rootFolder.BookmarkFolders) bookmarks.AddRange(GetAllBookmarksIncludingSubfolders(folder));
+            foreach (var folder in rootFolder.BookmarkFolders)
+            {
+                bookmarks.AddRange(GetAllBookmarksIncludingSubfolders(folder));
+            }
 
             return bookmarks;
         }
 
-        public void BookmarkDataSourceUpdated()
+        public void BookmarkDatasourceUpdated()
         {
             BookmarkUpdated(new BookmarkUpdatedEventArgs(BookmarkActions.LoadedNewDataSource, typeof(Bookmark)));
         }
 
-        public void VerifyIntegrityOfBookmarkFolder(BookmarkFolder bookmarkFolder)
+        public void VerifyIntegrityOfBookmarFolder(BookmarkFolder bookmarkfolder)
         {
             try
             {
                 var deleteQueue = new Queue<Bookmark>();
-                foreach (var bookmark in bookmarkFolder.Bookmarks)
+                foreach (var bookmark in bookmarkfolder.Bookmarks)
                 {
-                    if (bookmark.ParentFolderId != bookmarkFolder.Id) bookmark.ParentFolderId = bookmarkFolder.Id;
+                    if (bookmark.ParentFolderId != bookmarkfolder.Id)
+                    {
+                        bookmark.ParentFolderId = bookmarkfolder.Id;
+                    }
 
-                    if (string.IsNullOrEmpty(bookmark.FileName) || bookmark.Size == 0 || string.IsNullOrEmpty(bookmark.CompletePath)) deleteQueue.Enqueue(bookmark);
+                    if (string.IsNullOrEmpty(bookmark.FileName) || bookmark.Size == 0 || string.IsNullOrEmpty(bookmark.CompletePath))
+                    {
+                        deleteQueue.Enqueue(bookmark);
+                    }
                 }
 
                 while (deleteQueue.Count > 0)
@@ -542,22 +599,30 @@ namespace ImageViewer.Managers
             {
                 Log.Error(ex, "VerifyIntegrityOfBookmarFolder exception");
             }
+
         }
 
         public IEnumerable<Bookmark> GetAllBookmarksRecursive(BookmarkFolder rootFolder)
         {
             var bookmarks = rootFolder.Bookmarks;
 
-            foreach (var bookmarkFolder in rootFolder.BookmarkFolders) bookmarks.AddRange(GetAllBookmarksRecursive(bookmarkFolder));
+            foreach (var bookmarkFolder in rootFolder.BookmarkFolders)
+            {
+                bookmarks.AddRange(GetAllBookmarksRecursive(bookmarkFolder));
+            }
 
             return bookmarks;
         }
 
         public void UpdateSortOrder(BookmarkFolder selectedBookmarkFolder, string sortBy, SortOrder sortOrder)
         {
-            var bookmarks = sortOrder == SortOrder.Ascending ? selectedBookmarkFolder.Bookmarks.OrderBy(o => o.GetType().GetProperty(sortBy)?.GetValue(o, null)).ToList() : selectedBookmarkFolder.Bookmarks.OrderByDescending(o => o.GetType().GetProperty(sortBy)?.GetValue(o, null)).ToList();
+            var bookmarks = sortOrder == SortOrder.Ascending ? selectedBookmarkFolder.Bookmarks.OrderBy(o => o.GetType().GetProperty(sortBy)?.GetValue(o, null)).ToList() :
+                selectedBookmarkFolder.Bookmarks.OrderByDescending(o => o.GetType().GetProperty(sortBy)?.GetValue(o, null)).ToList();
 
-            for (int i = 0; i < bookmarks.Count; i++) bookmarks[i].SortOrder = i;
+            for (int i = 0; i < bookmarks.Count; i++)
+            {
+                bookmarks[i].SortOrder = i;
+            }
         }
 
         private IEnumerable<Bookmark> GetAllBookmarksWithIncorrectPath(BookmarkFolder rootFolder)
@@ -565,10 +630,17 @@ namespace ImageViewer.Managers
             var bookmarkList = new List<Bookmark>();
 
             foreach (var bookmark in rootFolder.Bookmarks)
+            {
                 if (!File.Exists(bookmark.CompletePath))
+                {
                     bookmarkList.Add(bookmark);
+                }
+            }
 
-            foreach (var bookmarkFolder in rootFolder.BookmarkFolders) bookmarkList.AddRange(GetAllBookmarksWithIncorrectPath(bookmarkFolder));
+            foreach (var bookmarkFolder in rootFolder.BookmarkFolders)
+            {
+                bookmarkList.AddRange(GetAllBookmarksWithIncorrectPath(bookmarkFolder));
+            }
 
             return bookmarkList;
         }
@@ -585,9 +657,10 @@ namespace ImageViewer.Managers
                     var fileMatches = Directory.EnumerateFiles(selectedPath, bookmark.FileName, SearchOption.AllDirectories).ToList();
 
                     if (fileMatches.Any())
+                    {
                         foreach (string fileMatch in fileMatches)
                         {
-                            var fileInfo = new FileInfo(fileMatch);
+                            FileInfo fileInfo = new FileInfo(fileMatch);
                             if (fileInfo.Length == bookmark.Size)
                             {
                                 string dir = GeneralConverters.GetDirectoryNameFromPath(fileMatch);
@@ -603,6 +676,7 @@ namespace ImageViewer.Managers
                                 break;
                             }
                         }
+                    }
                 }
 
                 return filePathsCorrected;

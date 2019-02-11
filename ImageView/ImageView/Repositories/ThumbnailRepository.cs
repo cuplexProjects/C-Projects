@@ -108,7 +108,7 @@ namespace ImageViewer.Repositories
                 if (successful) IsModified = false;
 
                 // Also Save the raw db file
-                _fileManager.FlushAndCloseFileStream();
+                _fileManager.WriteToDisk();
 
                 IsModified = false;
                 return successful;
@@ -180,6 +180,8 @@ namespace ImageViewer.Repositories
             var storageManager = new StorageManager(settings);
             return storageManager;
         }
+
+
 
         public Image GetThumbnailImage(string fullPath)
         {
