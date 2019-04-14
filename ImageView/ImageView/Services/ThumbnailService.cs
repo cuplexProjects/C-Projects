@@ -95,6 +95,11 @@ namespace ImageViewer.Services
             await Task.Factory.StartNew(() => { _thumbnailManager.OptimizeDatabase(); });
         }
 
+        public void OptimizeDatabase()
+        {
+            _thumbnailManager.OptimizeDatabase();
+        }
+
 
         public bool SaveThumbnailDatabase()
         {

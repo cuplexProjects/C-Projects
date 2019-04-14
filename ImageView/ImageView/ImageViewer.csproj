@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ImageViewer</RootNamespace>
     <AssemblyName>ImageViewer</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
@@ -517,6 +517,7 @@
     <EmbeddedResource Include="UserControls\ThumbnailSettings.resx">
       <DependentUpon>ThumbnailSettings.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="ImageView.ruleset" />
     <None Include="Properties\DataSources\ImageView.DataContracts.Bookmark.datasource" />
     <None Include="Properties\DataSources\ImageView.DataContracts.BookmarkFolder.datasource" />

@@ -65,9 +65,9 @@ namespace ImageViewer.Repositories
                     var thumbnailDb = storageManager.DeserializeObjectFromFile<ThumbnailDatabaseModel>(fileName, null);
                     _thumbnailDatabase = _mapper.Map<ThumbnailDatabase>(thumbnailDb);
                 }
-                catch
+                catch(Exception exception)
                 {
-                    
+                    Log.Error(exception, "LoadThumbnailDatabase failed");
                 }
 
 
