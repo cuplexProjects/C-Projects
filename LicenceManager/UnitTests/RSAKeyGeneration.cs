@@ -4,17 +4,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace UnitTests
 {
     [TestClass]
-    public class RSATest
+    public class RsaTest
     {
         [TestMethod]
         [Ignore]
         public void GenerateKeyPair()
         {
-            RSA_AsymetricEncryption rsaAsymetricEncryption = new RSA_AsymetricEncryption();
-            RSAKeySetIdentity keySetIdentity = rsaAsymetricEncryption.GenerateRSAKeyPair(RSA_AsymetricEncryption.RSAKeySize.b4096);
+            RsaAsymetricEncryption rsaAsymetricEncryption = new RsaAsymetricEncryption();
+            RsaKeySetIdentity keySetIdentity = rsaAsymetricEncryption.GenerateRsaKeyPair(RsaAsymetricEncryption.RsaKeySize.B4096);
 
-            string privateKey = keySetIdentity.RSA_PrivateKey;
-            string publicKey = keySetIdentity.RSA_PublicKey;
+            string privateKey = keySetIdentity.RsaPrivateKey;
+            string publicKey = keySetIdentity.RsaPublicKey;
         }
     }
 }

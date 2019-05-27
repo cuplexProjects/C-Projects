@@ -73,7 +73,7 @@ namespace GeneralToolkitLib.Barcode
             10, 15, 67, 16, 2956, 30, 19, 118, 6, 119, 2334, 28, 18, 47, 31, 48, 1666, 30, 34, 24, 34, 25, 1276, 30, 20, 15, 61, 16
         };
 
-        private readonly int[] remainderBits = {0, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0};
+        private readonly int[] remainderBits = { 0, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0 };
         private List<AlignmentPattern> alignmentPatternTable;
         private Dictionary<char, int> alphanumEncDict;
         private List<ECCInfo> capacityECCTable;
@@ -102,7 +102,7 @@ namespace GeneralToolkitLib.Barcode
             EncodingMode encoding = GetEncodingFromPlaintext(plainText);
             int version = GetVersion(plainText, encoding, eccLevel);
 
-            string modeIndicator = DecToBin((int) encoding, 4);
+            string modeIndicator = DecToBin((int)encoding, 4);
             string countIndicator = DecToBin(plainText.Length, GetCountIndicatorLength(version, encoding));
             string bitString = modeIndicator + countIndicator;
 
@@ -114,13 +114,24 @@ namespace GeneralToolkitLib.Barcode
             int dataLength = eccInfo.TotalDataCodewords * 8;
             int lengthDiff = dataLength - bitString.Length;
             if (lengthDiff > 0)
+            {
                 bitString += new string('0', Math.Min(lengthDiff, 4));
+            }
+
             if ((bitString.Length % 8) != 0)
+            {
                 bitString += new string('0', 8 - (bitString.Length % 8));
+            }
+
             while (bitString.Length < dataLength)
+            {
                 bitString += "1110110000010001";
+            }
+
             if (bitString.Length > dataLength)
+            {
                 bitString = bitString.Substring(0, dataLength);
+            }
 
             //Calculate error correction words
             var codeWordWithECC = new List<CodewordBlock>();
@@ -157,14 +168,18 @@ namespace GeneralToolkitLib.Barcode
                 foreach (CodewordBlock codeBlock in codeWordWithECC)
                 {
                     if (codeBlock.CodeWords.Count > i)
+                    {
                         interleavedWordsSb.Append(codeBlock.CodeWords[i]);
+                    }
                 }
             }
 
             for (int i = 0; i < eccInfo.ECCPerBlock; i++)
             {
                 foreach (CodewordBlock codeBlock in codeWordWithECC)
+                {
                     interleavedWordsSb.Append(codeBlock.ECCWords[i]);
+                }
             }
             interleavedWordsSb.Append(new string('0', remainderBits[version - 1]));
             string interleavedData = interleavedWordsSb.ToString();
@@ -204,7 +219,10 @@ namespace GeneralToolkitLib.Barcode
                 var sb = new StringBuilder();
                 generator = generator.PadRight(fStrEcc.Length, '0');
                 for (int i = 0; i < fStrEcc.Length; i++)
+                {
                     sb.Append((Convert.ToInt32(fStrEcc[i]) ^ Convert.ToInt32(generator[i])).ToString());
+                }
+
                 fStrEcc = sb.ToString().TrimStart('0');
             }
             fStrEcc = fStrEcc.PadLeft(10, '0');
@@ -212,7 +230,10 @@ namespace GeneralToolkitLib.Barcode
 
             var sbMask = new StringBuilder();
             for (int i = 0; i < fStr.Length; i++)
+            {
                 sbMask.Append((Convert.ToInt32(fStr[i]) ^ Convert.ToInt32(fStrMask[i])).ToString());
+            }
+
             return sbMask.ToString();
         }
 
@@ -227,7 +248,10 @@ namespace GeneralToolkitLib.Barcode
                 var sb = new StringBuilder();
                 generator = generator.PadRight(vStrEcc.Length, '0');
                 for (int i = 0; i < vStrEcc.Length; i++)
+                {
                     sb.Append((Convert.ToInt32(vStrEcc[i]) ^ Convert.ToInt32(generator[i])).ToString());
+                }
+
                 vStrEcc = sb.ToString().TrimStart('0');
             }
             vStrEcc = vStrEcc.PadLeft(12, '0');
@@ -243,19 +267,23 @@ namespace GeneralToolkitLib.Barcode
             Polynom generatorPolynom = CalculateGeneratorPolynom(eccWords);
 
             for (int i = 0; i < messagePolynom.PolyItems.Count; i++)
+            {
                 messagePolynom.PolyItems[i] = new PolynomItem
                 {
                     Coefficient = messagePolynom.PolyItems[i].Coefficient,
                     Exponent = messagePolynom.PolyItems[i].Exponent + eccWords
                 };
+            }
 
             int genLeadtermFactor = messagePolynom.PolyItems[0].Exponent - generatorPolynom.PolyItems[0].Exponent;
             for (int i = 0; i < generatorPolynom.PolyItems.Count; i++)
+            {
                 generatorPolynom.PolyItems[i] = new PolynomItem
                 {
                     Coefficient = generatorPolynom.PolyItems[i].Coefficient,
                     Exponent = generatorPolynom.PolyItems[i].Exponent + genLeadtermFactor
                 };
+            }
 
             Polynom leadTermSource = messagePolynom;
             for (int i = 0; i < messagePolynom.PolyItems.Count; i++)
@@ -272,11 +300,14 @@ namespace GeneralToolkitLib.Barcode
         {
             var newPoly = new Polynom();
             for (int i = 0; i < poly.PolyItems.Count; i++)
+            {
                 newPoly.PolyItems.Add(new PolynomItem
                 {
                     Coefficient = (poly.PolyItems[i].Coefficient != 0 ? GetAlphaExpFromIntVal(poly.PolyItems[i].Coefficient) : 0),
                     Exponent = poly.PolyItems[i].Exponent
                 });
+            }
+
             return newPoly;
         }
 
@@ -284,11 +315,14 @@ namespace GeneralToolkitLib.Barcode
         {
             var newPoly = new Polynom();
             for (int i = 0; i < poly.PolyItems.Count; i++)
+            {
                 newPoly.PolyItems.Add(new PolynomItem
                 {
                     Coefficient = GetIntValFromAlphaExp(poly.PolyItems[i].Coefficient),
                     Exponent = poly.PolyItems[i].Exponent
                 });
+            }
+
             return newPoly;
         }
 
@@ -308,9 +342,15 @@ namespace GeneralToolkitLib.Barcode
         private EncodingMode GetEncodingFromPlaintext(string plainText)
         {
             if (plainText.All(c => "0123456789".Contains(c)))
+            {
                 return EncodingMode.Numeric;
+            }
+
             if (plainText.All(c => alphanumEncTable.Contains(c)))
+            {
                 return EncodingMode.Alphanumeric;
+            }
+
             return EncodingMode.Byte;
         }
 
@@ -398,27 +438,51 @@ namespace GeneralToolkitLib.Barcode
             if (version < 10)
             {
                 if (encMode.Equals(EncodingMode.Numeric))
+                {
                     return 10;
+                }
+
                 if (encMode.Equals(EncodingMode.Alphanumeric))
+                {
                     return 9;
+                }
+
                 return 8;
             }
             if (version < 27)
             {
                 if (encMode.Equals(EncodingMode.Numeric))
+                {
                     return 12;
+                }
+
                 if (encMode.Equals(EncodingMode.Alphanumeric))
+                {
                     return 11;
+                }
+
                 if (encMode.Equals(EncodingMode.Byte))
+                {
                     return 16;
+                }
+
                 return 10;
             }
             if (encMode.Equals(EncodingMode.Numeric))
+            {
                 return 14;
+            }
+
             if (encMode.Equals(EncodingMode.Alphanumeric))
+            {
                 return 13;
+            }
+
             if (encMode.Equals(EncodingMode.Byte))
+            {
                 return 16;
+            }
+
             return 12;
         }
 
@@ -432,11 +496,20 @@ namespace GeneralToolkitLib.Barcode
         private string PlainTextToBinary(string plainText, EncodingMode encMode)
         {
             if (encMode.Equals(EncodingMode.Numeric))
+            {
                 return PlainTextToBinaryNumeric(plainText);
+            }
+
             if (encMode.Equals(EncodingMode.Alphanumeric))
+            {
                 return PlainTextToBinaryAlphanumeric(plainText);
+            }
+
             if (encMode.Equals(EncodingMode.Byte))
+            {
                 return PlainTextToBinaryByte(plainText);
+            }
+
             return string.Empty;
         }
 
@@ -473,7 +546,10 @@ namespace GeneralToolkitLib.Barcode
                 plainText = plainText.Substring(2);
             }
             if (plainText.Length > 0)
+            {
                 codeText += DecToBin(alphanumEncDict[plainText[0]], 6);
+            }
+
             return codeText;
         }
 
@@ -571,7 +647,7 @@ namespace GeneralToolkitLib.Barcode
 
         private int ShrinkAlphaExp(int alphaExp)
         {
-            return (int) ((alphaExp % 256) + Math.Floor((double) (alphaExp / 256)));
+            return (int)((alphaExp % 256) + Math.Floor((double)(alphaExp / 256)));
         }
 
         private void CreateAlphanumEncDict()
@@ -594,15 +670,19 @@ namespace GeneralToolkitLib.Barcode
                 for (int x = 0; x < 7; x++)
                 {
                     if (alignmentPatternBaseValues[i + x] != 0)
+                    {
                         for (int y = 0; y < 7; y++)
                         {
                             if (alignmentPatternBaseValues[i + y] != 0)
                             {
                                 var p = new Point(alignmentPatternBaseValues[i + x] - 2, alignmentPatternBaseValues[i + y] - 2);
                                 if (!points.Contains(p))
+                                {
                                     points.Add(p);
+                                }
                             }
                         }
+                    }
                 }
 
                 alignmentPatternTable.Add(new AlignmentPattern
@@ -739,12 +819,18 @@ namespace GeneralToolkitLib.Barcode
 
             for (int i = 0; i < 256; i++)
             {
-                gfItem = (int) Math.Pow(2, i);
+                gfItem = (int)Math.Pow(2, i);
 
                 if (i > 7)
+                {
                     gfItem = galoisField[i - 1].IntegerValue * 2;
+                }
+
                 if (gfItem > 255)
+                {
                     gfItem = gfItem ^ 285;
+                }
+
                 galoisField.Add(new Antilog
                 {
                     ExponentAlpha = i,
@@ -801,17 +887,29 @@ namespace GeneralToolkitLib.Barcode
             {
                 var quietLine = new bool[qrCode.ModuleMatrix.Count + 8];
                 for (int i = 0; i < quietLine.Length; i++)
+                {
                     quietLine[i] = false;
+                }
+
                 for (int i = 0; i < 4; i++)
+                {
                     qrCode.ModuleMatrix.Insert(0, new BitArray(quietLine));
+                }
+
                 for (int i = 0; i < 4; i++)
+                {
                     qrCode.ModuleMatrix.Add(new BitArray(quietLine));
+                }
+
                 for (int i = 4; i < qrCode.ModuleMatrix.Count - 4; i++)
                 {
-                    var quietPart = new bool[4] {false, false, false, false};
+                    var quietPart = new bool[4] { false, false, false, false };
                     var tmpLine = new List<bool>(quietPart);
                     foreach (bool module in qrCode.ModuleMatrix[i])
+                    {
                         tmpLine.Add(module);
+                    }
+
                     tmpLine.AddRange(quietPart);
                     qrCode.ModuleMatrix[i] = new BitArray(tmpLine.ToArray());
                 }
@@ -857,7 +955,7 @@ namespace GeneralToolkitLib.Barcode
 
                 int size = qrCode.ModuleMatrix.Count;
 
-                foreach (MethodInfo pattern in typeof (MaskPattern).GetMethods())
+                foreach (MethodInfo pattern in typeof(MaskPattern).GetMethods())
                 {
                     if (pattern.Name.Length == 8 && pattern.Name.Substring(0, 7) == "Pattern")
                     {
@@ -875,7 +973,9 @@ namespace GeneralToolkitLib.Barcode
                             for (int y = 0; y < size; y++)
                             {
                                 if (!IsBlocked(new Rectangle(x, y, 1, 1), blockedModules))
-                                    qrTemp.ModuleMatrix[y][x] ^= (bool) pattern.Invoke(null, new object[] {x, y});
+                                {
+                                    qrTemp.ModuleMatrix[y][x] ^= (bool)pattern.Invoke(null, new object[] { x, y });
+                                }
                             }
                         }
 
@@ -887,13 +987,15 @@ namespace GeneralToolkitLib.Barcode
                         }
                     }
                 }
-                MethodInfo patterMethod = typeof (MaskPattern).GetMethods().First(x => x.Name == patternName);
+                MethodInfo patterMethod = typeof(MaskPattern).GetMethods().First(x => x.Name == patternName);
                 for (int x = 0; x < size; x++)
                 {
                     for (int y = 0; y < size; y++)
                     {
                         if (!IsBlocked(new Rectangle(x, y, 1, 1), blockedModules))
-                            qrCode.ModuleMatrix[y][x] ^= (bool) patterMethod.Invoke(null, new object[] {x, y});
+                        {
+                            qrCode.ModuleMatrix[y][x] ^= (bool)patterMethod.Invoke(null, new object[] { x, y });
+                        }
                     }
                 }
                 return Convert.ToInt32(patterMethod.Name.Substring(patterMethod.Name.Length - 1, 1)) - 1;
@@ -908,7 +1010,10 @@ namespace GeneralToolkitLib.Barcode
                 for (int x = size - 1; x >= 0; x = x - 2)
                 {
                     if (x == 7 || x == 6)
+                    {
                         x = 5;
+                    }
+
                     for (int yMod = 1; yMod <= size; yMod++)
                     {
                         int y = 0;
@@ -916,17 +1021,27 @@ namespace GeneralToolkitLib.Barcode
                         {
                             y = size - yMod;
                             if (datawords.Count > 0 && !IsBlocked(new Rectangle(x, y, 1, 1), blockedModules))
+                            {
                                 qrCode.ModuleMatrix[y][x] = datawords.Dequeue();
+                            }
+
                             if (datawords.Count > 0 && x > 0 && !IsBlocked(new Rectangle(x - 1, y, 1, 1), blockedModules))
+                            {
                                 qrCode.ModuleMatrix[y][x - 1] = datawords.Dequeue();
+                            }
                         }
                         else
                         {
                             y = yMod - 1;
                             if (datawords.Count > 0 && !IsBlocked(new Rectangle(x, y, 1, 1), blockedModules))
+                            {
                                 qrCode.ModuleMatrix[y][x] = datawords.Dequeue();
+                            }
+
                             if (datawords.Count > 0 && x > 0 && !IsBlocked(new Rectangle(x - 1, y, 1, 1), blockedModules))
+                            {
                                 qrCode.ModuleMatrix[y][x - 1] = datawords.Dequeue();
+                            }
                         }
                     }
                     up = !up;
@@ -944,10 +1059,12 @@ namespace GeneralToolkitLib.Barcode
 
             public static void ReserveVersionAreas(int size, int version, ref List<Rectangle> blockedModules)
             {
-                blockedModules.AddRange(new[] {new Rectangle(8, 0, 1, 6), new Rectangle(8, 7, 1, 1), new Rectangle(0, 8, 6, 1), new Rectangle(7, 8, 2, 1), new Rectangle(size - 8, 8, 8, 1), new Rectangle(8, size - 7, 1, 7)});
+                blockedModules.AddRange(new[] { new Rectangle(8, 0, 1, 6), new Rectangle(8, 7, 1, 1), new Rectangle(0, 8, 6, 1), new Rectangle(7, 8, 2, 1), new Rectangle(size - 8, 8, 8, 1), new Rectangle(8, size - 7, 1, 7) });
 
                 if (version >= 7)
-                    blockedModules.AddRange(new[] {new Rectangle(size - 11, 0, 3, 6), new Rectangle(0, size - 11, 6, 3)});
+                {
+                    blockedModules.AddRange(new[] { new Rectangle(size - 11, 0, 3, 6), new Rectangle(0, size - 11, 6, 3) });
+                }
             }
 
             public static void PlaceDarkModule(ref QRCode qrCode, int version, ref List<Rectangle> blockedModules)
@@ -959,7 +1076,7 @@ namespace GeneralToolkitLib.Barcode
             public static void PlaceFinderPatterns(ref QRCode qrCode, ref List<Rectangle> blockedModules)
             {
                 int size = qrCode.ModuleMatrix.Count;
-                int[] locations = {0, 0, size - 7, 0, 0, size - 7};
+                int[] locations = { 0, 0, size - 7, 0, 0, size - 7 };
 
                 for (int i = 0; i < 6; i = i + 2)
                 {
@@ -968,7 +1085,9 @@ namespace GeneralToolkitLib.Barcode
                         for (int y = 0; y < 7; y++)
                         {
                             if (!(((x == 1 || x == 5) && y > 0 && y < 6) || (x > 0 && x < 6 && (y == 1 || y == 5))))
+                            {
                                 qrCode.ModuleMatrix[y + locations[i + 1]][x + locations[i]] = true;
+                            }
                         }
                     }
                     blockedModules.Add(new Rectangle(locations[i], locations[i + 1], 7, 7));
@@ -990,14 +1109,18 @@ namespace GeneralToolkitLib.Barcode
                         }
                     }
                     if (blocked)
+                    {
                         continue;
+                    }
 
                     for (int x = 0; x < 5; x++)
                     {
                         for (int y = 0; y < 5; y++)
                         {
                             if (y == 0 || y == 4 || x == 0 || x == 4 || (x == 2 && y == 2))
+                            {
                                 qrCode.ModuleMatrix[loc.Y + y][loc.X + x] = true;
+                            }
                         }
                     }
                     blockedModules.Add(new Rectangle(loc.X, loc.Y, 5, 5));
@@ -1015,7 +1138,7 @@ namespace GeneralToolkitLib.Barcode
                         qrCode.ModuleMatrix[i][6] = true;
                     }
                 }
-                blockedModules.AddRange(new[] {new Rectangle(6, 8, 1, size - 16), new Rectangle(8, 6, size - 16, 1)});
+                blockedModules.AddRange(new[] { new Rectangle(6, 8, 1, size - 16), new Rectangle(8, 6, size - 16, 1) });
             }
 
             private static bool Intersects(Rectangle r1, Rectangle r2)
@@ -1029,7 +1152,9 @@ namespace GeneralToolkitLib.Barcode
                 foreach (Rectangle blockedMod in blockedModules)
                 {
                     if (Intersects(blockedMod, r1))
+                    {
                         isBlocked = true;
+                    }
                 }
                 return isBlocked;
             }
@@ -1091,23 +1216,43 @@ namespace GeneralToolkitLib.Barcode
                         for (int x = 0; x < size; x++)
                         {
                             if (qrCode.ModuleMatrix[y][x] == lastValRow)
+                            {
                                 modInRow++;
+                            }
                             else
+                            {
                                 modInRow = 1;
+                            }
+
                             if (modInRow == 5)
+                            {
                                 score += 3;
+                            }
                             else if (modInRow > 5)
+                            {
                                 score++;
+                            }
+
                             lastValRow = qrCode.ModuleMatrix[y][x];
 
                             if (qrCode.ModuleMatrix[x][y] == lastValColumn)
+                            {
                                 modInColumn++;
+                            }
                             else
+                            {
                                 modInColumn = 1;
+                            }
+
                             if (modInColumn == 5)
+                            {
                                 score += 3;
+                            }
                             else if (modInColumn > 5)
+                            {
                                 score++;
+                            }
+
                             lastValColumn = qrCode.ModuleMatrix[x][y];
                         }
                     }
@@ -1119,7 +1264,9 @@ namespace GeneralToolkitLib.Barcode
                         {
                             if (qrCode.ModuleMatrix[y][x] == qrCode.ModuleMatrix[y][x + 1] && qrCode.ModuleMatrix[y][x] == qrCode.ModuleMatrix[y + 1][x] &&
                                 qrCode.ModuleMatrix[y][x] == qrCode.ModuleMatrix[y + 1][x + 1])
+                            {
                                 score += 3;
+                            }
                         }
                     }
 
@@ -1134,7 +1281,9 @@ namespace GeneralToolkitLib.Barcode
                                 (!qrCode.ModuleMatrix[y][x] && !qrCode.ModuleMatrix[y][x + 1] && !qrCode.ModuleMatrix[y][x + 2] && !qrCode.ModuleMatrix[y][x + 3] && qrCode.ModuleMatrix[y][x + 4] &&
                                  !qrCode.ModuleMatrix[y][x + 5] && qrCode.ModuleMatrix[y][x + 6] && qrCode.ModuleMatrix[y][x + 7] && qrCode.ModuleMatrix[y][x + 8] && !qrCode.ModuleMatrix[y][x + 9] &&
                                  qrCode.ModuleMatrix[y][x + 10]))
+                            {
                                 score += 40;
+                            }
 
                             if ((qrCode.ModuleMatrix[x][y] && !qrCode.ModuleMatrix[x + 1][y] && qrCode.ModuleMatrix[x + 2][y] && qrCode.ModuleMatrix[x + 3][y] && qrCode.ModuleMatrix[x + 4][y] &&
                                  !qrCode.ModuleMatrix[x + 5][y] && qrCode.ModuleMatrix[x + 6][y] && !qrCode.ModuleMatrix[x + 7][y] && !qrCode.ModuleMatrix[x + 8][y] && !qrCode.ModuleMatrix[x + 9][y] &&
@@ -1142,7 +1291,9 @@ namespace GeneralToolkitLib.Barcode
                                 (!qrCode.ModuleMatrix[x][x] && !qrCode.ModuleMatrix[x + 1][y] && !qrCode.ModuleMatrix[x + 2][y] && !qrCode.ModuleMatrix[x + 3][y] && qrCode.ModuleMatrix[x + 4][y] &&
                                  !qrCode.ModuleMatrix[x + 5][y] && qrCode.ModuleMatrix[x + 6][y] && qrCode.ModuleMatrix[x + 7][y] && qrCode.ModuleMatrix[x + 8][y] && !qrCode.ModuleMatrix[x + 9][y] &&
                                  qrCode.ModuleMatrix[x + 10][y]))
+                            {
                                 score += 40;
+                            }
                         }
                     }
 
@@ -1153,15 +1304,21 @@ namespace GeneralToolkitLib.Barcode
                         foreach (bool bit in row)
                         {
                             if (bit)
+                            {
                                 blackModules++;
+                            }
                         }
                     }
 
                     int percent = (blackModules / (qrCode.ModuleMatrix.Count * qrCode.ModuleMatrix.Count)) * 100;
                     if (percent % 5 == 0)
+                    {
                         score += Math.Min((Math.Abs(percent - 55) / 5), (Math.Abs(percent - 45) / 5)) * 10;
+                    }
                     else
-                        score += Math.Min((Math.Abs((int) Math.Floor((decimal) percent / 5) - 50) / 5), (Math.Abs(((int) Math.Floor((decimal) percent / 5) + 5) - 50) / 5)) * 10;
+                    {
+                        score += Math.Min((Math.Abs((int)Math.Floor((decimal)percent / 5) - 50) / 5), (Math.Abs(((int)Math.Floor((decimal)percent / 5) + 5) - 50) / 5)) * 10;
+                    }
 
                     return score;
                 }
@@ -1203,7 +1360,9 @@ namespace GeneralToolkitLib.Barcode
                 int size = ModulesPerSideFromVersion(version);
                 ModuleMatrix = new List<BitArray>();
                 for (int i = 0; i < size; i++)
+                {
                     ModuleMatrix.Add(new BitArray(size));
+                }
             }
 
             public Bitmap GetGraphic(int pixelsPerModule)
@@ -1217,9 +1376,13 @@ namespace GeneralToolkitLib.Barcode
                     {
                         bool module = ModuleMatrix[(y + pixelsPerModule) / pixelsPerModule - 1][(x + pixelsPerModule) / pixelsPerModule - 1];
                         if (module)
+                        {
                             gfx.FillRectangle(Brushes.Black, new Rectangle(x, y, pixelsPerModule, pixelsPerModule));
+                        }
                         else
+                        {
                             gfx.FillRectangle(Brushes.White, new Rectangle(x, y, pixelsPerModule, pixelsPerModule));
+                        }
                     }
                 }
 

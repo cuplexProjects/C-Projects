@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("A tool for creating random wifi passwords with QR codes")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MD")]
-[assembly: AssemblyProduct("WiFi Password Generator Made by Martin Dahl 2015")]
+[assembly: AssemblyProduct("WiFi Password Generator Made by Martin Dahl 201p")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("Cuplex. Email: iddt@hotmail.com")]
 [assembly: AssemblyCulture("")]
@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("2.0.2.*")]
-[assembly: AssemblyFileVersion("2.0.2.1")]
+[assembly: AssemblyVersion("2.1.2.*")]
+[assembly: AssemblyFileVersion("2.1.2.1")]
 [assembly: NeutralResourcesLanguage("en")]
 

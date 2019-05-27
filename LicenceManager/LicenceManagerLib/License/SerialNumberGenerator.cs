@@ -6,9 +6,9 @@ using GeneralToolkitLib.Encryption;
 using GeneralToolkitLib.Encryption.Licence.DataConverters;
 using GeneralToolkitLib.Encryption.Licence.DataModels;
 using GeneralToolkitLib.Encryption.Licence.StaticData;
-using GeneralToolkitLib.Log;
+using Serilog;
 
-namespace LicenceManagerLib.Licence
+namespace LicenceManagerLib.License
 {
     public class SerialNumberGenerator
     {
@@ -16,61 +16,61 @@ namespace LicenceManagerLib.Licence
         private const int VALIDATION_HASH_LENTH = 512;
         private readonly SerialNumbersSettings.ProtectedApp _app;
         private readonly RSAParameters _rsaPubKey;
-        private LicenceDataModel _licenceData;
+        private LicenseDataModel _licenseData;
 
         public SerialNumberGenerator(RSAParameters pubRSAKey, SerialNumbersSettings.ProtectedApp app)
         {
             this._app = app;
             this._rsaPubKey = pubRSAKey;
-            this._licenceData = new LicenceDataModel();
+            this._licenseData = new LicenseDataModel();
         }
 
-        public LicenceDataModel LicenceData
+        public LicenseDataModel LicenseData
         {
-            get { return this._licenceData; }
-            set { this._licenceData = value; }
+            get { return this._licenseData; }
+            set { this._licenseData = value; }
         }
 
-        public string GenerateLicenceData(RSAKeySetIdentity rsaPrivateKeySetIdentity)
+        public string GenerateLicenseData(RsaKeySetIdentity rsaPrivateKeySetIdentity)
         {
-            RSA_AsymetricEncryption rsaAsymetricEncryption = new RSA_AsymetricEncryption();
-            RSAParameters privateRSAKeyParameters = rsaAsymetricEncryption.ParseRSAKeyInfo(rsaPrivateKeySetIdentity);
+            RsaAsymetricEncryption rsaAsymetricEncryption = new RsaAsymetricEncryption();
+            RSAParameters privateRSAKeyParameters = rsaAsymetricEncryption.ParseRsaKeyInfo(rsaPrivateKeySetIdentity);
 
-            byte[] licenceDataBytes = ObjectSerializer.SerializeDataContract(this.LicenceData.RegistrationData);
-            byte[] signedData = HashAndSignBytes(licenceDataBytes, privateRSAKeyParameters);
+            byte[] licenseDataBytes = ObjectSerializer.SerializeDataContract(this.LicenseData.RegistrationData);
+            byte[] signedData = HashAndSignBytes(licenseDataBytes, privateRSAKeyParameters);
 
-            this._licenceData.ValidationHash = signedData;
-            this._licenceData.RegistrationKey = this.CreateRegistrationKey(licenceDataBytes);
+            this._licenseData.ValidationHash = signedData;
+            this._licenseData.RegistrationKey = this.CreateRegistrationKey(licenseDataBytes);
 
-            return this._licenceData.RegistrationKey;
+            return this._licenseData.RegistrationKey;
         }
 
         public bool ValidateRegistrationData()
         {
-            if(string.IsNullOrEmpty(this._licenceData.RegistrationKey) || this._licenceData.ValidationHash == null || this._licenceData.ValidationHash.Length != VALIDATION_HASH_LENTH)
+            if (string.IsNullOrEmpty(this._licenseData.RegistrationKey) || this._licenseData.ValidationHash == null || this._licenseData.ValidationHash.Length != VALIDATION_HASH_LENTH)
                 return false;
 
-            byte[] licenceDataBytes = ObjectSerializer.SerializeDataContract(this.LicenceData.RegistrationData);
-            return VerifySignedHash(licenceDataBytes, this._licenceData.ValidationHash, this._rsaPubKey);
+            byte[] licenseDataBytes = ObjectSerializer.SerializeDataContract(this.LicenseData.RegistrationData);
+            return VerifySignedHash(licenseDataBytes, this._licenseData.ValidationHash, this._rsaPubKey);
         }
 
         public bool VerifyRegistrationKey(string registrationKey)
         {
-            if(registrationKey == null || registrationKey.Length != KeyFormat.Length)
+            if (registrationKey == null || registrationKey.Length != KeyFormat.Length)
                 return false;
 
-            byte[] licenceDataBytes = ObjectSerializer.SerializeDataContract(this.LicenceData.RegistrationData);
-            return registrationKey == this.CreateRegistrationKey(licenceDataBytes);
+            byte[] licenseDataBytes = ObjectSerializer.SerializeDataContract(this.LicenseData.RegistrationData);
+            return registrationKey == this.CreateRegistrationKey(licenseDataBytes);
         }
 
         #region Conversion Methods
 
-        private string CreateRegistrationKey(byte[] licenceBytes)
+        private string CreateRegistrationKey(byte[] licenseBytes)
         {
-            string regKeyData = GeneralConverters.ByteArrayToBase64(licenceBytes);
-            regKeyData = LicenceGeneratorStaticData.SaltData.GeneralToolkit + regKeyData + LicenceGeneratorStaticData.SaltData.GeneralToolkit + this._app;
-            byte[] buffer = null;
-            EncryptionManager.EncodeString(ref buffer, regKeyData);
+            string regKeyData = GeneralConverters.ByteArrayToBase64(licenseBytes);
+            regKeyData = LicenseGeneratorStaticData.SaltData.GeneralToolkit + regKeyData + LicenseGeneratorStaticData.SaltData.GeneralToolkit + this._app;
+            byte[] buffer = new byte[0];
+            EncryptionManager.EncodeString(ref buffer,regKeyData, regKeyData);
             return this.ConvertToBase32SerialNumber(buffer);
         }
 
@@ -89,6 +89,7 @@ namespace LicenceManagerLib.Licence
         public RegistrationDataModel ReadRegistrationDataFromFile(string filename)
         {
             FileStream fs = null;
+
             try
             {
                 fs = File.OpenRead(filename);
@@ -99,40 +100,39 @@ namespace LicenceManagerLib.Licence
             }
             catch (Exception ex)
             {
-                LogWriter.WriteLog(ex.Message);
+                Log.Error(ex, $"Failed to open {filename}");
             }
             finally
             {
-                if (fs != null)
-                    fs.Close();
+                fs?.Close();
             }
             return null;
         }
 
-        public void CreateLicenceFile(string filename)
+        public void CreateLicenseFile(string filename)
         {
             FileStream fs = null;
+
             try
             {
-                if(_licenceData == null)
+                if (_licenseData == null)
                     return;
 
                 fs = File.OpenWrite(filename);
                 TextWriter textWriter = new StreamWriter(fs);
 
-                textWriter.Write(Convert.ToBase64String(ObjectSerializer.SerializeDataContract((_licenceData))));
+                textWriter.Write(Convert.ToBase64String(ObjectSerializer.SerializeDataContract((_licenseData))));
                 textWriter.Flush();
                 fs.Flush();
                 fs.Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                LogWriter.WriteLog(ex.Message);
+                Log.Error(ex, $"CreateLicenseFile error for file: {filename}");
             }
             finally
             {
-                if(fs != null)
-                    fs.Close();
+                fs?.Close();
             }
         }
 
@@ -154,7 +154,7 @@ namespace LicenceManagerLib.Licence
         public bool VerifyHash(RSAParameters rsaParams, byte[] signedData, byte[] signature)
         {
             RSACryptoServiceProvider rsaCSP = new RSACryptoServiceProvider();
-            var hashAlgorithm = SHA1Managed.Create();
+            var hashAlgorithm = SHA1.Create();
 
             rsaCSP.ImportParameters(rsaParams);
             bool dataOK = rsaCSP.VerifyData(signedData, CryptoConfig.MapNameToOID("SHA1"), signature);
@@ -175,7 +175,7 @@ namespace LicenceManagerLib.Licence
                 // to specify the use of SHA1 for hashing. 
                 return RSAalg.SignData(DataToSign, new SHA1CryptoServiceProvider());
             }
-            catch(CryptographicException e)
+            catch (CryptographicException e)
             {
                 Console.WriteLine(e.Message);
 
@@ -197,13 +197,14 @@ namespace LicenceManagerLib.Licence
                 // to specify the use of SHA1 for hashing. 
                 return RSAalg.VerifyData(DataToVerify, new SHA1CryptoServiceProvider(), SignedData);
             }
-            catch(CryptographicException e)
+            catch (CryptographicException e)
             {
                 Console.WriteLine(e.Message);
 
                 return false;
             }
         }
+
         #endregion
 
         #region Not used
@@ -213,6 +214,7 @@ namespace LicenceManagerLib.Licence
             try
             {
                 byte[] encryptedData;
+
                 //Create a new instance of RSACryptoServiceProvider. 
                 using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
                 {
@@ -227,9 +229,9 @@ namespace LicenceManagerLib.Licence
                 }
                 return encryptedData;
             }
-                //Catch and display a CryptographicException   
-                //to the console. 
-            catch(CryptographicException e)
+            //Catch and display a CryptographicException   
+            //to the console. 
+            catch (CryptographicException e)
             {
                 Console.WriteLine(e.Message);
 
@@ -242,8 +244,9 @@ namespace LicenceManagerLib.Licence
             try
             {
                 byte[] decryptedData;
+
                 //Create a new instance of RSACryptoServiceProvider. 
-                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+                using (var RSA = new RSACryptoServiceProvider())
                 {
                     //Import the RSA Key information. This needs 
                     //to include the private key information.
@@ -256,9 +259,9 @@ namespace LicenceManagerLib.Licence
                 }
                 return decryptedData;
             }
-                //Catch and display a CryptographicException   
-                //to the console. 
-            catch(CryptographicException e)
+            //Catch and display a CryptographicException   
+            //to the console. 
+            catch (CryptographicException e)
             {
                 Console.WriteLine(e.ToString());
 

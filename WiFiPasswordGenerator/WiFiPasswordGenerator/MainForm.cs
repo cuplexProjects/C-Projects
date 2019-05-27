@@ -372,7 +372,7 @@ namespace WiFiPasswordGenerator
 
         private bool IsValidSsid()
         {
-            Regex ssidRegex = new Regex(@"^[\w-]{8,}$");
+            Regex ssidRegex = new Regex(@"^[\w-\.]{8,}$");
             return txtSSId.Text.Length >= 8 && ssidRegex.IsMatch(txtSSId.Text);
         }
 

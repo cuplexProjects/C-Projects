@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using GeneralToolkitLib.Encryption;
-using LicenceManagerLib.Licence;
+using LicenceManagerLib.License;
 
 namespace LicenceManagerLib.Encryption
 {
@@ -8,16 +8,16 @@ namespace LicenceManagerLib.Encryption
     {
         public static RSAParameters GetAssemblyRsaParameters()
         {
-            RSA_AsymetricEncryption rsaAsymetricEncryption = new RSA_AsymetricEncryption();
-            RSAParameters rsaParameters = rsaAsymetricEncryption.ParseRSAKeyInfo(GetLocalKeySetIdentity());
+            RsaAsymetricEncryption rsaAsymetricEncryption = new RsaAsymetricEncryption();
+            RSAParameters rsaParameters = rsaAsymetricEncryption.ParseRsaKeyInfo(GetLocalKeySetIdentity());
 
             return rsaParameters;
         }
 
-        private static RSAKeySetIdentity GetLocalKeySetIdentity()
+        private static RsaKeySetIdentity GetLocalKeySetIdentity()
         {
-            RSAKeySetIdentity rsaKeySetIdentity = new RSAKeySetIdentity(LicenceGeneratorStaticData.PrivateKeys.GeneralToolkitLib,
-               LicenceGeneratorStaticData.PublicKeys.GeneralToolkitLib);
+            RsaKeySetIdentity rsaKeySetIdentity = new RsaKeySetIdentity(LicenseGeneratorStaticData.PrivateKeys.GeneralToolkitLib,
+               LicenseGeneratorStaticData.PublicKeys.GeneralToolkitLib);
             return rsaKeySetIdentity;
         }
     }

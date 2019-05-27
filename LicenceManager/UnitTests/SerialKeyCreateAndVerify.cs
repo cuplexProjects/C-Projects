@@ -5,7 +5,7 @@ using GeneralToolkitLib.Converters;
 using GeneralToolkitLib.Encryption;
 using GeneralToolkitLib.Encryption.Licence.DataModels;
 using GeneralToolkitLib.Encryption.Licence.StaticData;
-using LicenceManagerLib.Licence;
+using LicenceManagerLib.License;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RegKeyCreator.ApplicationKeys;
 
@@ -21,47 +21,47 @@ namespace UnitTests
         [TestMethod]
         public void GenerateRegistrationKey()
         {
-            SerialNumberGenerator SerialNumberGenerator = this.CreateSerialNumberGenerator();
-            string serial = this.GenerateSerialFromModel(SerialNumberGenerator);
+            SerialNumberGenerator serialNumberGenerator = this.CreateSerialNumberGenerator();
+            string serial = this.GenerateSerialFromModel(serialNumberGenerator);
             Assert.IsTrue(serial != null && serial.Length == 34, "Serial was not correct");
         }
 
         [TestMethod]
         public void VerifyRegistrationKey()
         {
-            SerialNumberGenerator SerialNumberGenerator = this.CreateSerialNumberGenerator();
-            string serial = this.GenerateSerialFromModel(SerialNumberGenerator);
+            SerialNumberGenerator serialNumberGenerator = this.CreateSerialNumberGenerator();
+            string serial = this.GenerateSerialFromModel(serialNumberGenerator);
 
-            bool serialOk = SerialNumberGenerator.VerifyRegistrationKey(serial);
+            bool serialOk = serialNumberGenerator.VerifyRegistrationKey(serial);
             Assert.IsTrue(serialOk, "Serial was not correct");
         }
 
         private SerialNumberGenerator CreateSerialNumberGenerator()
         {
-            var rsaPublicKeyIdentity = new RSAKeySetIdentity(null, RSAKeys.PublicKeys.SecureMEMO);
-            RSA_AsymetricEncryption rsaAsymetricEncryption = new RSA_AsymetricEncryption();
-            RSAParameters pubKeyParams = rsaAsymetricEncryption.ParseRSAPublicKeyOnlyInfo(rsaPublicKeyIdentity);
+            var rsaPublicKeyIdentity = new RsaKeySetIdentity(null, RSAKeys.PublicKeys.GetKeyString());
+            RsaAsymetricEncryption rsaAsymmetricEncryption = new RsaAsymetricEncryption();
+            RSAParameters pubKeyParams = rsaAsymmetricEncryption.ParseRsaPublicKeyOnlyInfo(rsaPublicKeyIdentity);
 
-            SerialNumberGenerator SerialNumberGenerator = new SerialNumberGenerator(pubKeyParams, SerialNumbersSettings.ProtectedApp.SecureMemo);
+            SerialNumberGenerator serialNumberGenerator = new SerialNumberGenerator(pubKeyParams, SerialNumbersSettings.ProtectedApp.SecureMemo);
 
             RegistrationDataModel registrationData = new RegistrationDataModel
             {
                 Company = "Doe",
                 Salt = GeneralConverters.GetRandomHexValue(256),
                 ValidTo = DateTime.Now.AddYears(1),
-                VersionName = LicenceGeneratorStaticData.SecureMemo.Versions.First()
+                VersionName = LicenseGeneratorStaticData.SecureMemo.Versions.First()
             };
-            SerialNumberGenerator.LicenceData.RegistrationData = registrationData;
+            serialNumberGenerator.LicenseData.RegistrationData = registrationData;
 
-            return SerialNumberGenerator;
+            return serialNumberGenerator;
         }
 
-        private string GenerateSerialFromModel(SerialNumberGenerator SerialNumberGenerator)
+        private string GenerateSerialFromModel(SerialNumberGenerator serialNumberGenerator)
         {
-            var rsaPrivateKeyIdentity = new RSAKeySetIdentity(RSAKeys.PrivateKeys.SecureMEMO, RSAKeys.PublicKeys.SecureMEMO);
-            var licenceKey = SerialNumberGenerator.GenerateLicenceData(rsaPrivateKeyIdentity);
+            var rsaPrivateKeyIdentity = new RsaKeySetIdentity(RSAKeys.PrivateKeys.GetKeyString(), RSAKeys.PublicKeys.GetKeyString());
+            var licenseKey = serialNumberGenerator.GenerateLicenseData(rsaPrivateKeyIdentity);
 
-            return licenceKey;
+            return licenseKey;
         }
     }
 }

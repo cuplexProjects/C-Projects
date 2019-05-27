@@ -1,0 +1,12 @@
+﻿Solution LicenceManager.sln
+    Project GeneralToolkitLib
+      ..\GeneralToolkitLib\GeneralToolkitLib\WindowsApi\UserAccountControl\NativeMethods.cs:11 Constant 'StandardRightsRead' can be made private
+      ..\GeneralToolkitLib\GeneralToolkitLib\WindowsApi\UserAccountControl\NativeMethods.cs:12 Constant 'TokenAssignPrimary' can be made private
+      ..\GeneralToolkitLib\GeneralToolkitLib\WindowsApi\UserAccountControl\NativeMethods.cs:14 Constant 'TokenImpersonate' can be made private
+      ..\GeneralToolkitLib\GeneralToolkitLib\WindowsApi\UserAccountControl\NativeMethods.cs:16 Constant 'TokenQuerySource' can be made private
+      ..\GeneralToolkitLib\GeneralToolkitLib\WindowsApi\UserAccountControl\NativeMethods.cs:17 Constant 'TokenAdjustPrivileges' can be made private
+      ..\GeneralToolkitLib\GeneralToolkitLib\WindowsApi\UserAccountControl\NativeMethods.cs:18 Constant 'TokenAdjustGroups' can be made private
+      ..\GeneralToolkitLib\GeneralToolkitLib\WindowsApi\UserAccountControl\NativeMethods.cs:19 Constant 'TokenAdjustDefault' can be made private
+      ..\GeneralToolkitLib\GeneralToolkitLib\WindowsApi\UserAccountControl\NativeMethods.cs:20 Constant 'TokenAdjustSessionId' can be made private
+    
+  
