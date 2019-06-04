@@ -45,7 +45,7 @@ namespace ImageViewer.Storage
         /// </summary>
         protected FileBasedPropertyCollection()
         {
-            var property = 1;
+            //var property = 1;
             _lastDatabaseSave = DateTime.Now;
             _backgroundWorker = new BackgroundWorker();
             _autoResetEvent = new AutoResetEvent(true);

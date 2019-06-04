@@ -447,7 +447,7 @@ namespace ImageViewer
 
         #region Form Events
 
-        private async void FormMain_Load(object sender, EventArgs e)
+        private void FormMain_Load(object sender, EventArgs e)
         {
             if (DesignMode)
             {

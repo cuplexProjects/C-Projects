@@ -62,6 +62,7 @@ namespace ImageViewer.Repositories
                 return false;
             }
 
+            // Thread will continue without waiting if the file is not locked
             _fileAccessWaitHandle.WaitOne(TimeSpan.FromSeconds(5));
             if (_dataFileLocked)
                 return false;
@@ -71,18 +72,13 @@ namespace ImageViewer.Repositories
 
         public bool LoadSettings()
         {
+            // Thread will continue without waiting if the file is not locked
             _fileAccessWaitHandle.WaitOne(TimeSpan.FromSeconds(7.5));
             if (_dataFileLocked)
                 return false;
 
             return LoadSettingsInternal();
 
-        }
-
-        public bool LoadSettings(string fileName)
-        {
-            //TODO implement
-            throw new NotImplementedException();
         }
 
         private bool SaveSettingsInternal()
@@ -140,9 +136,7 @@ namespace ImageViewer.Repositories
                 Log.Error(exception, "AppSettingsFileRepository SaveSettings Exception: {Message}", exception.Message);
             }
         }
-
-
-
+               
         private bool LoadSettingsInternal()
         {
             if (_dataFileLocked)

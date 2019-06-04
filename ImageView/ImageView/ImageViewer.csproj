@@ -84,7 +84,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>71C6FFC4613CC73AEB8906237393AADEE29F838E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>938FCBF976296564B8FD62EEA9A225EC17B7D72F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>
@@ -100,11 +100,10 @@
     <StartupObject>ImageViewer.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>ImageViewer_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>defaultIcon.ico</ApplicationIcon>
@@ -334,6 +333,7 @@
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Services\UserInteractionService.cs" />
     <Compile Include="Storage\AccessHelper.cs" />
+    <Compile Include="Storage\DataContractComparer.cs" />
     <Compile Include="Storage\FileBasedProperyCollection.cs" />
     <Compile Include="Storage\LocalStorageRegistryAccess.cs" />
     <Compile Include="UserControls\BookmarkPreviewOverlayUserControl.cs">
@@ -519,6 +519,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="ImageView.ruleset" />
+    <None Include="ImageViewer_TemporaryKey.pfx" />
     <None Include="Properties\DataSources\ImageView.DataContracts.Bookmark.datasource" />
     <None Include="Properties\DataSources\ImageView.DataContracts.BookmarkFolder.datasource" />
     <None Include="Properties\DataSources\ImageView.Models.ImageInformationModel.datasource" />
