@@ -29,6 +29,8 @@ namespace ImageViewer.Services
             _protectedMemoryStorageKey = new SecureRandomGenerator().GetAlphaNumericString(256);
             _directory = ApplicationBuildConfig.UserDataPath;
 
+            applicationSettingsService.LoadSettings();
+
             _passwordStorage = new PasswordStorage();
             _passwordStorage.Set(_protectedMemoryStorageKey, GetDefaultPassword());
         }
@@ -79,10 +81,13 @@ namespace ImageViewer.Services
             {
                 string defaultKey = _applicationSettingsService.Settings.DefaultKey;
 
-                if (defaultKey != null && defaultKey.Length == 256) return defaultKey;
+                if (defaultKey != null && defaultKey.Length == 256)
+                    return defaultKey;
+
                 string previousKey = defaultKey;
                 defaultKey = new SecureRandomGenerator().GetAlphaNumericString(256);
                 _applicationSettingsService.Settings.DefaultKey = defaultKey;
+                _applicationSettingsService.SetSettingsStateModified();
                 _applicationSettingsService.SaveSettings();
                 Log.Information("New default bookmark key was created and saved. Previous key was: {previousKey}", previousKey);
 

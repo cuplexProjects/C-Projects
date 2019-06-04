@@ -40,6 +40,7 @@ namespace ImageViewer.Services
                 if (!result)
                 {
                     _fileRepository = new AppSettingsFileRepository();
+                    _fileRepository.SaveSettings();
                 }
 
                 result = result & _registryRepository.TryReadObjectFromRegistry(out _registryAppSettings);
@@ -69,6 +70,10 @@ namespace ImageViewer.Services
             return new ApplicationSettingsService(appSettingsFileRepository,new LocalStorageRegistryAccess(Application.CompanyName,Application.ProductName));
         }
 
+        public void SetSettingsStateModified()
+        {
+            _fileRepository.NotifySettingsChanged();
+        }
 
         public ImageViewApplicationSettings Settings
         {
@@ -141,11 +146,20 @@ namespace ImageViewer.Services
 
         private void _appSettingsFileRepository_LoadSettingsCompleted(object sender, EventArgs e)
         {
-            _applicationSettings = _fileRepository.AppSettings;
+            if (_fileRepository.AppSettings != null)
+            {
+                _applicationSettings = _fileRepository.AppSettings;
+            }
+            
         }
         public bool SaveSettings()
         {
             bool result = true;
+
+            if (_applicationSettings==null)
+            {
+                throw new InvalidOperationException("Cant save uninitialized Null settings");
+            }
 
             if (_registryRepository is LocalStorageRegistryAccess registryAccessStorage)
             {
@@ -154,7 +168,11 @@ namespace ImageViewer.Services
 
             try
             {
-                result = result & _fileRepository.SaveSettings();
+                result = _fileRepository.SaveSettings();
+                if (!result)
+                {
+                    return false;
+                }
                 Settings.RemoveDuplicateEntriesWithIgnoreCase();
                 _registryRepository.SaveObjectToRegistry(Settings);
 

@@ -17,9 +17,12 @@ namespace ImageViewer
         private readonly BookmarkService _bookmarkService;
         private readonly ImageCacheService _imageCacheService;
         private long _selectedCacheSize;
+        private readonly ImageViewApplicationSettings _originalSettings;
 
         public FormSettings(BookmarkService bookmarkService, ApplicationSettingsService applicationSettingsService, ImageCacheService imageCacheService)
         {
+            applicationSettingsService.LoadSettings();
+            _originalSettings = applicationSettingsService.Settings;
             _bookmarkService = bookmarkService;
             _applicationSettingsService = applicationSettingsService;
             _imageCacheService = imageCacheService;
@@ -112,7 +115,10 @@ namespace ImageViewer
         private void btnOk_Click(object sender, EventArgs e)
         {
             var settings = _applicationSettingsService.Settings;
-
+            if (_originalSettings != settings)
+            {
+                _applicationSettingsService.SetSettingsStateModified();
+            }
 
             if (rbImgTransformNone.Checked)
                 settings.NextImageAnimation = ImageViewApplicationSettings.ChangeImageAnimation.None;

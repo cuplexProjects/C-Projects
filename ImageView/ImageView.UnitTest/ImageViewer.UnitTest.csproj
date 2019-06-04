@@ -62,6 +62,7 @@
     <Compile Include="AutofacModules\ImageViewTestModule.cs" />
     <Compile Include="BookmarkStorageTest.cs" />
     <Compile Include="Configuration\AutofacConfig.cs" />
+    <Compile Include="DataModelCompareTest.cs" />
     <Compile Include="EncryptionUnitTest.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
