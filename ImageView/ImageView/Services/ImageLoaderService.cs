@@ -27,7 +27,7 @@ namespace ImageViewer.Services
     {
         public delegate void ProgressUpdateEventHandler(object sender, ProgressEventArgs e);
 
-        private const string ImageSearchPatterb = @"^[a-zA-Z0-9_]((.+\.jpg$)|(.+\.png$)|(.+\.jpeg$)|(.+\.gif$))";
+        private const string ImageSearchPattern = @"^[a-zA-Z0-9_]((.+\.jpg$)|(.+\.png$)|(.+\.jpeg$)|(.+\.gif$))";
         private readonly Regex _fileNameRegExp;
         private readonly RandomNumberGenerator _randomNumberGenerator;
         private readonly object _threadLock;
@@ -44,7 +44,7 @@ namespace ImageViewer.Services
         public ImageLoaderService(BookmarkService bookmarkService)
         {
             _bookmarkService = bookmarkService;
-            _fileNameRegExp = new Regex(ImageSearchPatterb, RegexOptions.IgnoreCase);
+            _fileNameRegExp = new Regex(ImageSearchPattern, RegexOptions.IgnoreCase);
             _threadLock = new object();
             _progressInterval = 100;
             _randomNumberGenerator = RandomNumberGenerator.Create();

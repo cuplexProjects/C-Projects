@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autofac;
 using GeneralToolkitLib.ConfigHelper;
@@ -52,8 +53,10 @@ namespace ImageViewer
 
 
                 startupService.ScheduleAndRunStartupJobs();
+                Task.Delay(1000);
                 try
                 {
+                    
                     FormMain frmMain = scope.Resolve<FormMain>();
                     Application.Run(frmMain);
                 }

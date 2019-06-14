@@ -28,7 +28,6 @@ namespace ImageViewer.Repositories
         private const string DatabaseFilename = "thumbs.db";
         private const string DatabaseKey = "2C1D350D-B0E5-4181-8D60-CAE050132DC1";
         private readonly FileManager _fileManager;
-        private readonly ImageFactory _imageFactory;
         private readonly IMapper _mapper;
         private bool _isModified;
         private ThumbnailDatabase _thumbnailDatabase;
@@ -38,7 +37,6 @@ namespace ImageViewer.Repositories
         {
             _fileManager = fileManager;
             _mapper = mapper;
-            _imageFactory = new ImageFactory();
             _thumbnailDictionary = new ConcurrentDictionary<string, ThumbnailEntry>();
         }
 
@@ -51,7 +49,6 @@ namespace ImageViewer.Repositories
         public void Dispose()
         {
             _fileManager?.Dispose();
-            _imageFactory?.Dispose();
         }
 
         public bool LoadThumbnailDatabase()
@@ -65,7 +62,7 @@ namespace ImageViewer.Repositories
                     var thumbnailDb = storageManager.DeserializeObjectFromFile<ThumbnailDatabaseModel>(fileName, null);
                     _thumbnailDatabase = _mapper.Map<ThumbnailDatabase>(thumbnailDb);
                 }
-                catch(Exception exception)
+                catch (Exception exception)
                 {
                     Log.Error(exception, "LoadThumbnailDatabase failed");
                 }
@@ -191,7 +188,8 @@ namespace ImageViewer.Repositories
             }
             else
             {
-                var result = CreateThumbnailEntry(fullPath);
+                Image img = Image.FromFile(fullPath);
+                var result = CreateThumbnailEntry(fullPath, img);
                 return result.Item2;
             }
         }
@@ -204,7 +202,7 @@ namespace ImageViewer.Repositories
             return model;
         }
 
-        private Tuple<ThumbnailEntry, Image> CreateThumbnailEntry(string fileName)
+        private Tuple<ThumbnailEntry, Image> CreateThumbnailEntry(string fileName, Image thumbnail)
         {
             var entry = new ThumbnailEntry
             {
@@ -216,8 +214,13 @@ namespace ImageViewer.Repositories
             entry.Date = fi.LastWriteTime;
             entry.SourceImageLength = fi.Length;
 
+            if (fi.Length == 0)
+            {
+                return null;
+            }
 
-            var image = ImageProcessHelper.CreateThumbnailImage(fileName, new Size(512, 512));
+
+            var image = thumbnail;
             var rawImage = _fileManager.CreateRawImage(image);
             _fileManager.WriteImage(rawImage);
 
@@ -351,6 +354,17 @@ namespace ImageViewer.Repositories
             }
 
             return true;
+        }
+
+        public Image AddThumbnailImage(string fullPath, Image thumbnailImage)
+        {
+            var entry = CreateThumbnailEntry(fullPath, thumbnailImage);
+            if (entry == null)
+                return null;
+
+            AddThumbnailItem(entry.Item1);
+
+            return entry.Item2;
         }
     }
 }

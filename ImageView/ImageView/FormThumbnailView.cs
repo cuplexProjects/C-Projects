@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ImageViewer.DataContracts;
+using ImageViewer.Events;
 using ImageViewer.Models;
 using ImageViewer.Properties;
 using ImageViewer.Services;
@@ -80,8 +81,10 @@ namespace ImageViewer
 
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
-            if (_imageLoaderService.ImageReferenceList == null)
-                return;
+            //if (_imageLoaderService.ImageReferenceList == null)
+            //    return;
+
+
 
             HideMaximizedView();
             SetUpdateDatabaseEnabledState(false);
@@ -105,7 +108,7 @@ namespace ImageViewer
 
         private void BindAndLoadThumbnails()
         {
-            CleanupPictureControlObjects();
+            Invoke(new EventHandler(CleanupPictureControlObjects));
             _pictureBoxList = GenerateThumbnails();
 
             if (!IsDisposed)
@@ -115,7 +118,7 @@ namespace ImageViewer
             GC.Collect();
         }
 
-        private void CleanupPictureControlObjects()
+        private void CleanupPictureControlObjects(object sender, EventArgs e)
         {
             if (_pictureBoxList != null)
             {
@@ -171,6 +174,9 @@ namespace ImageViewer
                     BackColor = backColor,
                     Tag = element.CompletePath
                 };
+
+                if (pictureBox.Image == null)
+                    continue;
 
                 pictureBox.MouseClick += PictureBox_MouseClick;
                 pictureBoxes.Add(pictureBox);

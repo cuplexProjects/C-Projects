@@ -8,6 +8,7 @@ using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Storage;
 using GeneralToolkitLib.Storage.Models;
 using ImageViewer.DataContracts;
+using ImageViewer.Storage;
 using ImageViewer.Utility;
 using JetBrains.Annotations;
 using Serilog;
@@ -27,7 +28,9 @@ namespace ImageViewer.Repositories
         public event EventHandler SaveSettingsCompleted;
 
         private ImageViewApplicationSettings _appSettings;
+        private ImageViewApplicationSettings _cmpSettings;
         private readonly ManualResetEvent _fileAccessWaitHandle;
+        private bool _isDirty;
 
 
         public ImageViewApplicationSettings AppSettings
@@ -38,6 +41,7 @@ namespace ImageViewer.Repositories
                 {
                     LoadSettings();
                 }
+                _isDirty = EvaluateIsDirty();
                 return _appSettings;
             }
         }
@@ -48,11 +52,26 @@ namespace ImageViewer.Repositories
             _fileAccessWaitHandle.Set();
         }
 
-        public bool IsDirty { get; private set; }
+        public bool IsDirty
+        {
+            get => _isDirty;
+            private set => _isDirty = value;
+        }
 
         public void NotifySettingsChanged()
         {
             IsDirty = true;
+        }
+
+        private bool EvaluateIsDirty()
+        {
+            if (_cmpSettings == null)
+            {
+                return true;
+            }
+
+            DataContractComparer<ImageViewApplicationSettings> compareSettings = new DataContractComparer<ImageViewApplicationSettings>(_cmpSettings);
+            return compareSettings.Equals(_appSettings);
         }
 
         public bool SaveSettings()
@@ -180,7 +199,7 @@ namespace ImageViewer.Repositories
                     }
 
                 }
-
+                
                 IsDirty = false;
                 result = true;
             }
@@ -222,11 +241,13 @@ namespace ImageViewer.Repositories
         private void OnLoadSettingsCompleted()
         {
             LoadSettingsCompleted?.Invoke(this, EventArgs.Empty);
+            _cmpSettings = _appSettings;
         }
 
         private void OnSaveSettingsCompleted()
         {
             SaveSettingsCompleted?.Invoke(this, EventArgs.Empty);
+            _cmpSettings = _appSettings;
         }
     }
 }

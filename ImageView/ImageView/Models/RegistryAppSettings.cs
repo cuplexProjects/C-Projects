@@ -4,7 +4,7 @@ using System.Reflection;
 namespace ImageViewer.Models
 {
     /// <summary>
-    /// AppSettingsRepository
+    /// AppSettingsInRegistry
     /// </summary>
     public class RegistryAppSettings
     {

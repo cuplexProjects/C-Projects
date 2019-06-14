@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Converters;
-using ImageProcessor;
 using ImageViewer.DataContracts;
 using ImageViewer.Models;
 using JetBrains.Annotations;
@@ -21,25 +20,25 @@ namespace ImageViewer.Managers
         private const string TemporaryDatabaseFilename = "temp.ibd";
         private const string DatabaseImgDataFilename = "thumbs.ibd";
         private readonly object _fileOperationLock = new object();
-        private readonly ImageFactory _imageFactory;
+        private readonly ImageManager _imageManager;
+        
 
         [UsedImplicitly]
-        public FileManager()
+        public FileManager(ImageManager imageManager)
         {
+            _imageManager = imageManager;
             _fileName = Path.Combine(ApplicationBuildConfig.UserDataPath, DatabaseImgDataFilename);
             _directoryAccessDictionary = new Dictionary<string, bool>();
-            _imageFactory = new ImageFactory();
         }
 
-        public FileManager(string fileName)
+        public FileManager(string fileName, ImageManager imageManager)
         {
             _fileName = fileName;
+            _imageManager = imageManager;
             _directoryAccessDictionary = new Dictionary<string, bool>();
         }
 
         public bool IsLocked { get; private set; }
-
-
 
         public RawImage ReadRawImageFromDatabase(ThumbnailEntryModel thumbnail)
         {
@@ -69,6 +68,11 @@ namespace ImageViewer.Managers
 
         public Image ReadImageFromDatabase(ThumbnailEntry thumbnail)
         {
+            if (thumbnail.Length == 0)
+            {
+                
+                return null;
+            }
             lock (_fileOperationLock)
             {
                 if (_fileStream == null)
@@ -79,12 +83,12 @@ namespace ImageViewer.Managers
                 _fileStream.Position = thumbnail.FilePosition;
 
                 var sr = new BinaryReader(_fileStream);
-                _imageFactory.Reset();
-                _imageFactory.Load(sr.ReadBytes(thumbnail.Length));
+
+                Image img= _imageManager.LoadFromByteArray(sr.ReadBytes(thumbnail.Length));
                 
                 _fileStream.Unlock(thumbnail.FilePosition, thumbnail.Length);
 
-                return _imageFactory.Image;
+                return img;
             }
         }
 
@@ -129,7 +133,10 @@ namespace ImageViewer.Managers
         {
             if (_fileStream == null)
             {
-                _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                lock (_fileOperationLock)
+                {
+                    _fileStream = File.Open(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                }
             }
             else
             {
@@ -164,8 +171,11 @@ namespace ImageViewer.Managers
                 {
 
                     var buffer = new byte[entry.Length];
-                    _fileStream.Position = entry.FilePosition;
-                    _fileStream.Read(buffer, 0, entry.Length);
+                    lock (_fileOperationLock)
+                    {
+                        _fileStream.Position = entry.FilePosition;
+                        _fileStream.Read(buffer, 0, entry.Length);
+                    }
 
                     entry.FilePosition = temporaryDatabaseFile.Position;
                     temporaryDatabaseFile.Write(buffer, 0, entry.Length);
@@ -185,14 +195,21 @@ namespace ImageViewer.Managers
             finally
             {
                 temporaryDatabaseFile?.Close();
-                _fileStream?.Close();
-                _fileStream = null;
+                lock (_fileOperationLock)
+                {
+                    _fileStream?.Close();
+                    _fileStream = null;
+                }
+                
             }
         }
 
         private void SaveToDisk()
         {
-            _fileStream?.Flush(true);
+            lock (_fileOperationLock)
+            {
+                _fileStream?.Flush(true);
+            }
         }
 
         public bool WriteToDisk()
@@ -200,14 +217,20 @@ namespace ImageViewer.Managers
             bool result = false;
             if (_fileStream != null)
             {
-                if (_fileStream.CanWrite)
+                lock (_fileOperationLock)
                 {
-                    _fileStream.Flush(true);
-                    result = true;
+                    if (_fileStream.CanWrite)
+                    {
+                        _fileStream.Flush(true);
+                        result = true;
+                    }
                 }
 
-                _fileStream.Close();
-                _fileStream = null;
+                lock (_fileOperationLock)
+                {
+                    _fileStream.Close();
+                    _fileStream = null;
+                }
             }
 
             return result;
@@ -309,14 +332,9 @@ namespace ImageViewer.Managers
 
         public RawImage CreateRawImage(Image image)
         {
-            _imageFactory.Reset();
-            _imageFactory.Load(image);
-            using (var ms = new MemoryStream())
-            {
-                _imageFactory.Save(ms);
-                ms.Flush();
-                return new RawImage(ms.ToArray());
-            }
+            RawImage rawImage= _imageManager.CreateRawImageFromImage(image);
+
+            return rawImage;
         }
     }
 }

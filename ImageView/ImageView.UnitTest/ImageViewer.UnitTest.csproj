@@ -105,7 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac">
-      <Version>4.8.1</Version>
+      <Version>4.9.2</Version>
     </PackageReference>
     <PackageReference Include="Autofac.Extras.Moq">
       <Version>4.3.0</Version>
@@ -114,22 +114,19 @@
       <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="AutoMapper">
-      <Version>8.0.0</Version>
+      <Version>8.1.1</Version>
     </PackageReference>
     <PackageReference Include="Destructurama.Attributed">
       <Version>2.0.0</Version>
     </PackageReference>
-    <PackageReference Include="ImageProcessor">
-      <Version>2.6.2.25</Version>
-    </PackageReference>
     <PackageReference Include="JetBrains.Annotations">
-      <Version>2018.3.0</Version>
+      <Version>2019.1.1</Version>
     </PackageReference>
     <PackageReference Include="Moq">
-      <Version>4.10.1</Version>
+      <Version>4.11.0</Version>
     </PackageReference>
     <PackageReference Include="morelinq">
-      <Version>3.1.0</Version>
+      <Version>3.1.1</Version>
     </PackageReference>
     <PackageReference Include="MoreLinq.Source.MoreEnumerable.DistinctBy">
       <Version>1.0.2</Version>
@@ -137,7 +134,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="NSubstitute">
-      <Version>3.1.0</Version>
+      <Version>4.2.0</Version>
     </PackageReference>
     <PackageReference Include="protobuf-net">
       <Version>2.4.0</Version>
@@ -146,13 +143,13 @@
       <Version>2.8.0</Version>
     </PackageReference>
     <PackageReference Include="Serilog.Enrichers.Thread">
-      <Version>3.0.0</Version>
+      <Version>3.1.0</Version>
     </PackageReference>
     <PackageReference Include="Serilog.Sinks.Console">
       <Version>3.1.1</Version>
     </PackageReference>
     <PackageReference Include="Serilog.Sinks.PeriodicBatching">
-      <Version>2.1.1</Version>
+      <Version>2.2.0</Version>
     </PackageReference>
     <PackageReference Include="Serilog.Sinks.Trace">
       <Version>2.1.0</Version>

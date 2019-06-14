@@ -156,6 +156,7 @@ namespace ImageViewer
             _applicationSettingsService.Settings.AutomaticUpdateCheck = ChkAutomaticallyCheckForUpdates.Checked;
             _imageCacheService.CacheSize = _selectedCacheSize;
 
+            _applicationSettingsService.SetSettingsStateModified();
              _applicationSettingsService.SaveSettings();
             Close();
         }

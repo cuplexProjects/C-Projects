@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using ImageViewer.Managers;
 using ImageViewer.Models;
 using ImageViewer.Repositories;
 using ImageViewer.Utility;
 using JetBrains.Annotations;
+using Serilog;
 
 namespace ImageViewer.Services
 {
@@ -69,7 +72,28 @@ namespace ImageViewer.Services
         {
             lock (CacheLock)
             {
-                var image = _imageCacheRepository.GetImageFromCache(fileName).GetImage(ImageProcessHelper.GetImageFromByteArray);
+                var image = _imageCacheRepository.GetImageFromCache(fileName).GetImage(ImageManager.GetImageFromByteArray);
+
+                // Exception was thrown and handled
+                if (image == null)
+                {
+                    _imageCacheRepository.RemoveImageFromCache(fileName);
+                    if (File.Exists(fileName))
+                    {
+                        try
+                        {
+                            image = Image.FromFile(fileName);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, $"Fail loading the current image file {fileName}");
+
+                            // To avoid program failure
+                            image = new Bitmap(500, 500);
+                        }
+                    }
+                }
+
                 return image;
             }
         }

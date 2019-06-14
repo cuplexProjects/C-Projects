@@ -25,12 +25,14 @@ namespace ImageViewer.Managers
         private bool _isRunningThumbnailScan;
         private readonly ThumbnailRepository _thumbnailRepository;
         private readonly FileManager _fileManager;
+        private readonly ImageManager _imageManager;
 
 
-        public ThumbnailManager(ThumbnailRepository thumbnailRepository, FileManager fileManager)
+        public ThumbnailManager(ThumbnailRepository thumbnailRepository, FileManager fileManager, ImageManager imageManager)
         {
             _thumbnailRepository = thumbnailRepository;
             _fileManager = fileManager;
+            _imageManager = imageManager;
 
             _fileNameRegExp = new Regex(ImageSearchPattern, RegexOptions.IgnoreCase);
         }
@@ -144,9 +146,9 @@ namespace ImageViewer.Managers
                 return imgFromCache;
             }
 
+            Image thumbnailImage= _imageManager.CreateThumbnail(fullPath, new Size(512,512));
 
-
-            return _thumbnailRepository.GetThumbnailImage(fullPath);
+            return _thumbnailRepository.AddThumbnailImage(fullPath, thumbnailImage);
 
         }
 

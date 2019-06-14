@@ -110,7 +110,7 @@ namespace ImageViewer
             return true;
         }
 
-        private bool AllowAplicatonExit()
+        private bool AllowApplicationExit()
         {
             if (!_applicationSettingsService.Settings.ConfirmApplicationShutdown)
             {
@@ -150,6 +150,13 @@ namespace ImageViewer
                 pictureBox1.BackColor = settings.MainWindowBackgroundColor.ToColor();
                 BackColor = settings.MainWindowBackgroundColor.ToColor();
             }
+
+            if (settings.ExtendedAppSettings.FormStateDictionary.ContainsKey(this.GetType().Name))
+            {
+                var formState = settings.ExtendedAppSettings.FormStateDictionary[this.GetType().Name];
+                RestoreFormState.SetFormSizeAndPosition(this, formState);
+            }
+            
         }
 
         private void ChangeImage(bool next)
@@ -581,7 +588,7 @@ namespace ImageViewer
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!AllowAplicatonExit())
+            if (!AllowApplicationExit())
             {
                 e.Cancel = true;
                 return;
@@ -594,7 +601,8 @@ namespace ImageViewer
 
             timerSlideShow.Enabled = false;
             _bookmarkService.SaveBookmarks();
-            _applicationSettingsService.Settings.ExtendedAppSettings.UpdateOrInsertFormState(RestoreFormState.GetFormState(this));
+            _applicationSettingsService.UpdateOrInsertFormState(RestoreFormState.GetFormState(this));
+            _applicationSettingsService.SetSettingsStateModified();
             _applicationSettingsService.SaveSettings();
         }
 

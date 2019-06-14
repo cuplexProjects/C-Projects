@@ -4,7 +4,8 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using GeneralToolkitLib.Converters;
-using ImageProcessor;
+using ImageProcessor.Imaging.Formats;
+using ImageViewer.Managers;
 using ImageViewer.Models;
 using ImageViewer.Services;
 using JetBrains.Annotations;
@@ -15,16 +16,16 @@ namespace ImageViewer.Repositories
     public class ImageCacheRepository : RepositoryBase, IDisposable
     {
         private readonly Dictionary<string, CachedImage> _cachedImages;
-        private readonly ImageFactory _imageFactory;
+        private readonly ImageManager _imageManager;
         private long _cacheSize;
         private long _maxCacheSize;
         private bool _cacheSizeIsValid = false;
 
 
-        public ImageCacheRepository()
+        public ImageCacheRepository(ImageManager imageManager)
         {
+            _imageManager = imageManager;
             _cachedImages = new Dictionary<string, CachedImage>();
-            _imageFactory = new ImageFactory();
             _maxCacheSize = ImageCacheService.DefaultCacheSize;
         }
 
@@ -67,18 +68,13 @@ namespace ImageViewer.Repositories
 
         private byte[] ImageConverter(string fileName)
         {
-            _imageFactory.Load(fileName);
-            using (var ms = new MemoryStream())
-            {
-                _imageFactory.Image.Save(ms, ImageFormat.Jpeg);
-                ms.Flush();
-                return ms.ToArray();
-            }
+            byte[] imgByteArray = _imageManager.GetImageByteArray(fileName, new JpegFormat());
+            return imgByteArray;
         }
 
         public void Dispose()
         {
-            _imageFactory?.Dispose();
+
         }
 
         public void SetCacheSize(long cacheSize, ImageCacheService.CacheTruncatePriority truncatePriority)
@@ -124,6 +120,14 @@ namespace ImageViewer.Repositories
                     _cachedImages.Remove(oldestImageFilename);
                     _cacheSizeIsValid = false;
                 }
+            }
+        }
+
+        public void RemoveImageFromCache(string fileName)
+        {
+            if (_cachedImages.ContainsKey(fileName))
+            {
+                _cachedImages.Remove(fileName);
             }
         }
     }

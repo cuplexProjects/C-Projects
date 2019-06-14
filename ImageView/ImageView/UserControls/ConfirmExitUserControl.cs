@@ -22,6 +22,7 @@ namespace ImageViewer.UserControls
         private void chkDisableExitDialog_CheckedChanged(object sender, EventArgs e)
         {
             _applicationSettingsService.Settings.ConfirmApplicationShutdown = !chkDisableExitDialog.Checked;
+            _applicationSettingsService.SetSettingsStateModified();
         }
 
         private void btnOk_Click(object sender, EventArgs e)

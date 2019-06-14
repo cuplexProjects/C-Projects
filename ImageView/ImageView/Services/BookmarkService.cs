@@ -65,11 +65,15 @@ namespace ImageViewer.Services
 
         public bool SaveBookmarks(bool savedAsync = false)
         {
+            bool result = true;
             lock (LockObj)
             {
-                string password = _passwordStorage.Get(_protectedMemoryStorageKey);
-                bool result = _bookmarkManager.SaveToFile(Path.Combine(_directory, BookmarkFileName), password);
-                Log.Debug("SaveBookmarks called with Result: {result}, SavedAsync: {savedAsync}, ManagedThreadId: {ManagedThreadId}", result, savedAsync, Thread.CurrentThread.ManagedThreadId);
+                if (_bookmarkManager.IsModified)
+                {
+                    string password = _passwordStorage.Get(_protectedMemoryStorageKey);
+                    result = _bookmarkManager.SaveToFile(Path.Combine(_directory, BookmarkFileName), password);
+                    Log.Debug("SaveBookmarks called with Result: {result}, SavedAsync: {savedAsync}, ManagedThreadId: {ManagedThreadId}", result, savedAsync, Thread.CurrentThread.ManagedThreadId);
+                }
 
                 return result;
             }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 using GeneralToolkitLib.Converters;
+using ImageViewer.Utility;
 
 namespace ImageViewer.DataContracts
 {
@@ -96,7 +97,7 @@ namespace ImageViewer.DataContracts
                 ConfirmApplicationShutdown = true,
                 AutomaticUpdateCheck = true,
                 LastUpdateCheck = new DateTime(2010, 1, 1),
-                ExtendedAppSettings = AppSettingsExtendedDataModel.CreateNew(),
+                ExtendedAppSettings = ApplicationSettingsHelper.Create(),
                 ImageCacheSize = 134217728, // 128 Mb,
                 ToggleSlideshowWithThirdMouseButton = true,
             };

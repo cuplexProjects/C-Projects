@@ -11,7 +11,7 @@ namespace ImageViewer.DataContracts
     [DataContract(Name = "AppSettingsExtendedDataModel")]
     public class AppSettingsExtendedDataModel
     {
-        protected AppSettingsExtendedDataModel()
+        public AppSettingsExtendedDataModel()
         {
 
         }
@@ -50,34 +50,12 @@ namespace ImageViewer.DataContracts
         /// </value>
         [DataMember(Name = "BookmarksShowOverlayWindow", Order = 4)]
         public bool BookmarksShowOverlayWindow { get; set; }
-
-        public static AppSettingsExtendedDataModel CreateNew()
-        {
-            var appSettings = new AppSettingsExtendedDataModel { AppSettingsUUID = Guid.NewGuid(), 
-                FormStateDictionary = new Dictionary<string, FormSizeAndPositionModel>(), 
-                BookmarksShowMaximizedImageArea = false, 
-                BookmarksShowOverlayWindow = false };
-
-            return appSettings;
-        }
-
+        
         public void InitFormDictionary()
         {
             if (FormStateDictionary == null)
             {
                 FormStateDictionary = new Dictionary<string, FormSizeAndPositionModel>();
-            }
-        }
-
-        public void UpdateOrInsertFormState(FormSizeAndPositionModel formState)
-        {
-            if (FormStateDictionary.ContainsKey(formState.FormType))
-            {
-                FormStateDictionary[formState.FormType] = formState;
-            }
-            else
-            {
-                FormStateDictionary.Add(formState.FormType, formState);
             }
         }
     }

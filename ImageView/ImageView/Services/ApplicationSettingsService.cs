@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using GeneralToolkitLib.Storage.Registry;
@@ -12,6 +13,7 @@ using ImageViewer.Utility;
 using JetBrains.Annotations;
 using Serilog;
 
+
 namespace ImageViewer.Services
 {
     [UsedImplicitly]
@@ -24,7 +26,7 @@ namespace ImageViewer.Services
 
         public string ProductName { get; } = Application.ProductName;
 
-        
+
         private ImageViewApplicationSettings _applicationSettings;
         private RegistryAppSettings _registryAppSettings;
 
@@ -67,7 +69,7 @@ namespace ImageViewer.Services
         // Unit tests
         public static ApplicationSettingsService CreateService(AppSettingsFileRepository appSettingsFileRepository)
         {
-            return new ApplicationSettingsService(appSettingsFileRepository,new LocalStorageRegistryAccess(Application.CompanyName,Application.ProductName));
+            return new ApplicationSettingsService(appSettingsFileRepository, new LocalStorageRegistryAccess(Application.CompanyName, Application.ProductName));
         }
 
         public void SetSettingsStateModified()
@@ -89,10 +91,10 @@ namespace ImageViewer.Services
 
                 return _applicationSettings;
             }
-            private set { _applicationSettings = value; }
+            private set => _applicationSettings = value;
         }
 
-        public RegistryAppSettings AppSettingsRepository
+        public RegistryAppSettings AppSettingsInRegistry
         {
             get
             {
@@ -150,13 +152,13 @@ namespace ImageViewer.Services
             {
                 _applicationSettings = _fileRepository.AppSettings;
             }
-            
+
         }
         public bool SaveSettings()
         {
             bool result = true;
 
-            if (_applicationSettings==null)
+            if (_applicationSettings == null)
             {
                 throw new InvalidOperationException("Cant save uninitialized Null settings");
             }
@@ -188,6 +190,22 @@ namespace ImageViewer.Services
             return result;
         }
 
+        public void UpdateOrInsertFormState(FormSizeAndPositionModel formState)
+        {
+            if (_fileRepository.AppSettings.ExtendedAppSettings.FormStateDictionary == null)
+            {
+                _fileRepository.AppSettings.ExtendedAppSettings.InitFormDictionary();
+            }
+
+            if (_fileRepository.AppSettings.ExtendedAppSettings.FormStateDictionary.ContainsKey(formState.FormType))
+            {
+                _fileRepository.AppSettings.ExtendedAppSettings.FormStateDictionary[formState.FormType] = formState;
+            }
+            else
+            {
+                _fileRepository.AppSettings.ExtendedAppSettings.FormStateDictionary.Add(formState.FormType, formState);
+            }
+        }
 
         public void RegisterFormStateOnClose(Form form)
         {
