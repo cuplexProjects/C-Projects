@@ -87,14 +87,13 @@
     <ManifestCertificateThumbprint>EC190E9F8470CCC2FF252F9724DE2EB9FDA35C86</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>ImageViewer_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>ImageViewer.Program</StartupObject>
@@ -126,6 +125,8 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -412,6 +413,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\SortableBindingList.cs" />
+    <Compile Include="Utility\ModelConverters.cs" />
     <Compile Include="Utility\RestoreFormState.cs" />
     <Compile Include="Utility\SecurityHelper.cs" />
     <Compile Include="Utility\SystemIOHelper.cs" />
@@ -573,12 +575,6 @@
     <Folder Include="Library\Extensions\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GeneralToolkitLib\GeneralToolkitLib\GeneralToolkitLib.csproj">
-      <Project>{18b7c1dc-cb9b-4b4f-b3bb-40e79b277dd9}</Project>
-      <Name>GeneralToolkitLib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Autofac">
       <Version>4.9.2</Version>
     </PackageReference>
@@ -649,6 +645,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeneralToolkitLib\GeneralToolkitLib\GeneralToolkitLib.csproj">
+      <Project>{18b7c1dc-cb9b-4b4f-b3bb-40e79b277dd9}</Project>
+      <Name>GeneralToolkitLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

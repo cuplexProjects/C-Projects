@@ -43,8 +43,8 @@ namespace GeneralToolkitLib.DataTypes
 
         public UInt128(ulong mostSignificant, ulong leastSignificant)
         {
-            this._mostSignificant = mostSignificant;
-            this._leastSignificant = leastSignificant;
+            _mostSignificant = mostSignificant;
+            _leastSignificant = leastSignificant;
         }
 
         public UInt128(BigInteger value) : this((ulong) (value >> 64), (ulong) (value & ulong.MaxValue))
@@ -97,8 +97,7 @@ namespace GeneralToolkitLib.DataTypes
 
         public static bool TryParse(string value, NumberStyles style, IFormatProvider provider, out UInt128 result)
         {
-            BigInteger bigIntegerValue;
-            bool success = BigInteger.TryParse(value, style, provider, out bigIntegerValue);
+            bool success = BigInteger.TryParse(value, style, provider, out var bigIntegerValue);
             if (success && (bigIntegerValue < 0 || bigIntegerValue > MaxValue))
             {
                 result = Zero;
@@ -115,19 +114,19 @@ namespace GeneralToolkitLib.DataTypes
 
         public bool Equals(UInt128 other)
         {
-            return this._mostSignificant == other._mostSignificant && this._leastSignificant == other._leastSignificant;
+            return _mostSignificant == other._mostSignificant && _leastSignificant == other._leastSignificant;
         }
 
         public override bool Equals(object obj)
         {
-            return (obj is UInt128) && this.Equals((UInt128) obj);
+            return (obj is UInt128) && Equals((UInt128) obj);
         }
 
         public int CompareTo(UInt128 other)
         {
-            if (this._mostSignificant != other._mostSignificant)
-                return this._mostSignificant.CompareTo(other._mostSignificant);
-            return this._leastSignificant.CompareTo(other._leastSignificant);
+            if (_mostSignificant != other._mostSignificant)
+                return _mostSignificant.CompareTo(other._mostSignificant);
+            return _leastSignificant.CompareTo(other._leastSignificant);
         }
 
         public static bool operator ==(UInt128 value1, UInt128 value2)
@@ -227,34 +226,34 @@ namespace GeneralToolkitLib.DataTypes
 
         public override int GetHashCode()
         {
-            return Sequence.GetHashCode(this._mostSignificant, this._leastSignificant);
+            return Sequence.GetHashCode(_mostSignificant, _leastSignificant);
         }
 
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return (this._mostSignificant).ToString(format, formatProvider) + (this._leastSignificant).ToString(format, formatProvider);
+            return (_mostSignificant).ToString(format, formatProvider) + (_leastSignificant).ToString(format, formatProvider);
         }
 
         public string ToString(string format)
         {
-            return this.ToString(format, CultureInfo.CurrentCulture);
+            return ToString(format, CultureInfo.CurrentCulture);
         }
 
         public string ToString(IFormatProvider provider)
         {
-            return this.ToString("G", provider);
+            return ToString("G", provider);
         }
 
         public override string ToString()
         {
-            return this.ToString(CultureInfo.CurrentCulture);
+            return ToString(CultureInfo.CurrentCulture);
         }
 
         private BigInteger ToBigInteger()
         {
-            BigInteger value = this._mostSignificant;
+            BigInteger value = _mostSignificant;
             value <<= 64;
-            value += this._leastSignificant;
+            value += _leastSignificant;
             return value;
         }
     }

@@ -13,8 +13,9 @@ using GeneralToolkitLib.Barcode;
 using GeneralToolkitLib.Utility;
 using GeneralToolkitLib.Utility.RandomGenerator;
 using Serilog;
+using WiFiPasswordGenerator.ApplicationSettings;
 using WiFiPasswordGenerator.Properties;
-using WiFiPasswordGenerator.Settings;
+
 
 namespace WiFiPasswordGenerator
 {
@@ -23,13 +24,14 @@ namespace WiFiPasswordGenerator
     /// </summary>
     public partial class MainForm : Form
     {
-        private const int MainPanelBorderWith = 1;
-        private const int MaxPasswordLength = 500;
-
         private readonly ActiveSettings _activeSettings;
         private readonly Pen _innerPen;
         private readonly Pen _outerPen;
         private Size _qrOutputSize;
+        private const int MainPanelBorderWith = 1;
+        private const int MaxPasswordLength = 500;
+
+        private bool FormIsClosing { get; set; }
 
         /// <summary>
         ///     Constructor
@@ -53,9 +55,19 @@ namespace WiFiPasswordGenerator
         /// </summary>
         private void MainForm_Load(object sender, EventArgs e)
         {
+            txtSSId.CausesValidation = true;
+            txtSSId.AutoCompleteCustomSource= new AutoCompleteStringCollection();
+            Validate(true);
+            UpdateStatusLabel("");
             linkLabelLastQRPath.Text = "";
             Text = Application.ProductName + Resources.Version_ + Application.ProductVersion;
             Log.Verbose("Main form loaded");
+            FormClosing += MainForm_FormClosing;
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            FormIsClosing = true;
         }
 
         private void pnlMain_Paint(object sender, PaintEventArgs e)
@@ -64,89 +76,14 @@ namespace WiFiPasswordGenerator
             {
                 g.Clear(BackColor);
                 g.InterpolationMode = InterpolationMode.Bilinear;
-                var bordeRectangle = e.ClipRectangle;
-                bordeRectangle.Width--;
-                bordeRectangle.Height--;
-                g.DrawRectangle(_outerPen, bordeRectangle);
+                var borderRectangle = e.ClipRectangle;
+                borderRectangle.Width--;
+                borderRectangle.Height--;
+                g.DrawRectangle(_outerPen, borderRectangle);
                 g.DrawRectangle(_innerPen,
                     Rectangle.FromLTRB(MainPanelBorderWith, MainPanelBorderWith, Width - MainPanelBorderWith * 2,
                         Height - MainPanelBorderWith * 2));
             }
-        }
-
-        private void UpdateActiveSettingsFromGuiUpdate()
-        {
-            // Update QR ECC Level
-            foreach (Control control in flowLayoutQRSettings.Controls)
-            {
-                if (control is RadioButton radioButton && radioButton.Checked)
-                {
-                    switch (radioButton.Text.ToUpper()[0])
-                    {
-                        //L
-                        case (char)76:
-                            _activeSettings.QR_CodeLevel = QR_CodeLevels.L;
-                            break;
-
-                        //M
-                        case (char)77:
-                            _activeSettings.QR_CodeLevel = QR_CodeLevels.M;
-                            break;
-
-                        //Q
-                        case (char)81:
-                            _activeSettings.QR_CodeLevel = QR_CodeLevels.Q;
-                            break;
-
-                        //H
-                        case (char)72:
-                            _activeSettings.QR_CodeLevel = QR_CodeLevels.H;
-                            break;
-                    }
-
-                    break;
-                }
-            }
-
-            // Update Password Type
-            foreach (Control control in flowLayoutOutputType.Controls)
-            {
-                if (!(control is RadioButton radioButton) || !radioButton.Checked) continue;
-                if (!int.TryParse(radioButton.Tag.ToString(), out int checkBoxIndex))
-                    break;
-
-                switch (checkBoxIndex)
-                {
-                    case 0:
-                        _activeSettings.PasswordType = PasswordTypes.StandardMixedChars;
-                        break;
-                    case 1:
-                        _activeSettings.PasswordType = PasswordTypes.AlphaNumeric;
-                        break;
-                    case 2:
-                        _activeSettings.PasswordType = PasswordTypes.Numeric;
-                        break;
-                    case 3:
-                        _activeSettings.PasswordType = PasswordTypes.Base64;
-                        break;
-                    case 4:
-                        _activeSettings.PasswordType = PasswordTypes.Hex;
-                        break;
-                    default:
-                        Log.Error("checkBoxIndex unknown: " + checkBoxIndex);
-                        break;
-                }
-
-                break;
-            }
-
-            UpdateActiveSettingsFromPasswordLength();
-        }
-
-        private void UpdateActiveSettingsFromPasswordLength()
-        {
-            int passwordLnegth = int.Parse(txtPasswordLength.Text);
-            _activeSettings.PasswordLength = passwordLnegth;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -176,6 +113,8 @@ namespace WiFiPasswordGenerator
 
         private void txtPasswordLength_Validating(object sender, CancelEventArgs e)
         {
+            if (FormIsClosing) return;
+
             if (!IsValidPasswordLength())
             {
                 e.Cancel = true;
@@ -185,16 +124,6 @@ namespace WiFiPasswordGenerator
             {
                 toolTipPasswordLength.Active = false;
             }
-        }
-
-        private bool IsValidPasswordLength()
-        {
-            int keyVal;
-            var validData = false;
-            if (int.TryParse(txtPasswordLength.Text, out keyVal))
-                validData = keyVal > 0 && keyVal <= MaxPasswordLength;
-
-            return validData;
         }
 
         private void txtPasswordLength_Validated(object sender, EventArgs e)
@@ -228,28 +157,10 @@ namespace WiFiPasswordGenerator
             SetUSerDefinedQRSize(rbUserDefined.Checked);
         }
 
-        private void SetUSerDefinedQRSize(bool userDinened)
-        {
-            try
-            {
-                if (userDinened)
-                {
-                    _qrOutputSize.Width = int.Parse(txtUserDefinedQRWidth.Text);
-                    _qrOutputSize.Height = int.Parse(txtUserDefinedQRHeight.Text);
-                }
-                else
-                {
-                    _qrOutputSize = Size.Empty;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Parse error: " + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void txtUserDefinedQRWidth_Validating(object sender, CancelEventArgs e)
         {
+            if (FormIsClosing) return;
+
             var validData = false;
             if (int.TryParse(txtPasswordLength.Text, out int keyVal))
                 validData = keyVal > 0 && keyVal <= 500;
@@ -260,6 +171,8 @@ namespace WiFiPasswordGenerator
 
         private void txtUserDefinedQRHeight_Validating(object sender, CancelEventArgs e)
         {
+            if (FormIsClosing) return;
+
             var validData = false;
             if (int.TryParse(txtPasswordLength.Text, out int keyVal))
                 validData = keyVal > 0 && keyVal <= 500;
@@ -302,25 +215,6 @@ namespace WiFiPasswordGenerator
             ExportQRCodeImageToBase64PngData();
         }
 
-        private void ExportQRCodeImageToBase64PngData()
-        {
-            const int resolution = 500;
-            if (PicBoxQRCode.Image != null)
-            {
-                Clipboard.Clear();
-                var bitmap = new Bitmap(PicBoxQRCode.Image);
-                if (bitmap.Width != resolution || bitmap.Height != resolution)
-                    bitmap.SetResolution(resolution, resolution);
-
-                var memoryStream = new MemoryStream();
-                var encoderParameter = new EncoderParameter(Encoder.Quality, 100);
-                bitmap.Save(memoryStream, GetEncoderInfo(ImageFormat.Png), new EncoderParameters(1) { Param = new[] { encoderParameter } });
-                memoryStream.Position = 0;
-                Clipboard.Clear();
-                Clipboard.SetText(Convert.ToBase64String(memoryStream.ToArray(), 0, Convert.ToInt32(memoryStream.Length), Base64FormattingOptions.InsertLineBreaks), TextDataFormat.Text);
-            }
-        }
-
         private void copyToClipboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Clipboard.Clear();
@@ -340,18 +234,6 @@ namespace WiFiPasswordGenerator
             }
         }
 
-        private void ImportPasswordFromClipboard()
-        {
-            if (Clipboard.ContainsText(TextDataFormat.Text))
-            {
-                string txtData = Clipboard.GetText(TextDataFormat.Text);
-                if (!string.IsNullOrWhiteSpace(txtData) && txtData.Length > 0 && txtData.Length <= MaxPasswordLength)
-                    txtGeneratedPassword.Text = txtData;
-                else
-                    MessageBox.Show("The clipboard data did not contain a string between 1 and 500 characters long", "Invalid Password", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void setTextFromClipboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ImportPasswordFromClipboard();
@@ -360,20 +242,9 @@ namespace WiFiPasswordGenerator
         private async void generateQRCodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (IsValidPasswordLength() && IsValidSsid())
-            {
-                await GnerateQrCode();
-            }
+                await GenerateQrCode();
             else
-            {
-                MessageBox.Show(this, "Invalid password leangth or SSID", "Ivalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-        }
-
-        private bool IsValidSsid()
-        {
-            Regex ssidRegex = new Regex(@"^[\w-\.]{8,}$");
-            return txtSSId.Text.Length >= 8 && ssidRegex.IsMatch(txtSSId.Text);
+                MessageBox.Show(this, "Invalid password length or SSID", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void toolStripMenuItemImportPassword_Click(object sender, EventArgs e)
@@ -416,59 +287,213 @@ namespace WiFiPasswordGenerator
 
         private void txtSSId_Validating(object sender, CancelEventArgs e)
         {
+            if (FormIsClosing) return;
+
             if (txtSSId.Text.Length > 0 && !IsValidSsid())
             {
+                toolTipSSID.Active = true;
+                UpdateStatusLabel("SSID syntax is not correct", txtSSId);
                 e.Cancel = true;
+            }
+            else
+            {
+                if (txtSSId.Text.Length == 0)
+                {
+                    UpdateStatusLabel("");
+                }
+                toolTipSSID.Active = false;
             }
         }
 
         private void txtSSId_Validated(object sender, EventArgs e)
         {
+            toolTipSSID.Active = false;
+            if (txtSSId.Text.Length >= 4)
+            {
+                UpdateStatusLabel("SSID syntax OK");
+            }
+            
+        }
 
+        private void ToolTipSSID_Popup(object sender, PopupEventArgs e)
+        {
+            
+        }
+
+        private void UpdateActiveSettingsFromGuiUpdate()
+        {
+            // Update QR ECC Level
+            foreach (Control control in flowLayoutQRSettings.Controls)
+                if (control is RadioButton radioButton && radioButton.Checked)
+                {
+                    switch (radioButton.Text.ToUpper()[0])
+                    {
+                        //L
+                        case (char) 76:
+                            _activeSettings.QR_CodeLevel = QR_CodeLevels.L;
+                            break;
+
+                        //M
+                        case (char) 77:
+                            _activeSettings.QR_CodeLevel = QR_CodeLevels.M;
+                            break;
+
+                        //Q
+                        case (char) 81:
+                            _activeSettings.QR_CodeLevel = QR_CodeLevels.Q;
+                            break;
+
+                        //H
+                        case (char) 72:
+                            _activeSettings.QR_CodeLevel = QR_CodeLevels.H;
+                            break;
+                    }
+
+                    break;
+                }
+
+            // Update Password Type
+            foreach (Control control in flowLayoutOutputType.Controls)
+            {
+                if (!(control is RadioButton radioButton) || !radioButton.Checked) continue;
+                if (!int.TryParse(radioButton.Tag.ToString(), out int checkBoxIndex))
+                    break;
+
+                switch (checkBoxIndex)
+                {
+                    case 0:
+                        _activeSettings.PasswordType = PasswordTypes.StandardMixedChars;
+                        break;
+                    case 1:
+                        _activeSettings.PasswordType = PasswordTypes.AlphaNumeric;
+                        break;
+                    case 2:
+                        _activeSettings.PasswordType = PasswordTypes.Numeric;
+                        break;
+                    case 3:
+                        _activeSettings.PasswordType = PasswordTypes.Base64;
+                        break;
+                    case 4:
+                        _activeSettings.PasswordType = PasswordTypes.Hex;
+                        break;
+                    default:
+                        Log.Error("checkBoxIndex unknown: " + checkBoxIndex);
+                        break;
+                }
+
+                break;
+            }
+
+            UpdateActiveSettingsFromPasswordLength();
+        }
+
+        private void UpdateActiveSettingsFromPasswordLength()
+        {
+            int passwordLength = int.Parse(txtPasswordLength.Text);
+            _activeSettings.PasswordLength = passwordLength;
+        }
+
+        private bool IsValidPasswordLength()
+        {
+            int keyVal;
+            var validData = false;
+            if (int.TryParse(txtPasswordLength.Text, out keyVal))
+                validData = keyVal > 0 && keyVal <= MaxPasswordLength;
+
+            return validData;
+        }
+
+        private void SetUSerDefinedQRSize(bool userDefined)
+        {
+            try
+            {
+                if (userDefined)
+                {
+                    _qrOutputSize.Width = int.Parse(txtUserDefinedQRWidth.Text);
+                    _qrOutputSize.Height = int.Parse(txtUserDefinedQRHeight.Text);
+                }
+                else
+                {
+                    _qrOutputSize = Size.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Parse error: " + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ExportQRCodeImageToBase64PngData()
+        {
+            const int resolution = 500;
+            if (PicBoxQRCode.Image != null)
+            {
+                Clipboard.Clear();
+                var bitmap = new Bitmap(PicBoxQRCode.Image);
+                if (bitmap.Width != resolution || bitmap.Height != resolution)
+                    bitmap.SetResolution(resolution, resolution);
+
+                var memoryStream = new MemoryStream();
+                var encoderParameter = new EncoderParameter(Encoder.Quality, 100);
+                bitmap.Save(memoryStream, GetEncoderInfo(ImageFormat.Png), new EncoderParameters(1) {Param = new[] {encoderParameter}});
+                memoryStream.Position = 0;
+                Clipboard.Clear();
+                Clipboard.SetText(Convert.ToBase64String(memoryStream.ToArray(), 0, Convert.ToInt32(memoryStream.Length), Base64FormattingOptions.InsertLineBreaks), TextDataFormat.Text);
+            }
+        }
+
+        private void ImportPasswordFromClipboard()
+        {
+            if (Clipboard.ContainsText(TextDataFormat.Text))
+            {
+                string txtData = Clipboard.GetText(TextDataFormat.Text);
+                if (!string.IsNullOrWhiteSpace(txtData) && txtData.Length > 0 && txtData.Length <= MaxPasswordLength)
+                    txtGeneratedPassword.Text = txtData;
+                else
+                    MessageBox.Show("The clipboard data did not contain a string between 1 and 500 characters long", "Invalid Password", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool IsValidSsid()
+        {
+            Regex ssidRegex = new Regex(@"^[\w-\.-]{8,}$");
+            bool isValid = txtSSId.Text.Length >= 8 && ssidRegex.IsMatch(txtSSId.Text);
+
+            return isValid;
         }
 
         #region GenerateOutput Methods
 
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
+            if (!IsValidSsid() && txtSSId.Text.Length > 0)
+            {
+                MessageBox.Show(this, "QR Code was created with the password but The SSID is invalid", "Invalid characters", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
             var secureRandomGenerator = new SecureRandomGenerator();
             txtGeneratedPassword.Text = await secureRandomGenerator.GetRandomStringFromPasswordType(_activeSettings.PasswordType, _activeSettings.PasswordLength);
 
             // Always generate QR even if the SSID is invalid, but inform instead.
-            await GnerateQrCode();
-
-            // Redundent code now that the text field validation functiction prevents entering invalid characters
-            if (!IsValidSsid() && txtSSId.Text.Length > 0)
-            {
-                txtSSId.Text = "";
-                MessageBox.Show(this, "QR Code was created with the password but The SSID is invalid", "Invalid caracters", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+            btnGenerate.Enabled = false;
+            await GenerateQrCode();
+            btnGenerate.Enabled = true;
         }
 
-        private async Task GnerateQrCode()
+        private async Task GenerateQrCode()
         {
             await Task.Run(() =>
             {
                 var qrCodeGenerator = new QRCodeGenerator();
                 string enValue = _activeSettings.QR_CodeLevel.ToString();
-                var ecc = (QRCodeGenerator.ECCLevel)Enum.Parse(typeof(QRCodeGenerator.ECCLevel), enValue);
-                string encoderContent = CreateWifimetadataFormatString(txtSSId.Text, rdWPA.Checked, txtGeneratedPassword.Text, rdSSIDVisibleFalse.Checked);
+                var ecc = (QRCodeGenerator.ECCLevel) Enum.Parse(typeof(QRCodeGenerator.ECCLevel), enValue);
+                string encoderContent = CreateWifiMetadataFormatString(txtSSId.Text, rdWPA.Checked, txtGeneratedPassword.Text, rdSSIDVisibleFalse.Checked);
 
                 var qrCode = qrCodeGenerator.CreateQrCode(encoderContent, ecc);
 
                 int moduleCount = qrCode.ModuleMatrix.Count;
-                if (_qrOutputSize == Size.Empty)
-                {
-                    PicBoxQRCode.Image = qrCode.GetGraphic(Math.Min(500, PicBoxQRCode.Height) / moduleCount);
-                }
-                else
-                {
-                    PicBoxQRCode.Image = qrCode.GetGraphic(_qrOutputSize.Height / moduleCount);
-                    var b = new Bitmap(PicBoxQRCode.Image);
-                    b.SetResolution(_qrOutputSize.Width, _qrOutputSize.Height);
-                    PicBoxQRCode.Image = b;
-                    PicBoxQRCode.Invalidate();
-                }
+                PicBoxQRCode.Image = _qrOutputSize == Size.Empty ? qrCode.GetGraphic(Math.Max(500, PicBoxQRCode.Height) / moduleCount) : qrCode.GetGraphic(_qrOutputSize.Height / moduleCount);
             });
             PicBoxQRCode.Refresh();
             PicBoxQRCode.BorderStyle = BorderStyle.None;
@@ -508,8 +533,8 @@ namespace WiFiPasswordGenerator
                         var img = PicBoxQRCode.Image;
                         if (_qrOutputSize != Size.Empty)
                         {
-                            var b = new Bitmap(img);
-                            b.SetResolution(_qrOutputSize.Width, _qrOutputSize.Height);
+                            //var b = new Bitmap(img);
+                            //b.SetResolution(_qrOutputSize.Width, _qrOutputSize.Height);
                         }
 
                         img.Save(fileName, imageCodecInfo, encoderParameters);
@@ -529,15 +554,12 @@ namespace WiFiPasswordGenerator
         }
 
         // Output format is: WIFI:S:<SSID>;T:<WPA|WEP|>;P:<password>;H:<true|false|>;
-        private string CreateWifimetadataFormatString(string ssid, bool WPAEncryption, string password, bool ssidHidden)
+        private string CreateWifiMetadataFormatString(string ssid, bool wpaEncryption, string password, bool ssidHidden)
         {
             // Replace special characters in ssid
-            if (ssid.Contains(';'))
-            {
-                ssid = ssid.Replace(";", @"\;");
-            }
+            if (ssid.Contains(';')) ssid = ssid.Replace(";", @"\;");
 
-            string tValue = WPAEncryption ? "WPA" : "WEP";
+            string tValue = wpaEncryption ? "WPA" : "WEP";
             string template = $"WIFI:S:{ssid};T:{tValue};P:{password};H:{ssidHidden.ToString()}";
             return template;
         }
@@ -548,6 +570,19 @@ namespace WiFiPasswordGenerator
             return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
         }
 
+        private void UpdateStatusLabel(string text, Control focusControl=null)
+        {
+            lblStatus.Text = text;
+            focusControl?.Select();
+        }
+
         #endregion
+
+        private void TxtSSId_TextChanged(object sender, EventArgs e)
+        {
+            Validate(true);
+            txtSSId.Modified = true;
+            txtSSId.Update();
+        }
     }
 }

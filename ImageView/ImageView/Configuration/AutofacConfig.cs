@@ -1,6 +1,9 @@
 ﻿using System.Reflection;
 using Autofac;
+using Autofac.Builder;
+using Autofac.Core;
 using GeneralToolkitLib.ConfigHelper;
+using ImageViewer.Library.AutofacModules;
 
 namespace ImageViewer.Configuration
 {
@@ -9,7 +12,9 @@ namespace ImageViewer.Configuration
         public static IContainer CreateContainer()
         {
             var builder = new ContainerBuilder();
-            var thisAssembly = Assembly.GetCallingAssembly();
+            var thisAssembly = GetMainAssembly();
+
+
             Assembly[] coreAssemblies = new Assembly[2];
             var generalToolKitAssembly = AssemblyHelper.GetAssembly();
 
@@ -21,7 +26,6 @@ namespace ImageViewer.Configuration
                 builder.RegisterAssemblyModules(generalToolKitAssembly);
             }
 
-            //builder.RegisterAssemblyTypes(coreAssemlies);
             builder.RegisterAssemblyModules(thisAssembly);
             var container = builder.Build();
 
@@ -29,9 +33,11 @@ namespace ImageViewer.Configuration
             return container;
         }
 
-        public static Assembly GetAssembly()
+
+
+        public static  Assembly GetMainAssembly()
         {
-            return Assembly.GetExecutingAssembly();
+            return typeof(ImageViewer.Library.AutofacModules.ImageViewModule).Assembly;
         }
     }
 }

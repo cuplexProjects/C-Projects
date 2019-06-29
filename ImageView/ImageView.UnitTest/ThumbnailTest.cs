@@ -2,8 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Autofac;
 using AutoMapper;
 using GeneralToolkitLib.ConfigHelper;
@@ -12,13 +10,11 @@ using ImageViewer.Configuration;
 using ImageViewer.Managers;
 using ImageViewer.Repositories;
 using ImageViewer.Services;
-using ImageViewer.Storage;
 using ImageViewer.UnitTests.Properties;
 using ImageViewer.UnitTests.TestHelper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
-using NSubstitute.Proxies.CastleDynamicProxy;
-using NSubstitute.Proxies.DelegateProxy;
+
 
 namespace ImageViewer.UnitTests
 {
@@ -28,21 +24,24 @@ namespace ImageViewer.UnitTests
     {
         private static readonly string TestDirectory = ContainerFactory.GetTestDirectory();
         private static readonly string[] TestImages = { "testImg.jpg", "testImg2.jpg", "testImg3.jpg" };
-        private readonly IMapper _mapper;
-        private readonly IContainer _container;
-        private readonly ILifetimeScope _lifetimeScope;
         private static IApplicationBuildConfig _applicationBuildConfig;
 
-        public ThumbnailTest()
-        {
-            ApplicationBuildConfig.SetOverrideUserDataPath(TestDirectory);
-            _container = AutofacConfig.CreateContainer();
-            _lifetimeScope = _container.BeginLifetimeScope();
-        }
+        private IContainer _container;
+
+        private static IContainer Container { get; set; }
+        private IMapper _mapper;
+        
+        private ILifetimeScope _lifetimeScope;
+
+    
+        
+
 
         [ClassInitialize]
         public static void TestClassInit(TestContext testContext)
         {
+            //TestDirectory = testContext.TestRunDirectory;
+
             // Create test directory if it does not exist
 
             if (!Directory.Exists(TestDirectory))
@@ -53,6 +52,8 @@ namespace ImageViewer.UnitTests
             {
                 ClearTestDirectory();
             }
+
+           
 
             ApplicationBuildConfig.SetOverrideUserDataPath(TestDirectory);
 
@@ -80,12 +81,15 @@ namespace ImageViewer.UnitTests
         [TestInitialize]
         public void ThumbnailTestInitialize()
         {
-            CreateThumbnailService(_lifetimeScope);
+            _container = AutofacConfig.CreateContainer();
+            _lifetimeScope = _container.BeginLifetimeScope();
+            _mapper = _lifetimeScope.Resolve<IMapper>();
         }
 
         [TestCleanup]
         public void ThumbnailTestCleanup()
         {
+            _mapper = null;
             _lifetimeScope.Dispose();
             _container.Dispose();
         }
@@ -127,18 +131,18 @@ namespace ImageViewer.UnitTests
         public void ThumbnailLoadDatabase()
         {
             // Test database is already created by TestClassInit
+            var thumbnailService = _lifetimeScope.Resolve<ThumbnailService>();
 
-            using (var scope = _lifetimeScope.BeginLifetimeScope())
-            {
-                var thumbnailService = scope.Resolve<ThumbnailService>();
+            // save Database first
+            thumbnailService.ClearDatabase();
+            thumbnailService.SaveThumbnailDatabase();
 
 
 
-                bool result = thumbnailService.LoadThumbnailDatabase();
-                Assert.IsTrue(result, "Load thumbnail database failed");
-                Assert.AreEqual(thumbnailService.GetNumberOfCachedThumbnails(), 3, "Database did not contain 3 items");
+            bool result = thumbnailService.LoadThumbnailDatabase();
+            Assert.IsTrue(result, "Load thumbnail database failed");
+            Assert.AreEqual(thumbnailService.GetNumberOfCachedThumbnails(), 3, "Database did not contain 3 items");
 
-            }
 
         }
 
@@ -151,7 +155,7 @@ namespace ImageViewer.UnitTests
             {
                 var thumbnailService = scope.Resolve<ThumbnailService>();
                 // Verify that there are testImages.Length thumbnails created
-                Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length, "The thumbnail cache did not contain thhe right amount of images");
+                Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length, "The thumbnail cache did not contain the right amount of images");
 
                 //Remove the first file
                 File.Delete(TestDirectory + TestImages[0]);
@@ -172,7 +176,7 @@ namespace ImageViewer.UnitTests
                 var thumbnailService = scope.Resolve<ThumbnailService>();
 
                 // Verify that there are testImages.Length thumbnails created
-                Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length, "The thumbnail cache did not contain thhe right amount of images");
+                Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length, "The thumbnail cache did not contain the right amount of images");
 
                 //Modify the first file
                 var fs = File.OpenWrite(TestDirectory + TestImages[0]);
@@ -189,50 +193,14 @@ namespace ImageViewer.UnitTests
                 Assert.IsTrue(thumbnailService.GetNumberOfCachedThumbnails() == TestImages.Length - 1, "The thumbnail service did not remove a cached item");
             }
 
-            
 
-            
         }
 
-        //private async Task<bool> CreateThumbnailDatabase(ThumbnailService thumbnailService)
-        //{
-        //    return await CreateThumbnailDatabaseAsync(thumbnailService);
-        //}
-
-        //private async Task<bool> CreateThumbnailDatabaseAsync(ThumbnailService thumbnailService)
-        //{
-        //    var scanTask = Task.Factory.StartNew(() =>
-        //    {
-        //        thumbnailService.ScanDirectory(TestDirectory, false);
-        //        return thumbnailService.SaveThumbnailDatabase();
-
-
-        //    });
-
-        //    return await scanTask;
-        //}
-
-
-        private void CreateThumbnailService(ILifetimeScope lifetimeScope)
+        private ThumbnailService GetThumbnailService()
         {
-            //using (var scope = lifetimeScope.BeginLifetimeScope())
-            //{
-            //    var appSettingsFileRepository = new AppSettingsFileRepository();
-            //    appSettingsFileRepository.LoadSettings();
-            //    var applicationSettingsService = ApplicationSettingsService.CreateService(appSettingsFileRepository);
-            //    applicationSettingsService.LoadSettings();
-
-
-            //    var fileManager = new FileManager(Path.Combine(TestDirectory, ContainerFactory.ThumbnailIndexFilename));
-            //    ThumbnailRepository repository = scope.Resolve< ThumbnailRepository>();
-
-            //    var thumbnailManager = new ThumbnailManager(repository, fileManager);
-            //    thumbnailService = new ThumbnailService(thumbnailManager);
-
-
-            //    thumbnailService.BasePath.Returns(_applicationBuildConfig.UserDataPath);
-            //    thumbnailService.ScanDirectory(TestDirectory, false);
-            //}
+            return _lifetimeScope.Resolve<ThumbnailService>();
         }
+
+
     }
 }

@@ -38,7 +38,30 @@ namespace ImageViewer.Events
 
 
         public BookmarkActions BookmarkAction { get; private set; }
+
         public Type BookmarkType { get; private set; }
+    }
+
+    public delegate void AccessExceptionEvent(object sender, AccessExceptionEventArgs e);
+
+    public class AccessExceptionEventArgs : EventArgs
+    {
+        private readonly Exception _exception;
+
+        public AccessExceptionEventArgs(Exception ex)
+        {
+            _exception = ex;
+        }
+
+        public Exception GetException()
+        {
+            return _exception;
+        }
+
+        public string GetExceptionMessage()
+        {
+            return _exception?.Message;
+        }
     }
 
     [Flags]

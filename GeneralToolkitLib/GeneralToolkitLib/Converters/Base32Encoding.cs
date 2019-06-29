@@ -1,13 +1,15 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace GeneralToolkitLib.Converters
 {
+    [UsedImplicitly]
     public class Base32Encoding
     {
         public static byte[] ToBytes(string input)
         {
             if (string.IsNullOrEmpty(input))
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException(nameof(input));
 
             input = input.TrimEnd('='); //remove padding characters
             int byteCount = input.Length * 5 / 8; //this must be TRUNCATED
@@ -46,7 +48,7 @@ namespace GeneralToolkitLib.Converters
         public static string ToString(byte[] input)
         {
             if (input == null || input.Length == 0)
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException(nameof(input));
 
             int charCount = (int) Math.Ceiling(input.Length / 5d) * 8;
             char[] returnArray = new char[charCount];
@@ -94,7 +96,7 @@ namespace GeneralToolkitLib.Converters
             if (value < 123 && value > 96)
                 return value - 97;
 
-            throw new ArgumentException("Character is not a Base32 character.", "c");
+            throw new ArgumentException(@"Character is not a Base32 character.", nameof(c));
         }
 
         private static char ValueToChar(byte b)
@@ -105,7 +107,7 @@ namespace GeneralToolkitLib.Converters
             if (b < 32)
                 return (char) (b + 24);
 
-            throw new ArgumentException("Byte is not a value Base32 value.", "b");
+            throw new ArgumentException(@"Byte is not a value Base32 value.", nameof(b));
         }
     }
 }

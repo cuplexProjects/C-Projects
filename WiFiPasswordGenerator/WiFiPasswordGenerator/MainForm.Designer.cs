@@ -33,6 +33,17 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.rdWPA = new System.Windows.Forms.RadioButton();
+            this.rdWEP = new System.Windows.Forms.RadioButton();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.rdSSIDVisibleTrue = new System.Windows.Forms.RadioButton();
+            this.rdSSIDVisibleFalse = new System.Windows.Forms.RadioButton();
+            this.txtSSId = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.linkLabelLastQRPath = new System.Windows.Forms.LinkLabel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.txtPasswordTypesDescr = new System.Windows.Forms.TextBox();
@@ -86,18 +97,15 @@
             this.btnSaveQRCode = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.toolTipPasswordLength = new System.Windows.Forms.ToolTip(this.components);
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtSSId = new System.Windows.Forms.TextBox();
-            this.rdSSIDVisibleTrue = new System.Windows.Forms.RadioButton();
-            this.rdSSIDVisibleFalse = new System.Windows.Forms.RadioButton();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.rdWPA = new System.Windows.Forms.RadioButton();
-            this.rdWEP = new System.Windows.Forms.RadioButton();
+            this.toolTipSSID = new System.Windows.Forms.ToolTip(this.components);
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.bindingSourceSSID = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.flowLayoutOutputType.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -110,11 +118,7 @@
             this.contextMenuGeneratedPassword.SuspendLayout();
             this.grpImgRes.SuspendLayout();
             this.pnlUserDefinedRes.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceSSID)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -132,7 +136,129 @@
             this.groupBox1.Size = new System.Drawing.Size(685, 258);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Settings";
+            this.groupBox1.Text = "AppSettings";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.groupBox6);
+            this.groupBox4.Controls.Add(this.groupBox5);
+            this.groupBox4.Controls.Add(this.txtSSId);
+            this.groupBox4.Controls.Add(this.label4);
+            this.groupBox4.Location = new System.Drawing.Point(174, 165);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(504, 87);
+            this.groupBox4.TabIndex = 8;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "WIFI-Network properties";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.flowLayoutPanel2);
+            this.groupBox6.Location = new System.Drawing.Point(196, 7);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(160, 50);
+            this.groupBox6.TabIndex = 10;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Encryption";
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.rdWPA);
+            this.flowLayoutPanel2.Controls.Add(this.rdWEP);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(154, 31);
+            this.flowLayoutPanel2.TabIndex = 0;
+            // 
+            // rdWPA
+            // 
+            this.rdWPA.AutoSize = true;
+            this.rdWPA.Checked = true;
+            this.rdWPA.Location = new System.Drawing.Point(3, 3);
+            this.rdWPA.Name = "rdWPA";
+            this.rdWPA.Size = new System.Drawing.Size(86, 17);
+            this.rdWPA.TabIndex = 10;
+            this.rdWPA.TabStop = true;
+            this.rdWPA.Text = "WPA/WPA2";
+            this.rdWPA.UseVisualStyleBackColor = true;
+            // 
+            // rdWEP
+            // 
+            this.rdWEP.AutoSize = true;
+            this.rdWEP.Location = new System.Drawing.Point(95, 3);
+            this.rdWEP.Name = "rdWEP";
+            this.rdWEP.Size = new System.Drawing.Size(50, 17);
+            this.rdWEP.TabIndex = 11;
+            this.rdWEP.Text = "WEP";
+            this.rdWEP.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.flowLayoutPanel1);
+            this.groupBox5.Location = new System.Drawing.Point(378, 7);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(120, 50);
+            this.groupBox5.TabIndex = 9;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "SSID Visible";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.rdSSIDVisibleTrue);
+            this.flowLayoutPanel1.Controls.Add(this.rdSSIDVisibleFalse);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(114, 31);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // rdSSIDVisibleTrue
+            // 
+            this.rdSSIDVisibleTrue.AutoSize = true;
+            this.rdSSIDVisibleTrue.Checked = true;
+            this.rdSSIDVisibleTrue.Location = new System.Drawing.Point(3, 3);
+            this.rdSSIDVisibleTrue.Name = "rdSSIDVisibleTrue";
+            this.rdSSIDVisibleTrue.Size = new System.Drawing.Size(47, 17);
+            this.rdSSIDVisibleTrue.TabIndex = 10;
+            this.rdSSIDVisibleTrue.TabStop = true;
+            this.rdSSIDVisibleTrue.Text = "True";
+            this.rdSSIDVisibleTrue.UseVisualStyleBackColor = true;
+            // 
+            // rdSSIDVisibleFalse
+            // 
+            this.rdSSIDVisibleFalse.AutoSize = true;
+            this.rdSSIDVisibleFalse.Location = new System.Drawing.Point(56, 3);
+            this.rdSSIDVisibleFalse.Name = "rdSSIDVisibleFalse";
+            this.rdSSIDVisibleFalse.Size = new System.Drawing.Size(50, 17);
+            this.rdSSIDVisibleFalse.TabIndex = 11;
+            this.rdSSIDVisibleFalse.Text = "False";
+            this.rdSSIDVisibleFalse.UseVisualStyleBackColor = true;
+            // 
+            // txtSSId
+            // 
+            this.txtSSId.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.txtSSId.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.txtSSId.Location = new System.Drawing.Point(6, 60);
+            this.txtSSId.MaxLength = 64;
+            this.txtSSId.Name = "txtSSId";
+            this.txtSSId.Size = new System.Drawing.Size(350, 20);
+            this.txtSSId.TabIndex = 9;
+            this.toolTipSSID.SetToolTip(this.txtSSId, "Invalid SSID\r\nSSID must be atlest 4 caracters long and does not support\r\none or m" +
+        "ore of the caracters used.");
+            this.txtSSId.TextChanged += new System.EventHandler(this.TxtSSId_TextChanged);
+            this.txtSSId.Validating += new System.ComponentModel.CancelEventHandler(this.txtSSId_Validating);
+            this.txtSSId.Validated += new System.EventHandler(this.txtSSId_Validated);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(6, 44);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(113, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Wifi Network SSID";
             // 
             // linkLabelLastQRPath
             // 
@@ -147,6 +273,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.lblStatus);
             this.groupBox3.Controls.Add(this.txtPasswordTypesDescr);
             this.groupBox3.Controls.Add(this.flowLayoutOutputType);
             this.groupBox3.Location = new System.Drawing.Point(303, 19);
@@ -539,13 +666,13 @@
             this.generateQRCodeToolStripMenuItem1});
             this.contextMenuGeneratedPassword.Name = "contextMenuGeneratedPassword";
             this.contextMenuGeneratedPassword.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.contextMenuGeneratedPassword.Size = new System.Drawing.Size(320, 124);
+            this.contextMenuGeneratedPassword.Size = new System.Drawing.Size(318, 124);
             // 
             // copyToClipboardToolStripMenuItem
             // 
             this.copyToClipboardToolStripMenuItem.Image = global::WiFiPasswordGenerator.Properties.Resources._32text_x_nfo1;
             this.copyToClipboardToolStripMenuItem.Name = "copyToClipboardToolStripMenuItem";
-            this.copyToClipboardToolStripMenuItem.Size = new System.Drawing.Size(319, 38);
+            this.copyToClipboardToolStripMenuItem.Size = new System.Drawing.Size(317, 38);
             this.copyToClipboardToolStripMenuItem.Text = "Copy Generated Password To Clipboard";
             this.copyToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyToClipboardToolStripMenuItem_Click);
             // 
@@ -553,21 +680,21 @@
             // 
             this.setTextFromClipboardToolStripMenuItem.Image = global::WiFiPasswordGenerator.Properties.Resources._32Paste1;
             this.setTextFromClipboardToolStripMenuItem.Name = "setTextFromClipboardToolStripMenuItem";
-            this.setTextFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(319, 38);
+            this.setTextFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(317, 38);
             this.setTextFromClipboardToolStripMenuItem.Text = "Paste Text To The Generated Password Field";
             this.setTextFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.setTextFromClipboardToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(316, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(314, 6);
             // 
             // generateQRCodeToolStripMenuItem1
             // 
             this.generateQRCodeToolStripMenuItem1.Image = global::WiFiPasswordGenerator.Properties.Resources._32Chrisbanks2_Cold_Fusion_Hd_QR_scanner;
             this.generateQRCodeToolStripMenuItem1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.generateQRCodeToolStripMenuItem1.Name = "generateQRCodeToolStripMenuItem1";
-            this.generateQRCodeToolStripMenuItem1.Size = new System.Drawing.Size(319, 38);
+            this.generateQRCodeToolStripMenuItem1.Size = new System.Drawing.Size(317, 38);
             this.generateQRCodeToolStripMenuItem1.Text = "GenerateQR Code";
             this.generateQRCodeToolStripMenuItem1.Click += new System.EventHandler(this.generateQRCodeToolStripMenuItem_Click);
             // 
@@ -695,122 +822,26 @@
             this.toolTipPasswordLength.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
             this.toolTipPasswordLength.ToolTipTitle = "Invalid password length";
             // 
-            // label4
+            // toolTipSSID
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 44);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(113, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Wifi Network SSID";
+            this.toolTipSSID.Active = false;
+            this.toolTipSSID.AutomaticDelay = 1000;
+            this.toolTipSSID.IsBalloon = true;
+            this.toolTipSSID.ShowAlways = true;
+            this.toolTipSSID.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
+            this.toolTipSSID.ToolTipTitle = "Invalid SSID";
+            this.toolTipSSID.Popup += new System.Windows.Forms.PopupEventHandler(this.ToolTipSSID_Popup);
             // 
-            // txtSSId
+            // lblStatus
             // 
-            this.txtSSId.Location = new System.Drawing.Point(6, 60);
-            this.txtSSId.MaxLength = 64;
-            this.txtSSId.Name = "txtSSId";
-            this.txtSSId.Size = new System.Drawing.Size(350, 20);
-            this.txtSSId.TabIndex = 9;
-            this.txtSSId.Validating += new System.ComponentModel.CancelEventHandler(this.txtSSId_Validating);
-            this.txtSSId.Validated += new System.EventHandler(this.txtSSId_Validated);
-            // 
-            // rdSSIDVisibleTrue
-            // 
-            this.rdSSIDVisibleTrue.AutoSize = true;
-            this.rdSSIDVisibleTrue.Checked = true;
-            this.rdSSIDVisibleTrue.Location = new System.Drawing.Point(3, 3);
-            this.rdSSIDVisibleTrue.Name = "rdSSIDVisibleTrue";
-            this.rdSSIDVisibleTrue.Size = new System.Drawing.Size(47, 17);
-            this.rdSSIDVisibleTrue.TabIndex = 10;
-            this.rdSSIDVisibleTrue.TabStop = true;
-            this.rdSSIDVisibleTrue.Text = "True";
-            this.rdSSIDVisibleTrue.UseVisualStyleBackColor = true;
-            // 
-            // rdSSIDVisibleFalse
-            // 
-            this.rdSSIDVisibleFalse.AutoSize = true;
-            this.rdSSIDVisibleFalse.Location = new System.Drawing.Point(56, 3);
-            this.rdSSIDVisibleFalse.Name = "rdSSIDVisibleFalse";
-            this.rdSSIDVisibleFalse.Size = new System.Drawing.Size(50, 17);
-            this.rdSSIDVisibleFalse.TabIndex = 11;
-            this.rdSSIDVisibleFalse.Text = "False";
-            this.rdSSIDVisibleFalse.UseVisualStyleBackColor = true;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.groupBox6);
-            this.groupBox4.Controls.Add(this.groupBox5);
-            this.groupBox4.Controls.Add(this.txtSSId);
-            this.groupBox4.Controls.Add(this.label4);
-            this.groupBox4.Location = new System.Drawing.Point(174, 165);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(504, 87);
-            this.groupBox4.TabIndex = 8;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "WIFI-Network properties";
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.flowLayoutPanel1);
-            this.groupBox5.Location = new System.Drawing.Point(378, 7);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(120, 50);
-            this.groupBox5.TabIndex = 9;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "SSID Visible";
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.rdSSIDVisibleTrue);
-            this.flowLayoutPanel1.Controls.Add(this.rdSSIDVisibleFalse);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 16);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(114, 31);
-            this.flowLayoutPanel1.TabIndex = 0;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.flowLayoutPanel2);
-            this.groupBox6.Location = new System.Drawing.Point(196, 7);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(160, 50);
-            this.groupBox6.TabIndex = 10;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Encryption";
-            // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Controls.Add(this.rdWPA);
-            this.flowLayoutPanel2.Controls.Add(this.rdWEP);
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 16);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(154, 31);
-            this.flowLayoutPanel2.TabIndex = 0;
-            // 
-            // rdWPA
-            // 
-            this.rdWPA.AutoSize = true;
-            this.rdWPA.Checked = true;
-            this.rdWPA.Location = new System.Drawing.Point(3, 3);
-            this.rdWPA.Name = "rdWPA";
-            this.rdWPA.Size = new System.Drawing.Size(86, 17);
-            this.rdWPA.TabIndex = 10;
-            this.rdWPA.TabStop = true;
-            this.rdWPA.Text = "WPA/WPA2";
-            this.rdWPA.UseVisualStyleBackColor = true;
-            // 
-            // rdWEP
-            // 
-            this.rdWEP.AutoSize = true;
-            this.rdWEP.Location = new System.Drawing.Point(95, 3);
-            this.rdWEP.Name = "rdWEP";
-            this.rdWEP.Size = new System.Drawing.Size(50, 17);
-            this.rdWEP.TabIndex = 11;
-            this.rdWEP.Text = "WEP";
-            this.rdWEP.UseVisualStyleBackColor = true;
+            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblStatus.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.Location = new System.Drawing.Point(137, 68);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(232, 63);
+            this.lblStatus.TabIndex = 8;
+            this.lblStatus.Text = "Status Label";
             // 
             // MainForm
             // 
@@ -832,6 +863,14 @@
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.flowLayoutOutputType.ResumeLayout(false);
@@ -851,14 +890,7 @@
             this.grpImgRes.PerformLayout();
             this.pnlUserDefinedRes.ResumeLayout(false);
             this.pnlUserDefinedRes.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceSSID)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -930,6 +962,9 @@
         private System.Windows.Forms.RadioButton rdSSIDVisibleFalse;
         private System.Windows.Forms.TextBox txtSSId;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ToolTip toolTipSSID;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.BindingSource bindingSourceSSID;
     }
 }
 

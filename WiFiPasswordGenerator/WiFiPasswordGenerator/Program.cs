@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Windows;
 using GeneralToolkitLib.Configuration;
 using GeneralToolkitLib.Logging;
 using Serilog.Events;
+using Application = System.Windows.Forms.Application;
 
 namespace WiFiPasswordGenerator
 {

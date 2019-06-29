@@ -19,7 +19,7 @@ namespace ImageViewer.DataContracts
         /// The thumbnail entries.
         /// </value>
         [DataMember(Name = "ThumbnailEntries", Order = 1)]
-        public IList<ThumbnailEntryModel> ThumbnailEntries { get; set; }
+        public List<ThumbnailEntryModel> ThumbnailEntries { get; set; }
 
         /// <summary>
         /// Gets or sets the database identifier.

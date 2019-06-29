@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("WiFi Password Generator Made by Martin Dahl 2015")]
+[assembly: AssemblyTitle("WiFi Password Generator Made by Martin Dahl 2019")]
 [assembly: AssemblyDescription("A tool for creating random wifi passwords with QR codes")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MD")]
-[assembly: AssemblyProduct("WiFi Password Generator Made by Martin Dahl 201p")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyProduct("WiFi Password Generator Made by Martin Dahl 2019")]
+[assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("Cuplex. Email: iddt@hotmail.com")]
 [assembly: AssemblyCulture("")]
 
@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("2.1.2.*")]
-[assembly: AssemblyFileVersion("2.1.2.1")]
+[assembly: AssemblyVersion("2.2.2.*")]
+[assembly: AssemblyFileVersion("2.2.2.1")]
 [assembly: NeutralResourcesLanguage("en")]
 

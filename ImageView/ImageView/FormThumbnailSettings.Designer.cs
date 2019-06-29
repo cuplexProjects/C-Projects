@@ -233,7 +233,7 @@
             this.btnReduceCachSize.TabIndex = 2;
             this.btnReduceCachSize.Text = "Reduce cache size";
             this.btnReduceCachSize.UseVisualStyleBackColor = true;
-            this.btnReduceCachSize.Click += new System.EventHandler(this.btnReduceCachSize_Click);
+            this.btnReduceCachSize.Click += new System.EventHandler(this.btnReduceCacheSize_Click);
             // 
             // lblInfo
             // 

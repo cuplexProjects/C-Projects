@@ -81,7 +81,7 @@ namespace ImageViewer
             UpdateInformationLabels();
         }
 
-        private async void btnReduceCachSize_Click(object sender, EventArgs e)
+        private async void btnReduceCacheSize_Click(object sender, EventArgs e)
         {
             int maxSize = Convert.ToInt32(numericSize.Value);
             long truncatedSize = maxSize * 1048576;

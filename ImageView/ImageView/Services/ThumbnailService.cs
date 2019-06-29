@@ -140,7 +140,7 @@ namespace ImageViewer.Services
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "RemoveAllNonAccessableFilesAndSaveDb Exception");
+                Log.Error(ex, "RemoveAllNonAccessibleFilesAndSaveDb Exception");
             }
 
             return false;

@@ -171,7 +171,6 @@
     <Compile Include="Hashing\MD5.cs" />
     <Compile Include="Hashing\SHA256.cs" />
     <Compile Include="Hashing\SHA512.cs" />
-    <Compile Include="Logging\LogWriter.cs" />
     <Compile Include="OTP\Authenticator.cs" />
     <Compile Include="Converters\Base32Encoding.cs" />
     <Compile Include="OTP\CounterAuthenticator.cs" />
@@ -235,7 +234,7 @@
     <Compile Include="Utility\DataConverters\ObjectSerializer.cs" />
     <Compile Include="Utility\FileSystem.cs" />
     <Compile Include="Utility\KeyValueNumericValidator.cs" />
-    <Compile Include="Utility\RandomGenerator\PasswordSettings.cs" />
+    <Compile Include="Utility\PasswordSettings.cs" />
     <Compile Include="Utility\RandomGenerator\SecureRandomGenerator.cs" />
     <Compile Include="Utility\SystemInfo.cs" />
     <Compile Include="WindowsApi\AccessHelper.cs" />
@@ -304,7 +303,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="GeneralToolkitLib.csproj.DotSettings" />
     <None Include="GeneralToolkitLib.ruleset" />
     <None Include="Resources\default.ico" />
   </ItemGroup>

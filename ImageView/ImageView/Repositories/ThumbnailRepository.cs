@@ -59,8 +59,8 @@ namespace ImageViewer.Repositories
                 try
                 {
                     string fileName = Path.Combine(ApplicationBuildConfig.UserDataPath, DatabaseFilename);
-                    var thumbnailDb = storageManager.DeserializeObjectFromFile<ThumbnailDatabaseModel>(fileName, null);
-                    _thumbnailDatabase = _mapper.Map<ThumbnailDatabase>(thumbnailDb);
+                    ThumbnailDatabaseModel thumbnailDb =  storageManager.DeserializeObjectFromFile<ThumbnailDatabaseModel>(fileName, null);
+                    _thumbnailDatabase = _mapper.Map<ThumbnailDatabaseModel, ThumbnailDatabase>(thumbnailDb);
                 }
                 catch (Exception exception)
                 {

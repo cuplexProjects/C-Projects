@@ -4,6 +4,6 @@ namespace ImageViewer.Interfaces
 {
     public interface IExceptionEventHandler
     {
-        event ExceptionEventHandler OnUnexpectedException;
+        event ExceptionEventHandler OtherExceptionEventHandler;
     }
 }

@@ -91,8 +91,7 @@ namespace GeneralToolkitLib.Storage
             var attrs = Attribute.GetCustomAttributes(obj.GetType());
             bool protoBufferCompatible = attrs.OfType<DataContractAttribute>().Any();
 
-            if (progress != null)
-                progress.Report(protoBufferCompatible ? new StorageManagerProgress { ProgressPercentage = 0, Text = "Serializing using Protobuffer" } : new StorageManagerProgress { ProgressPercentage = 0, Text = "Serializing using BinaryFormatter" });
+            progress?.Report(protoBufferCompatible ? new StorageManagerProgress { ProgressPercentage = 0, Text = "Serializing using Protobuffer" } : new StorageManagerProgress { ProgressPercentage = 0, Text = "Serializing using BinaryFormatter" });
 
             if (protoBufferCompatible)
                 Serializer.NonGeneric.Serialize(msInput, obj);
@@ -166,8 +165,7 @@ namespace GeneralToolkitLib.Storage
             }
             finally
             {
-                if (output != null)
-                    output.Close();
+                output?.Close();
             }
             return true;
         }
@@ -374,8 +372,7 @@ namespace GeneralToolkitLib.Storage
                     currentBlock++;
                     taskCount++;
 
-                    if (progress != null)
-                        progress.Report(new StorageManagerProgress { ProgressPercentage = currentBlock / compressionFileHeader.NumberOfBlocks, Text = "Decoding block " + currentBlock });
+                    progress?.Report(new StorageManagerProgress { ProgressPercentage = currentBlock / compressionFileHeader.NumberOfBlocks, Text = "Decoding block " + currentBlock });
 
                     if (currentBlock == compressionFileHeader.NumberOfBlocks)
                         break;

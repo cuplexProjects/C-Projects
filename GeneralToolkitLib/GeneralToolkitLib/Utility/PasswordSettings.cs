@@ -1,4 +1,5 @@
-﻿namespace WiFiPasswordGenerator.Settings
+﻿// ReSharper disable All
+namespace GeneralToolkitLib.Utility
 {
     public enum PasswordTypes
     {

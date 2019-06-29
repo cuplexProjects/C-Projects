@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using GeneralToolkitLib.Storage.Registry;
 using ImageViewer.DataContracts;
+using ImageViewer.Events;
 using ImageViewer.Interfaces;
 using ImageViewer.Library.EventHandlers;
 using ImageViewer.Models;
@@ -17,7 +18,7 @@ using Serilog;
 namespace ImageViewer.Services
 {
     [UsedImplicitly]
-    public class ApplicationSettingsService : ServiceBase, IExceptionEventHandler
+    public sealed class ApplicationSettingsService : ServiceBase
     {
         private readonly IRegistryAccess _registryRepository;
         private readonly AppSettingsFileRepository _fileRepository;
@@ -109,8 +110,8 @@ namespace ImageViewer.Services
 
         public event EventHandler OnSettingsLoaded;
         public event EventHandler OnSettingsSaved;
-        public event EventHandler OnRegistryAccessDenied;
-        public event ExceptionEventHandler OnUnexpectedException;
+        public event AccessExceptionEvent OnRegistryAccessDenied;
+
 
         public bool LoadSettings()
         {
@@ -125,6 +126,7 @@ namespace ImageViewer.Services
             }
             catch (Exception ex)
             {
+                OnRegistryAccessDenied?.Invoke(this, new AccessExceptionEventArgs(ex));
                 Log.Error(ex, "ErrorLoading AppSettings");
             }
 
@@ -166,6 +168,7 @@ namespace ImageViewer.Services
             if (_registryRepository is LocalStorageRegistryAccess registryAccessStorage)
             {
                 result = registryAccessStorage.SecureSaveDatabaseToFile();
+
             }
 
             try
