@@ -88,7 +88,7 @@ namespace WiFiPasswordGenerator
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            pnlMain.Invalidate();
+            //pnlMain.Invalidate();
         }
 
         private void MainForm_ResizeBegin(object sender, EventArgs e)
@@ -456,7 +456,8 @@ namespace WiFiPasswordGenerator
 
         private bool IsValidSsid()
         {
-            Regex ssidRegex = new Regex(@"^[\w-\.-]{8,}$");
+            //Regex ssidRegex = new Regex(@"^(?<ok>([\w-\.])+|(\k<ok>&[\s]{1}&\k<ok>)){8,}$");
+            Regex ssidRegex = new Regex(@"^((?<a1>([\d\w-\.])+)|((\s)\k<a1>])){8,50}$");
             bool isValid = txtSSId.Text.Length >= 8 && ssidRegex.IsMatch(txtSSId.Text);
 
             return isValid;
