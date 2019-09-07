@@ -7,6 +7,7 @@ using SecureMemo.FileStorageEvents;
 using SecureMemo.FileStorageModels;
 using SecureMemo.Services;
 using SecureMemo.Utility;
+using Serilog;
 
 namespace SecureMemo
 {
@@ -108,6 +109,7 @@ namespace SecureMemo
             }
             catch (Exception ex)
             {
+                Log.Error(ex,"Error trying to open database");
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -120,6 +122,7 @@ namespace SecureMemo
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "Error trying to save database");
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

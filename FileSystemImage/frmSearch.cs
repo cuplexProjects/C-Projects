@@ -7,19 +7,22 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FileSystemImage.FileSystem;
 using FileSystemImage.FileTree;
+using Serilog;
 
 namespace FileSystemImage
 {
-    public partial class frmSearch : Form
+    public partial class FrmSearch : Form
     {
         private FileSystemDrive _fileSystemDrive;
         private CancellationTokenSource _searchCancellation;
+        private readonly ILogger _logger;
 
         private delegate void SearchCompleteEventHandler(object sender, SearchEventArgs e);
         private bool _isSearching = false;
 
-        public frmSearch()
+        public FrmSearch(ILogger logger)
         {
+            _logger = logger;
             InitializeComponent();
             _searchCancellation = new CancellationTokenSource();
         }
@@ -37,13 +40,13 @@ namespace FileSystemImage
         {
             const int padding = 20;
             const int innerPadding = 6;
-            grpSearch.Width = Width - padding*2;
+            grpSearch.Width = Width - padding * 2;
             lstResults.Width = grpSearch.Width;
-            lstResults.Height = Height - lstResults.Top - statusStrip1.Height - padding*2;
+            lstResults.Height = Height - lstResults.Top - statusStrip1.Height - padding * 2;
 
-            txtSearch.Width = txtSearch.Parent.Width - innerPadding*2;
+            txtSearch.Width = txtSearch.Parent.Width - innerPadding * 2;
             btnSearch.Left = btnSearch.Parent.Width - btnSearch.Width - innerPadding;
-            chkRegexp.Left = chkRegexp.Parent.Width - chkRegexp.Width - btnSearch.Width - innerPadding*2;
+            chkRegexp.Left = chkRegexp.Parent.Width - chkRegexp.Width - btnSearch.Width - innerPadding * 2;
             chkIgnoreCase.Left = chkRegexp.Left;
         }
 
@@ -54,7 +57,7 @@ namespace FileSystemImage
 
         private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char) 13)
+            if (e.KeyChar == (char)13)
                 PerformSearch();
         }
 
@@ -76,7 +79,7 @@ namespace FileSystemImage
                 });
                 return;
             }
-           
+
             btnSearch.Text = "Cancel";
             _isSearching = true;
 
@@ -85,15 +88,23 @@ namespace FileSystemImage
             try
             {
                 string searchString = txtSearch.Text;
+
+                while (!chkRegexp.Checked && searchString.Contains(@"\\"))
+                {
+                    searchString = searchString.Replace(@"\\", @"\");
+                }
+
+                bool includeFolderNames = chkFoldersIncluded.Checked;
                 Task.Run(async () =>
                 {
-                    var searchRes = await searchAlg.Search(searchString, chkRegexp.Checked, chkIgnoreCase.Checked);
+                    var searchRes = await searchAlg.Search(searchString, chkRegexp.Checked, chkIgnoreCase.Checked, includeFolderNames);
                     _isSearching = false;
                     Invoke(new SearchCompleteEventHandler(SearchComplete), this, new SearchEventArgs(searchRes));
                 }, _searchCancellation.Token);
             }
             catch (Exception ex)
             {
+                _logger.Error(ex, "SearchException");
                 MessageBox.Show(ex.Message);
             }
         }
@@ -127,13 +138,13 @@ namespace FileSystemImage
 
         private void lstResults_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar != (char) 13) return;
+            if (e.KeyChar != (char)13) return;
             var item = lstResults.SelectedItem as TreeSearchResult;
             if (item != null)
             {
                 try
                 {
-                    string p = item.path + "\\" + item.file.Name;
+                    string p = item.Path + "\\" + item.file.Name;
                     string args = $"/e, /select, \"{p}\"";
 
                     var info = new ProcessStartInfo

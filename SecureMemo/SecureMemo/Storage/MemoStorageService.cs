@@ -12,7 +12,7 @@ namespace SecureMemo.Storage
 {
     public class MemoStorageService
     {
-        private const string DatabaeFileName = "MemoDatabase.dat";
+        private const string DatabaseFileName = "MemoDatabase.dat";
         private const string ConfSaltVal = "l73hgwiHLwscWqHQUT7vwJSTX58K0XWZlecm77NbzmqbsF60LOEeftqSdeSvL6cB";
         private const string ConfSaltVal2 = "BxV0CQsjr6f7MbiXTqdpHN4bjyhqUX9Yd79zA2vRZLGPQj0qdTGlTwBFiK7eiFqc";
         private readonly string _databaseFilePath;
@@ -26,15 +26,15 @@ namespace SecureMemo.Storage
 
         private string GetFullPathToDatabaseFile()
         {
-            return _databaseFilePath + "\\" + DatabaeFileName;
+            return _databaseFilePath + "\\" + DatabaseFileName;
         }
 
         private string GetFullPathToSharedDatabaseFile()
         {
-            return _appSettingsService.Settings.SyncFolderPath + "\\" + DatabaeFileName;
+            return _appSettingsService.Settings.SyncFolderPath + "\\" + DatabaseFileName;
         }
 
-        private string GetFullPathToSharedEcryptedConfigFile()
+        private string GetFullPathToSharedEncryptedConfigFile()
         {
             return _appSettingsService.Settings.SyncFolderPath + "\\" + "ApplicationSettings.dat";
         }
@@ -76,7 +76,7 @@ namespace SecureMemo.Storage
 
                     settings.Password = ConfSaltVal + settings.Password + ConfSaltVal2;
                     File.Copy(GetFullPathToDatabaseFile(), encodedConfigFilePath);
-                    success = storageManager.SerializeObjectToFile(_appSettingsService.Settings, GetFullPathToSharedEcryptedConfigFile(), null);
+                    success = storageManager.SerializeObjectToFile(_appSettingsService.Settings, GetFullPathToSharedEncryptedConfigFile(), null);
                 }
                 else
                     success = storageManager.SerializeObjectToFile(tabPageDataCollection, GetFullPathToDatabaseFile(), null);
@@ -111,13 +111,13 @@ namespace SecureMemo.Storage
             if (!Directory.Exists(backupPath))
                 Directory.CreateDirectory(backupPath);
 
-            File.Copy(GetFullPathToDatabaseFile(), backupPath + DateTime.Now.ToString("yyyyMMdd_HH.mm.ss_") + DatabaeFileName);
+            File.Copy(GetFullPathToDatabaseFile(), backupPath + DateTime.Now.ToString("yyyyMMdd_HH.mm.ss_") + DatabaseFileName);
         }
 
         public void RestoreBackup(BackupFileInfo backupFileInfo)
         {
             if (!File.Exists(backupFileInfo.FullName))
-                throw new Exception("Backupfile with name: " + backupFileInfo.Name + " does not exist!");
+                throw new Exception("Backup file with name: " + backupFileInfo.Name + " does not exist!");
 
             string pathToDatabaseFile = GetFullPathToDatabaseFile();
 
@@ -136,14 +136,14 @@ namespace SecureMemo.Storage
             {
                 if (!File.Exists(GetFullPathToSharedDatabaseFile()))
                     restoreSyncDataResult.ErrorCode = RestoreSyncDataErrorCodes.MemoDatabaseFileNotFound;
-                else if (!File.Exists(GetFullPathToSharedEcryptedConfigFile()))
+                else if (!File.Exists(GetFullPathToSharedEncryptedConfigFile()))
                     restoreSyncDataResult.ErrorCode = restoreSyncDataResult.ErrorCode | RestoreSyncDataErrorCodes.ApplicationSettingsFileNotFound;
                 else
                 {
                     var settings = new StorageManagerSettings(true, Environment.ProcessorCount, true, ConfSaltVal + password + ConfSaltVal2);
                     var storageManager = new StorageManager(settings);
 
-                    var secureMemoAppSettings = storageManager.DeserializeObjectFromFile<SecureMemoAppSettings>(GetFullPathToSharedEcryptedConfigFile(), null);
+                    var secureMemoAppSettings = storageManager.DeserializeObjectFromFile<SecureMemoAppSettings>(GetFullPathToSharedEncryptedConfigFile(), null);
 
                     if (string.IsNullOrWhiteSpace(secureMemoAppSettings.ApplicationSaltValue) || string.IsNullOrWhiteSpace(secureMemoAppSettings.PasswordDerivedString))
                     {

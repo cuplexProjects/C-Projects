@@ -24,11 +24,15 @@ namespace FileSystemImage
     {
         private string _currentFileName;
         private FileSystemDrive _currentFileSystemDrive;
+        private readonly ILogger _logger;
 
         public FrmMain()
         {
             InitializeComponent();
             FolderTreeView.Nodes.Clear();
+            
+            // Serilog already configured and initialized at this stage in program.cs so
+            _logger = Log.Logger;
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -558,7 +562,7 @@ namespace FileSystemImage
                 MessageBox.Show("Please load a file system image first");
                 return;
             }
-            var searchDialog = new frmSearch();
+            var searchDialog = new FrmSearch(_logger);
             searchDialog.SetFileSystemDrive(_currentFileSystemDrive);
             searchDialog.ShowDialog(this);
         }

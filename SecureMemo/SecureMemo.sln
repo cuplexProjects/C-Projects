@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureMemo", "SecureMemo\SecureMemo.csproj", "{C4F02E9B-15E2-4EA3-A1B8-5B02D0ED5931}"
 EndProject
@@ -42,6 +42,7 @@ Global
 		{18B7C1DC-CB9B-4B4F-B3BB-40E79B277DD9}.Release|x64.Build.0 = Release|x64
 		{18B7C1DC-CB9B-4B4F-B3BB-40E79B277DD9}.Release|x86.ActiveCfg = Release|Any CPU
 		{50AA8BF5-4C33-418C-ADE8-BD79B4953A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50AA8BF5-4C33-418C-ADE8-BD79B4953A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50AA8BF5-4C33-418C-ADE8-BD79B4953A37}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{50AA8BF5-4C33-418C-ADE8-BD79B4953A37}.Debug|x64.Build.0 = Debug|Any CPU
 		{50AA8BF5-4C33-418C-ADE8-BD79B4953A37}.Debug|x86.ActiveCfg = Debug|Any CPU

@@ -5,14 +5,13 @@ namespace FileSystemImage.FileTree
     public class FileSystemTree
     {
         //Storage for all tree nodes
-        private readonly FileAlocationTable _fileAlocationTable;
 
         // Root node created on init
         private readonly TreeNode root;
 
         public FileSystemTree()
         {
-            this._fileAlocationTable = new FileAlocationTable();
+            this.FileRecords = new FileAllocationTable();
             this.root = new TreeNode(false, "Root", 0, 0);
         }
 
@@ -21,10 +20,7 @@ namespace FileSystemImage.FileTree
             get { return this.root; }
         }
 
-        private FileAlocationTable FileRecords
-        {
-            get { return this._fileAlocationTable; }
-        }
+        private FileAllocationTable FileRecords { get; }
 
         public byte[] ToArray()
         {
@@ -40,11 +36,11 @@ namespace FileSystemImage.FileTree
         }
     }
 
-    public class FileAlocationTable
+    public class FileAllocationTable
     {
         private long cursor;
 
-        public FileAlocationTable()
+        public FileAllocationTable()
         {
             this.FileRecords = new Hashtable();
         }

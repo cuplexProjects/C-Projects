@@ -25,10 +25,10 @@ namespace SecureMemo
     public partial class FormMain : Form
     {
         private const string PwdKey = "SecureMemo";
-        private const string LicenceFilename = "licence.txt";
+        private const string LicenseFilename = "licence.txt";
         private readonly ApplicationState _applicationState;
         private readonly AppSettingsService _appSettingsService;
-        private readonly LicenceService _licenceService;
+        private readonly LicenceService _licenseService;
         private readonly MemoStorageService _memoStorageService;
         private readonly PasswordStorage _passwordStorage;
         private TabDropData _dropData;
@@ -51,7 +51,7 @@ namespace SecureMemo
 
             _applicationState = new ApplicationState();
             _tabPageDataCollection = TabPageDataCollection.CreateNewPageDataCollection(_appSettingsService.Settings.DefaultEmptyTabPages);
-            _licenceService = LicenceService.Instance;
+            _licenseService = LicenceService.Instance;
             InitializeComponent();
         }
 
@@ -77,14 +77,17 @@ namespace SecureMemo
                 InitializeTabControls();
                 _appSettingsService.LoadSettings();
                 InitFormSettings();
-                LoadLicenceFile();
-                _licenceService.Init(SerialNumbersSettings.ProtectedApp.SecureMemo);
+                LoadLicenseFile();
+                _licenseService.Init(SerialNumbersSettings.ProtectedApp.SecureMemo);
 
                 Text = AssemblyTitle + " - v" + Assembly.GetExecutingAssembly().GetName().Version;
                 UpdateApplicationState();
+
+                Log.Information("Main Form loaded without any issues.");
             }
             catch (Exception ex)
             {
+                Log.Error(ex,"Exception in Main frm Load!");
                 MessageBox.Show(this, ex.Message, Resources.FormMain__Error_loading_application_settings, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -441,15 +444,16 @@ namespace SecureMemo
             return MessageBox.Show(this, "Are you sure you want to exit without saving?", "Exit without save?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK;
         }
 
-        private void LoadLicenceFile()
+        private void LoadLicenseFile()
         {
             try
             {
-                if (File.Exists(LicenceFilename))
-                    _licenceService.LoadLicenceFromFile(LicenceFilename);
+                if (File.Exists(LicenseFilename))
+                    _licenseService.LoadLicenceFromFile(LicenseFilename);
             }
             catch (Exception ex)
             {
+                Log.Error(ex,"Error when trying to load License file.");
                 MessageBox.Show(this, ex.Message, Resources.FormMain__ErrorText);
             }
         }
@@ -542,6 +546,7 @@ namespace SecureMemo
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "Open database Error.");
                 MessageBox.Show(this, "Unable to load database, please verify that you entered the correct password. " + ex.Message, "Failed to load database", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 return;
@@ -613,7 +618,7 @@ namespace SecureMemo
             }
         }
 
-        private void BackupDatabasetoolStripMenuItem_Click(object sender, EventArgs e)
+        private void BackupDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -621,6 +626,7 @@ namespace SecureMemo
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "Error when trying to backup database.");
                 MessageBox.Show(this, ex.Message, Resources.FormMain_Failed_to_backup_database, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -628,7 +634,7 @@ namespace SecureMemo
             MessageBox.Show(this, Resources.FormMain_Backup_completed_successfully, Resources.FormMain_Failed_to_backup_database, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void RestoreDatabasetoolStripMenuItem_Click(object sender, EventArgs e)
+        private void RestoreDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var frmSelectBackup = _scope.Resolve<FormRestoreBackup>();
             frmSelectBackup.ShowDialog(this);
@@ -711,6 +717,7 @@ namespace SecureMemo
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "Tab Text search function encountered an exception.");
                 Log.Error(ex,"Unhandled exception when calling _formFind_OnSearch()");
                 MessageBox.Show(ex.Message, Resources.FormMain__ErrorText, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

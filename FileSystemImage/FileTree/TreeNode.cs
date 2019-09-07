@@ -58,7 +58,7 @@ namespace FileSystemImage.FileTree
             this.parent = parent;
         }
 
-        public void AddChild(TreeNode n, FileAlocationTable fat)
+        public void AddChild(TreeNode n, FileAllocationTable fat)
         {
             long treeNode = fat.AddTreeNode(n);
 

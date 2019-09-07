@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using GeneralToolkitLib.Utility;
 using SecureMemo.DataModels;
 using SecureMemo.Services;
+using Serilog;
 
 namespace SecureMemo
 {
@@ -70,6 +71,7 @@ namespace SecureMemo
             }
             catch (Exception exception)
             {
+                Log.Error(exception, "Show font dialog error.");
                 MessageBox.Show(this, exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
